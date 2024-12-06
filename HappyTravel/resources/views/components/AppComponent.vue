@@ -1,5 +1,17 @@
 <template>
-    <h1>하이</h1>
+    <!-- Header -->
+    <header>
+
+    </header>
+    <!-- Main -->
+    <main>
+        <router-view></router-view>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+
+    </footer>
 </template>
 
 <script setup> 
