@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('manager_id')->unsigned();
             $table->char('category_local_num', 2);
             $table->char('category_theme_num', 2);
+            $table->char('category_num', 2);
             $table->string('post_content', 200);
             $table->string('post_title', 50);
             $table->string('post_img', 255);

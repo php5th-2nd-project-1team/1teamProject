@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('account', 30)->unique();
             $table->string('password');
             $table->string('nickname', 30);
+            $table->string('refresh_token', 512)->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });
