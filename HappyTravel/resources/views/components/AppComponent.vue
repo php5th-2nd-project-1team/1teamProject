@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="display: flex; flex-direction: column; justify-content: space-between; height: 100vh;">
     <!-- header -->
     <header>
         <div class="header-container">
@@ -128,6 +129,7 @@
         </div>
         <div class="footer-bottom-bar">Copyright 2021. 개인회사명 Co. All rights reserved.</div>
     </footer>
+</div>
 </template>
     
 <script setup> 
