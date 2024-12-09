@@ -41,8 +41,8 @@ import ShopMerchComponet from '../views/components/shop/ShopMerchComponet.vue';
 
 // ----------------------------------------------------------------------
 // post
-import PostComponet from '../views/components/post/PostComponet.vue';
 import PostDetailComponet from '../views/components/post/PostDetailComponet.vue';
+import PostComponet from '../views/components/post/PostComponet.vue';
 // ----------------------------------------------------------------------
 
 const routes=[
@@ -50,7 +50,7 @@ const routes=[
 	// ,component : '컴포넌트이름'
 	{
 		path: '/',
-		redirect: '/login',
+		redirect: '/index',
 	},
 	{
 		path: '/index',
@@ -119,8 +119,8 @@ const routes=[
 				component: CommunityInsertComponet,
 			},
 			{
-				path: 'update', // 수정 출력안됨 이유 ? 
-				componnet: CommunityUpdateComponet,
+				path: 'update', // 수정 출력잘됨
+				component: CommunityUpdateComponet,
 			},		
 		]
 	},
@@ -133,8 +133,8 @@ const routes=[
 				component: ShopClassComponet,
 			},
 			{
-				path: 'package', // 패키지 출력안됨 이유 ? 
-				componet: ShopPackageComponet,
+				path: 'package', // 패키지
+				component: ShopPackageComponet,
 			},
 			{
 				path: 'merch', // 굿즈
@@ -144,22 +144,16 @@ const routes=[
 				path : 'detail', // 상세
 				component: ShopDetailComponet,
 			},
-
 		]
 	},
 	{
-		path:'/post',   // 포스트 (펫브리즈고) // 출력안됨 
-		componet:PostComponet,
-		children: [
-			{
-				path:'detail', // 상세
-				component:PostDetailComponet,
-			},
-			
-		]
+		path:'/posts'   // 포스트 (펫브리즈고)
+		,component: PostComponet
 	},		
-		
-
+	{
+		path:'/post/detail' // 포스트 상세 페이지
+		,component:PostDetailComponet
+	},
 ];
 
 const router = createRouter({
