@@ -10,35 +10,14 @@
                     </a>
                 </h1>
                 <!-- 네비게이션 -->
-                <div class="header-nav">
-                    <!-- 햄버거 메뉴 -->
-                    <div id="header-hamburger-menu">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+                <!-- <div class="header-nav"> -->
                     <!-- 상단 카테고리 -->
-                    <!-- <ul id="header-nav-menu">
-                        <a href=""><li class="header-nav-cate">펫브리즈 소개</li></a>
-
-                        <li class="header-nav-cate">
-                            <a href="">펫브리즈 고</a>
-                            <ul class="nav-menu-sub">
-                                <a href=""><li>클래스</li></a>
-                                <a href=""><li>패키지</li></a>
-                                <a href=""><li>굿즈</li></a>
-                            </ul>
-                        </li>
-                        <li class="header-nav-cate">상품</li>
-                        <li class="header-nav-cate">커뮤니티</li>
-                    </ul> -->
-
-                    <div id="header-nav-menu">
+                    <!-- <div id="header-nav-menu">
                         <div class="header-nav-cate">
                             펫브리즈 소개
-                        </div>
+                        </div> -->
 
-                        <div class="header-nav-cate">
+                        <!-- <div class="header-nav-cate">
                             펫브리즈 고
                             <ul class="nav-menu-sub">
                                 <li>숙소</li>
@@ -46,8 +25,8 @@
                                 <li>관광지</li>
                                 <li>병원</li>
                             </ul>
-                        </div>
-
+                        </div> -->
+<!-- 
                         <div class="header-nav-cate">
                             상품
                             <ul class="nav-menu-sub">
@@ -55,9 +34,9 @@
                                 <li>패키지</li>
                                 <li>굿즈</li>
                             </ul>
-                        </div>
+                        </div> -->
 
-                        <div class="header-nav-cate">
+                        <!-- <div class="header-nav-cate">
                             커뮤니티
                             <ul class="nav-menu-sub">
                                 <li>공지사항&이벤트</li>
@@ -65,15 +44,39 @@
                                 <li>댕댕이 자랑관</li>
                             </ul>
                         </div>
+                    </div> -->
+                    <div class="header-nav">
+                        <!-- 햄버거 메뉴 -->
+                        <div id="header-hamburger-menu">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <ul>
+                            <li><a href="">펫브리즈 소개</a></li>
+                            <li>
+                                <a href="">펫브리즈 고</a>
+                                <ul class="dropdown">
+                                    <li class="dropdown-sub">숙소</li>
+                                    <li class="dropdown-sub">식&음료</li>
+                                    <li class="dropdown-sub">관광지</li>
+                                    <li class="dropdown-sub">음료</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">상품</a>
+                                <ul class="dropdown">
+                                    <li class="dropdown-sub">클래스</li>
+                                    <li class="dropdown-sub">패키지</li>
+                                    <li class="dropdown-sub">굿즈</li>
+                                </ul>
+                            </li>
+                            <li><a href="">커뮤니티</a></li>
+                        </ul>
                     </div>
 
-                    <!-- <div class="header-nav-menu-box">
-                        <p>클래스</p>
-                        <p>패키지</p>
-                        <p>굿즈</p>
-                    </div> -->
 
-            </div>
+            <!-- </div> -->
                 <!-- 로그인, 회원가입 -->
                 <div class="header-btn-group">
                     <div>
@@ -100,13 +103,30 @@
     <!-- footer -->
     <footer>
         <div class="footer-container">
-            <div>
-                <p>찾아오시는 길: 경상북도 대구광역시</p>
-                <p>만든사람: 펫타곤</p>
-                <p>ⓒ 2024. ManduKing All rights reserved.</p>   
+            <div class="footer-content">
+                <h3>Contact Us</h3>
+                <p>이메일 : PettagonTeam1@gmail.com</p>
+                <p>전화번호 : 053-0000-0000</p>
+                <p>찾아오시는 길 : 대구광역시 그린컴퓨터아트 학원</p>
             </div>
-            <div></div>
+            <div class="footer-content">
+                <h3>Quick List</h3>
+                <ul class="footer-list">
+                    <li>펫브리즈 소개</li>
+                    <li>펫브리즈 고</li>
+                    <li>상품</li>
+                    <li>커뮤니티</li>
+                </ul>
+            </div>
+            <div class="footer-content">
+                <h3>제작자</h3>
+                <p><span>유원상:</span> #야호야호야호야호야호</p>
+                <p><span>우민주:</span> #야호야호야호야호</p>
+                <p><span>정한결:</span> #야호야호야호야호</p>
+                <p><span>최상기:</span> #야호야호야호야호</p>
+            </div>
         </div>
+        <div class="footer-bottom-bar">Copyright 2021. 개인회사명 Co. All rights reserved.</div>
     </footer>
 </template>
     
