@@ -1,4 +1,7 @@
 <template>
+        <div class="footer-img" style="display: flex; justify-content: flex-end;">
+            <img src="/img/footer.png" alt="" style="width: 200px; height: 200px;">
+        </div>
 	    <footer>
         <div class="footer-container">
             <div class="footer-content">
