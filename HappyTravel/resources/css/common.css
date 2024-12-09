@@ -289,6 +289,12 @@ li:hover::before {
     transition: 0.1s ease-out;
 }
 
+.btn-search {
+    width: 100px;
+    margin-left: 20px;
+
+}
+
 .header-btn-etc {
     display: none;
 }
