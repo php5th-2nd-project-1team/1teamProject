@@ -237,7 +237,7 @@ li::before {
 }
 
 li:hover::before {
-    width: 70px;
+    width: 100px;
 }
 
 .footer-bottom-bar {
