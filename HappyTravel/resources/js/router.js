@@ -43,6 +43,7 @@ import ShopMerchComponet from '../views/components/shop/ShopMerchComponet.vue';
 // post
 import PostDetailComponet from '../views/components/post/PostDetailComponet.vue';
 import PostComponet from '../views/components/post/PostComponet.vue';
+import AboutComponent from '../views/components/AboutComponent.vue';
 // ----------------------------------------------------------------------
 
 const routes=[
@@ -55,6 +56,10 @@ const routes=[
 	{
 		path: '/index',
 		component : IndexComponet,
+	},
+	{
+		path: '/about'
+		,component : AboutComponent
 	},
 	{
 		path:'/login',
