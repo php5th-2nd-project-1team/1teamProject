@@ -6,7 +6,7 @@
 			<!-- 로고 -->
 			<h1>
 				<a href="/Petbreeze">
-					<img class="header-logo" src="/img/petbreeze_logo.png" alt="펫브리즈">
+					<img class="header-logo" src="/developImg/petbreeze_logo.png" alt="펫브리즈">
 				</a>
 			</h1>
 			<!-- 네비게이션 -->
