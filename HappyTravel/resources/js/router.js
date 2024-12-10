@@ -22,6 +22,7 @@ import MypageReservationComponet from '../views/components/user/MypageReservatio
 // ----------------------------------------------------------------------
 import CommunityComponet from '../views/components/community/CommunityComponet.vue';
 import CommunityNoticeComponent from '../views/components/community/CommunityNoticeComponent.vue';
+import CommunityNoticeDetailComponet from '../views/components/community/CommunityNoticeDetailComponet.vue';
 import CommunityEventComponet from '../views/components/community/CommunityEventComponet.vue';
 import CommunityPhotoAlbumComponet from '../views/components/community/CommunityPhotoAlbumComponet.vue';
 import CommunityCommentComponet from '../views/components/community/CommunityCommnet.vue';
@@ -103,6 +104,11 @@ const routes=[
 				path : 'notice',  // 공지 사항
 				component: CommunityNoticeComponent,
 			},
+			{
+				path:'notice/detail',
+			  component:CommunityNoticeDetailComponet,	
+			  
+			},	
 			{
 				path : 'event',  // 이벤트
 				component: CommunityEventComponet,
