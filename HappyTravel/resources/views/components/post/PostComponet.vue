@@ -1,35 +1,35 @@
 <template>
     <div class="post-local">
-        <img class="post-local-arrow" src="../../../../public/img/arrow_left.png" alt="">
+        <img class="post-local-arrow" src="../../../../public/developImg/arrow_left.png" alt="">
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
         <div class="post-local-item">
-            <img class="post-local-item-img" src="../../../../public/img/seoul_icon.png" alt="">
+            <img class="post-local-item-img" src="../../../../public/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
-        <img class="post-local-arrow" src="../../../../public/img/arrow_right.png" alt="">
+        <img class="post-local-arrow" src="../../../../public/developImg/seoul_icon.png" alt="">
     </div>
     <div class="post-search">
         <div class="post-search-bg">
@@ -41,43 +41,43 @@
     <div class="post-all">
         <div class="post-content">
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
             <div class="post-content-card">
-                <img class="post-content-card-img" src="../../../../public/img/post-content-img.png" alt="">
+                <img class="post-content-card-img" src="../../../../public/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
         </div>
@@ -106,6 +106,10 @@
     border-radius: 50%;
     width: 80px;
     height: 80px;
+}
+
+.post-local-item-img:hover {
+    box-shadow: 0 0 0 2px #000;
 }
 
 .post-local-arrow {
