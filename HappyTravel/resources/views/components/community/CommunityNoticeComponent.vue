@@ -34,7 +34,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>
         <div class="notice_content_box">
@@ -51,7 +51,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>   
         <div class="notice_content_box">
@@ -68,7 +68,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>   
         <div class="notice_content_box">
@@ -85,7 +85,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>   
         <div class="notice_content_box">
@@ -102,7 +102,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>
         <div class="notice_content_box">
@@ -119,7 +119,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div> 
         <div class="notice_content_box">
@@ -136,7 +136,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div> 
         <div class="notice_content_box">
@@ -153,7 +153,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div> 
         <div class="notice_content_box">
@@ -170,7 +170,7 @@
                 <p>2024-00-00</p>
             </div>
             <div>
-                <img  class="link_file"src="../../../../public/developImg/link-file.png" alt="첨부파일">
+                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>  
 
