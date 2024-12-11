@@ -1,9 +1,38 @@
 <template>
     <div class="post-local">
+        <!-- 상단 슬라이드 -->
+        <div class="w-full">
+            <swiper 
+                :rewind="true"
+                :navigation="{ nextEl:'.custom-next', prevEl:'.custom-prev'  }"
+                :breakpoints= "breakpoints"
+                :modules="modules"
+                :loop="true"
+                direction="horizontal"
+                slidesPerView="3"
+                spaceBetween="10"
+                class="mySwiper">
+                <!-- <div class="slide-container"> -->
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>세종</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충청북도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충청남도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide>
+                <!-- </div> -->
+                <div class="custom-prev"><</div>
+                <div class="custom-next">></div>
+            </swiper>
+        </div>
+
+
+
         <!-- 왼쪽 화살표 -->
-        <img class="post-local-arrow" src="/developImg/arrow_left.png" alt="">
+        <!-- <img class="post-local-arrow" src="/developImg/arrow_left.png" alt=""> -->
         <!-- 상단 지역 카테고리 -->
-        <div class="post-local-item">
+        <!-- <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
             <p>서울</p>
         </div>
@@ -54,9 +83,9 @@
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
             <p>제주</p>
-        </div>
+        </div> -->
         <!-- 오른쪽 화살표 -->
-        <img class="post-local-arrow" src="/developImg/arrow_right.png" alt="">
+        <!-- <img class="post-local-arrow" src="/developImg/arrow_right.png" alt=""> -->
     </div>
     <!-- 검색 창 -->
     <div class="post-search">
@@ -115,10 +144,92 @@
 </template>
 
 <script setup>
+// 상단 슬라이드
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+// Import Swiper styles
+import 'swiper/css';
+
+import 'swiper/css/navigation';
+
+// import required modules
+import { Navigation } from 'swiper/modules';
+// import { reactive } from 'vue';
+
+const modules = [Navigation];
+// const modules = reactive([Navigation]);
+
+const breakpoints = {
+
+    768: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+    },
+    1350: {
+        slidesPerView: 7,
+        // spaceBetween: 30,
+    },
+};
+
+// -----------------------------------------
 
 </script>
 
 <style scoped>
+.w-full {
+    width: 60%;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .swiper-slide {
+    /* width: 200px; */
+    /* font-weight: 700; */
+    height: 200px;
+    text-align: center;
+}
+
+    .slide-img {
+      border-radius: 50%;
+      border: 3px solid #10b3ff;
+    }
+  
+/* .slide-container {
+    display: flex;
+    justify-content: center;
+} */
+
+.custom-prev,
+.custom-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.custom-prev {
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.custom-next {
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+}
+/* -------------------------------------- */
 /* 지역 선택 카테고리 */
 .post-local {
     display: flex;
