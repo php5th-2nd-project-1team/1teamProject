@@ -24,6 +24,17 @@
 					</li>
 				</ul>
 			</div>
+			<!-- TODO: 좋아요, 조회수 : 형태만 넣어두고 나중에 기능 추가 -->
+			<div class="postdetail-post-area">
+				<button type="button">
+					<span>좋아요</span>
+					<span>50</span>
+				</button>
+				<span>
+					<span>조회수</span>
+					<span>10000</span>
+				</span>
+			</div>
 			<!-- 포스트 메인 -->
 			<img id="postdetail-img" class="postdetail-img" src="/developImg/post-content-img.png" alt="">
 			<div id="postdetail-main" class="postdetail-main">
@@ -39,7 +50,7 @@
 			<button class="btn btn-search btn-bg-blue btn-more" type="button">내용 더보기</button>
 			<!-- 포스트 지도, 세부정보 -->
 			<div class="postdetail-info-container">
-				<img class="postdetail-info-map" src="/developImg/post-content-img.png" alt="">
+				<img class="postdetail-info-map" src="/developImg/map_img_test.png" alt="">
 				<div class="postdetail-info">
 					<div class="postdetail-info-content">
 						<div class="bottom-none">
@@ -49,14 +60,6 @@
 						<div class="bottom-none">
 							<strong>주소: </strong>
 							<span>부산광역시 해운대구 동백로 67 (우동) 일대</span>
-						</div>
-						<div class="bottom-none">
-							<strong>휴일: </strong>
-							<span>연중무휴</span>
-						</div>
-						<div class="bottom-none">
-							<strong>휠체어: </strong>
-							<span>대여가능(동백섬 내 누리마루)</span>
 						</div>
 						<div class="bottom-none">
 							<strong>홈페이지: </strong>
@@ -69,10 +72,6 @@
 						<div class="bottom-none">
 							<strong>차량: </strong>
 							<span>가능</span>
-						</div>
-						<div class="bottom-none">
-							<strong>입장료: </strong>
-							<span>무료</span>
 						</div>
 					</div>
 			</div>
@@ -260,6 +259,13 @@
  .postdetail-comment-btn-wrap {
 	text-align: right;
  }
+
+.postdetail-post-area {
+	margin-bottom: 10px;
+	display: flex;
+	
+}
+
 
  /* 댓글 창 디자인 */
 .comment-box {

@@ -9,27 +9,51 @@
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>경기도</p>
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>강원도</p>
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>인천</p>
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>세종</p>
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>대전</p>
         </div>
         <div class="post-local-item">
             <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
+            <p>충청북도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>충청남도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>경상북도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>경상남도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>전라북도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>전라남도</p>
+        </div>
+        <div class="post-local-item">
+            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
+            <p>제주</p>
         </div>
         <!-- 오른쪽 화살표 -->
         <img class="post-local-arrow" src="/developImg/arrow_right.png" alt="">
