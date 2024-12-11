@@ -173,10 +173,6 @@
                 <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
             </div>     
         </div>  
-
-        <div class="btn_box">
-            <button class="btn btn-header btn-bg-blue">새 글 작성</button>
-        </div>
     </div> 
 </template>
 
