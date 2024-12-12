@@ -50,7 +50,7 @@
 <script setup>
 
 </script>
-<style>
+<style scoped>
 button {
     cursor: pointer;
 }

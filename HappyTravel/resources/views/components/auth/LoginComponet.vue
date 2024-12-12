@@ -30,7 +30,7 @@ import { reactive } from 'vue';
     });
 
 </script>
-<style>
+<style scoped>
 
     * {
         margin: 0px;
