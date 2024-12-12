@@ -79,14 +79,13 @@
 		<!-- </div> -->
 			<!-- 로그인, 회원가입 -->
 			<div class="header-btn-group">
-				<div>
-					<button class="btn btn-header btn-bg-blue" type="button">로그인</button>
-					<button class="btn btn-header btn-bg-gray" type="button">회원가입</button>
+				<div v-if="!$store.state.user.authFlg">
+					<router-link to="/login"><button class="btn btn-header btn-bg-blue" type="button">로그인</button></router-link>
+					<router-link to="/registration"><button class="btn btn-header btn-bg-gray" type="button">회원가입</button></router-link>
 				</div>
-				<!-- 나중에 조건문으로 로그인시엔 버튼 이거 띄우기 -->
-				<div class="header-btn-etc">
-					<button class="btn btn-header btn-bg-blue" type="button">마이페이지</button>
-					<button class="btn btn-header btn-bg-gray" type="button">로그아웃</button>
+				<div v-else>
+					<router-link to="/user/mypage"><button class="btn btn-header btn-bg-blue" type="button">마이페이지</button></router-link>
+					<router-link to="logout"><button class="btn btn-header btn-bg-gray" type="button">로그아웃</button></router-link>
 				</div>
 			</div>
 		</div>
