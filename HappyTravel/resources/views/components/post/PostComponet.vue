@@ -8,84 +8,31 @@
                 :breakpoints= "breakpoints"
                 :modules="modules"
                 :loop="true"
+                :observer="true"
                 direction="horizontal"
                 slidesPerView="3"
                 spaceBetween="10"
+                :width="400"
                 class="mySwiper">
                 <!-- <div class="slide-container"> -->
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기도</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>세종</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충청북도</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충청남도</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충북</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충남</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경북</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경남</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전북</p></swiper-slide>
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전남</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide>
                 <!-- </div> -->
-                <div class="custom-prev"><</div>
-                <div class="custom-next">></div>
+                <div class="custom-prev"><img class="btn-slide-resize" src="/developImg/arrow_left.png" alt=""></div>
+                <div class="custom-next"><img class="btn-slide-resize" src="/developImg/arrow_right.png" alt=""></div>
             </swiper>
         </div>
 
-
-
-        <!-- 왼쪽 화살표 -->
-        <!-- <img class="post-local-arrow" src="/developImg/arrow_left.png" alt=""> -->
-        <!-- 상단 지역 카테고리 -->
-        <!-- <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>서울</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>경기도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>강원도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>인천</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>세종</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>대전</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>충청북도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>충청남도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>경상북도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>경상남도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>전라북도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>전라남도</p>
-        </div>
-        <div class="post-local-item">
-            <img class="post-local-item-img" src="/developImg/seoul_icon.png" alt="">
-            <p>제주</p>
-        </div> -->
-        <!-- 오른쪽 화살표 -->
-        <!-- <img class="post-local-arrow" src="/developImg/arrow_right.png" alt=""> -->
     </div>
     <!-- 검색 창 -->
     <div class="post-search">
@@ -138,6 +85,7 @@
                 <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
                 <h3>순천 조례호수공원</h3>
             </div>
+            
         </div>
         <button class="btn btn-header btn-bg-gray btn-post-more" type="button">더 알아보기</button>
     </div>
@@ -162,70 +110,72 @@ const modules = [Navigation];
 
 const breakpoints = {
 
-    768: {
+    850: {
         slidesPerView: 5,
         spaceBetween: 20,
+        width: 750,
     },
-    1350: {
+    1370: {
         slidesPerView: 7,
-        // spaceBetween: 30,
+        spaceBetween: 0,
+        width: 1050,
     },
 };
 
-// -----------------------------------------
 
 </script>
 
 <style scoped>
+
+/* 슬라이드 */
 .w-full {
     width: 60%;
-    margin: 50px;
-    display: flex;
-    justify-content: center;
+    /* margin: 50px; */
+    /* display: flex; */
+    /* justify-content: center; */
   }
 
-  .swiper-slide {
-    /* width: 200px; */
-    /* font-weight: 700; */
-    height: 200px;
+.swiper-slide {
     text-align: center;
+    /* width: 150px !important; */
 }
 
-    .slide-img {
-      border-radius: 50%;
-      border: 3px solid #10b3ff;
-    }
-  
-/* .slide-container {
-    display: flex;
-    justify-content: center;
-} */
+.swiper-slide p {
+    font-size: 15px;
+}
+
+.slide-img {
+    border-radius: 50%;
+    border: 3px solid #10b3ff;
+    width: 90px;
+    padding: 0;
+}
+
+.slide-img:focus {
+    border: 3px solid #000;
+}
+
+.btn-slide-resize {
+    width: 40px;
+}
 
 .custom-prev,
 .custom-next {
   position: absolute;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   z-index: 10;
   cursor: pointer;
 }
 
 .custom-prev {
-  left: 10px;
-  width: 50px;
-  height: 50px;
-  background-color: #000;
-  color: #fff;
+  left: 0px;
   border-radius: 50%;
   text-align: center;
 }
 
 .custom-next {
-  right: 10px;
-  width: 50px;
-  height: 50px;
-  background-color: #000;
-  color: #fff;
+  right: 0px;
   border-radius: 50%;
   text-align: center;
 }
@@ -235,21 +185,8 @@ const breakpoints = {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.post-local-item {
-    text-align: center;
-    padding: 20px;
-}
-
-.post-local-item-img {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-}
-
-.post-local-item-img:hover {
-    box-shadow: 0 0 0 2px #000;
+    margin: 30px 0;
+    width: 100%;
 }
 
 .post-local-arrow {
@@ -258,10 +195,11 @@ const breakpoints = {
     cursor: pointer;
 }
 /* 검색창 */
-/* .post-search {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-} */
+.post-search {
+    display: flex;
+    margin: 20px;
+    
+}
 
 .post-search-bg {
     background-color: #E7E7E7;
@@ -290,27 +228,17 @@ const breakpoints = {
 /* 여행지 컨텐츠 */
 .post-all {
     text-align: center;
-    padding: 20px;
-
+    margin: 20px;
 }
 
 .post-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 20px;
-    /* margin: 50px; */
-    margin-left: 100px;
-}
-
-.post-content-card {
-    margin-bottom: 30px;
-    text-align: center;
 }
 
 .post-content-card-img {
-    width: 400px;
+    width: 100%;
     border-radius: 30px;
     opacity: 1;
     transition: .2s ease-in-out;
@@ -321,9 +249,74 @@ const breakpoints = {
     opacity: .8;
 }
 
+/* 포스트 내용 더 알아보기 버튼 */
 .btn-post-more {
     width: 200px;
-    
+    margin-top: 50px;
 }
+
+/* 검색버튼 */
+.btn-search {
+    width: 100px;
+    margin: 20px 0 0 20px;
+}
+
+/* 미디어 쿼리 */
+
+/* @media screen and (min-width: 1024px) and (max-width: 1480px) {
+    .post-content {
+        margin-left: 60px;
+    }
+    .post-content-card-img {
+        width: 350px;
+    }
+}
+
+@media screen and (min-width: 500px)  and (max-width: 750px) {
+    .post-search-bg {
+        margin: 30px;
+    }
+}
+
+@media screen and (min-width: 501px) and (max-width: 1023px) {
+    .post-content {
+        margin-left: 40px;
+    }
+    .post-content-card-img {
+        width: 380px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .post-content {
+        margin-left: 40px;
+    }
+    .post-content-card-img {
+        width: 400px;
+    }
+} */
+
+@media screen and (max-width: 1450px) {
+    /* .custom-prev,
+    .custom-next {
+        display: none;
+    } */
+    /* .btn-slide-resize {
+        width: 30px;
+    } */
+}
+
+@media screen and (max-width: 1000px) {
+    .custom-prev,
+    .custom-next {
+        display: none;
+    }
+}
+
+/* @media screen and (max-width: 500px) {
+    .post-local {
+    width: 100%;
+  }
+} */
 
 </style>
