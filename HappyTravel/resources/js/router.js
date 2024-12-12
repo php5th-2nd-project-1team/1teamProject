@@ -1,5 +1,5 @@
 import {createWebHistory, createRouter } from 'vue-router';
-import IndexComponet from '../views/components/IndexComponet.vue';
+import IndexComponet from '../views/components/index/IndexComponet.vue';
 // auth
 
 // ----------------------------------------------------------------------

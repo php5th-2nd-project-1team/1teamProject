@@ -25,9 +25,24 @@
 			<h1>"펫브리즈"의 좋은 3가지</h1>
 			<p class="about-three-comment"><span>팻브리즈</span>는 무슨 좋은 점을 가지고 있을까요? 알아맞춰봅시다.</p>
 			<div class="about-three-picture-box">
-				<div class="about-three-picture" style="background-image: url('/developImg/about-three1.png');"></div>
-				<div class="about-three-picture" style="background-image: url('/developImg/about-three2.png');"></div>
-				<div class="about-three-picture" style="background-image: url('/developImg/about-three3.png');"></div>
+				<div class="about-three-picture" style="background-image: url('/developImg/about-three1.png');">
+					<div class="about-three-picture-comment">
+						<h2>즐거움</h2>
+						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+					</div>
+				</div>
+				<div class="about-three-picture" style="background-image: url('/developImg/about-three2.png');">
+					<div class="about-three-picture-comment">
+						<h2>즐거움</h2>
+						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+					</div>
+				</div>
+				<div class="about-three-picture" style="background-image: url('/developImg/about-three3.png');">
+					<div class="about-three-picture-comment">
+						<h2>즐거움</h2>
+						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -42,14 +57,14 @@
 			<p>내가 만든 여행코스를 친구들과 공유하고, 기록해 두었다가 다음 여행시 참고할 수 있는</p>
 			<p>반려동물 여행의 모든 것이 다~ 있는 곳.</p>
 			<br>
-			<p>1조 펫브리즈과 함께 여행이라는 추억을 선물 하세요.</p>
+			<p>1조 펫브리즈과 함께 여행이라는 추억을 선물 하세요.</p>
 		</div>
 	</div>
 </template>
 <script setup>
 
 </script>
-<style>
+<style scoped>
 	.about-container{
 		display: flex;
 		flex-direction: column;
@@ -91,6 +106,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
+		text-align: center;
 	}
 
 	.about-comment h1{
@@ -111,6 +128,7 @@
 		flex-direction: column;
 
 		align-items: center;
+		text-align: center;
 
 		width: 100%;
 	}
@@ -131,7 +149,7 @@
 		height: 400px;
 
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		grid-template-columns: repeat(3 , 1fr);
 		justify-items: center;
 		align-items: center;
 	}
@@ -143,5 +161,55 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 		border-radius: 50px;
+	}
+
+	.about-three-picture:hover .about-three-picture-comment{
+		display: flex;
+
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 20px;
+
+		width: 100%;
+		height: 100%;
+
+		color: white;
+
+		background-color: rgb(0, 0, 0, 0.7);
+
+		text-align: center;
+
+		padding: 30px;
+
+		border-radius: 50px;
+	}
+
+	.about-three-picture-comment{
+		display: none;
+	}
+
+	.about-three-picture-comment p{
+		font-size: 1.5rem;
+	}
+
+	.about-three-picture-comment h2{
+		font-size: 2.5rem;
+	}
+
+	/* 반응형 부분 */
+
+	@media (max-width : 1024px){
+		.about-container{
+			padding: 0 50px;
+		}
+
+		.about-three-picture-box{
+			grid-template-rows: repeat(3 , 1fr);
+
+			grid-template-columns: none;
+
+			height: 600px;
+		}
 	}
 </style>

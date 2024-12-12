@@ -1,0 +1,176 @@
+.index-postbox{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.index-postbox-title{
+	display: flex;
+	gap : 10px;
+	padding : 0 100px;
+	
+	align-items: center;
+}
+
+.index-postbox-title h3{
+	font-size: 2.25rem;
+}
+
+.index-postbox-title p{
+	font-size: 1.25rem;
+	color: gray;
+}
+
+.index-category{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+
+	padding : 0 100px;
+	margin : 20px 0;
+}
+
+.index-category-category{
+	display: flex;
+	gap : 45px;
+}
+
+.index-category-category p{
+	font-size: 1.25rem;
+}
+
+.index-controller{
+	display: flex;
+	gap : 10px;
+}
+
+.index-controller button{
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: whitesmoke;
+	border: none;
+	border-radius: 100%;
+
+	font-size: 2rem;
+	font-weight: 100;
+}
+
+.index-controller button:hover{
+	background-color: black;
+	color: white;
+}
+
+.index-cardzone{
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-auto-rows: 400px;
+
+	gap : 30px;
+
+	justify-items: center;
+	align-items: flex-end;
+}
+
+.index-card{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: #EFEFEF;
+	border-radius: 50px;
+	width: 90%;
+	height: 90%;
+	padding : 10px 25px;
+}
+
+.index-card:hover {
+	width: 100%;
+	height: 100%;
+	background-color: #2986FF;
+
+	transition: all 0.1s ease-in;
+}
+
+.index-card:hover .index-card-img{
+	padding-top: 80%;
+
+	transition: all 0.1s ease-in;
+}
+
+.index-card:hover .index-card-hoverShowing{
+	display: block;
+
+	transition: all 0.1s ease-in;
+}
+
+.index-card-img{
+	border-radius: 50px;
+	padding-top: 100%;
+	background-color: black;
+}
+
+.index-card-hoverShowing{
+	display: none;
+}
+
+.index-card-content{
+	font-size : 1.2rem;
+	color: white;
+}
+
+.index-card-btnArea{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.index-card-btnArea button{
+	background-image: url('/developImg/sample-post.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+
+	width: 50px;
+	height: 50px;
+	border: none;
+	border-radius: 100%;
+}
+
+/* 반응형 : 1439px */
+@media (max-width : 1439px){
+	.index-postbox-title h3{
+		font-size: 1.75rem;
+	}
+
+	.index-postbox-title p{
+		font-size: 1rem;
+	}
+}
+
+/* 반응형 : 1023px */
+@media (max-width : 1023px){
+	.index-postbox-title h3{
+		font-size: 1.2rem;
+	}
+	.index-postbox-title p{
+		font-size: 0.8rem;
+	}
+	.index-controller{
+		display: none;
+	}
+	.index-category-category{
+		width: 100%;
+		gap : 20px;
+	}
+}
+
+/* 반응형 : 599px 이하 */
+@media (max-width : 599px){
+	.index-category-category{
+		flex-direction: column;
+	}
+}
