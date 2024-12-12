@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,5 +18,15 @@ class Notice extends Model
         'notice_content',
         'notice_img',
     ];
+    
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date ->format('Y-m-d H:i:s');       
+    }
+
+    public function managers() {
+        return $this->belongsTo(Manager::class, 'manager_id')->select('manager_id', 'm_nickname');
+    }
+
     
 }

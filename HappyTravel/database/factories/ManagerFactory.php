@@ -17,7 +17,9 @@ class ManagerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'm_account' => $this->faker->account(),
+            'm_nickname'=> $this->faker->nickname(),            
+            'm_password' =>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ];
     }
 }

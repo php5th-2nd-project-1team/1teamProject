@@ -20,164 +20,43 @@
             </div>      
         </div>
         <!-- 공지사항 컨텐츠 박스 -->
-        <div class="notice_content_box">
+        <div v-if="LoadingFlg"> 로딩 중 </div>
+        <div v-else v-for="item in noticeList" :key="item" class="notice_content_box">
             <div class="notice_content_num">
-                <p>5</p>
+                <p>{{ item.notice_id }}</p>
             </div>      
-            <div class="notice_content_title">
-                <p>"반려동물과 함께하는 특별한 여행 이야기"</p>
+            <div class="notice_content_title">              
+                <p>{{ item.notice_title }}</p>              
             </div>  
             <div class="notice_content_manager">
-                <p>관리자</p>
+                <p>{{ item.m_nickname }}</p>
             </div>
             <div class="notice_content_date">
-                <p>2024-00-00</p>
+                <p>{{ item.created_at }}</p>
             </div>
             <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
+                <img :src="item.img">
             </div>     
         </div>
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>4</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 즐기는 소중한 순간, 함께 떠나요!"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div>   
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>3</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"반려동물과 함께하는 맞춤형 여행 플랜"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div>   
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>2</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"반려동물 동반 여행: 행복을 더하다"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div>   
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>1</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 함께 떠나는 힐링 트립"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
+        <div class="pagination">
+            <button>이전</button>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <button>다음</button>
         </div>
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>1</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 함께 떠나는 힐링 트립"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div> 
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>1</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 함께 떠나는 힐링 트립"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div> 
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>1</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 함께 떠나는 힐링 트립"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div> 
-        <div class="notice_content_box">
-            <div class="notice_content_num">
-                <p>1</p>
-            </div>
-            <div class="notice_content_title">
-                <p>"펫과 함께 떠나는 힐링 트립"</p>
-            </div>  
-            <div class="notice_content_manager">
-                <p>관리자</p>
-            </div>
-            <div class="notice_content_date">
-                <p>2024-00-00</p>
-            </div>
-            <div>
-                <img  class="link_file"src="/developImg/link-file.png" alt="첨부파일">
-            </div>     
-        </div>  
-    </div> 
+    </div>
 </template>
 
-<script setup>
+<script setup>    
+    import { computed, onBeforeMount } from 'vue';
+    import { useStore } from 'vuex';
 
+    const store = useStore();
+    const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
+    const noticeList = computed(() => store.state.notice.noticeList);
+    onBeforeMount(() =>store.dispatch('notice/noticeList'));
+    
 </script>
 
 <style scoped>
@@ -245,5 +124,9 @@
         text-align: right;
         align-items: center;
     }
-
+    /* 페이지 */
+    .pagination {
+        text-align: center;
+    }
+    
 </style>
