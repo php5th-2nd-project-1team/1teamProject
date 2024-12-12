@@ -25,7 +25,6 @@
     scroll-behavior: smooth;
 }
 
-
 a {
     color: #000;
 }
@@ -289,11 +288,6 @@ li:hover::before {
     color: #000;
     box-shadow: 0 0 0 2px #BDBDBD inset;
     transition: 0.1s ease-out;
-}
-
-.btn-search {
-    width: 100px;
-    margin-left: 20px;
 }
 
 .header-btn-etc {
