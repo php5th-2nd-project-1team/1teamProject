@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  */
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.show');
+Route::post('/passwordcheck', [AuthController::class, 'passwordChk'])->name('auth.passwordcheck');
 
 
 /**

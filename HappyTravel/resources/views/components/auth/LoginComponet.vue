@@ -102,7 +102,7 @@ import { reactive } from 'vue';
         background-color : #2986FF;
         color: white;
         font-size: 35px;
-        font-weight: 900;
+        font-weight: 900; 
 
         border: none;
 
@@ -111,7 +111,9 @@ import { reactive } from 'vue';
     }
 
     .login-title button:hover {
-        background-color : #0c3469;
+        background-color: white;
+        border: 3px solid #2986FF;
+        color: black;
     }
 
     .login-title input{

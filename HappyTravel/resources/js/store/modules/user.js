@@ -54,13 +54,13 @@ export default {
                     console.log(error.response.data.errors); // 각 필드의 에러 메시지 출력
                     // 유효성 체크 에러
                     if(errorData.data.account) {
-                        errorMsgList.push(errorData.data.account[0]);
+                        alert(errorMsgList.push(errorData.data.account[0]));
                     }
                     if(errorData.data.password) {
-                        errorMsgList.push(errorData.data.password[0]);
+                        alert(errorMsgList.push(errorData.data.password[0]));
                     }else if(error.response.status === 401) {
                         // 비밀번호 오류 에러
-                        errorMsgList.push('비밀번호 오류');
+                        alert(errorMsgList.push('비밀번호 오류'));
                     }else {
                         errorMsgList.push('잘 모르겠는 오류');
                     }
@@ -72,6 +72,7 @@ export default {
             });
         },
 
+        // 유저 마이페이지 처리
         userDetailPage(context, id) {
             context.commit('setLoadingFlg', true);
             const url  = '/api/user/mypage/' + id;
@@ -92,7 +93,24 @@ export default {
                 console.error(error);
             })
             
-        }
+        },
+
+        // 비밀번호 체크 처리
+        userPasswordChk(context, userInfo) {
+            const url = '/api/login';
+
+            const data = JSON.stringify(userInfo);
+
+            axios.post(url, data)
+            .then(response => {
+                alert('비밀번호 확인 성공했습니다.')
+
+                router.replace('/mypage/auth/update');
+            })
+            .catch(error => {
+                alert('비밀번호가 맞지 않습니다..');
+            });
+        },
     }
 	,getters: {
 		

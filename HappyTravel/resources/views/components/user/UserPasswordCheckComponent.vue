@@ -6,11 +6,11 @@
             <div class="PasswordCheck-main">
                 <label for="password" class="password-title">본인 확인을 위해 비밀번호를 입력해주세요.</label>
                 <br>
-                <input type="password" id="password" class="password-box">
+                <input v-model="userInfo.password" type="password" id="password" class="password-box">
             </div>
             <hr>
             <div class="btn-div">
-                <button v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
+                <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
                 <button v-else-if="previusPath === '/user/mypage/auth/update'" class="delete-btn">회원탈퇴</button>
             </div>
         </div>
@@ -18,10 +18,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import router from '../../../js/router';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const previusPath = ref(router.options.history.state.back);
+
+const accountChk = ref(store.state.user.userInfo.account);
+
+const userInfo = reactive({
+        password: ''
+        ,account: accountChk
+    });
 
 
 </script>
