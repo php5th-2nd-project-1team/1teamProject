@@ -51,7 +51,7 @@ import { reactive } from 'vue';
     .login-border{
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        width: 60%;
+        width: 50%;
         height: 80%;
 
         display: flex;
@@ -96,6 +96,7 @@ import { reactive } from 'vue';
 
     .login-title button{
         margin-top: 20px;
+        margin-bottom: 30px;
         width: 100%;
         height: 70px;
         background-color : #2986FF;

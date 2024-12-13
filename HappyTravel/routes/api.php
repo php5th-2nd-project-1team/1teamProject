@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
+Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.show');

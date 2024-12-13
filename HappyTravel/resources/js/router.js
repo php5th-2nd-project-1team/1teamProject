@@ -16,6 +16,7 @@ import UserWithdrawComponet from '../views/components/user/UserWithdrawComponet.
 import MypageAuthUpadateComponet from '../views/components/user/MypageAuthUpadateComponet.vue';
 import MypagePuchadeComponent from '../views/components/user/MypagePurchadeComponet.vue';
 import MypageReservationComponet from '../views/components/user/MypageReservationComponet.vue';
+import UserPasswordCheckComponent from '../views/components/user/UserPasswordCheckComponent';
 // ----------------------------------------------------------------------
 
 // commuity
@@ -83,10 +84,6 @@ const routes=[
 		component: MypageComponet,
 		children : [
 			{
-				path:'auth/update',  // 마이페이지 회원정보 수정
-				component:MypageAuthUpadateComponet,
-			},
-			{
 				path:'purchade', // 마이페이지 구매 내역
 				component:MypagePuchadeComponent,
 			},
@@ -95,6 +92,13 @@ const routes=[
 				component: MypageReservationComponet,
 			},	
 		]
+	},
+	{
+		path: '/passwordcheck',
+		component: UserPasswordCheckComponent,
+	},
+	{	path: '/mypage/auth/update',
+		component: MypageAuthUpadateComponet
 	},
 	{
 		path: '/community',     // 커뮤니티

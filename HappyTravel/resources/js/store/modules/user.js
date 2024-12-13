@@ -8,7 +8,10 @@ export default {
         authFlg: localStorage.getItem('accessToken') ? true : false,
         
         // 로컬 스토리지에 userInfo가 있으면 그대로 저장, 혹은 빈 객체
-        userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {},
+        userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}, 
+
+        allUserInfo: {},
+        loadingFlg: false,
 	})
 	,mutations: {
         setAuthFlg(state, flg) {
@@ -17,7 +20,14 @@ export default {
         
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
+        },
+        setAllUserInfo(state, allUserInfo) {
+            state.allUserInfo = allUserInfo;
+        },
+        setLoadingFlg(state, loadingFlg) {
+            state.loadingFlg = loadingFlg;
         }
+
 	}
 	,actions: {
         login(context, userInfo) {
@@ -60,6 +70,28 @@ export default {
                     
                 }
             });
+        },
+
+        userDetailPage(context, id) {
+            context.commit('setLoadingFlg', true);
+            const url  = '/api/user/mypage/' + id;
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+
+            axios.get(url, config)
+            .then(response => {
+                console.log(response.data);
+                context.commit('setAllUserInfo', response.data.user);
+
+                context.commit('setLoadingFlg', false);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+            
         }
     }
 	,getters: {

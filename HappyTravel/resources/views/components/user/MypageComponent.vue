@@ -1,5 +1,6 @@
 <template>   
-    <div class="mypage-container">
+    <div v-if="loadingFlg" class="loading-title">로딩중</div>
+    <div v-else class="mypage-container">
         <div class="mypage-border">
             <div class="mypage-title">
                 <h1>마이페이지</h1>
@@ -11,35 +12,35 @@
                     <div class="profile"></div>
                     <br>
                     <div class="mypage-nickname">
-                        <span class="mypage-all-title">닉네임</span>
-                        <p class="mypage-nickname-border">뿡뿡이1</p>
+                        <p class="mypage-all-title">닉네임</p>
+                        <p class="mypage-nickname-border">{{ allUserInfo.nickname }}</p>
                     </div>
                 </div>
                 <div class="mypage-detail">
                     <div class="mypage-name">
-                        <span class="mypage-all-title">성함</span>
-                        <p class="mypage-name-border">홍길동</p>
+                        <p class="mypage-all-title">성함</p>
+                        <p class="mypage-name-border">{{ allUserInfo.name }}</p>
                     </div>
 
                     <div class="mypage-number">
                         <p class="mypage-all-title">전화번호</p>
-                        <p class="mypage-number-border">010-1111-1111</p>
+                        <p class="mypage-number-border">{{ allUserInfo.phone_number }}</p>
                     </div>
 
                     <div class="mypage-adress">
-                        <span class="mypage-all-title">주소</span>
-                        <p class="mypage-adress-border">대구</p>
+                        <p class="mypage-all-title">주소</p>
+                        <p class="mypage-adress-border">{{ allUserInfo.address }}</p>
                     </div>
                     
                     <div class="mypage-adress-detail">
-                        <span class="mypage-all-title">상세주소</span>
-                        <p class="mypage-adress-detail-border">대구아파트</p>
+                        <p class="mypage-all-title">상세주소</p>
+                        <p class="mypage-adress-detail-border">{{ allUserInfo.detail_address }}</p>
                     </div>
                 </div>
             </div>
             <hr class="footer-hr">
             <div class="footer-title">
-                <button class="mypage-user-update-btn">회원정보 수정</button>
+                <router-link  to="/passwordcheck"><button class="mypage-user-update-btn" @click="$store.dispatch('user/')">회원정보 수정</button></router-link>
             </div>
         </div>
     </div>
@@ -47,12 +48,36 @@
 
     <router-view></router-view>
 </template>
+
 <script setup>
+import { computed, onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const id = ref(store.state.user.userInfo.user_id);
+
+const loadingFlg = computed(() => store.state.user.loadingFlg);
+
+onBeforeMount(() => store.dispatch('user/userDetailPage', id.value));
+
+const allUserInfo = computed(() => store.state.user.allUserInfo);
+
+console.log(allUserInfo.value);
 
 </script>
-<style scoped>
+
+<style scoped> 
 button {
     cursor: pointer;
+}
+
+.loading-title {
+    width: 100%;
+    height: 100%;
+    background-color: #2986FF;
+    color: white;
+    font-size: 4rem;
+    text-align: center;
 }
 
 .mypage-container {
@@ -66,10 +91,10 @@ button {
 }
 
 .mypage-border {
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 60%;
-    height: 80%;
+    height: 85%;
 }
 
     
@@ -85,9 +110,8 @@ button {
     border-radius: 10px;
     color: white;
     font-size: 20px;
-    width: 125px;
-    height: 45px;
-    margin-top: 5px;
+    width: 15%;
+    height: 55px;
 }
 
 .mypage-back-btn:hover {
@@ -101,9 +125,14 @@ button {
     grid-template-columns: 0.3fr 0.7fr;
 }
 
+.mypage-detail {
+    line-height: 2rem;
+}
+
 .title-hr {
    width: 100%;
    margin-bottom: 40px;
+   border-color: rgba(0, 0, 0, 0.2);
 }
 
 .mypage-all-title {
@@ -134,8 +163,8 @@ button {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     border: 1px solid black;
     border-radius: 50%;
 }
@@ -193,6 +222,7 @@ button {
     width: 100%;
     margin-top: 40px;
     margin-bottom: 20px;
+    border-color: rgba(0, 0, 0, 0.2);
 }
 
 .mypage-user-update-btn {
@@ -200,9 +230,9 @@ button {
     border: none;
     border-radius: 10px;
     color: white;
-    font-size: 17px;
-    width: 125px;
-    height: 45px;
+    font-size: 20px;
+    width: 15%;
+    height: 55px;
     margin-left: 15px;
 }
 
