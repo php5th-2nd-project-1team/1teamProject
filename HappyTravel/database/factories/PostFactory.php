@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Manager;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,20 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        // $date = $this->faker->dateTimeBetween('-1 years');
+        $manager = Manager::select('manager_id')->inRandomOrder()->first();
+
         return [
-            //
+        'manager_id' => $manager->manager_id,
+        'category_local_num',
+        'category_theme_num',
+        'post_local_name',
+        'post_title',
+        'post_content',
+        'post_detail_content',
+        'post_img',
+        'post_like',
+        'post_view',
         ];
     }
 }
