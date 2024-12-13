@@ -15,6 +15,7 @@
                 :width="400"
                 class="mySwiper">
                 <!-- <div class="slide-container"> -->
+                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,3 +47,4 @@ Route::get('/community/notice', [NoticeController::class, 'index'])->name('index
 /**
  * 민주님 Route *
  */
+Route::get('/posts/{id}', [PostController::class, 'index'])->name('index.post');
