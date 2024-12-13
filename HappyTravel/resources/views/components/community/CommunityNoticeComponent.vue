@@ -29,33 +29,46 @@
                 <p>{{ item.notice_title }}</p>              
             </div>  
             <div class="notice_content_manager">
-                <p>{{ item.m_nickname }}</p>
+                <p>{{  item.managers.m_nickname}}</p>
             </div>
             <div class="notice_content_date">
                 <p>{{ item.created_at }}</p>
             </div>
-            <div>
-                <img :src="item.img">
+            <div class="link_file">
+                <img v-if="item.notice_img !== null" :src="item.notice_img">
             </div>     
         </div>
         <div class="pagination">
-            <button>이전</button>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <button>다음</button>
+            <div v-for="item in links" :key="item.label">
+                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeLinkList', item.url)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                    <span v-if="item.label === backBtn">{{ '이전' }}</span> 
+                    <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
+                    <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
+                    <span v-else>{{ item.label }}</span>
+                </button>
+            </div>
+            <!-- <span v-for="item in links" :key="item.label" v-if="item.url !== null && !LoadingFlg">{{ item.label }}</span> -->   
         </div>
     </div>
 </template>
 
 <script setup>    
-    import { computed, onBeforeMount } from 'vue';
+    import { computed, onBeforeMount} from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();
     const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
     const noticeList = computed(() => store.state.notice.noticeList);
     onBeforeMount(() =>store.dispatch('notice/noticeList'));
+    const links = computed(()=> store.state.notice.links);
+
+    const backBtn = "&laquo; Previous";
+    const nextBtn = "Next &raquo;";
+
+    const currentPage = computed(() => store.state.notice.currentPage);
+    
+    const limitPage = 2;
+    
     
 </script>
 
@@ -114,7 +127,7 @@
         margin-left:35px;
     }
     /* 첨부 파일 이미지 */
-    .link_file {
+    .link_file >img{
     width:30px;
     height:30px;
     }
@@ -124,9 +137,26 @@
         text-align: right;
         align-items: center;
     }
+
+    button {
+        cursor: pointer;
+    }
+
     /* 페이지 */
     .pagination {
-        text-align: center;
+        display: flex;
+        justify-content: center;
+    }    
+    .pagenate-btn {
+        width:50px;
+        height: 50px;
+        border-radius: 50px;
+        border:none;
+        color:black;
     }
-    
+    .main-Btn {
+        font-size: 30px;
+        border:none;
+        color: darkblue;
+    }
 </style>

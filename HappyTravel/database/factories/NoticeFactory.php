@@ -22,7 +22,7 @@ class NoticeFactory extends Factory
             'manager_id'=>$manager->manager_id,
             'notice_title' =>$this->faker->realText(30),
             'notice_content'=>$this->faker->realText(500),
-            'notice_img' =>'img/link.file'.'.png',
+            'notice_img' =>'/img/link-file'.'.png',
         ];
     }
 }
