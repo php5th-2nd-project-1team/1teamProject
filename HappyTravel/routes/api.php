@@ -17,10 +17,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * 공통 라우트
+ */
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+/**
+ * 상기님 Route *
+ */
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
 Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.show');
+
+
+/**
+ * 한결님 Route *
+ */
+Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
+
+
+/**
+ * 원상님 Route *
+ */
+
+
+/**
+ * 민주님 Route *
+ */
