@@ -75,12 +75,10 @@ const routes=[
 	{
 		path: '/',
 		redirect: '/index',
-		beforeEnter: chkAuth,
 	},
 	{
 		path: '/index',
 		component : IndexComponet,
-		beforeEnter: chkAuth,
 	},
 	{
 		path: '/about'
