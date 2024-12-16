@@ -85,7 +85,7 @@ export default {
 				}).finally(() => {
 					context.commit('setIsLoading', false);
 				});
-			} else if( context.state.beforeSearch === '' ) {
+			} else if( context.state.beforeSearch !== '' ) {
 				context.dispatch('search', context.state.beforeSearch);
 			} else {
 				context.dispatch('localSearch', context.state.beforeLocal);
