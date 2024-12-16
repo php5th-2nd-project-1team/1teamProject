@@ -7,9 +7,9 @@
 </div>
 	
 <div class="postdetail-container">
-	<h1 class="postdetail-title">{{ PostDetail.post_title }}</h1>
-	<p class="postdetail-local">인천 강화군</p>
-	<h3 class="postdetail-content">강화도 방직공장을 개조한 레트로 감성카페</h3>
+	<h1 v-if="PostDetail" class="postdetail-title">{{ PostDetail.post_title }}</h1>
+	<p v-if="PostDetail" class="postdetail-local">{{ PostDetail.post_local_name }}</p>
+	<h3 v-if="PostDetail" class="postdetail-content">{{ PostDetail.post_content }}</h3>
 	<ul class="btn-postdetail-nav">
 		<li><a href="">사진보기</a></li>
 		<li><a href="">상세정보</a></li>
@@ -207,6 +207,14 @@ const setThumbsSwiper = (swiper) => {
 	thumbsSwiper.value = swiper;
 }
 
+const store = useStore();
+
+// 포스트 상세 정보    인데 오ㅐ 안와아ㅏㅏㅏ
+const PostDetail = computed(() => store.state.post.postDetail);
+// console.log(store.state.post.postDetail);
+
+
+
 // ------------------------------------------
 // 모달 관련
 // 모달숨기기
@@ -220,13 +228,6 @@ const closeModal = () => {
 	modalFlg.value = false;
 };
 // ------------------------------------------
-
-const store = useStore();
-
-// 포스트 상세 정보
-const PostDetail = computed(() => store.state.post.postDetail);
-console.log(PostDetail);
-
 </script>
 	
 <style scoped>

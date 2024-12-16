@@ -16,19 +16,20 @@
                 :width="400"
                 class="mySwiper">
                 <!-- <div class="slide-container"> -->
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>세종</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('00')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('01')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('02')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('03')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('04')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('05')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>세종</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('06')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>대전</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('07')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충북</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충남</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경북</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경남</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전북</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전남</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('08')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충남</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('09')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경북</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('10')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경남</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('11')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전북</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('12')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전남</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('13')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide>
                 <!-- </div> -->
                 <div class="custom-prev"><img class="btn-slide-resize" src="/developImg/arrow_left.png" alt=""></div>
                 <div class="custom-next"><img class="btn-slide-resize" src="/developImg/arrow_right.png" alt=""></div>

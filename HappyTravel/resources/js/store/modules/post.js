@@ -55,8 +55,8 @@ export default {
 			state.totalPage = page;
 		}
 
-		,setPostDetail(state, data){
-			state.postDetail = data;
+		,setPostDetail(state, post){
+			state.postDetail = post;
 		}
 
 		,setIsSearching(state, flg){
@@ -240,7 +240,8 @@ export default {
 			}
 			axios.get(url, config)
 			.then(response => {
-				context.commit('post/setPostDetail', response.data.post, {root: true});
+				// context.commit('post/setPostDetail', response.data.post, {root: true});
+				context.commit('setPostDetail', response.data.post, {root: true});
 			})
 			.catch(error => {
 				console.log(error);

@@ -1,5 +1,5 @@
 <template>
-	<div class="card-container" @click="onClick(props.link)">
+	<div class="card-container" @click="onClick(props.link), item.post_id" :key="item">
 		<div class="card-img" :style="{backgroundImage: 'url('+props.img+')'}"></div>
 		<div class="card-text">
 			<div class="card-title">
