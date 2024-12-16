@@ -14,7 +14,7 @@
 			:slides-per-view="3"
 			:space-between="50"
 			:modules="modules"
-			:navigation="{ nextEl:`.${props.type}-next`, prevEl:`.${props.type}-prev`  }"
+			:navigation="{ nextEl:`.${props.type}-next`, prevEl:`.${props.type}-prev`}"
 		>
 			<swiper-slide v-for="value in props.cardData"><PostCardComponent :cardData="value"/></swiper-slide>
 		</swiper>
@@ -33,7 +33,7 @@ import PostCardComponent from '../../post/component/PostCardComponent.vue';
 
 const props = defineProps({
 	type : String
-	,cardData : Object
+	,cardData : Array
 });
 
 const modules = [Navigation];

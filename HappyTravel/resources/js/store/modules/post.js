@@ -12,6 +12,7 @@ import { useStore } from "vuex";
 // 	store.commit('setBeforeSearch', '');
 // 	store.commit('setBeforeLocal', '00');
 // }
+const controller = new AbortController();
 
 export default {
 	namespaced: true,
@@ -115,6 +116,10 @@ export default {
 				return ;
 			}
 
+			if(payload === true){
+				context.commit('setInitialize');
+			}
+
 			if(context.state.beforeSearch === '' && context.state.beforeLocal === '00'){
 				context.commit('setIsLoading', true);
 				
@@ -122,7 +127,6 @@ export default {
 				const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
-					console.log(response.data.PostList);
 					context.commit('setPostList', response.data.PostList.data);
 					context.commit('setCurrentPage', response.data.PostList.current_page);					
 					if(context.state.totalPage === 0){
@@ -151,7 +155,6 @@ export default {
 			const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}&search=${payload}`;
 			axios.get(url)
 			.then( response => {
-				console.log(response.data.PostList);
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeSearch', payload);
@@ -176,7 +179,6 @@ export default {
 			const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}&local=${payload}`;
 			axios.get(url)
 			.then( response => {
-				console.log(response.data.PostList);
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeSearch', payload);
@@ -192,34 +194,41 @@ export default {
 		}
 		// index 페이지에 필요한 애들 가져오기
 		,indexes(context, payload){
-			context.commit('setIsLoading', true);
 			const url ='http://127.0.0.1:8000/api/posts/type';
 			const urlView = 'http://127.0.0.1:8000/api/posts/type?type=view';
 			const urlLike = 'http://127.0.0.1:8000/api/posts/type?type=like';
 
-			// 조회수 순 데이터 가져오기
-			axios.get(urlView)
-			.then(response => {
-				context.commit('setViewList',response.data.PostList.data);
-			}).catch(error => {
-				console.log(error.response);
-			});
+			
+			if(payload === true){
+				controller.abort();
+			}
 
-			// 좋아요 순 데이터 가져오기
-			axios.get(urlLike)
-			.then(response => {
-				context.commit('setLikeList',response.data.PostList.data);
-			}).catch( error => {
-				console.log(error.response);
-			});
+			else{
+				// 조회수 순 데이터 가져오기
+				axios.get(urlView)
+				.then(response => {
+					context.commit('setViewList',response.data.PostList.data);
+				}).catch(error => {
+					console.log(error);
+				});
 
-			// 최신 데이터 가져오기
-			axios.get(url)
-			.then(response => {
-				context.commit('setPostList',response.data.PostList.data);
-			}).catch(error => {
-				console.log(error.response);
-			});
+				// 좋아요 순 데이터 가져오기
+				axios.get(urlLike)
+				.then(response => {
+					context.commit('setLikeList',response.data.PostList.data);
+				}).catch( error => {
+					console.log(error);
+				});
+
+				// 최신 데이터 가져오기
+				axios.get(url, { signal: controller.signal })
+				.then(response => {
+					context.commit('setPostList',response.data.PostList.data);
+				}).catch(error => {
+					console.log(error);
+				});
+			}
+			
 		}
 		// 포스트 상세 출력
 		,showPost(context, id){

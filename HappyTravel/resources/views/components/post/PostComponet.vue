@@ -89,14 +89,19 @@ const breakpoints = {
 // 메인 출력 지역
 
 import { useStore } from 'vuex';
-import { computed, reactive, onBeforeMount, onUnmounted } from 'vue';
+import { computed, reactive, onUnmounted, onMounted, onBeforeMount } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
 
 const store = useStore();
 
-onBeforeMount(() => {
-    store.dispatch('post/index');
+onBeforeMount(()=>{
+    store.dispatch('post/indexes', true);
+    store.commit('post/setInitialize');
+});
+
+onMounted(()=>{
+    store.dispatch('post/index', true);
 });
 
 onUnmounted(()=>{

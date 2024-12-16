@@ -1,24 +1,21 @@
 <template>
 	<div class="index-eventbox">
+		<div class="index-event-controller">
+			<h1>최신 포스트 모음</h1>
 			<Swiper
 			:modules="modules"
 			slidesPerView="1"
 			spaceBetween="0"
-			:navigation="{ nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'  }">
-				<h1>최신 포스트 모음</h1>
-				<SwiperSlide>1</SwiperSlide>
-				<SwiperSlide>2</SwiperSlide>
-				<SwiperSlide>3</SwiperSlide>
-				<SwiperSlide>4</SwiperSlide>
-				<SwiperSlide>5</SwiperSlide>
-				<SwiperSlide>6</SwiperSlide>
-				<button>asdfasdfasdfasddf</button>
-				<div>
-					<button class=".index-event-nextbtn"><</button>
-					<button class=".index-event-prevbtn">></button>
-				</div>
+			:navigation="{nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'}"
+			style="border: 5px solid black; width: 700px;">
+				<SwiperSlide style="width: 100%;" v-for="value in props.cardData" :key="value">{{ value.post_title }}</SwiperSlide>
 			</Swiper>
+			<div>
+				<button class=".index-event-nextbtn"><</button>
+				<button class=".index-event-prevbtn">></button>
+			</div>
 		</div>
+	</div>
 </template>
 <script setup>
 	import { defineProps } from 'vue';
@@ -30,10 +27,12 @@
 	import 'swiper/swiper-bundle.css';
 
 	const props = defineProps({
-		cardData : Object
+		cardData : Array
 	})
 
-const modules = [Navigation];
+	const modules = [Navigation];
+
+	console.log(props.cardData);
 </script>
 <style scoped>
 
@@ -50,12 +49,6 @@ const modules = [Navigation];
 		padding: 0 2rem;
 	}
 
-	.swiper{
-		display: flex;
-		width: 100%;
-		height: 100%;
-	}
-
 	.index-event-controller{
 		display: flex;
 		flex-direction: column;
@@ -64,14 +57,6 @@ const modules = [Navigation];
 		gap: 10px;
 		
 		padding-left: 16px;
-	}
-
-	.swiper{
-		width: 400px;
-	}
-
-	.swiper div{
-		width: 100%;
 	}
 	
 	.index-event-comment{

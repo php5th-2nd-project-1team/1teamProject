@@ -5,9 +5,9 @@
 		<div class="header-top">
 			<!-- 로고 -->
 			<h1>
-				<a href="/Petbreeze">
+				<router-link to="/">
 					<img class="header-logo" src="/developImg/petbreeze_logo.png" alt="펫브리즈">
-				</a>
+				</router-link>
 			</h1>
 			<!-- 네비게이션 -->
 			<!-- <div class="header-nav"> -->
@@ -56,22 +56,22 @@
 						<li><router-link to="/about">펫브리즈 소개</router-link></li>
 						<li>
 							<router-link to="/posts">펫브리즈 고</router-link> 
-							<ul class="dropdown">
+							<!-- <ul class="dropdown" >
 								<li class="dropdown-sub">숙소</li>
 								<li class="dropdown-sub">식&음료</li>
 								<li class="dropdown-sub">관광지</li>
 								<li class="dropdown-sub">음료</li>
-							</ul>
+							</ul> -->
 						</li>
-						<li>
+						<!-- <li>
 							<a href="">상품</a>
 							<ul class="dropdown">
 								<li class="dropdown-sub">클래스</li>
 								<li class="dropdown-sub">패키지</li>
 								<li class="dropdown-sub">굿즈</li>
 							</ul>
-						</li>
-						<li><a href="">커뮤니티</a></li>
+						</li> -->
+						<li><router-link to="/community/notice">커뮤니티</router-link></li>
 					</ul>
 				</div>
 
