@@ -41,24 +41,23 @@ export default {
                 const errorData = error.response.data;
 
                 if(error.response.status === 422) {
-                    console.log(error.response.data.errors); // 각 필드의 에러 메시지 출력
                     // 유효성 체크 에러
                     if(errorData.data.account) {
-                        alert(errorMsgList.push(errorData.data.account[0]));
+                        errorMsgList.push(errorData.data.account[0]);
                     }
                     if(errorData.data.password) {
-                        alert(errorMsgList.push(errorData.data.password[0]));
-                    }else if(error.response.status === 401) {
-                        // 비밀번호 오류 에러
-                        alert(errorMsgList.push('비밀번호 오류'));
-                    }else {
-                        errorMsgList.push('잘 모르겠는 오류');
+                        errorMsgList.push(errorData.data.password[0]);
                     }
+                }else if(error.response.status === 401) {
+                    // 비밀번호 오류
+                    // 프론트에서 에러 메세지 문구를 다시 작성해서 사용해도 무방하다.
+                    errorMsgList.push('비밀번호가 일치하지 않습니다.');
+                }else {
+                    errorMsgList.push('나도 모르는 에러');
+                }
 
                     alert(errorMsgList.join('\n'));
                     
-                    
-                }
             });
         },
 

@@ -9,7 +9,9 @@
             <hr class="title-hr">
             <div class="mypage-main">
                 <div class="mypage-profile">
-                    <div class="profile"></div>
+                    <div class="profile">
+                        <img :src="allUserInfo.profile">
+                    </div>
                     <br>
                     <div class="mypage-nickname">
                         <p class="mypage-all-title">닉네임</p>
@@ -40,7 +42,7 @@
             </div>
             <hr class="footer-hr">
             <div class="footer-title">
-                <router-link  to="/passwordcheck"><button class="mypage-user-update-btn" @click="$store.dispatch('user/')">회원정보 수정</button></router-link>
+                <router-link  to="/passwordcheck"><button class="mypage-user-update-btn">회원정보 수정</button></router-link>
             </div>
         </div>
     </div>
@@ -62,9 +64,7 @@ const loadingFlg = computed(() => store.state.user.loadingFlg);
 
 onBeforeMount(() => store.dispatch('user/userDetailPage', id.value));
 
-const allUserInfo = computed(() => store.state.user.allUserInfo);
-
-console.log(allUserInfo.value);
+const allUserInfo = store.state.auth.userInfo;
 
 </script>
 
@@ -161,10 +161,10 @@ button {
 }
 
 .profile {
-    background-image: url('../../../../public/developImg/about-three1.png');
+    /* background-image: url('../../../../public/developImg/about-three1.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     width: 180px;
     height: 180px;
     border: 1px solid black;

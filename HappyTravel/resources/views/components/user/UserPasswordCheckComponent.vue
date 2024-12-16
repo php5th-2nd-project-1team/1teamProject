@@ -11,26 +11,28 @@
             <hr>
             <div class="btn-div">
                 <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
-                <button v-else-if="previusPath === '/user/mypage/auth/update'" class="delete-btn">회원탈퇴</button>
+                <button v-else class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import router from '../../../js/router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
+const id = computed(() => store.state.auth.userInfo.user_id);
+
 const previusPath = ref(router.options.history.state.back);
 
-const accountChk = ref(store.state.user.userInfo.account);
+const user_id = ref(store.state.auth.userInfo.user_id);
 
 const userInfo = reactive({
         password: ''
-        ,account: accountChk
+        ,user_id: user_id
     });
 
 

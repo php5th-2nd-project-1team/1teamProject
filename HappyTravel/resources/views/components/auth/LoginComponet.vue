@@ -23,7 +23,6 @@
 <script setup>
 import { reactive } from 'vue';
 
-
     const userInfo = reactive({
         account: ''
         ,password: ''
