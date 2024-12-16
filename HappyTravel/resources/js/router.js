@@ -54,7 +54,7 @@ const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
 	// 비 로그인 시 접근 가능 페이지 플레그
-    const noAuthPassFlg = (to.path === '/' || to.path === '/login' || to.path === '/registration');   
+    const noAuthPassFlg = (to.path === '/' || to.path === '/login' || to.path === '/registration' || to.path === '/index');   
 
     if(authFlg && noAuthPassFlg) {
         // 인증된 유저가 비인증으로 이동할 수 있는 페이지에 접근할 경우 board로 이동
