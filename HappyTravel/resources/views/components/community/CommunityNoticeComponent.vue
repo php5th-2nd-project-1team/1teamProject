@@ -26,7 +26,7 @@
                 <p>{{ item.notice_id }}</p>
             </div>      
             <div class="notice_content_title">              
-                <p>{{ item.notice_title }}</p>              
+                <p @click="$store.dispatch('notice/noticeDetailList', item.notice_id)">{{ item.notice_title }}</p>            
             </div>  
             <div class="notice_content_manager">
                 <p>{{  item.managers.m_nickname}}</p>

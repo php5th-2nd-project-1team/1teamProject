@@ -1,13 +1,14 @@
 import axios from '../../axios';
+import router from '../../router';
 export default {
 	namespaced: true,
 	state: () =>({
 		noticeList: []
-        ,noticePage:0
+        ,noticePage: 0
         ,LoadingFlg:false
         ,links: []        
         ,currentPage: 0
-
+        ,noticeDetail: {}
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
@@ -24,6 +25,9 @@ export default {
         },
         setCurrentPage(state, currentPage) {
             state.currentPage = currentPage;
+        },
+        setNoticeDetail(state, noticeDetail) {
+            state.noticeDetail = noticeDetail;
         }
 	}   
 	,actions: {
@@ -55,6 +59,20 @@ export default {
             .catch(error=> {
                 console.error(error);
             })
+        },
+        noticeDetailList(context, id) {
+           
+            const url = '/api/community/notice/detail/' + id;
+            axios.get(url)
+            .then(response => {
+                context.commit('setNoticeDetail', response.data.noticeDetail);
+                console.log(response.data.noticeDetail);
+
+                router.replace('/community/notice/detail');
+            })    
+            .catch(error => {
+                console.error(error);
+            });
         }
 	}
 	,getters: {
