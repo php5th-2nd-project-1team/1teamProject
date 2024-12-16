@@ -17,6 +17,7 @@ class NoticeController extends Controller
    }
    public function show($id) {
         $noticeDetail = Notice::with('managers')->find($id);
+   
 
         $responseData = [
             'success' => true

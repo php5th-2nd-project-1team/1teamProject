@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 class PostDetailController extends Controller
 {
         // 게시글 획득
-        public function index() {
-
+        public function index(Request $request) {
+                
         }
     
         // 게시글 상세 출력

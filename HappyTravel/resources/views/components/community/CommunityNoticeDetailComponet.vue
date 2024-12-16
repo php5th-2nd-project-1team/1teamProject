@@ -18,12 +18,17 @@
             <p class="notice_detail_title_info">{{ noticeDetailList.notice_title }}</p>
         </div>   
         <div class="notice_detail_file">
-            <img src="/developImg/about-three1.png">
+            <p>첨부파일</p>
+            <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
         </div>  
         <div class="notice_detail_content_box">
             <p class="notice_detail_content">내용</p>
         <textarea disabled cols="30" rows="30">{{ noticeDetailList.notice_content }}</textarea>                 
         </div> 
+
+        <div>
+            <button>이전</button>
+        </div>
     </div>   
 </template>
 
@@ -31,9 +36,20 @@
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 
-const store = useStore();
 
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
+// const noticeDetailPk = ref(store.state.notice.noticeDetailPk);
+
+
+const store = useStore();
+// const storeData = JSON.parse(localStorage.getItem('userInfo'));
+
+// console.log(storeData);
+// if (empty(storeData)) {
+//     onBeforeMount(() => store.dispatch('notice/noticeDetailList', storeData.notice_id));
+// }
+
+
     
 </script>
 
@@ -90,7 +106,6 @@ const noticeDetailList = computed(() => store.state.notice.noticeDetail);
         grid-template-columns: 40px 1fr;        
         margin:20px;
         padding:20px;        
-        border-bottom : 1px solid black;    
        
     }
      /* 공지사항 상세 내용 */
@@ -111,6 +126,17 @@ const noticeDetailList = computed(() => store.state.notice.noticeDetail);
     }
     /* 공지사항 상세 이미지 */
     .notice_detail_file {
-        text-align: center;       
+        display: grid;
+        grid-template-columns: 40px 1fr;        
+        margin:20px;
+        padding:20px;        
+        border-bottom : 1px solid black;         
+    }   
+    .notice_detail_file >p {
+        color:#2986FF
+    }
+    .notice_detail_file >img {
+        width:50px;
+        height: 50px;
     }
 </style>

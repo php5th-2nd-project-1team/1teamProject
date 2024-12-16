@@ -9,6 +9,7 @@ export default {
         ,links: []        
         ,currentPage: 0
         ,noticeDetail: {}
+        // ,noticeDetailPk:0
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
@@ -28,7 +29,11 @@ export default {
         },
         setNoticeDetail(state, noticeDetail) {
             state.noticeDetail = noticeDetail;
-        }
+        },
+        // setNoticeDetailPk(state, noticeDetailPk) {
+        //     state.noticeDetailPk = noticeDetailPk;
+        // },
+        
 	}   
 	,actions: {
         noticeList(context) {
@@ -61,6 +66,8 @@ export default {
             })
         },
         noticeDetailList(context, id) {
+        //    context.commit('setNoticeDetailPk', id);
+        //    localStorage.getItem('auth/userInfo', id);
            
             const url = '/api/community/notice/detail/' + id;
             axios.get(url)

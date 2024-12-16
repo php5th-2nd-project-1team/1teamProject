@@ -46,7 +46,7 @@ export default {
 			state.totalPage = page;
 		}
 
-		,setDetail(state, data){
+		,setPostDetail(state, data){
 			state.postDetail = data;
 		}
 
@@ -153,9 +153,25 @@ export default {
 				context.commit('setBeforeLocal', payload);
 			});
 		}
-		,detail(context, payload){
-
+		// 포스트 상세 출력
+		,showPost(context, id){
+			const url = '/api/post/detail/' + id;
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+			axios.get(url, config)
+			.then(response => {
+				context.commit('post/setPostDetail', response.data.post, {root: true});
+			})
+			.catch(error => {
+				console.log(error);
+			});
 		}
+
+
+
 	}
 	,getters: {
 		getNextPage(state){

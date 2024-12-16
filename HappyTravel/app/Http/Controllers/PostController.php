@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostComments;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -33,9 +34,45 @@ class PostController extends Controller
 	}
 
 	// 포스트 상세 출력
-	public function show(Request $request) {
-		$Post = Post::with('manager')->find($request->id);
+	// postDetail 도 PostController에 작성 => PostDetailController 은 불필요
+	public function showPost(Request $request) {
+		$PostDetail = Post::with('manager')->find($request->id);
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 상세 출력'
+			,'PostDetail' => $PostDetail->toArray() 
+		];
+
+		return response()->json($responseData, 200);
 	}
+
+	// 포스트 댓글 리스트 출력
+	public function postCommentList() {
+		$postCommentList = PostComments::with('user')->orderBy('created_at', 'DESC')->paginate(5);
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 댓글 리스트 출력'
+			,'postCommentList' => $postCommentList->toArray()
+		];
+
+		return response()->json($responseData, 200);
+	}
+	
+	// 포스트 댓글 상세 출력
+	public function postComment(Request $request) {
+		$postComment = PostComments::with('user')->find($request->id);
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 댓글 상세 출력'
+			,'postComment' => $postComment->toArray()
+		];
+
+		return response()->json($responseData, 200);
+	}
+
 
 	// 게시글 작성
 	public function store() {
