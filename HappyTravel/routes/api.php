@@ -18,9 +18,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// assess Token 여부에 따라 
+
 /**
  * 공통 라우트
  */
+
+// 인증이 필요한 라우트 그룹
+Route::middleware('my.auth')->group(function() {
+    // 인증 관련
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
+       
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -2,10 +2,10 @@
 
 namespace App\Utils;
 
-use App\Exceptions\MyAuthException;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use PDOException;
 use UserEncrypt;
 
@@ -68,16 +68,27 @@ class UserToken {
         // 토큰 위조 검사
         list($header, $payload, $signature) = $this->explodeToken($token);
 
-        if(UserEncrypt::subSalt($this->createSignature($header, $payload), env('TOKEN_SALT_LENGTH'))
-                !== UserEncrypt::subSalt($signature, env('TOKEN_SALT_LENGTH'))) {
-                    throw new MyAuthException('E22');                
-                }
-        
-        // 유효시간 체크
-        if($this->getInPayload($token, 'exp') < time()) {
-            throw new MyAuthException('E21');
+        Log::debug('***************************** chkToken start *****************************');
+        // 토큰 존재 유무 체크
+        // 토큰이 없는 경우, 유효시간이 지난 토큰, 위조된 토큰 등 경우가 많다.
+        if(empty($token)) {
+            throw new AuthenticationException('E20');
         }
 
+        // 토큰 위조 검사
+        list($header, $payload, $signature) = $this->explodeToken($token);
+        Log::debug('header : '.$header);
+        if(UserEncrypt::subSalt($this->createSignature($header, $payload), env('TOKEN_SALT_LENGTH')) 
+            !== UserEncrypt::subSalt($signature, env('TOKEN_SALT_LENGTH'))) {
+            throw new AuthenticationException('E22'); 
+        }
+
+        // 유효시간 체크
+        if($this->getInPayload($token, 'exp') < time()) {
+            throw new AuthenticationException('E21');
+        }
+
+        Log::debug('***************************** chkToken end *******************************');
         return true;
 }
 
@@ -213,7 +224,9 @@ class UserToken {
 
         // 토큰 분리 후 오류 체크 (토큰은 헤더 . 페이로드 . 시그니처 총 2개의 점이 있으므로 3개로 나눠져야 함)
         if(count($arrToken) === 3) {
-            return '토큰 분리 오류';
+            return $arrToken;
+        } else {
+            return '토큰 오류';
         }
     }
 }

@@ -48,40 +48,69 @@ import PostComponet from '../views/components/post/PostComponet.vue';
 import AboutComponent from '../views/components/AboutComponent.vue';
 // ----------------------------------------------------------------------
 
+import { useStore } from 'vuex';
+
+const chkAuth = (to, from, next) => {
+    const store = useStore();
+    const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
+	// 비 로그인 시 접근 가능 페이지 플레그
+    const noAuthPassFlg = (to.path === '/' || to.path === '/login' || to.path === '/registration');   
+
+    if(authFlg && noAuthPassFlg) {
+        // 인증된 유저가 비인증으로 이동할 수 있는 페이지에 접근할 경우 board로 이동
+        next('/index');
+    }else if(!authFlg && !noAuthPassFlg) {
+        // 인증이 되지 않은 유저가 비인증으로 접근할 수 없는 페이지에 접근할 경우 login으로 이동
+        next('/login');
+    }else {
+        // 그 외는 접근 허용
+        next();
+    }
+}
+
+
 const routes=[
 	// path : '경로이름'
 	// ,component : '컴포넌트이름'
 	{
 		path: '/',
 		redirect: '/index',
+		beforeEnter: chkAuth,
 	},
 	{
 		path: '/index',
 		component : IndexComponet,
+		beforeEnter: chkAuth,
 	},
 	{
 		path: '/about'
-		,component : AboutComponent
+		,component : AboutComponent,
+		beforeEnter: chkAuth,
 	},
 	{
 		path:'/login',
 		component: LoginComponet,
+		beforeEnter: chkAuth,
 	},	
 	{
 		path:'/logout',
 		component: LogoutComponet,
+		beforeEnter: chkAuth,
 	},
 	{
 		path:'/registration', // 회원 가입
-		component: UserRegistrationComponent,		
+		component: UserRegistrationComponent,	
+		beforeEnter: chkAuth,	
 	},
 	{
 		path:'/user/withdraw',  // 회원 탈퇴
 		component: UserWithdrawComponet,
+		beforeEnter: chkAuth,
 	},	 
 	{
 		path:'/user/mypage',   // 마이페이지
 		component: MypageComponet,
+		beforeEnter: chkAuth,
 		children : [
 			{
 				path:'purchade', // 마이페이지 구매 내역
@@ -96,13 +125,16 @@ const routes=[
 	{
 		path: '/passwordcheck',
 		component: UserPasswordCheckComponent,
+		beforeEnter: chkAuth,
 	},
 	{	path: '/mypage/auth/update',
-		component: MypageAuthUpadateComponet
+		component: MypageAuthUpadateComponet,
+		beforeEnter: chkAuth,
 	},
 	{
 		path: '/community',     // 커뮤니티
 		component:CommunityComponet,
+		beforeEnter: chkAuth,
 		children : [
 			{
 				path : 'notice',  // 공지 사항
@@ -142,6 +174,7 @@ const routes=[
 	{	
 		path: '/shop',           // 샵 (상품)
 		component:ShopComponent,
+		beforeEnter: chkAuth,
 		children: [
 			{	
 				path: 'class',  // 클래스
@@ -163,11 +196,13 @@ const routes=[
 	},
 	{
 		path:'/posts'   // 포스트 (펫브리즈고)
-		,component: PostComponet
+		,component: PostComponet,
+		beforeEnter: chkAuth,
 	},		
 	{
 		path:'/post/detail' // 포스트 상세 페이지
-		,component:PostDetailComponet
+		,component:PostDetailComponet,
+		beforeEnter: chkAuth,
 	},
 ];
 

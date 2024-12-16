@@ -11,7 +11,7 @@
                     <p class="login-guidebook">비밀번호</p>
                     <input v-model="userInfo.password" type="password" name="password" class="login-main">
                 </div>
-                <button @click="$store.dispatch('user/login', userInfo)">로그인</button>
+                <button @click="$store.dispatch('auth/login', userInfo)">로그인</button>
             </div>
         </div>
         <div class="login-password-regist">

@@ -4,7 +4,7 @@
         <div class="mypage-border">
             <div class="mypage-title">
                 <h1>마이페이지</h1>
-                <button class="mypage-back-btn">홈으로</button>
+               <button @click="router.push('/index')" class="mypage-back-btn">홈으로</button>
             </div>
             <hr class="title-hr">
             <div class="mypage-main">
@@ -52,9 +52,11 @@
 <script setup>
 import { computed, onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
-const id = ref(store.state.user.userInfo.user_id);
+const router = useRouter();
+const id = ref(store.state.auth.userInfo.user_id);
 
 const loadingFlg = computed(() => store.state.user.loadingFlg);
 
