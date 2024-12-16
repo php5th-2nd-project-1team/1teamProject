@@ -48,4 +48,4 @@ Route::get('/community/notice', [NoticeController::class, 'index'])->name('index
 /**
  * 민주님 Route *
  */
-Route::get('/posts/{id}', [PostController::class, 'index'])->name('index.post');
+Route::get('/posts', [PostController::class, 'index'])->name('index.post');

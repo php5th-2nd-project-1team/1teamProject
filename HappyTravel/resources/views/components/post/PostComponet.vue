@@ -1,4 +1,5 @@
 <template>
+    <LoadingComponent v-if="$store.state.post.isLoading"/> //$store.state.post.isLoading
     <div class="post-local">
         <!-- 상단 슬라이드 -->
         <div class="w-full">
@@ -21,7 +22,7 @@
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>세종</p></swiper-slide>
-                    <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충북</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('07')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충북</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>충남</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경북</p></swiper-slide>
                     <swiper-slide><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경남</p></swiper-slide>
@@ -39,62 +40,29 @@
     <div class="post-search">
         <div class="post-search-bg">
             <h3>#관광지 검색</h3>
-            <input class="post-search-box" type="search" name="search" placeholder="검색어를 입력해주세요.">
-            <button class="btn btn-bg-blue btn-search" type="button">검색</button>
+            <input class="post-search-box" type="search" name="search" placeholder="검색어를 입력해주세요." v-model="searchData.search">
+            <button class="btn btn-bg-blue btn-search" type="button" @click="getSearchResult">검색</button>
         </div>
     </div>
     <!-- 여행지 포스트 -->
-    <div class="post-all">
+    <div class="post-all" v-if="!isLoading">
         <div class="post-content">
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            <div class="post-content-card">
-                <img class="post-content-card-img" src="/developImg/post-content-img.png" alt="">
-                <h3>순천 조례호수공원</h3>
-            </div>
-            
+            <div v-for="value in postList" class="post-content-card">
+                <img class="post-content-card-img" :src="value.post_img" alt="">
+                <p>조회수 : {{ value.post_view }}</p>
+                <p>좋아요 : {{ value.post_like }}</p>
+                <h3>{{ value.post_title }}</h3>     
+            </div>       
         </div>
-        <button class="btn btn-header btn-bg-gray btn-post-more" type="button">더 알아보기</button>
+        <button class="btn btn-header btn-bg-gray btn-post-more" type="button" @click="store.dispatch('post/index')" v-if="!isLastPage">더 알아보기</button>
     </div>
 </template>
 
 <script setup>
 // 상단 슬라이드
 // Import Swiper Vue.js components
+
+
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Import Swiper styles
@@ -123,7 +91,48 @@ const breakpoints = {
     },
 };
 
+// 메인 출력 지역
 
+import { useStore } from 'vuex';
+import { computed, reactive, onBeforeMount, onUnmounted } from 'vue';
+import LoadingComponent from '../utilities/LoadingComponent.vue';
+
+const store = useStore();
+
+onBeforeMount(() => {
+    store.dispatch('post/index');
+});
+
+onUnmounted(()=>{
+    store.commit('post/setCurrentPage', 0);
+    store.commit('post/setTotalPage', 0);
+    store.commit('post/setIsSearching', false);
+    store.commit('post/setIsLoading', false);
+    store.commit('post/resetPostList');
+    store.commit('post/setBeforeLocal', '00');
+    store.commit('post/setBeforeSearch', '');
+});
+
+const postList = computed(() => store.state.post.postList);
+const isLoading = computed(() => store.state.post.isLoading);
+const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
+// 검색 지역
+const searchData = reactive({search : ''});
+const getSearchResult = () => {
+    searchData.search.trim();
+
+    if(searchData.search === ''){
+        searchData.earch = null;
+    }
+
+    store.commit('post/setIsSearching', true);
+
+    store.dispatch('post/search', searchData.search);
+}
+
+const getLocalResult = (num) => {
+    store.dispatch('post/localSearch', num);
+}
 </script>
 
 <style scoped>

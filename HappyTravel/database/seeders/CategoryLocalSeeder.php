@@ -31,13 +31,11 @@ class CategoryLocalSeeder extends Seeder
         ,'11' => '전북'
         ,'12' => '전남'
         ,'13' => '제주'
-        ,'00' => '전국'
     ];
     public function run()
     {
-        // foreach($this->data as $key => $value){
-        //     $this->saveLocal($value, $key, '/developImg/seoul_icon.png');
-        // }
-        $this->saveLocal('전국', '00', '/developImg/seoul_icon.png');
+        foreach($this->data as $key => $value){
+            $this->saveLocal($value, $key, '/developImg/seoul_icon.png');
+        }
     }
 }

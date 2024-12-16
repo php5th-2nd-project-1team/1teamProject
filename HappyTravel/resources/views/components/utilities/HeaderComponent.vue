@@ -53,9 +53,9 @@
 						<div></div>
 					</div>
 					<ul>
-						<li><a href="">펫브리즈 소개</a></li>
+						<li><router-link to="/about">펫브리즈 소개</router-link></li>
 						<li>
-							<a href="">펫브리즈 고</a>
+							<router-link to="/posts">펫브리즈 고</router-link> 
 							<ul class="dropdown">
 								<li class="dropdown-sub">숙소</li>
 								<li class="dropdown-sub">식&음료</li>
@@ -93,6 +93,8 @@
 </header>
 </template>
 <script setup>
+import { RouterLink } from 'vue-router';
+
 
 </script>
 <style>
