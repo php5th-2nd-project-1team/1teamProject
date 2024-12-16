@@ -47,7 +47,6 @@
                     <span v-else>{{ item.label }}</span>
                 </button>
             </div>
-            <!-- <span v-for="item in links" :key="item.label" v-if="item.url !== null && !LoadingFlg">{{ item.label }}</span> -->   
         </div>
     </div>
 </template>

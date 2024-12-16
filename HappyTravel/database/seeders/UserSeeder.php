@@ -17,7 +17,15 @@ class UserSeeder extends Seeder
     public function run()
     {   
        $data= [
-            ['account'=> 'admin1','password' =>Hash::make('admin'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
+            ['account'=> 'admin','password' =>Hash::make('admin'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
+            'gender' => '0','address' => '00시 00구 ','detail_address' => '00동00호','phone_number'=>'010-1234-123','post_code' =>'123'],
+            ['account'=> 'admin2','password' =>Hash::make('admin2'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
+            'gender' => '0','address' => '00시 00구 ','detail_address' => '00동00호','phone_number'=>'010-1234-123','post_code' =>'123'],
+            ['account'=> 'admin3','password' =>Hash::make('admin3'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
+            'gender' => '0','address' => '00시 00구 ','detail_address' => '00동00호','phone_number'=>'010-1234-123','post_code' =>'123'],
+            ['account'=> 'admin4','password' =>Hash::make('admin4'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
+            'gender' => '0','address' => '00시 00구 ','detail_address' => '00동00호','phone_number'=>'010-1234-123','post_code' =>'123'],
+            ['account'=> 'admin5','password' =>Hash::make('admin5'), 'profile' => '/profile/default.png','name'=>'홍길동','nickname'=>'홍길동',
             'gender' => '0','address' => '00시 00구 ','detail_address' => '00동00호','phone_number'=>'010-1234-123','post_code' =>'123'],
         ];
         foreach($data as $item) {
