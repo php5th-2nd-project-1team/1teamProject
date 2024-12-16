@@ -1,5 +1,5 @@
 <template>
-    <LoadingComponent v-if="$store.state.post.isLoading"/> //$store.state.post.isLoading
+    <LoadingComponent v-if="isLoading"/>
     <div class="post-local">
         <!-- 상단 슬라이드 -->
         <div class="w-full">
@@ -45,14 +45,9 @@
         </div>
     </div>
     <!-- 여행지 포스트 -->
-    <div class="post-all" v-if="!isLoading">
+    <div class="post-all">
         <div class="post-content">
-            <div v-for="value in postList" class="post-content-card">
-                <img class="post-content-card-img" :src="value.post_img" alt="">
-                <p>조회수 : {{ value.post_view }}</p>
-                <p>좋아요 : {{ value.post_like }}</p>
-                <h3>{{ value.post_title }}</h3>     
-            </div>       
+            <PostCardComponent v-for="value in postList" :cardData="value"/>
         </div>
         <button class="btn btn-header btn-bg-gray btn-post-more" type="button" @click="store.dispatch('post/index')" v-if="!isLastPage">더 알아보기</button>
     </div>
@@ -96,6 +91,7 @@ const breakpoints = {
 import { useStore } from 'vuex';
 import { computed, reactive, onBeforeMount, onUnmounted } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
+import PostCardComponent from './component/PostCardComponent.vue';
 
 const store = useStore();
 
@@ -104,13 +100,7 @@ onBeforeMount(() => {
 });
 
 onUnmounted(()=>{
-    store.commit('post/setCurrentPage', 0);
-    store.commit('post/setTotalPage', 0);
-    store.commit('post/setIsSearching', false);
-    store.commit('post/setIsLoading', false);
-    store.commit('post/resetPostList');
-    store.commit('post/setBeforeLocal', '00');
-    store.commit('post/setBeforeSearch', '');
+    store.commit('post/setInitialize');
 });
 
 const postList = computed(() => store.state.post.postList);
@@ -245,18 +235,6 @@ const getLocalResult = (num) => {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 20px;
-}
-
-.post-content-card-img {
-    width: 100%;
-    border-radius: 30px;
-    opacity: 1;
-    transition: .2s ease-in-out;
-    /* -webkit-transition: .2s ease-in-out; */
-}
-
-.post-content-card-img:hover {
-    opacity: .8;
 }
 
 /* 포스트 내용 더 알아보기 버튼 */

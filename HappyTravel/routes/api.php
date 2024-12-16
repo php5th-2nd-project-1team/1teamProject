@@ -58,7 +58,10 @@ Route::get('/community/notice/detail/{id}', [NoticeController::class, 'show'])->
 
 /**
  * 원상님 Route *
+ * 
  */
+
+Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.type');
 
 
 /**

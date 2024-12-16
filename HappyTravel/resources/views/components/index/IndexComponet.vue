@@ -1,22 +1,26 @@
 <template>
 	<div class="index-container">
-		<IndexEventboxComponent/>
+		<IndexPostComponent :cardData="store.state.post.postList"/>
 		<IndexCommentBoxComponent/>
 		<IndexMediaboxComponent/>
-		<IndexPostboxComponent/>
-		<IndexStoreboxComponent/>
-		<IndexCommunityboxComponent/>
+		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>
+		<IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/>
 	</div>
 </template>
 
 <script setup>
 
+import { onBeforeMount } from 'vue';
 import IndexCommentBoxComponent from './index_module/IndexCommentBoxComponent.vue';
-import IndexCommunityboxComponent from './index_module/IndexCommunityboxComponent.vue';
-import IndexEventboxComponent from './index_module/IndexEventboxComponent.vue';
 import IndexMediaboxComponent from './index_module/IndexMediaboxComponent.vue';
-import IndexPostboxComponent from './index_module/IndexPostboxComponent.vue';
-import IndexStoreboxComponent from './index_module/IndexStoreboxComponent.vue';
+import IndexPostListComponent from './index_newModule/IndexPostListComponent.vue';
+import IndexPostComponent from './index_newModule/IndexPostComponent.vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+onBeforeMount(() => {
+	store.dispatch('post/indexes');
+});
 
 </script>
 
