@@ -26,4 +26,16 @@ class PostDetail extends Model
     protected function serialize(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function manager(){
+        return $this->belongsTo(Manager::class, 'manager_id')->select('m_nickname');
+    }
+
+    public function categoryLocal(){
+        return $this->belongsTo(CategoryLocal::class, 'category_local_num');
+    }
+
+    public function categoryTheme(){
+        return $this->belongsTo(CategoryTheme::class, 'category_theme_num');
+    }
 }

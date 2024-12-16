@@ -61,3 +61,4 @@ Route::get('/community/notice/detail/{id}', [NoticeController::class, 'show'])->
  * 민주님 Route *
  */
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
+Route::get('/post/detail/{id}', [PostController::class, 'showPost'])->name('showPost.post');

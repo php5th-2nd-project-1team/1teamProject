@@ -1,4 +1,5 @@
 <template>
+
 <div class="btn-postdetail-pagenav">
 	<a href=""><span>홈</span></a>
 	<span> > </span>
@@ -6,7 +7,7 @@
 </div>
 	
 <div class="postdetail-container">
-	<h1 class="postdetail-title">조양방직</h1>
+	<h1 class="postdetail-title">{{ PostDetail.post_title }}</h1>
 	<p class="postdetail-local">인천 강화군</p>
 	<h3 class="postdetail-content">강화도 방직공장을 개조한 레트로 감성카페</h3>
 	<ul class="btn-postdetail-nav">
@@ -26,7 +27,32 @@
 		</span>
 	</div>
 
-	<img class="postdetail-img" src="/developImg/post-content-img.png">
+		<!-- 이미지 슬라이드 -->
+		 <div class="w-full">
+			 <swiper
+			 	:ref="{swiperRef}"
+				 :pagination="{
+					el: '.swiper-pagination',
+					type: 'fraction',
+						}"
+				 :navigation="{
+					 nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev' }"
+				 :modules="modules"
+				 :slidePerView="1"
+				 :centeredSlides="true"
+				 :touchRatio="0"
+				 class="mySwiper"
+			 >
+				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
+				 <div class="swiper-button-next"></div>
+				 <div class="swiper-button-prev"></div>
+				 <div class="swiper-pagination"></div>
+			  </swiper>
+		 </div>
+
 	<h3 class="postdetail-title-long-content">상세정보</h3>
 	<!-- <hr> -->
 	<p class="postdetail-long-content">
@@ -109,12 +135,97 @@
 	
 	<button class="btn btn-bg-blue btn-more" type="button">댓글 더보기</button>
 
-</div>
+	<!-- 슬라이드 이미지 modal -->
+	<div v-show="modalFlg" class="slide-img-box">
+		<div class="swiper-wrapper">
+			<swiper
+				:style="{
+				'--swiper-navigation-color': '#fff',
+				'--swiper-pagination-color': '#fff',
+				}"
+				:loop="true"
+				:spaceBetween="10"
+				:navigation="{
+					nextEl:'.swiper-button-next', prevEl:'.swiper-button-prev' }"
+				:thumbs="{ swiper: thumbsSwiper }"
+				:modules="modules"
+				class="mySwiper2"
+			>
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+			</swiper>
+		</div>
+		<swiper
+			@swiper="setThumbsSwiper"
+			:loop="true"
+			:spaceBetween="10"
+			:slidesPerView="3"
+			:freeMode="true"
+			:watchSlidesProgress="true"
+			:modules="modules"
+			class="mySwiper"
+		>
+		<div class="item">
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+			<swiper-slide><img class="postdetail-img thumbs_swiper_img" src="/developImg/post-content-img.png"></swiper-slide>
+		</div>
+		</swiper>
+			<button @click="closeModal" class="btn btn-bg-blue btn-header next-item4">닫기</button>
+		</div>
+	 </div>
 </template>
 	
 <script setup>
+// 지도api 컴포넌트 
 import PostMapComponent from './component/PostMapComponent.vue';
+// 이미지 슬라이드
+// import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
+// 이미지 슬라이드
+// Import Swiper styles
+import 'swiper/css';
+
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/free-mode';
+import 'swiper/css/thumbs';
+
+// import required modules
+import { Pagination, Navigation, Thumbs, FreeMode } from 'swiper/modules';
+import { computed, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const modules = reactive([Navigation, Pagination, Thumbs]);
+const thumbsSwiper = ref(null);
+// const thumbs = { swiper: thumbsSwiper.value };
+const setThumbsSwiper = (swiper) => {
+	thumbsSwiper.value = swiper;
+}
+
+// ------------------------------------------
+// 모달 관련
+// 모달숨기기
+const modalFlg = ref(false);
+// 모달 열기
+const openModal = () => {
+	modalFlg.value = true;
+}; 
+// 모달 닫기
+const closeModal = () => {
+	modalFlg.value = false;
+};
+// ------------------------------------------
+
+const store = useStore();
+
+// 포스트 상세 정보
+const PostDetail = computed(() => store.state.post.postDetail);
+console.log(PostDetail);
 
 </script>
 	
@@ -167,8 +278,38 @@ import PostMapComponent from './component/PostMapComponent.vue';
 	margin-bottom: 20px;
 }
 
-.postdetail-img {
+/* .postdetail-img-container {
+	display: flex;
+} */
+
+.w-full {
 	width: 60%;
+	height: 50%;
+}
+
+:root {
+  --swiper-theme-color: #fff;
+}
+
+.swiper-button-next , .swiper-button-prev {
+	color: #fff;
+}
+
+.swiper-pagination {
+	display: inline-block;
+	text-align: center;
+	width: 100px;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 20px;
+	margin-bottom: 50px;
+	padding: 5px;
+	margin-left: 950px;
+}
+
+.postdetail-img {
+	width: 100%;
+	height: 100%;
 	margin-bottom: 20px;
 }
 
@@ -274,4 +415,35 @@ import PostMapComponent from './component/PostMapComponent.vue';
 	width: 100px;
 	margin: 20px 0;
  }
+
+ .slide-img-box {
+	position: fixed;
+    display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
+	z-index: 100;
+ }
+
+.swiper-wrapper {
+	text-align: center;
+}
+
+.item {
+	display: grid;
+	grid-template-rows: 200px 200px 200px;
+}
+
+.thumbs_swiper_img {
+	margin-top: 100px;
+	width: 1200px;
+	height: 700px;
+}
+
+
 </style>
