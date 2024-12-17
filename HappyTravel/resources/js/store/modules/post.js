@@ -11,7 +11,7 @@ import axios from "axios";
 // 	store.commit('setBeforeSearch', '');
 // 	store.commit('setBeforeLocal', '00');
 // }
-const controller = new AbortController();
+let controller = null;
 
 export default {
 	namespaced: true,
@@ -158,6 +158,7 @@ export default {
 		,localSearch(context, payload){			
 			if(context.state.beforeLocal === '00' || context.state.beforeLocal !== payload){
 				context.commit('setInitialize');
+				// TODO 00번일 때 context.dispatch('index'); 실행시키고 return 시키기
 			}
 
 			context.commit('setIsLoading', true);
@@ -185,11 +186,13 @@ export default {
 			const urlLike = 'http://127.0.0.1:8000/api/posts/type?type=like';
 
 			
-			if(payload === true){
+			if(payload === true && controller !== null){
 				controller.abort();
+				controller = null;
 			}
 
 			else{
+				controller = new AbortController();
 				// 조회수 순 데이터 가져오기
 				axios.get(urlView)
 				.then(response => {

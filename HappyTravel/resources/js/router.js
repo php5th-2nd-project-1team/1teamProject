@@ -199,6 +199,14 @@ const routes=[
 		beforeEnter: chkAuth,
 	},		
 	{
+		// TODO 1. router.js 수정
+		// post/detail -> post/:id
+
+		// TODO 2. 불러오는 기준 수정
+		// 카드 -> 상세 페이지
+
+		// TODO 3. id 없는거 가져오려 할 시 오류 및 뒤로 이동 (옵션)
+
 		path:'/post/detail' // 포스트 상세 페이지
 		,component:PostDetailComponet,
 		beforeEnter: chkAuth,

@@ -3,17 +3,31 @@
 		<div class="index-event-controller">
 			<h1>최신 포스트 모음</h1>
 			<Swiper
+			:modules="modules"			
+			slidesPerView="1"
+			spaceBetween="0"
+			:simulateTouch="false"
+			:navigation="{nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'}"
+			style="width: 400px; display: flex; ">
+				<SwiperSlide style="width: 100%;" v-for="value in props.cardData" :key="value"><span style=" font-size: 24px;">{{ value.post_title }}</span><br><span style="font-size: 18px;">{{ value.post_local_name }}</span></SwiperSlide>
+			</Swiper>
+			<div class=".index-event-buttonArea">
+				<button class="index-event-nextbtn index-btn"><</button>
+				<button class="index-event-prevbtn index-btn">></button>
+			</div>
+		</div>
+		<div class="index-event-viewer">
+			<Swiper
 			:modules="modules"
 			slidesPerView="1"
 			spaceBetween="0"
+			:simulateTouch="false"
 			:navigation="{nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'}"
-			style="border: 5px solid black; width: 700px;">
-				<SwiperSlide style="width: 100%;" v-for="value in props.cardData" :key="value">{{ value.post_title }}</SwiperSlide>
+			style="width: 600px; height: 400px; border-radius: 100px;">
+				<swiper-slide style="width: 100%; height: 100%" v-for="value in props.cardData">
+					<div class="index-event-img" :style="{backgroundImage : 'url(' + value.post_img + ')' }"></div>
+				</swiper-slide>
 			</Swiper>
-			<div class=".index-event-buttonArea">
-				<button class=".index-event-nextbtn index-btn"><</button>
-				<button class=".index-event-prevbtn index-btn">></button>
-			</div>
 		</div>
 	</div>
 </template>
@@ -51,8 +65,9 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: flex-start;
 		
-		gap: 10px;
+		gap: 30px;
 		
 		padding-left: 16px;
 	}
@@ -110,7 +125,9 @@
 		width: 100%;
 		height: 100%;
 
-		padding : 80px;
+		display: flex;
+		justify-content: center;
+		align-items: center
 	}
 
 	.index-event-img{

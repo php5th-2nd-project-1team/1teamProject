@@ -4,7 +4,7 @@
 		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 		referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 		<p>멍멍냥냥멍멍냥냥멍멍냥냥멍멍냥멍멍냥<br>반려동물과 함께 여행을</p>
-		<button>더 알아보기</button>
+		<button @click="$router.push('/about')">더 알아보기</button>
 	</div>
 </template>
 <script setup>
