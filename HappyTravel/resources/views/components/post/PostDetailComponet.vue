@@ -43,10 +43,9 @@
 				 :touchRatio="0"
 				 class="mySwiper"
 			 >
-				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
-				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
-				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
-				<swiper-slide @click="openModal"><img class="postdetail-img" src="/developImg/post-content-img.png"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg1"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg2"></swiper-slide>
+				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg3"></swiper-slide>
 				 <div class="swiper-button-next"></div>
 				 <div class="swiper-button-prev"></div>
 				 <div class="swiper-pagination"></div>
@@ -56,9 +55,7 @@
 	<h3 class="postdetail-title-long-content">상세정보</h3>
 	<!-- <hr> -->
 	<p class="postdetail-long-content">
-		1933년 국내 자본으로 설립된 강화 최초의 인견 공장이었던 조양 방직은 세월이 흘러 강화 직물이 쇠락하자 폐가로 전락했다. 흉물스럽게 쓰러져가던 건물은 거대한 카페로 재탄생하였다. 허물어져 가던 벽면은 근사한 미술관이며 영화관이 됐고, 기다란 작업대는 커피 테이블로 바뀌었으며, 기계도 사람도 떠난 공간은 중국과 유럽 등지에서 찾은 골동품으로 채워졌다. 깨진 유리창을 간직한 영국제 문짝, 체코의 옛 기차에 달렸던 둥근 거울, 겨울마다 몸을 뒤집느라 애쓴 붕어빵 기계가 원래부터 그 자리에 있었던 듯 자연스럽게 배치하여 990㎡(약 300평)가 넘는 공장 터와 건물 골조를 그대로 살려 시간의 이야기를 카페 곳곳에 남겨두고 있다. 현재 각종 음료와 케이크를 판매하고 있다.
-		1933년 국내 자본으로 설립된 강화 최초의 인견 공장이었던 조양 방직은 세월이 흘러 강화 직물이 쇠락하자 폐가로 전락했다. 흉물스럽게 쓰러져가던 건물은 거대한 카페로 재탄생하였다. 허물어져 가던 벽면은 근사한 미술관이며 영화관이 됐고, 기다란 작업대는 커피 테이블로 바뀌었으며, 기계도 사람도 떠난 공간은 중국과 유럽 등지에서 찾은 골동품으로 채워졌다. 깨진 유리창을 간직한 영국제 문짝, 체코의 옛 기차에 달렸던 둥근 거울, 겨울마다 몸을 뒤집느라 애쓴 붕어빵 기계가 원래부터 그 자리에 있었던 듯 자연스럽게 배치하여 990㎡(약 300평)가 넘는 공장 터와 건물 골조를 그대로 살려 시간의 이야기를 카페 곳곳에 남겨두고 있다. 현재 각종 음료와 케이크를 판매하고 있다.
-		1933년 국내 자본으로 설립된 강화 최초의 인견 공장이었던 조양 방직은 세월이 흘러 강화 직물이 쇠락하자 폐가로 전락했다. 흉물스럽게 쓰러져가던 건물은 거대한 카페로 재탄생하였다. 허물어져 가던 벽면은 근사한 미술관이며 영화관이 됐고, 기다란 작업대는 커피 테이블로 바뀌었으며, 기계도 사람도 떠난 공간은 중국과 유럽 등지에서 찾은 골동품으로 채워졌다. 깨진 유리창을 간직한 영국제 문짝, 체코의 옛 기차에 달렸던 둥근 거울, 겨울마다 몸을 뒤집느라 애쓴 붕어빵 기계가 원래부터 그 자리에 있었던 듯 자연스럽게 배치하여 990㎡(약 300평)가 넘는 공장 터와 건물 골조를 그대로 살려 시간의 이야기를 카페 곳곳에 남겨두고 있다. 현재 각종 음료와 케이크를 판매하고 있다.
+		{{ PostDetail.post_detail_content }}
 	</p>
 	<button class="btn btn-search btn-bg-blue btn-more" type="button">내용 더보기</button>
 	<!-- <img class="postdetail-img" src="/developImg/map_img_test.png" alt=""> -->
@@ -67,27 +64,27 @@
 	<div class="postdetail-info-content">
 		<div class="bottom-none">
 			<strong>문의 전화: </strong>
-			<span>051-749-7621</span>
+			<span>{{ PostDetail.post_detail_num }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>주소: </strong>
-			<span>부산광역시 해운대구 동백로 67 (우동) 일대</span>
+			<span>{{ PostDetail.post_detail_addr }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>홈페이지: </strong>
-			<span><a href="https://www.haeundae.go.kr/tour/" target="_blank">https://www.haeundae.go.kr/tour/</a></span>
+			<span><a href="https://www.haeundae.go.kr/tour/" target="_blank">{{ PostDetail.post_detail_site }}</a></span>
 		</div>
 		<div class="bottom-none">
 			<strong>이용시간: </strong>
-			<span>상시개방</span>
+			<span>{{ PostDetail.post_detail_time }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>요금: </strong>
-			<span>무료</span>
+			<span>{{ PostDetail.post_detail_price }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>차량가능: </strong>
-			<span>가능</span>
+			<span>{{ PostDetail.post_detail_parking }}</span>
 		</div>
 	</div>
 
