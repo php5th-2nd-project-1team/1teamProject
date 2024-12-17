@@ -89,25 +89,6 @@ export default {
 		,setLikeList(state, lists){
 			state.likeList = lists;
 		}
-
-		// post 전체 초기화
-		,setInitialize(state){
-			state.postList = [];
-			state.currentPage = 0;
-			state.totalPage = 0;
-			state.isSearching = false;
-			state.beforeSearch = '';
-			state.beforeLocal = '00';
-			state.isLoading = false;
-		}
-
-		// index 부분
-		,setViewList(state, lists){
-			state.viewList = lists;
-		}
-		,setLikeList(state, lists){
-			state.likeList = lists;
-		}
 	}
 	,actions: {
 		// 포스트 찾기

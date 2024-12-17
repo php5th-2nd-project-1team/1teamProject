@@ -20,6 +20,7 @@
 
 	const redirectDetail = (post_id) => {
 		// TODO detail 이동할 때 데이터 가져오는 action 함수 만들면, 여기서 실행하기.
+		store.dispatch('post/showPost', post_id);
 		router.push('/post/detail');
 	}
 </script>
