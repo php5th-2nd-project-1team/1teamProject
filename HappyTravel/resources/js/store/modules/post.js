@@ -165,7 +165,13 @@ export default {
 			if(context.state.beforeLocal === '00' || context.state.beforeLocal !== payload){
 				context.commit('setInitialize');
 				// TODO 00번일 때 context.dispatch('index'); 실행시키고 return 시키기
+				if(payload === '00'){
+					console.log(payload);
+					context.dispatch('index');
+					return;
+				}
 			}
+			
 
 			context.commit('setIsLoading', true);
 
@@ -174,7 +180,7 @@ export default {
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
-				context.commit('setBeforeSearch', payload);
+				context.commit('setBeforeLocal', payload);
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
