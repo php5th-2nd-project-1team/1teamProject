@@ -69,3 +69,6 @@ Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.ty
  */
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
 Route::get('/post/detail/{id}', [PostController::class, 'showPost'])->name('showPost.post');
+
+// 댓글 작성
+Route::post('/post/comments', [PostController::class, 'storePostComment'])->name('store.postComment');

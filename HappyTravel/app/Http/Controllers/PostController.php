@@ -73,27 +73,27 @@ class PostController extends Controller
 		return response()->json($responseData, 200);
 	}
 
-	// 포스트 댓글 리스트 출력
-	public function postCommentList() {
-		$postCommentList = PostComments::with('user')->orderBy('created_at', 'DESC')->paginate(5);
+	// // 포스트 댓글 리스트 출력 (showPost에서 댓글도 같이 가져오기, 따로 뺄 필요없음)
+	// public function postCommentList() {
+	// 	$postCommentList = PostComments::with('user')->orderBy('created_at', 'DESC')->paginate(5);
 
-		$responseData = [
-			'success' => true
-			,'msg' => '포스트 댓글 리스트 출력'
-			,'postCommentList' => $postCommentList->toArray()
-		];
+	// 	$responseData = [
+	// 		'success' => true
+	// 		,'msg' => '포스트 댓글 리스트 출력'
+	// 		,'postCommentList' => $postCommentList->toArray()
+	// 	];
 
-		return response()->json($responseData, 200);
-	}
+	// 	return response()->json($responseData, 200);
+	// }
 	
-	// 포스트 댓글 상세 출력
-	public function postComment(Request $request) {
-		$postComment = PostComments::with('user')->find($request->id);
+	// 포스트 댓글 작성
+	public function storePostComment(Request $request) {
+		$storePostComment = PostComments::with('user')->find($request->id);
 
 		$responseData = [
 			'success' => true
-			,'msg' => '포스트 댓글 상세 출력'
-			,'postComment' => $postComment->toArray()
+			,'msg' => '포스트 댓글 작성'
+			,'storePostComment' => $storePostComment->toArray()
 		];
 
 		return response()->json($responseData, 200);

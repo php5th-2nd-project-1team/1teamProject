@@ -19,6 +19,7 @@ export default {
 		// post 부분
 
 		comment : {picture: '/img/abc.png', comment : '랄ㄹ랄ㄹ', name: '펫타곤', created_at: '2024-12-10'}
+		,postCommentList : []
 		,postList : []
 		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
 		,currentPage : 0
@@ -68,6 +69,10 @@ export default {
 		,setBeforeLocal(state, comment){
 			// default : '00'
 			state.beforeLocal = comment;
+		}
+		// 포스트 댓글 최상위로 이동
+		,setPostCommentListUnshift(state, post) {
+			state.postCommentList.unshift(post);
 		}
 
 		// post 전체 초기화
@@ -230,9 +235,37 @@ export default {
 				context.commit('setPostDetail', response.data.PostDetail);
 			})
 			.catch(error => {
-				console.log(error);
+				console.error(error);
 			}).finally(() => {
 				context.commit('setIsLoading', false);
+			});
+		}
+
+
+		// 포스트 댓글 작성
+		,storePostComment(context, data) {
+			const url = '/api/post/detail';
+
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+
+			// form data 생성
+			const formData = new formData();
+			// 전달 데이터 셋팅
+			formData.append('post_comment', data.post_comment);
+
+			// axios
+			axios.post(url, formData ,config)
+			.then(response => {
+				context.commit('setPostCommentListUnshift', response.data.post);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+			})
+			.catch(error => {
+				console.error(error);
+			}).finally(() => {
+				context.comment('setIsLoading', false);
 			});
 		}
 	}
