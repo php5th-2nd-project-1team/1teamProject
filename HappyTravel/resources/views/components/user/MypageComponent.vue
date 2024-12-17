@@ -171,6 +171,13 @@ button {
     border-radius: 50%;
 }
 
+.profile > img {
+    width: 180px;
+    height: 180px;
+    border: none;
+    border-radius: 50%;
+}
+
 .mypage-update-btn {
     background-color: #EFEFEF;
     border: none;
