@@ -12,17 +12,16 @@
 <script setup>
 	import { defineProps } from 'vue';
 	import { useRouter } from 'vue-router';
-	import { Store } from 'vuex';
+	import { useStore } from 'vuex';
 	const router = useRouter();
 
 	const props = defineProps({
 		cardData : Object
 	});
 
-	const store = new Store();
+	const store = new useStore();
 
 	const redirectDetail = (post_id) => {
-		// TODO detail 이동할 때 데이터 가져오는 action 함수 만들면, 여기서 실행하기.
 		store.dispatch('post/showPost', post_id);
 		router.push('/post/detail');
 	}

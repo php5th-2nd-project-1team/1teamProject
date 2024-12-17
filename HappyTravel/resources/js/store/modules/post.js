@@ -89,6 +89,7 @@ export default {
 		,setLikeList(state, lists){
 			state.likeList = lists;
 		}
+
 	}
 	,actions: {
 		// 포스트 찾기
@@ -211,18 +212,21 @@ export default {
 			}
 			
 		}
+
 		// 포스트 상세 출력
 		,showPost(context, id){
 			const url = '/api/post/detail/' + id;
-			const config = {
-				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-				}
-			}
-			axios.get(url, config)
+
+			// const config = {
+			// 	headers: {
+			// 		'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+			// 	}
+			// }
+
+			axios.get(url)
 			.then(response => {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
-				context.commit('setPostDetail', response.data.post, {root: true});
+				context.commit('setPostDetail', response.data.PostDetail);
 			})
 			.catch(error => {
 				console.log(error);
