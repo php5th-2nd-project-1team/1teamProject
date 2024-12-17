@@ -19,11 +19,11 @@
 	<div class="postdetail-post-area">
 		<button type="button">
 			<span>좋아요</span>
-			<span>50</span>
+			<span>{{ PostDetail.post_like }}</span>
 		</button>
 		<span>
 			<span>조회수</span>
-			<span>10000</span>
+			<span>{{ PostDetail.post_view }}</span>
 		</span>
 	</div>
 
@@ -62,7 +62,7 @@
 	</p>
 	<button class="btn btn-search btn-bg-blue btn-more" type="button">내용 더보기</button>
 	<!-- <img class="postdetail-img" src="/developImg/map_img_test.png" alt=""> -->
-	<PostMapComponent/>
+	<PostMapComponent :lat="PostDetail.post_lat" :lon="PostDetail.post_lon"/>
 
 	<div class="postdetail-info-content">
 		<div class="bottom-none">
@@ -211,7 +211,7 @@ const store = useStore();
 
 // 포스트 상세 정보    인데 오ㅐ 안와아ㅏㅏㅏ
 const PostDetail = computed(() => store.state.post.postDetail);
-// console.log(store.state.post.postDetail);
+console.log(store.state.post.postDetail);
 
 
 
