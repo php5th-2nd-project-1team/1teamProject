@@ -20,6 +20,7 @@ export default {
 
 		comment : {picture: '/img/abc.png', comment : '랄ㄹ랄ㄹ', name: '펫타곤', created_at: '2024-12-10'}
 		,postCommentList : []
+		,postComment : ''
 		,postList : []
 		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
 		,currentPage : 0
@@ -70,9 +71,9 @@ export default {
 			// default : '00'
 			state.beforeLocal = comment;
 		}
-		// 포스트 댓글 최상위로 이동
-		,setPostCommentListUnshift(state, post) {
-			state.postCommentList.unshift(post);
+		// 포스트 댓글 작성 최상위로 이동
+		,setPostCommentListUnshift(state, comment) {
+			state.postComment.unshift(comment);
 		}
 
 		// post 전체 초기화
@@ -84,6 +85,7 @@ export default {
 			state.beforeSearch = '';
 			state.beforeLocal = '00';
 			state.isLoading = false;
+			state.postComment = '';
 		}
 
 		// index 부분
@@ -245,8 +247,9 @@ export default {
 			});
 		}
 
+		// ---------------댓글 작성 진짜 모르겠다.---------------------------------
 
-		// 포스트 댓글 작성
+		// 포스트 댓글 작성(하는중)
 		,storePostComment(context, data) {
 			const url = '/api/post/detail';
 
@@ -256,18 +259,18 @@ export default {
 				}
 			}
 
-			// form data 생성
-			const formData = new formData();
-			// 전달 데이터 셋팅
-			formData.append('post_comment', data.post_comment);
+			// // form data 생성
+			// const formData = new formData();
+			// // 전달 데이터 셋팅
+			// formData.append('post_comment', data.post_comment);
 
 			// axios
-			axios.post(url, formData ,config)
+			axios.post(url, config)
 			.then(response => {
 				context.commit('setPostCommentListUnshift', response.data.PostDetail);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
 			})
 			.catch(error => {
-				console.error(error);
+				console.error('댓글 작성 실패');
 			}).finally(() => {
 				context.comment('setIsLoading', false);
 			});
