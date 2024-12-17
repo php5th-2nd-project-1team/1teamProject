@@ -16,9 +16,8 @@ class NoticeController extends Controller
         return response()->json($responseData, 200);
    }
    public function show($id) {
-        $noticeDetail = Notice::with('managers')->find($id);
-   
-
+        $noticeDetail = Notice::with('managers')->find($id);        
+      
         $responseData = [
             'success' => true
             ,'msg' => '공지사항 상세리스트 정보가 맞습니다.'

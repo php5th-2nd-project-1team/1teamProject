@@ -25,8 +25,8 @@
             <div class="notice_content_num">
                 <p>{{ item.notice_id }}</p>
             </div>      
-            <div class="notice_content_title">              
-                <p @click="$store.dispatch('notice/noticeDetailList', item.notice_id)">{{ item.notice_title }}</p>            
+            <div class="notice_content_title"> 
+                <p @click="$router.push('/community/notice/detail/' + item.notice_id)">{{ item.notice_title }}</p>     
             </div>  
             <div class="notice_content_manager">
                 <p>{{  item.managers.m_nickname}}</p>
@@ -121,6 +121,7 @@
     .notice_content_title >p {
         margin-right:35px;
         min-width: 100px;
+        cursor:pointer;
     }
     .notice_content_manager >p {
         margin-left:35px;

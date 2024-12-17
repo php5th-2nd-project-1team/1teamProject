@@ -8,8 +8,7 @@ export default {
         ,LoadingFlg:false
         ,links: []        
         ,currentPage: 0
-        ,noticeDetail: {}
-        // ,noticeDetailPk:0
+        ,noticeDetail: {}        
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
@@ -30,9 +29,7 @@ export default {
         setNoticeDetail(state, noticeDetail) {
             state.noticeDetail = noticeDetail;
         },
-        // setNoticeDetailPk(state, noticeDetailPk) {
-        //     state.noticeDetailPk = noticeDetailPk;
-        // },
+       
         
 	}   
 	,actions: {
@@ -66,8 +63,6 @@ export default {
             })
         },
         noticeDetailList(context, id) {
-        //    context.commit('setNoticeDetailPk', id);
-        //    localStorage.getItem('auth/userInfo', id);
            
             const url = '/api/community/notice/detail/' + id;
             axios.get(url)
@@ -75,7 +70,7 @@ export default {
                 context.commit('setNoticeDetail', response.data.noticeDetail);
                 console.log(response.data.noticeDetail);
 
-                router.replace('/community/notice/detail');
+                router.push('/community/notice/detail/' + id);
             })    
             .catch(error => {
                 console.error(error);

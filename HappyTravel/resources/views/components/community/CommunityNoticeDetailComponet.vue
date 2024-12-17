@@ -1,5 +1,5 @@
 <template>
-    <div class="community_notice_detail_container">
+    <div v-if="noticeDetailList.notice_id" class="community_notice_detail_container">
         <h1>공지사항</h1> 
     <!-- 공지사항 태그 박스 -->
         <div class="notice_tag_detail_box">
@@ -23,7 +23,7 @@
         </div>  
         <div class="notice_detail_content_box">
             <p class="notice_detail_content">내용</p>
-        <textarea disabled cols="30" rows="30">{{ noticeDetailList.notice_content }}</textarea>                 
+            <textarea disabled cols="30" rows="30">{{ noticeDetailList.notice_content }}</textarea>                 
         </div> 
 
         <div>
@@ -34,23 +34,17 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed } from 'vue';
-
-
-const noticeDetailList = computed(() => store.state.notice.noticeDetail);
-// const noticeDetailPk = ref(store.state.notice.noticeDetailPk);
-
+import { computed, onBeforeMount } from 'vue';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
-// const storeData = JSON.parse(localStorage.getItem('userInfo'));
 
-// console.log(storeData);
-// if (empty(storeData)) {
-//     onBeforeMount(() => store.dispatch('notice/noticeDetailList', storeData.notice_id));
-// }
+const noticeDetailList = computed(() => store.state.notice.noticeDetail);
 
+const route = useRoute();
 
-    
+onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
+
 </script>
 
 <style scoped>
