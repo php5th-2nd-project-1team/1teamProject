@@ -20,7 +20,7 @@ export default {
 
 		comment : {picture: '/img/abc.png', comment : '랄ㄹ랄ㄹ', name: '펫타곤', created_at: '2024-12-10'}
 		,postList : []
-		,postDetail : {}
+		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
 		,currentPage : 0
 		,totalPage : 0
 		,isLoading : false

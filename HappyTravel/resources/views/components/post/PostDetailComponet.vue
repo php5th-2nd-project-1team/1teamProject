@@ -59,7 +59,7 @@
 	</p>
 	<button class="btn btn-search btn-bg-blue btn-more" type="button">내용 더보기</button>
 	<!-- <img class="postdetail-img" src="/developImg/map_img_test.png" alt=""> -->
-	<PostMapComponent v-if="!isLoading" :lat="PostDetail.post_lat" :lon="PostDetail.post_lon" />
+	<PostMapComponent />
 
 	<div class="postdetail-info-content">
 		<div class="bottom-none">
