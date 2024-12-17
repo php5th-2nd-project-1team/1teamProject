@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useStore } from "vuex";
 
 // const store = useStore();
 
@@ -217,6 +216,8 @@ export default {
 		,showPost(context, id){
 			const url = '/api/post/detail/' + id;
 
+			context.commit('setIsLoading', true);
+
 			// const config = {
 			// 	headers: {
 			// 		'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -230,6 +231,8 @@ export default {
 			})
 			.catch(error => {
 				console.log(error);
+			}).finally(() => {
+				context.commit('setIsLoading', false);
 			});
 		}
 	}

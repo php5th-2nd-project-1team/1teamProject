@@ -10,9 +10,9 @@
 			style="border: 5px solid black; width: 700px;">
 				<SwiperSlide style="width: 100%;" v-for="value in props.cardData" :key="value">{{ value.post_title }}</SwiperSlide>
 			</Swiper>
-			<div>
-				<button class=".index-event-nextbtn"><</button>
-				<button class=".index-event-prevbtn">></button>
+			<div class=".index-event-buttonArea">
+				<button class=".index-event-nextbtn index-btn"><</button>
+				<button class=".index-event-prevbtn index-btn">></button>
 			</div>
 		</div>
 	</div>
@@ -31,8 +31,6 @@
 	})
 
 	const modules = [Navigation];
-
-	console.log(props.cardData);
 </script>
 <style scoped>
 
@@ -77,6 +75,15 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 200px;
+	}
+
+	.index-btn{
+		width: 3rem;
+		height: 3rem;
+
+		margin: 0 1rem;
+
+		border-radius: 100%;
 	}
 
 	.index-event-nextbtn, .index-event-prevbtn{

@@ -1,14 +1,19 @@
 <template>
-  <KakaoMap :lat="37.34083789" :lng="126.882195" :draggable="false" @onLoadKakaoMap="onLoadKakaoMap">
-    <KakaoMapMarker :lat="37.34083789" :lng="126.882195" />
+  <KakaoMap :lat="props.lat" :lng="props.lon" :draggable="false" @onLoadKakaoMap="onLoadKakaoMap">
+    <KakaoMapMarker :lat="props.lat" :lng="props.lon" />
   </KakaoMap>
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, defineProps } from 'vue';
   import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
   const map = ref();
+
+  const props = defineProps({
+    lat : Number
+    ,lon : Number
+  })
 
   const onLoadKakaoMap = (mapRef) => {
     map.value = mapRef;
