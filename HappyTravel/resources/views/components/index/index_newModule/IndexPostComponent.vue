@@ -3,15 +3,18 @@
 		<div class="index-event-controller">
 			<h1>최신 포스트 모음</h1>
 			<Swiper
-			:modules="modules"			
-			slidesPerView="1"
-			spaceBetween="0"
+			:modules="modules"
+			:autoplay="{ delay: 2500, disableOnInteraction: false }"	
 			:simulateTouch="false"
-			:navigation="{nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'}"
-			style="width: 400px; display: flex; ">
-				<SwiperSlide style="width: 100%;" v-for="value in props.cardData" :key="value"><span style=" font-size: 24px;">{{ value.post_title }}</span><br><span style="font-size: 18px;">{{ value.post_local_name }}</span></SwiperSlide>
+			:navigation="{nextEl:'.index-event-prevbtn', prevEl:'.index-event-nextbtn'}"
+			style="max-width: 500px; width: 100%; height: auto;">
+				<SwiperSlide style="width: 100%; height: 100%" v-for="value in props.cardData" :key="value">
+					<span style=" font-size: 24px;">{{ value.post_title }}</span>
+					<br>
+					<span style="font-size: 18px;">{{ value.post_local_name }}</span>
+				</SwiperSlide>
 			</Swiper>
-			<div class=".index-event-buttonArea">
+			<div class="index-event-buttonArea">
 				<button class="index-event-nextbtn index-btn"><</button>
 				<button class="index-event-prevbtn index-btn">></button>
 			</div>
@@ -19,14 +22,13 @@
 		<div class="index-event-viewer">
 			<Swiper
 			:modules="modules"
-			slidesPerView="1"
-			spaceBetween="0"
+			:autoplay="{ delay: 2500, disableOnInteraction: false }"	
 			:simulateTouch="false"
-			:navigation="{nextEl:'.index-event-nextbtn', prevEl:'.index-event-prevbtn'}"
-			style="width: 600px; height: 400px; border-radius: 100px;">
-				<swiper-slide style="width: 100%; height: 100%" v-for="value in props.cardData">
+			:navigation="{nextEl:'.index-event-prevbtn', prevEl:'.index-event-nextbtn'}"
+			style="max-width: 600px; width: 100%; height: 400px; border-radius: 100px;">
+				<SwiperSlide style="width: 100%; height: 100%" v-for="value in props.cardData" :key="value">
 					<div class="index-event-img" :style="{backgroundImage : 'url(' + value.post_img + ')' }"></div>
-				</swiper-slide>
+				</SwiperSlide>
 			</Swiper>
 		</div>
 	</div>
@@ -34,7 +36,7 @@
 <script setup>
 	import { defineProps } from 'vue';
 	import { Swiper, SwiperSlide } from 'swiper/vue';
-	import { Navigation } from 'swiper/modules';
+	import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
 	import 'swiper/css';
 	import 'swiper/css/bundle';
@@ -44,7 +46,7 @@
 		cardData : Array
 	})
 
-	const modules = [Navigation];
+	const modules = [Navigation, Autoplay, Pagination];
 </script>
 <style scoped>
 
@@ -66,6 +68,9 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
+		
+		width: 100%;
+		height: 100%;
 		
 		gap: 30px;
 		
@@ -127,7 +132,7 @@
 
 		display: flex;
 		justify-content: center;
-		align-items: center
+		align-items: center;
 	}
 
 	.index-event-img{

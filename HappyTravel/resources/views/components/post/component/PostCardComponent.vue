@@ -36,6 +36,7 @@
 
 	.post-content-card-img {
 		width: 100%;
+		height: 300px;
 		border-radius: 30px;
 		opacity: 1;
 		transition: .2s ease-in-out;

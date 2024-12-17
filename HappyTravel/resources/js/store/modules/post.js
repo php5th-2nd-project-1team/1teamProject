@@ -29,8 +29,9 @@ export default {
 		,isSearching : false
 		,beforeSearch : ''
 		,beforeLocal : '00'
-
+		
 		// index 부분
+		,postIndexList :[]
 		,viewList : []
 		,likeList : []
 	})
@@ -89,6 +90,9 @@ export default {
 		}
 
 		// index 부분
+		,setPostIndexList(state, lists){
+			state.postIndexList = lists
+		}
 		,setViewList(state, lists){
 			state.viewList = lists;
 		}
@@ -187,39 +191,29 @@ export default {
 			const urlView = 'http://127.0.0.1:8000/api/posts/type?type=view';
 			const urlLike = 'http://127.0.0.1:8000/api/posts/type?type=like';
 
-			
-			if(payload === true && controller !== null){
-				controller.abort();
-				controller = null;
-			}
+			// 조회수 순 데이터 가져오기
+			axios.get(urlView)
+			.then(response => {
+				context.commit('setViewList',response.data.PostList.data);
+			}).catch(error => {
+				console.log(error);
+			});
 
-			else{
-				controller = new AbortController();
-				// 조회수 순 데이터 가져오기
-				axios.get(urlView)
-				.then(response => {
-					context.commit('setViewList',response.data.PostList.data);
-				}).catch(error => {
-					console.log(error);
-				});
+			// 좋아요 순 데이터 가져오기
+			axios.get(urlLike)
+			.then(response => {
+				context.commit('setLikeList',response.data.PostList.data);
+			}).catch( error => {
+				console.log(error);
+			});
 
-				// 좋아요 순 데이터 가져오기
-				axios.get(urlLike)
-				.then(response => {
-					context.commit('setLikeList',response.data.PostList.data);
-				}).catch( error => {
-					console.log(error);
-				});
-
-				// 최신 데이터 가져오기
-				axios.get(url, { signal: controller.signal })
-				.then(response => {
-					context.commit('setPostList',response.data.PostList.data);
-				}).catch(error => {
-					console.log(error);
-				});
-			}
-			
+			// 최신 데이터 가져오기
+			axios.get(url)
+			.then(response => {
+				context.commit('setPostIndexList',response.data.PostList.data);
+			}).catch(error => {
+				console.log(error);
+			});	
 		}
 
 		// 포스트 상세 출력

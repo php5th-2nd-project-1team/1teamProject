@@ -1,6 +1,6 @@
 <template>
 	<div class="index-container">
-		<IndexPostComponent :cardData="store.state.post.postList"/>
+		<IndexPostComponent :cardData="store.state.post.postIndexList"/>
 		<IndexCommentBoxComponent/>
 		<IndexMediaboxComponent/>
 		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>

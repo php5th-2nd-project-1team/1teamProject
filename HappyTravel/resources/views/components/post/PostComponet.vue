@@ -97,8 +97,8 @@ import PostCardComponent from './component/PostCardComponent.vue';
 const store = useStore();
 
 onBeforeMount(()=>{
-    store.dispatch('post/indexes', true);
     store.commit('post/setInitialize');
+    store.dispatch('post/indexes', true);
 });
 
 onMounted(()=>{
