@@ -30,7 +30,7 @@ class UserController extends Controller
         $user = User::find($request->user_id);
 
         // update 할 데이터 담기
-        $profile = '/'.$request->file('file')->store('img');
+        $profile = '/'.$request->file('file')->store('profile');
         $updateData = $request->only('nickname', 'name', 'phone_number', 'address', 'detail_address');
         $user->nickname = $request->nickname;
         $user->name = $request->name;
