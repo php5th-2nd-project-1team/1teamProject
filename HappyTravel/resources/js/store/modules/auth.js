@@ -40,23 +40,13 @@ export default {
                 let errorMsgList = [];
                 const errorData = error.response.data;
 
-                if(error.response.status === 422) {
-                    // 유효성 체크 에러
-                    if(errorData.data.account) {
-                        errorMsgList.push(errorData.data.account[0]);
-                    }
-                    if(errorData.data.password) {
-                        errorMsgList.push(errorData.data.password[0]);
-                    }
-                }else if(error.response.status === 401) {
-                    // 비밀번호 오류
-                    // 프론트에서 에러 메세지 문구를 다시 작성해서 사용해도 무방하다.
-                    errorMsgList.push('비밀번호가 일치하지 않습니다.');
+                if(error.response.status === 500) {
+                    errorMsgList.push('알 수 없는 에러');
                 }else {
-                    errorMsgList.push('나도 모르는 에러');
+                    errorMsgList.push('아이디 또는 비밀번호가 잘못되었습니다.');
                 }
 
-                    alert(errorMsgList.join('\n'));
+                alert(errorMsgList.join('\n'));
                     
             });
         },
@@ -67,32 +57,33 @@ export default {
         * @param {*} context
         */
         logout(context)  {
-            // TODO : 백엔드 처리 추가
-            const url = '/api/logout';
-            const config = {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                }
-            }
-
-            axios.post(url, null, config)
-            .then(resaponse => {
-                alert('로그아웃이 완료되었습니다.');
-            })
-            .catch(error => {
-                alert('문제가 발생하여 로그아웃 처리');
-            })
-            .finally(() => {
-                // 로컬 스토리지 비우기
-                localStorage.clear();
-
-                // Auth 플레그 했던 거 지우기
-                context.commit('setAuthFlg', false);
-                context.commit('setUserInfo', {});
-
-                router.replace('/login');
-            });
-
+            context.dispatch('auth/chkTokenAndContinueProcess', () => {
+                    // TODO : 백엔드 처리 추가
+                    const url = '/api/logout';
+                    const config = {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                        }
+                    }
+                    
+                    axios.post(url, null, config)
+                    .then(resaponse => {
+                        alert('로그아웃이 완료되었습니다.');
+                    })
+                    .catch(error => {
+                        alert('문제가 발생하여 로그아웃 처리');
+                    })
+                    .finally(() => {
+                    // 로컬 스토리지 비우기
+                    localStorage.clear();
+                    
+                    // Auth 플레그 했던 거 지우기
+                    context.commit('setAuthFlg', false);
+                    context.commit('setUserInfo', {});
+                    
+                    router.replace('/login');
+                });
+            }, {root: true});
         },
         
         

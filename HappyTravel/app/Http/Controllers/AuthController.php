@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MyAuthException;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use UserToken;
@@ -20,10 +21,15 @@ class AuthController extends Controller
 
         Log::debug('로그인 파라미터', $request->all());
 
+        // 탈토된 유저 체크
+        if(is_null($userInfo)) {
+            throw new AuthenticationException('탈퇴된 회원입니다.');
+        }
+
         // 비밀번호 체크
         if(!(Hash::check($request->password, $userInfo->password))) {
             throw new AuthenticationException('비밀번호 체크 오류');
-        }   
+        }
 
         // 토큰 발행
         list($accessToken, $refreshToken) = UserToken::createTokens($userInfo);
@@ -93,7 +99,7 @@ class AuthController extends Controller
 
         // 리프레쉬 토큰 비교
         if($request->bearerToken() !== $userInfo->refresh_token) {
-            throw new AuthenticationException('E22');
+            throw new MyAuthException('E22');
         }
 
         // 토큰 발급

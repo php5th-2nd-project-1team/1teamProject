@@ -1,5 +1,5 @@
 <template>   
-    <div v-if="loadingFlg" class="loading-title">로딩중</div>
+    <LoadingComponent v-if="loadingFlg" />
     <div v-else class="mypage-container">
         <div class="mypage-border">
             <div class="mypage-title">
@@ -12,16 +12,17 @@
                     <div class="profile">
                         <img :src="allUserInfo.profile">
                     </div>
-                    <br>
-                    <div class="mypage-nickname">
-                        <p class="mypage-all-title">닉네임</p>
-                        <p class="mypage-nickname-border">{{ allUserInfo.nickname }}</p>
-                    </div>
                 </div>
                 <div class="mypage-detail">
                     <div class="mypage-name">
-                        <p class="mypage-all-title">성함</p>
-                        <p class="mypage-name-border">{{ allUserInfo.name }}</p>
+                        <div class="mypage-name-title">
+                            <p class="mypage-all-title">성함</p>
+                            <p class="mypage-name-border">{{ allUserInfo.name }}</p>
+                        </div>
+                        <div class="mypage-nickname">
+                            <p class="mypage-all-title">닉네임</p>
+                            <p class="mypage-nickname-border">{{ allUserInfo.nickname }}</p>
+                        </div>
                     </div>
 
                     <div class="mypage-number">
@@ -52,6 +53,7 @@
 </template>
 
 <script setup>
+import LoadingComponent from '../utilities/LoadingComponent.vue'
 import { computed, onBeforeMount, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -106,6 +108,16 @@ button {
     padding: 15px;
 }
 
+.mypage-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.mypage-name-title {
+    width: 100%;
+}
+
 .mypage-back-btn {
     background-color: #2986FF;
     border: none;
@@ -143,7 +155,8 @@ button {
 }
 
 .mypage-nickname {
-    width: 50%;
+    width: 30%;
+    margin-right: 30px
 }
 
 .mypage-nickname-border {

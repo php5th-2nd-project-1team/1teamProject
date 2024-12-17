@@ -11,7 +11,7 @@
             <hr>
             <div class="btn-div">
                 <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
-                <button v-else class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button>
+                <button v-else-if="previusPath === '/mypage/auth/update'" class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button>
             </div>
         </div>
     </div>

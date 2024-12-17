@@ -14,8 +14,8 @@ export default {
 	,actions: {
         // 유저 마이페이지 처리
         userDetailPage(context, id) {
+            context.commit('setLoadingFlg', true);
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
-                context.commit('setLoadingFlg', true);
                 const url  = '/api/user/mypage/' + id;
                 const config = {
                     headers: {
@@ -31,6 +31,8 @@ export default {
                 })
                 .catch(error => {
                     console.error(error);
+
+                    context.commit('setLoadingFlg', false);
                 })
                 
                 
@@ -67,7 +69,30 @@ export default {
                     router.replace('/user/mypage');
                 })
                 .catch(error => {
-                    alert('수정에 실패했습니다.');
+                    console.error(error.response.data); // 오류 메시지 확인
+                    let errorMsgList = [];
+                    const errorData = error.response.data;
+                    if(error.response.status === 422) {
+                        if(errorData.data.name) {
+                            errorMsgList.push('이름은 2~4글자의 한글만 입력 가능합니다.');
+                        }
+                        if(errorData.data.nickname) {
+                            errorMsgList.push('닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 가능합니다.');
+                        }
+                        if(errorData.data.address) {
+                            errorMsgList.push('주소는 한글과 숫자만 가능하며 최대 20자리까지 입력 가능합니다.');
+                        }
+                        if(errorData.data.detail_address) {
+                            errorMsgList.push('상세주소는 한글과 숫자만 가능하며 최대 20자리까지 입력 가능합니다.');
+                        }
+                        if(errorData.data.phone_number) {
+                            errorMsgList.push('전화번호는 010-0000-0000 형식으로 입력해야 합니다.');
+                        }
+                    }else{
+                        alert('알 수 없는 에러입니다.')
+                    }
+    
+                    alert(errorMsgList.join('\n'));
                 });
             }, {root: true});
         },

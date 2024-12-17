@@ -25,19 +25,25 @@ class UserController extends Controller
      return response()->json($responseData, 200);
     }
 
-    public function UserDetailUpdate(Request $request) {
+    public function UserDetailUpdate(UserRequest $request) {
 
         $user = User::find($request->user_id);
 
         // update 할 데이터 담기
-        $profile = '/'.$request->file('file')->store('profile');
+        // $profile = '/'.$request->file('file')->store('profile');
+        if(!is_null($request->file('file'))) {
+            $profile = '/'.$request->file('file')->store('profile');
+        }
         $updateData = $request->only('nickname', 'name', 'phone_number', 'address', 'detail_address');
         $user->nickname = $request->nickname;
         $user->name = $request->name;
         $user->phone_number = $request->phone_number;
         $user->address = $request->address;
         $user->detail_address = $request->detail_address;
-        $user->profile = $profile;
+        
+        if(!empty($profile)) {
+            $user->profile = $profile;
+        }
 
         // update 처리
         $result = $user->save($updateData);

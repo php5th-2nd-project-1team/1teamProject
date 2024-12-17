@@ -4,7 +4,7 @@
         <div class="mypage-border">
             <div class="mypage-title">
                 <h1>마이페이지</h1>
-               <button @click="router.push('/index')" class="mypage-back-btn">홈으로</button>
+                <button @click="router.push('/index')" class="mypage-back-btn">홈으로</button>
             </div>
             <hr class="title-hr">
             <div class="mypage-main">
@@ -12,17 +12,23 @@
                     <div class="profile">
                         <img :src="detailUserInfo.profile">
                     </div>
-                    <input @change="setFile" type="file" name="profile" accept="image/*">
-                    <br>
-                    <div class="mypage-nickname">
-                        <p class="mypage-all-title">닉네임</p>
-                        <input v-model="detailUserInfo.nickname" type="text" class="mypage-nickname-border">
+                    <div>
+                        <label for="file">
+                            <div class="file-insert-btn">프로필 수정</div>
+                        </label>
                     </div>
+                    <input @change="setFile" type="file" name="profile" accept="image/*" id="file" style="display: none">
                 </div>
                 <div class="mypage-detail">
                     <div class="mypage-name">
-                        <p class="mypage-all-title">성함</p>
-                        <input v-model="detailUserInfo.name" type="text" class="mypage-name-border">
+                        <div class="mypage-name-title">
+                            <p class="mypage-all-title">성함</p>
+                            <input v-model="detailUserInfo.name" type="text" class="mypage-name-border">
+                        </div>
+                        <div class="mypage-nickname">
+                            <p class="mypage-all-title">닉네임</p>
+                            <input v-model="detailUserInfo.nickname" type="text" class="mypage-nickname-border">
+                        </div>
                     </div>
 
                     <div class="mypage-number">
@@ -139,6 +145,15 @@ button {
     line-height: 2rem;
 }
 
+.mypage-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypage-name-title {
+    width: 100%;
+}
+
 .title-hr {
    width: 100%;
    margin-bottom: 40px;
@@ -183,6 +198,22 @@ button {
     height: 180px;
     border: none;
     border-radius: 50%;
+}
+
+.file-insert-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2986FF;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    margin-top: 20px;
+    padding: 20px;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
 }
 
 .mypage-update-btn {
