@@ -235,7 +235,8 @@ export default {
 			axios.get(url)
 			.then(response => {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
-				context.commit('setPostDetail', response.data.PostDetail);
+				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
+				// console.log(response);
 			})
 			.catch(error => {
 				console.error(error);
@@ -263,7 +264,7 @@ export default {
 			// axios
 			axios.post(url, formData ,config)
 			.then(response => {
-				context.commit('setPostCommentListUnshift', response.data.post);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+				context.commit('setPostCommentListUnshift', response.data.PostDetail);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
 			})
 			.catch(error => {
 				console.error(error);
