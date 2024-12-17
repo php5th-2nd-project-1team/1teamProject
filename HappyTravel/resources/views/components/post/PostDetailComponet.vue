@@ -54,17 +54,16 @@
 
 	<h3 class="postdetail-title-long-content">상세정보</h3>
 	<!-- <hr> -->
-	<p class="postdetail-long-content">
+	<p :class="isExpanded ? 'postdetail-long-content' : 'postdetail-long-content-reduce' ">
 		{{ PostDetail.post_detail_content }}
 	</p>
-	<button class="btn btn-search btn-bg-blue btn-more" type="button">내용 더보기</button>
-	<!-- <img class="postdetail-img" src="/developImg/map_img_test.png" alt=""> -->
+	<button @click="toggleContent" class="btn btn-search btn-bg-blue btn-more" type="button">{{ isExpanded ? '내용 접기' : '내용 더보기' }}</button>
 	<PostMapComponent />
 
 	<div class="postdetail-info-content">
 		<div class="bottom-none">
 			<strong>문의 전화: </strong>
-			<span>{{ PostDetail.post_detail_num }}</span>
+			<span>{{ PostDetail.post_detail_num === null ? '없음' : PostDetail.post_detail_num }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>주소: </strong>
@@ -72,7 +71,8 @@
 		</div>
 		<div class="bottom-none">
 			<strong>홈페이지: </strong>
-			<span><a href="https://www.haeundae.go.kr/tour/" target="_blank">{{ PostDetail.post_detail_site }}</a></span>
+			<!-- <span><a href="https://www.haeundae.go.kr/tour/" target="_blank">{{ PostDetail.post_detail_site }}</a></span> -->
+			<span><a :href="PostDetail.post_detail_site" target="_blank">{{ PostDetail.post_detail_site === null ? '없음' : PostDetail.post_detail_site }}</a></span>
 		</div>
 		<div class="bottom-none">
 			<strong>이용시간: </strong>
@@ -84,7 +84,8 @@
 		</div>
 		<div class="bottom-none">
 			<strong>차량가능: </strong>
-			<span>{{ PostDetail.post_detail_parking }}</span>
+			<!-- 데이터만으로는 0,1로 출력되니 삼향연산자로 출력 -->
+			<span>{{ PostDetail.post_detail_parking === '0' ? '주차 불가능' : '주차가능' }}</span>
 		</div>
 	</div>
 
@@ -92,8 +93,9 @@
 		<h3>펫브리즈 톡 <span>50</span></h3>
 	</div>
 	<div class="postdetail-comment-form-box">
-		<textarea name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea>
-		<button class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
+		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
+		<textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
+		<button @click="$store.dispatch('post/storePostComment', post_comment)" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
 	<ul>
 		<li class="bottom-none">
@@ -180,13 +182,10 @@
 // 지도api 컴포넌트 
 import PostMapComponent from './component/PostMapComponent.vue';
 // 이미지 슬라이드
-// import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // 이미지 슬라이드
-// Import Swiper styles
 import 'swiper/css';
-
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
@@ -203,12 +202,12 @@ const thumbsSwiper = ref(null);
 const setThumbsSwiper = (swiper) => {
 	thumbsSwiper.value = swiper;
 }
+// ------------------------------------------
 
 const store = useStore();
 
-// 포스트 상세 정보    인데 오ㅐ 안와아ㅏㅏㅏ
+// 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
-console.log(store.state.post.postDetail);
 
 
 
@@ -228,6 +227,20 @@ const closeModal = () => {
 // 로딩 관련
 
 const isLoading = computed(() => store.state.post.isLoading);
+
+// ------------------------------------------
+// 포스트 상세 내용 모두 출력 => 기존에 false로 줄임상태에서 버튼 클릭 이벤트시 true로 전환하고 css 바꾸기
+const isExpanded = ref(false);
+const toggleContent = () => {
+	isExpanded.value = !isExpanded.value;
+};
+
+// ------------------------------------------
+// 댓글 작성
+const comment = reactive({
+	post_comment: ''
+});
+
 </script>
 	
 <style scoped>
@@ -325,13 +338,19 @@ const isLoading = computed(() => store.state.post.isLoading);
 .postdetail-long-content {
 	margin-top: 10px;
 	font-size: 20px;
+
+	width: 60%;
+}
+
+.postdetail-long-content-reduce {
+	margin-top: 10px;
+	font-size: 20px;
 	display: -webkit-box;
 	-webkit-line-clamp: 7;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-webkit-box-orient: vertical;
 	width: 60%;
-	/* height: 200px; */
 }
 
 .postdetail-info-content {

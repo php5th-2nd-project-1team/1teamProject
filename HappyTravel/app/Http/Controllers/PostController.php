@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
 use App\Models\PostComments;
+use UserToken;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -85,14 +87,22 @@ class PostController extends Controller
 
 	// 	return response()->json($responseData, 200);
 	// }
+
 	
 	// 포스트 댓글 작성
-	public function storePostComment(Request $request) {
-		$storePostComment = PostComments::with('user')->find($request->id);
+	public function storePostComment(StoreCommentRequest $request) {
+		// 유효성 체크
+		$insertData = $request->only('post_comment');
+		$insertData['user_id'] = UserToken::getInPayload($request->bearerToken(), 'idt');
+		// post_id 를 받아와야 함 17은 임시
+		$insertData['post_id'] = 17;
+
+		// insert
+		$storePostComment = PostComments::create($insertData);
 
 		$responseData = [
 			'success' => true
-			,'msg' => '포스트 댓글 작성'
+			,'msg' => '포스트 댓글 작성 성공'
 			,'storePostComment' => $storePostComment->toArray()
 		];
 

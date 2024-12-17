@@ -5,7 +5,6 @@
     <KakaoMapMarker :lat="PostDetail.post_lat" :lng="PostDetail.post_lon" />
   </KakaoMap>
 
-  <button @click="{PostDetail.post_lat = 37.34394261; PostDetail.post_lon = 126.694581; console.log(PostDetail)}">위도 경도 변경</button>
 </template>
 
 <script setup>
