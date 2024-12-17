@@ -36,6 +36,14 @@ class UserRequest extends FormRequest
             $rules['name'] = ['required', 'between:1,20', 'regex:/^[가-힣]+$/u'];
             $rules['gender'] = ['required', 'regex:/^[0-2]{1}$/'];
             $rules['profile'] = ['required', 'image'];
+        }else if($this->routeIs('user.Update')) {
+            unset($rules['account']);
+            unset($rules['password']);
+            $rules['name'] = ['required', 'regex:/^[가-힣]{2,4}$/u'];
+            $rules['nickname'] = ['required', 'regex:/^[a-zA-Z0-9가-힣]{1,8}$/u'];
+            $rules['address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/'];
+            $rules['detail_address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/'];
+            $rules['phone_number'] = ['required', 'regex:/^010-\d{4}-\d{4}$/'];
         }
 
 

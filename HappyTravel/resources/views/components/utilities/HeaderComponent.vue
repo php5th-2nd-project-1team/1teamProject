@@ -84,7 +84,7 @@
 					<router-link to="/registration"><button class="btn btn-header btn-bg-gray" type="button">회원가입</button></router-link>
 				</div>
 				<div v-else>
-					<router-link to="/user/mypage" ><button class="btn btn-header btn-bg-blue" type="button">마이페이지</button></router-link>
+					<router-link to="/user/mypage"><button class="btn btn-header btn-bg-blue" type="button">마이페이지</button></router-link>
 					<button @click="$store.dispatch('auth/logout')" class="btn btn-header btn-bg-gray" type="button">로그아웃</button>
 				</div>
 			</div>

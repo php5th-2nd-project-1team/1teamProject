@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Exceptions\MyAuthException;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
@@ -72,7 +73,7 @@ class UserToken {
         // 토큰 존재 유무 체크
         // 토큰이 없는 경우, 유효시간이 지난 토큰, 위조된 토큰 등 경우가 많다.
         if(empty($token)) {
-            throw new AuthenticationException('E20');
+            throw new MyAuthException('E20');
         }
 
         // 토큰 위조 검사
@@ -80,12 +81,12 @@ class UserToken {
         Log::debug('header : '.$header);
         if(UserEncrypt::subSalt($this->createSignature($header, $payload), env('TOKEN_SALT_LENGTH')) 
             !== UserEncrypt::subSalt($signature, env('TOKEN_SALT_LENGTH'))) {
-            throw new AuthenticationException('E22'); 
+            throw new MyAuthException('E22'); 
         }
 
         // 유효시간 체크
         if($this->getInPayload($token, 'exp') < time()) {
-            throw new AuthenticationException('E21');
+            throw new MyAuthException('E21');
         }
 
         Log::debug('***************************** chkToken end *******************************');
@@ -110,7 +111,7 @@ class UserToken {
 
             // 페이로드에 해당 키의 데이터가 있는지 확인
             if(empty($decodePayload) || !isset($decodePayload->$key)) {
-                throw new AuthenticationException('E23');
+                throw new MyAuthException('E23');
             }
 
             return $decodePayload->$key;

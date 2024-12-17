@@ -31,7 +31,6 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/reissue', [AuthController::class, 'reissue'])->name('auth.reissue');
     Route::post('/mypage/auth/update', [UserController::class, 'UserDetailUpdate'])->name('user.Update');
     Route::post('/user/withdraw/{id}', [UserController::class, 'UserDestroy'])->name('user.destroy');
-    route::post('login', [AuthController::class, 'login'])->name('auth.login');
     
     Route::post('/user/withdraw', [UserController::class, 'passwordChk'])->name('user.passwordChk');
 });
