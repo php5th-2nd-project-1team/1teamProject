@@ -9,6 +9,7 @@ export default {
         ,links: []        
         ,currentPage: 0
         ,noticeDetail: {}        
+        ,noticeUrl: ''
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
@@ -29,6 +30,10 @@ export default {
         setNoticeDetail(state, noticeDetail) {
             state.noticeDetail = noticeDetail;
         },
+        setNoticeUrl(state, noticeUrl) {
+            state.noticeUrl = noticeUrl;
+        },
+
        
         
 	}   
@@ -50,7 +55,10 @@ export default {
         },
 
         noticeLinkList(context, url) {
-
+    
+                localStorage.setItem('Url', url);
+                context.commit('setNoticeUrl', url);
+            
             axios.get(url) 
             .then(response => {
                 context.commit('setNoticeList', response.data.notice.data);
@@ -62,6 +70,7 @@ export default {
                 console.error(error);
             })
         },
+
         noticeDetailList(context, id) {
            
             const url = '/api/community/notice/detail/' + id;
@@ -75,6 +84,10 @@ export default {
             .catch(error => {
                 console.error(error);
             });
+        },
+
+        currentPageUpdate(context, current_page) {
+            context.commit('setCurrentPage', response.data.notice.current_page);
         }
 	}
 	,getters: {

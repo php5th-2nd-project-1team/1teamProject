@@ -58,7 +58,15 @@
     const store = useStore();
     const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
     const noticeList = computed(() => store.state.notice.noticeList);
-    onBeforeMount(() =>store.dispatch('notice/noticeList'));
+    
+    onBeforeMount(() => {
+        if(noticeUrl !== null) {
+            store.dispatch('notice/noticeList', noticeUrl);
+        }else {
+            store.dispatch('notice/noticeList');
+        }
+    });
+    
     const links = computed(()=> store.state.notice.links);
 
     const backBtn = "&laquo; Previous";

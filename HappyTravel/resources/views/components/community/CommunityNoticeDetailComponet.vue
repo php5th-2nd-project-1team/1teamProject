@@ -27,7 +27,7 @@
         </div> 
 
         <div>
-            <button>이전</button>
+            <button @click="$route.push('/community/notice', noticeUrl)">이전</button>
         </div>
     </div>   
 </template>
@@ -39,9 +39,14 @@ import { useRoute } from 'vue-router';
 
 const store = useStore();
 
+
+
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
 
 const route = useRoute();
+
+
+const noticeUrl = localStorage.getItem('Url');
 
 onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
 
