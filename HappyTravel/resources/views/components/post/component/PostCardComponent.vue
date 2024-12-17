@@ -22,8 +22,7 @@
 	const store = new useStore();
 
 	const redirectDetail = (post_id) => {
-		store.dispatch('post/showPost', post_id);
-		router.push('/post/detail');
+		router.push('/posts/'+post_id);
 	}
 </script>
 <style scoped>

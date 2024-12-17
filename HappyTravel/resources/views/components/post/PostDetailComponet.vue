@@ -193,8 +193,9 @@ import 'swiper/css/thumbs';
 
 // import required modules
 import { Pagination, Navigation, Thumbs, FreeMode } from 'swiper/modules';
-import { computed, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 const modules = reactive([Navigation, Pagination, Thumbs]);
 const thumbsSwiper = ref(null);
@@ -209,6 +210,12 @@ const store = useStore();
 // 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
 
+//  ------------------------------------------
+// 데이터 호출 
+const route = useRoute();
+onBeforeMount(()=>{
+	store.dispatch('post/showPost', route.params.id);
+});
 
 
 // ------------------------------------------
@@ -225,8 +232,6 @@ const closeModal = () => {
 };
 // ------------------------------------------
 // 로딩 관련
-
-const isLoading = computed(() => store.state.post.isLoading);
 
 // ------------------------------------------
 // 포스트 상세 내용 모두 출력 => 기존에 false로 줄임상태에서 버튼 클릭 이벤트시 true로 전환하고 css 바꾸기
