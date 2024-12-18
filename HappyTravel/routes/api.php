@@ -33,6 +33,9 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/user/withdraw/{id}', [UserController::class, 'UserDestroy'])->name('user.destroy');
     
     Route::post('/user/withdraw', [UserController::class, 'passwordChk'])->name('user.passwordChk');
+
+    // 댓글 작성
+    Route::post('/posts/{id}', [PostController::class, 'storePostComment'])->name('store.postComment');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -67,7 +70,6 @@ Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.ty
  * 민주님 Route *
  */
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
-Route::get('/post/detail/{id}', [PostController::class, 'showPost'])->name('showPost.post');
+Route::get('/posts/{id}', [PostController::class, 'showPost'])->name('showPost.post');
 
-// 댓글 작성
-Route::post('/post/comment', [PostController::class, 'storePostComment'])->name('store.postComment');
+
