@@ -29,13 +29,15 @@ class UserRequest extends FormRequest
         // 로그인 할 때 처리
         if($this->routeIs('auth.login')) {
             $rules['account'][] = 'exists:users,account';
-        }else if($this->routeIs('user.store')) {
+        }else if($this->routeIs('auth.registration')) {
             // 회원가입 할 때 처리
             $rules['account'][] = 'unique:users,account';
             $rules['password_chk'] = ['same:password'];
             $rules['name'] = ['required', 'between:1,20', 'regex:/^[가-힣]+$/u'];
             $rules['gender'] = ['required', 'regex:/^[0-2]{1}$/'];
-            $rules['profile'] = ['required', 'image'];
+            $rules['file'] = ['required', 'image'];
+            $rules['nickname'] = ['required', 'regex:/^[a-zA-Z0-9가-힣]{1,8}$/u'];
+            $rules['phone_number'] = ['required', 'regex:/^010-\d{4}-\d{4}$/'];
         }else if($this->routeIs('user.Update')) {
             unset($rules['account']);
             unset($rules['password']);
@@ -44,6 +46,8 @@ class UserRequest extends FormRequest
             $rules['address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/'];
             $rules['detail_address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/'];
             $rules['phone_number'] = ['required', 'regex:/^010-\d{4}-\d{4}$/'];
+        }else if($this->routeIs('auth.IdChk')) {
+            unset($rules['password']);
         }
 
 

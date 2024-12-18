@@ -85,45 +85,79 @@ export default {
                 });
             }, {root: true});
         },
-        
-        
-        
-        
-        
-    //     /**
-    //     * 회원가입 처리
-    //     * 
-    //     * @param {*} context
-    //     * @param {*} userInfo
-    //     */
-    //    registration(context, userInfo) {
-    //        const url = '/api/registration'
-    //        const config = {
-    //            headers: {
-    //                'Content-Type': 'mutipart/form-data'
-    //            }
-    //        };
-           
-    //        // form data 세팅
-    //        const formData = new FormData();
-    //        formData.append('account', userInfo.account);
-    //        formData.append('password', userInfo.password);
-    //        formData.append('password_chk', userInfo.password_chk);
-    //        formData.append('name', userInfo.name);
-    //        formData.append('gender', userInfo.gender);
-    //        formData.append('profile', userInfo.profile);
 
-    //        axios.post(url, formData, config)
-    //        .then(response => {
-    //            alert('성공함');
-    //            router.replace('/login');
-    //        })
-    //        .catch(error => {
-    //            alert('실패함');
-    //        });
-           
+        
+        
+        
+        
+        
+        
+    // 유저 정보 수정 처리
+    userRegistration(context, form) {
+            const url = '/api/registration'
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
 
-    //    },
+
+            // form data 세팅
+            const formData = new FormData();
+            formData.append('account', form.account);
+            formData.append('name', form.name);
+            formData.append('password', form.password);
+            formData.append('passwordChk', form.passwordChk);
+            formData.append('nickname', form.nickname);
+            formData.append('phone_number', form.phone_number);
+            formData.append('address', form.address);
+            formData.append('detail_address', form.detail_address);
+            formData.append('post_code', form.zonecode);
+            formData.append('gender', form.gender);
+            formData.append('file', form.file);
+
+            axios.post(url, formData, config)
+            .then(response => {
+                alert('회원 가입이 완료되었습니다.');
+
+                router.replace('/login');
+            })
+            .catch(error => {
+                console.error(error.response.data); // 오류 메시지 확인
+                let errorMsgList = [];
+                const errorData = error.response.data;
+                if(error.response.status === 422) {
+                    if(errorData.data.account) {
+                        errorMsgList.push('아이디 중복 체크를 확인해주세요.');
+                    }
+                    if(errorData.data.password_chk) {
+                        errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                    }
+                    if(errorData.data.name) {
+                        errorMsgList.push('성함은 2~4글자의 한글만 입력 가능합니다.');
+                    }
+                    if(errorData.data.nickname) {
+                        errorMsgList.push('닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 가능합니다.');
+                    }
+                    if(errorData.data.detail_address) {
+                        errorMsgList.push('상세주소는 한글과 숫자만 가능하며 최대 20자리까지 입력 가능합니다.');
+                    }
+                    if(errorData.data.phone_number) {
+                        errorMsgList.push('전화번호는 010-0000-0000 형식으로 입력해야 합니다.');
+                    }
+                    if(errorData.data.gender) {
+                        errorMsgList.push('성별을 선택해주세요.');
+                    }
+                    if(errorData.data.address) {
+                        errorMsgList.push('주소를 설정해주세요.');
+                    }
+                }else{
+                    alert('알 수 없는 에러입니다.')
+                }
+
+                alert(errorMsgList.join('\n'));
+            });
+    },
        
        
        

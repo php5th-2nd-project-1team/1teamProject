@@ -117,4 +117,41 @@ class AuthController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+    public function userIdChk(UserRequest $request) {
+        $userId = User::where('account', $request->account)->exists();
+
+        if($userId) {
+            throw new MyAuthException('E25');
+        }
+        
+        $responseData = [
+            'success' => true,
+            'msg' => '사용가능한 아이디입니다.'
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
+    public function registration(UserRequest $request) {
+        $insertData = $request->only('account', 'name', 'gender');
+        $insertData['password'] = Hash::make($request->password);
+        $insertData['profile'] = '/'.$request->file('file')->store('profile');
+        $insertData['nickname'] = $request->nickname;
+        $insertData['phone_number'] = $request->phone_number;
+        $insertData['address'] = $request->address;
+        $insertData['detail_address'] = $request->detail_address;
+        $insertData['post_code'] = $request->post_code;
+
+        // insert 처리
+        User::create($insertData);
+
+        // response Data 생성
+        $responseData = [
+            'success' => true,
+            'msg' => '성공'
+        ];
+
+        return response()->json($responseData, 200);
+    }
 }

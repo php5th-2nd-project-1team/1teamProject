@@ -7,7 +7,7 @@
             <span>아이디 <span class="span-color">*</span></span>
             <div class="id-container">
                 <input type="text" v-model="form.account" placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합" class="input-box id-box"> 
-                <button class="duplication-btn">중복확인</button>
+                <button @click="$store.dispatch('user/userIdCheck', form)" class="duplication-btn">중복확인</button>
             </div>
         </div>
         <div class="registration-grid">
@@ -33,7 +33,7 @@
         </div>
         <div class="registration-grid">
             <span>휴대폰 <span class="span-color">*</span></span>
-            <input type="text" v-model="form.account" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다. 하이픈 포함(-)" class="input-box">
+            <input type="text" v-model="form.phone_number" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다. 하이픈 포함(-)" class="input-box">
         </div>
         <!-- 카카오 주소 검색 api --------------------------------------------------- -->
         <!-- 주소 검색 버튼 -->
@@ -52,7 +52,7 @@
                 <input type="text" v-model="form.address" placeholder="주소" readonly class="input-box-address">
             </div>
             <div class="registration-grid">
-                <label>상세 주소</label>
+                <label>상세 주소 <span class="span-color">*</span></label>
                 <input type="text" v-model="form.detailAddress" placeholder="상세 주소 입력" class="input-box-address">
             </div>
         </div>    
@@ -61,16 +61,16 @@
             <span>성별 *</span>
             <div class="id-container gender-gap">
                 <div>
-                    <input type="radio" name="gender" value="0"> 남
+                    <input v-model="form.gender"type="radio" name="gender" value="0"> 남
                 </div>
                 <div>
-                    <input type="radio" name="gender" value="1"> 여
+                    <input v-model="form.gender" type="radio" name="gender" value="1"> 여
                 </div>
             </div>
         </div>
     </div>
     <div class="insert-container">
-        <button class="insert-btn">가입하기</button>
+        <button class="insert-btn" @click="$store.dispatch('auth/userRegistration', form)">가입하기</button>
     </div>
 
   </template>
@@ -90,11 +90,12 @@ import { reactive, onMounted, ref } from "vue";
         zonecode: '',       // 우편번호 
         address: '',        // 기본 주소
         detailAddress: '',  // 상세 주소
+        gender: ''          // 성별
     });
 
     const setFile = (e) => {
-    form.file = e.target.files[0];
-    form.profile = URL.createObjectURL(form.file);
+        form.file = e.target.files[0];
+        form.profile = URL.createObjectURL(form.file);
     }
 
     let addressFlg = ref(false);
@@ -136,7 +137,6 @@ import { reactive, onMounted, ref } from "vue";
     // 컴포넌트가 마운트될 때 스크립트 로드
     onMounted(async () => {
         await loadDaumPostcodeScript();
-        console.log("카카오 주소 API 스크립트가 로드되었습니다.");
     });
 
 </script>

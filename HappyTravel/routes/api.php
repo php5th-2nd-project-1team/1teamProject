@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * 상기님 Route *
  */
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/registration', [AuthController::class, 'registration'])->name('auth.registration');
+Route::post('/userIdCheck', [AuthController::class, 'userIdChk'])->name('auth.IdChk');
 Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.show');
 Route::post('/passwordcheck', [AuthController::class, 'passwordChk'])->name('auth.passwordcheck');
 

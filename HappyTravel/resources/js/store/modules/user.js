@@ -115,6 +115,36 @@ export default {
             }, {root: true});
         },
 
+        // 아이디 중복 체크 
+        userIdCheck(context, userId) {
+            const url = '/api/userIdCheck';
+
+            const data = JSON.stringify(userId);
+
+            console.log(userId);
+
+            axios.post(url, data)
+            .then(response => {
+                console.log(response.data);
+                alert('사용 가능한 아이디입니다.');
+            })
+            .catch(error => {
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 422) {
+                    console.log(errorData.data.account)
+                    if(errorData.data.account) {
+                        errorMsgList.push(errorData.data.account[0]);
+                    }
+                    alert(errorMsgList.join('\n'));
+                }else if(error.response.status === 402) {
+                    alert('이미 사용중인 아이디입니다.');
+                }
+                
+            });
+        },
+
         userDelete(context, id) {
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
                 const url = '/api/user/withdraw/' + id;
