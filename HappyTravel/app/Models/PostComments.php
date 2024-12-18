@@ -18,7 +18,16 @@ class PostComments extends Model
         'post_comment',
     ];
 
-    protected function serialize(\DateTimeInterface $date) {
-        return $date->format('Y-m-d H:i:s');
+    protected function serializeDate(\DateTimeInterface $date) {
+        // 댓글 기능은 일자를 날짜만 둠 (시간x)
+        return $date->format('Y-m-d');
+    }
+
+    public function post(){
+        return $this->belongsTo(Post::class, 'post_id')->select('post_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id')->select('user_id', 'nickname', 'profile');
     }
 }

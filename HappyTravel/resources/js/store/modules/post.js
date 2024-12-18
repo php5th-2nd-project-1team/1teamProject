@@ -17,9 +17,7 @@ export default {
 	namespaced: true,
 	state: () =>({
 		// post 부분
-
-		comment : {picture: '/img/abc.png', comment : '랄ㄹ랄ㄹ', name: '펫타곤', created_at: '2024-12-10'}
-		,postCommentList : []
+		postCommentList : []
 		,postComment : ''
 		,postList : []
 		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
@@ -71,6 +69,10 @@ export default {
 		,setBeforeLocal(state, comment){
 			// default : '00'
 			state.beforeLocal = comment;
+		}
+		// 포스트 댓글 리스트
+		,setPostCommentList(state, lists) {
+			state.postCommentList = state.postCommentList.concat(lists);
 		}
 		// 포스트 댓글 작성 최상위로 이동
 		,setPostCommentListUnshift(state, comment) {
@@ -224,21 +226,22 @@ export default {
 
 		// 포스트 상세 출력
 		,showPost(context, id){
-			const url = '/api/post/detail/' + id;
-
+			const url = '/api/posts/' + id;
+			
+			
 			context.commit('setIsLoading', true);
-
-			// const config = {
-			// 	headers: {
-			// 		'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-			// 	}
-			// }
-
+			
 			axios.get(url)
 			.then(response => {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
 				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
-				// console.log(response);
+				context.commit('setPostCommentList', response.data.PostComment.data);
+
+				context.commit('setCurrentPage', response.data.PostComment.current_page);
+				if(context.state.totalPage === 0) {
+					context.commit('setTotalPage', response.data.PostComment.last_page);
+				}
+				// console.log(response.data.PostComment);
 			})
 			.catch(error => {
 				console.error(error);
@@ -251,28 +254,35 @@ export default {
 
 		// 포스트 댓글 작성(하는중)
 		,storePostComment(context, data) {
-			const url = '/api/post/detail';
+			// console.log('data:', data);
+			const url = '/api/posts/' + data.post_id;
 
 			const config = {
 				headers: {
 					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
 				}
 			}
-
 			// // form data 생성
 			// const formData = new formData();
 			// // 전달 데이터 셋팅
 			// formData.append('post_comment', data.post_comment);
+			// const serialize = new serialize();
+			const commentData = {
+				post_comment: data.post_comment,
+				post_id: data.post_id,
+			};
+			// json으로 파싱
+			const Data = JSON.stringify(commentData);
 
 			// axios
-			axios.post(url, config)
+			axios.post(url, Data, config)
 			.then(response => {
-				context.commit('setPostCommentListUnshift', response.data.PostDetail);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+				context.commit('setPostCommentListUnshift', response.data.postComment);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+				// console.log(response.data.postComment);
+				// alert('댓글을 작성하였습니다.');
 			})
 			.catch(error => {
 				console.error('댓글 작성 실패');
-			}).finally(() => {
-				context.comment('setIsLoading', false);
 			});
 		}
 	}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
 use App\Models\PostComments;
+use App\Models\PostDetail;
 use UserToken;
 use Illuminate\Http\Request;
 
@@ -36,10 +37,6 @@ class PostController extends Controller
 		return response()->json($responseData, 200);
 	}
 
-	// 포스트 상세 출력
-	public function show(Request $request) {
-		$Post = Post::with('manager')->find($request->id);
-	}
 
 	public function populerPost(Request $request){
 		$type = $request->type;
@@ -64,12 +61,15 @@ class PostController extends Controller
 	// 포스트 상세 출력
 	// postDetail 도 PostController에 작성 => PostDetailController 은 불필요
 	public function showPost(Request $request) {
+		$PostComment = null;
 		$PostDetail = Post::with('manager')->find($request->id);
+		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
 
 		$responseData = [
 			'success' => true
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
+			,'PostComment' => $PostComment->toArray()
 		];
 
 		return response()->json($responseData, 200);
@@ -90,12 +90,20 @@ class PostController extends Controller
 
 	
 	// 포스트 댓글 작성
-	public function storePostComment(StoreCommentRequest $request) {
+	public function storePostComment(StoreCommentRequest $request, $id) {
+		// 로컬스토리지에 토큰이 없을시 작성안됨 조건도 넣기
+		$token = $request->bearerToken();
+
+		if(!$token) {
+			return response()->json([
+				'success' => false
+				,'msg' => '로그인한 유저만 댓글을 작성할 수 있습니다.'
+			], 400);
+		}
 		// 유효성 체크
 		$insertData = $request->only('post_comment');
-		$insertData['user_id'] = UserToken::getInPayload($request->bearerToken(), 'idt');
-		// post_id 를 받아와야 함 17은 임시
-		$insertData['post_id'] = 17;
+		$insertData['user_id'] = UserToken::getInPayload($token, 'idt');
+		$insertData['post_id'] = $id;
 
 		// insert
 		$storePostComment = PostComments::create($insertData);

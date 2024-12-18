@@ -1,9 +1,9 @@
 <template>
 
 <div class="btn-postdetail-pagenav">
-	<a href=""><span>홈</span></a>
+	<router-link to="/index"><span>홈</span></router-link>
 	<span> > </span>
-	<a href=""><span>펫브리즈 고</span></a>
+	<router-link to="/posts"><span>펫브리즈 고</span></router-link>
 </div>
 	
 <div class="postdetail-container">
@@ -11,9 +11,9 @@
 	<p v-if="PostDetail" class="postdetail-local">{{ PostDetail.post_local_name }}</p>
 	<h3 v-if="PostDetail" class="postdetail-content">{{ PostDetail.post_content }}</h3>
 	<ul class="btn-postdetail-nav">
-		<li><a href="">사진보기</a></li>
-		<li><a href="">상세정보</a></li>
-		<li><a href="">여행톡</a></li>
+		<li><a href="#" @click.prevent="scrollTo('section1')">사진보기</a></li>
+		<li><a href="#" @click.prevent="scrollTo('section2')">상세정보</a></li>
+		<li><a href="#" @click.prevent="scrollTo('section3')">여행톡</a></li>
 	</ul>
 
 	<div class="postdetail-post-area">
@@ -28,7 +28,7 @@
 	</div>
 
 		<!-- 이미지 슬라이드 -->
-		 <div class="w-full">
+		 <div class="w-full" id="section1">
 			 <swiper
 			 	:ref="{swiperRef}"
 				 :pagination="{
@@ -52,7 +52,7 @@
 			  </swiper>
 		 </div>
 
-	<h3 class="postdetail-title-long-content">상세정보</h3>
+	<h3 class="postdetail-title-long-content" id="section2">상세정보</h3>
 	<!-- <hr> -->
 	<p :class="isExpanded ? 'postdetail-long-content' : 'postdetail-long-content-reduce' ">
 		{{ PostDetail.post_detail_content }}
@@ -89,50 +89,16 @@
 		</div>
 	</div>
 
-	<div class="postdetail-comment-title">
+	<div class="postdetail-comment-title" id="section3">
 		<h3>펫브리즈 톡 <span>50</span></h3>
 	</div>
 	<div class="postdetail-comment-form-box">
 		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
-		<textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
-		<button @click="$store.dispatch('post/storePostComment', post_comment)" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
+		<textarea v-model="comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
+		<button @click="$store.dispatch('post/storePostComment', commentData)" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
-	<ul>
-		<li class="bottom-none">
-			<div class="comment-box">
-				<img class="comment-img" src="/developImg/seoul_icon.png" alt="">
-				<div class="comment-txt">
-					<p>펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!</p>
-					<button type="button">신고하기</button>
-					<div class="comment-created">
-						<span class="comment-name">펫타곤</span>
-						<!-- <span>펫타곤{{ $store.state.post.comment.name }}</span> -->
-						<span class="comment-date">2024-12-10</span>
-					</div>
-				</div>
-			</div>
-		</li>
-
-		<li class="bottom-none">
-			<div class="comment-box">
-				<img class="comment-img" src="/developImg/seoul_icon.png" alt="">
-				<div class="comment-txt">
-					<p>펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!펫브리즈에서 강아지와 즐거운 시간을 보냈어요!!!!!!</p>
-					<button type="button">신고하기</button>
-					<div class="comment-created">
-						<span class="comment-name">펫타곤</span>
-						<!-- <span>펫타곤{{ $store.state.post.comment.name }}</span> -->
-						<span class="comment-date">2024-12-10</span>
-					</div>
-				</div>
-			</div>
-		</li>
-	</ul>
-
-	<!-- <div class="postdetail-comment-list"> -->
-	<!-- </div> -->
-	
-	<button class="btn btn-bg-blue btn-more" type="button">댓글 더보기</button>
+	<!-- 댓글 리스트 -->
+	<CommentComponent />
 
 	<!-- 슬라이드 이미지 modal -->
 	<div v-show="modalFlg" class="slide-img-box">
@@ -181,6 +147,8 @@
 <script setup>
 // 지도api 컴포넌트 
 import PostMapComponent from './component/PostMapComponent.vue';
+// 댓글 컴포넌트
+import CommentComponent from '../utilities/CommentComponent.vue';
 // 이미지 슬라이드
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -217,7 +185,6 @@ onBeforeMount(()=>{
 	store.dispatch('post/showPost', route.params.id);
 });
 
-
 // ------------------------------------------
 // 모달 관련
 // 모달숨기기
@@ -231,7 +198,13 @@ const closeModal = () => {
 	modalFlg.value = false;
 };
 // ------------------------------------------
-// 로딩 관련
+// 상단 사진,내용,여행톡 이동
+const scrollTo = (id) => {
+	const element = document.getElementById(id);
+	if(element) {
+		element.scrollIntoView({ behavior: 'smooth' });
+	}
+};
 
 // ------------------------------------------
 // 포스트 상세 내용 모두 출력 => 기존에 false로 줄임상태에서 버튼 클릭 이벤트시 true로 전환하고 css 바꾸기
@@ -240,10 +213,14 @@ const toggleContent = () => {
 	isExpanded.value = !isExpanded.value;
 };
 
+
 // ------------------------------------------
 // 댓글 작성
-const comment = reactive({
-	post_comment: ''
+const comment = ref('');
+// const postId = this.$route.params.id;
+const commentData = reactive({
+	post_comment : comment.value
+	,post_id : route.params.id
 });
 
 </script>
@@ -410,31 +387,6 @@ const comment = reactive({
 	grid-template-columns: repeat(auto-fit, minmax(1fr 1fr));
 	
 }
-
-
- /* 댓글 창 디자인 */
-.comment-box {
-	display: grid;
-	grid-template-columns: 100px 1fr;
-	padding: 30px;
-	margin: 30px 50px;
-	border-bottom: 1px solid #939393;
-}
-
- .comment-img {
-	border-radius: 50%;
- }
-
-
- .comment-name {
-	margin-right: 20px;
-	font-weight: 500;
- }
-
- .comment-date {
-	color: #939393;
-	font-size: 15px;
- }
 
  .btn-more {
 	width: 100px;

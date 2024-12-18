@@ -16,7 +16,7 @@ class Post extends Model
         'post_id',
     ];
 
-    protected function serialize(\DateTimeInterface $date) {
+    protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
 
