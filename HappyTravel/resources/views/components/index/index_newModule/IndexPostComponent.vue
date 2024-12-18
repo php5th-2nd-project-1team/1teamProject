@@ -13,9 +13,10 @@
 			@slideChange="syncSlides"
 			>
 				<SwiperSlide v-for="value in postList" :key="value">
-					<h1>{{ value.post_title }}</h1>
+					<h1 class="index-controller-cardTitle">{{ value.post_title }}</h1>
 					<br>
 					<h3>{{ value.post_local_name }}</h3>
+					<h4 @click="$router.push(`/posts/${value.post_id}`)" style="cursor: pointer; font-weight: 400;">자세히 보기</h4>
 				</SwiperSlide>
 			</Swiper>
 			<div class="index-btn-area">
@@ -85,7 +86,7 @@
 		justify-content: center;
 		align-items: flex-start;
 
-		padding: 1rem;
+		padding: 2.5rem;
 		gap:1rem;
 	}
 
@@ -98,10 +99,17 @@
 		border-bottom-left-radius: 0px;
 	}
 
+	.index-controller-cardTitle{
+		font-size: 2.5rem;
+		word-break: keep-all;
+		overflow-wrap: anywhere;
+	}
+
 	.index-btn-area{
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		gap: 1rem;
 	}
 
@@ -147,8 +155,8 @@
 	}
 
 	:deep(.swiper-pagination-bullet) {
-		width: 24px; /* 불릿 크기 설정 */
-		height: 24px; /* 불릿 크기 설정 */
+		width: 18px; /* 불릿 크기 설정 */
+		height: 18px; /* 불릿 크기 설정 */
 		background: rgba(0, 0, 0, 0.5); /* 기본 색상 */
 		opacity: 1; /* 불릿의 불투명도 */
 	}
