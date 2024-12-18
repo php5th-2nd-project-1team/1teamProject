@@ -26,7 +26,7 @@
                 <p>{{ item.notice_id }}</p>
             </div>      
             <div class="notice_content_title"> 
-                <p @click="$router.push('/community/notice/detail/' + item.notice_id)">{{ item.notice_title }}</p>     
+                <p @click="$router.push('/community/notice/' + item.notice_id)">{{ item.notice_title }}</p>     
             </div>  
             <div class="notice_content_manager">
                 <p>{{  item.managers.m_nickname}}</p>
@@ -38,9 +38,19 @@
                 <img v-if="item.notice_img !== null" :src="item.notice_img">
             </div>     
         </div>
-        <div class="pagination">
+        <!-- <div class="pagination">
             <div v-for="item in links" :key="item.label">
                 <button class="pagenate-btn" @click="$store.dispatch('notice/noticeLinkList', item.url)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                    <span v-if="item.label === backBtn">{{ '이전' }}</span> 
+                    <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
+                    <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
+                    <span v-else>{{ item.label }}</span>
+                </button>
+            </div>
+        </div> -->
+        <div class="pagination">
+            <div v-for="item in links" :key="item.label">
+                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', item.label)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
                     <span v-if="item.label === backBtn">{{ '이전' }}</span> 
                     <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
                     <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
@@ -58,15 +68,12 @@
     const store = useStore();
     const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
     const noticeList = computed(() => store.state.notice.noticeList);
-    
+
     onBeforeMount(() => {
-        if(noticeUrl !== null) {
-            store.dispatch('notice/noticeList', noticeUrl);
-        }else {
-            store.dispatch('notice/noticeList');
+            store.dispatch('notice/noticeList', 0);
         }
-    });
-    
+    );
+   
     const links = computed(()=> store.state.notice.links);
 
     const backBtn = "&laquo; Previous";

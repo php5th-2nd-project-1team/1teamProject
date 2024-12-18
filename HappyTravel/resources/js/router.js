@@ -140,7 +140,7 @@ const routes=[
 				component: CommunityNoticeComponent,
 			},
 			{
-				path:'notice/detail/:id',
+				path:'notice/:id',
 			  component:CommunityNoticeDetailComponet,	
 			  
 			},	

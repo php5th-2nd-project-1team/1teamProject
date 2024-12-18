@@ -52,7 +52,7 @@ Route::post('/passwordcheck', [AuthController::class, 'passwordChk'])->name('aut
  * 한결님 Route *
  */
 Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
-Route::get('/community/notice/detail/{id}', [NoticeController::class, 'show'])->name('show.notice');
+Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
 
 
 /**

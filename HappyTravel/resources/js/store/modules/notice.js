@@ -7,15 +7,14 @@ export default {
         ,noticePage: 0
         ,LoadingFlg:false
         ,links: []        
-        ,currentPage: 0
-        ,noticeDetail: {}        
-        ,noticeUrl: ''
+        ,currentPage: localStorage.getItem('noticeCurrentPage') ? localStorage.getItem('noticeCurrentPage') : 1
+        ,noticeDetail: {}
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
             state.noticeList = noticeList;
-        },
-        setNoticePage(state, noticePage) {
+        }
+        ,setNoticePage(state, noticePage) {
             state.noticePage = noticePage;
         }
         ,setLoadingFlg(state, LoadingFlg) {
@@ -23,24 +22,21 @@ export default {
         }
         ,setLinks(state, links) {
             state.links = links;
-        },
-        setCurrentPage(state, currentPage) {
+        }
+        ,setCurrentPage(state, currentPage) {
             state.currentPage = currentPage;
-        },
-        setNoticeDetail(state, noticeDetail) {
+            localStorage.setItem('noticeCurrentPage', currentPage);
+        }
+        ,setNoticeDetail(state, noticeDetail) {
             state.noticeDetail = noticeDetail;
-        },
-        setNoticeUrl(state, noticeUrl) {
-            state.noticeUrl = noticeUrl;
-        },
-
-       
-        
+        }
 	}   
 	,actions: {
-        noticeList(context) {
+        noticeList(context, page) {
             context.commit('setLoadingFlg', true);
-            const url = '/api/community/notice';
+
+            page = page === 0 ? context.state.currentPage : page;
+            const url = '/api/community/notice?page=' + page;
             
             axios.get(url) 
             .then(response => {
@@ -48,47 +44,28 @@ export default {
                 context.commit('setNoticeList', response.data.notice.data);
                 context.commit('setLoadingFlg', false)
                 context.commit('setLinks', response.data.notice.links);
-            })
-            .catch(error=> {
-                console.error(error);
-            })
-        },
-
-        noticeLinkList(context, url) {
-    
-                localStorage.setItem('Url', url);
-                context.commit('setNoticeUrl', url);
-            
-            axios.get(url) 
-            .then(response => {
-                context.commit('setNoticeList', response.data.notice.data);
-                context.commit('setLinks', response.data.notice.links);
                 context.commit('setCurrentPage', response.data.notice.current_page);
-                context.commit('setLoadingFlg', false);
             })
             .catch(error=> {
                 console.error(error);
             })
         },
-
         noticeDetailList(context, id) {
            
-            const url = '/api/community/notice/detail/' + id;
+            const url = '/api/community/notice/' + id;
             axios.get(url)
             .then(response => {
                 context.commit('setNoticeDetail', response.data.noticeDetail);
                 console.log(response.data.noticeDetail);
 
-                router.push('/community/notice/detail/' + id);
+                router.push('/community/notice/' + id);
             })    
             .catch(error => {
                 console.error(error);
             });
         },
 
-        currentPageUpdate(context, current_page) {
-            context.commit('setCurrentPage', response.data.notice.current_page);
-        }
+        
 	}
 	,getters: {
 		
