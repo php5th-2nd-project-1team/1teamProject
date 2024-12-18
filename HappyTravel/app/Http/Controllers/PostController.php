@@ -64,6 +64,8 @@ class PostController extends Controller
 		$PostComment = null;
 		$PostDetail = Post::with('manager')->find($request->id);
 		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
+		// $PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->get();
+
 
 		$responseData = [
 			'success' => true

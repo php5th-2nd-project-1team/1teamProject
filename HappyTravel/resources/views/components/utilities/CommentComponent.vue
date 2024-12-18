@@ -1,9 +1,13 @@
 <template>
     <div v-for="item in PostComment" :key="item" class="comment-box">
         <img class="comment-img" :src="item.user.profile">
+        <!-- <img class="comment-img" src="/profile/GJfqlZza8AAd1_K.jfif"> -->
         <div class="comment-txt">
             <p>{{ item.post_comment }}</p>
-            <button type="button">신고하기</button>
+			<div class="etc-btn">
+				<button type="button">신고하기</button>
+				<button>삭제</button>
+			</div>
             <div class="comment-created">
                 <span class="comment-name">{{ item.user.nickname }}</span>
                 <span class="comment-date">{{ item.created_at }}</span>
@@ -21,6 +25,7 @@ const store = useStore();
 
 // 댓글 리스트 (댓글 정보 가져온다~)
 const PostComment = computed(() => store.state.post.postCommentList);
+// console.log(PostComment);
 
 const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
 // const loadMoreComments = computed(() => );
@@ -35,6 +40,11 @@ const isLastPage = computed(() => store.state.post.currentPage >= store.state.po
 	padding: 30px;
 	margin: 10px;
 	border-bottom: 1px solid #939393;
+}
+
+.etc-btn {
+	display: flex;
+	justify-content: space-between;
 }
 
  .comment-img {

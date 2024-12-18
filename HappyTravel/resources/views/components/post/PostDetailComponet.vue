@@ -1,5 +1,5 @@
 <template>
-
+<!-- <LoadingComponent v-if="isLoading"/> -->
 <div class="btn-postdetail-pagenav">
 	<router-link to="/index"><span>홈</span></router-link>
 	<span> > </span>
@@ -17,12 +17,12 @@
 	</ul>
 
 	<div class="postdetail-post-area">
-		<button type="button">
-			<span>좋아요</span>
+		<button class="btn btn-bg-gray" type="button">
+			<span><img src="/developImg/seoul_icon.png" alt=""></span>
 			<span>{{ PostDetail.post_like }}</span>
 		</button>
 		<span>
-			<span>조회수</span>
+			<span>조회수: </span>
 			<span>{{ PostDetail.post_view }}</span>
 		</span>
 	</div>
@@ -161,7 +161,7 @@ import 'swiper/css/thumbs';
 
 // import required modules
 import { Pagination, Navigation, Thumbs, FreeMode } from 'swiper/modules';
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -174,15 +174,17 @@ const setThumbsSwiper = (swiper) => {
 // ------------------------------------------
 
 const store = useStore();
+const route = useRoute();
 
 // 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
+const isLoading = computed(() => store.state.post.isLoading);
 
 //  ------------------------------------------
-// 데이터 호출 
-const route = useRoute();
+// 라우트 변경 시 데이터 다시 호출 
 onBeforeMount(()=>{
 	store.dispatch('post/showPost', route.params.id);
+	store.commit('post/setInitialize');
 });
 
 // ------------------------------------------
@@ -212,7 +214,6 @@ const isExpanded = ref(false);
 const toggleContent = () => {
 	isExpanded.value = !isExpanded.value;
 };
-
 
 // ------------------------------------------
 // 댓글 작성

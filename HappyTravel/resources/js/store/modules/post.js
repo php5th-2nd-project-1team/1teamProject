@@ -89,6 +89,7 @@ export default {
 			state.beforeLocal = '00';
 			state.isLoading = false;
 			state.postComment = '';
+			state.postCommentList = [];
 		}
 
 		// index 부분
