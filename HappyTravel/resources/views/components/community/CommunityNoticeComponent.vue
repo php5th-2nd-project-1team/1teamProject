@@ -22,7 +22,7 @@
         <!-- 공지사항 컨텐츠 박스 -->
         <div v-if="LoadingFlg"> 로딩 중 </div>
         <div v-else v-for="item in noticeList" :key="item" class="notice_content_box">
-            <div class="notice_content_num">
+            <div class="notice_content_num" id="{{ itme.notice_id }}">
                 <p>{{ item.notice_id }}</p>
             </div>      
             <div class="notice_content_title"> 
@@ -50,7 +50,7 @@
         </div> -->
         <div class="pagination">
             <div v-for="item in links" :key="item.label">
-                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', item.label)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url ))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
                     <span v-if="item.label === backBtn">{{ '이전' }}</span> 
                     <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
                     <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
@@ -82,6 +82,14 @@
     const currentPage = computed(() => store.state.notice.currentPage);
     
     const limitPage = 2;
+
+    // url에서 페이지 번호만 획득
+    const getPageOnUrl = (url) => {
+        if(!url) {
+            return;
+        }
+        return url.split('page=')[1];
+    }
     
     
 </script>
