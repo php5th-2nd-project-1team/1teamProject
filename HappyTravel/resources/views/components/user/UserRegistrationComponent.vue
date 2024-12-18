@@ -1,7 +1,7 @@
 <template>
     <div class="registration-container">
-        <h1 class="registration-title">회원가입</h1>
-        <span class="registration-making"><span class="span-color">*</span> 필수입력사항</span>
+        <h1 class="registration-title" >회원가입</h1>
+        <span class="registration-making"><span class="span-color" style="position: relative;">*<div class="profile-imgArea" :style="{backgroundImage: 'url('+ form.profile +')'}"><span class="profile-imgArea-child">프로필 사진</span></div></span> 필수입력사항</span>
         <hr>
         <div class="registration-grid">
             <span>아이디 <span class="span-color">*</span></span>
@@ -258,5 +258,35 @@ import { reactive, onMounted, ref } from "vue";
         background-color: #2986FF;
         border-radius: 40px;
         cursor: pointer;
+    }
+
+    /* 원상 수정 */
+    .profile-imgArea{
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+        border: 1px solid black;
+        border-radius: 50%;
+
+        left: -100px;
+        top: 40px;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .profile-imgArea-child{
+        position: absolute;
+        left: 32px;
+        top: 190px;
+
+        color: black;
+        font-size: 1.2rem;
+        font-weight: 900;
+
+        border: 2px solid black;
+        padding: 5px;
     }
 </style>

@@ -1,178 +1,162 @@
 <template>
-	<div class="index-eventbox">
-		<div class="index-event-controller">
-			<h1>최신 포스트 모음</h1>
+	<div class="indexPost-container">
+		<div class="indexPost-controller">
+			<h4 class="indexPost-controller-title">최신 포스트 모음</h4>
 			<Swiper
 			:modules="modules"
-			:autoplay="{ delay: 2500, disableOnInteraction: false }"	
-			:simulateTouch="false"
-			:navigation="{nextEl:'.index-event-prevbtn', prevEl:'.index-event-nextbtn'}"
-			style="max-width: 500px; width: 100%; height: auto;">
-				<SwiperSlide style="width: 100%; height: 100%" v-for="value in props.cardData" :key="value">
-					<span style=" font-size: 24px;">{{ value.post_title }}</span>
+			:slides-per-view="1"
+			:space-between="0"
+			:autoplay="{ delay: 2500, disableOnInteraction: false, }"
+			:navigation="{ nextEl:`.indexPost-btn-next`, prevEl:`.indexPost-btn-prev`}"
+			:allow-touch-move="false"
+			:pagination="{ el: '.swiper-pagination', clickable: true }"
+			@slideChange="syncSlides"
+			>
+				<SwiperSlide v-for="value in postList" :key="value">
+					<h1>{{ value.post_title }}</h1>
 					<br>
-					<span style="font-size: 18px;">{{ value.post_local_name }}</span>
+					<h3>{{ value.post_local_name }}</h3>
 				</SwiperSlide>
 			</Swiper>
-			<div class="index-event-buttonArea">
-				<button class="index-event-nextbtn index-btn"><</button>
-				<button class="index-event-prevbtn index-btn">></button>
+			<div class="index-btn-area">
+				<button class="indexPost-btn-next"><</button>
+				<div class="swiper-pagination" style="position: static; width: 30%;"></div> 
+				<button class="indexPost-btn-prev">></button>
 			</div>
 		</div>
-		<div class="index-event-viewer">
+		<div class="indexPost-view">
 			<Swiper
 			:modules="modules"
-			:autoplay="{ delay: 2500, disableOnInteraction: false }"	
-			:simulateTouch="false"
-			:navigation="{nextEl:'.index-event-prevbtn', prevEl:'.index-event-nextbtn'}"
-			style="max-width: 600px; width: 100%; height: 400px; border-radius: 100px;">
-				<SwiperSlide style="width: 100%; height: 100%" v-for="value in props.cardData" :key="value">
-					<div class="index-event-img" :style="{backgroundImage : 'url(' + value.post_img + ')' }"></div>
-				</SwiperSlide>
+			:slides-per-view="1"
+			:space-between="0"
+			:autoplay="{ delay: 2500, disableOnInteraction: false, }"
+			:navigation="{ nextEl:`.indexPost-btn-next`, prevEl:`.indexPost-btn-prev`}"
+			:allow-touch-move="false"
+			style="height: 100%; border-radius: 50px;"
+			:pagination="{ el: '.swiper-pagination', clickable: true }"
+			@slideChange="syncSlides"
+			>
+				<SwiperSlide v-for="value in postList" :key="value"><div class="indexPost-view-img" :style="{backgroundImage: 'url('+value.post_img+')'}"></div></SwiperSlide>
 			</Swiper>
 		</div>
 	</div>
 </template>
 <script setup>
-	import { defineProps } from 'vue';
 	import { Swiper, SwiperSlide } from 'swiper/vue';
-	import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-
-	import 'swiper/css';
+	import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 	import 'swiper/css/bundle';
-	import 'swiper/swiper-bundle.css';
+	import { useStore } from 'vuex';
+	import { ref, computed } from 'vue';
 
-	const props = defineProps({
-		cardData : Array
-	})
+	const store = useStore();
+	const modules = [Navigation, Pagination, Autoplay];
 
-	const modules = [Navigation, Autoplay, Pagination];
+	const postList = computed(()=>store.state.post.postIndexList);
+
+	// Swiper 인스턴스 참조
+	const swiperRef1 = ref(null);
+	const swiperRef2 = ref(null);
+
+	// 슬라이드 동기화 함수
+	const syncSlides = () => {
+		if (swiperRef1.value && swiperRef2.value) {
+			const activeIndex = swiperRef1.value.swiper.activeIndex;
+			swiperRef2.value.swiper.slideTo(activeIndex);
+		}
+	};
 </script>
 <style scoped>
-
-	.index-eventbox{
+	.indexPost-container{
 		width: 80%;
-		height: 500px;  
+		height: 500px;
 		background: linear-gradient(#D2EEFF, #92D4FF);
-		
-		display: grid;
-		grid-template-columns: 1fr 2fr;
-		
-		border-radius: 80px;
-		
-		padding: 0 2rem;
+		border-radius: 50px;
+		display: flex;
+		overflow: hidden;
 	}
 
-	.index-event-controller{
+	/* index controller 영역 */
+	.indexPost-controller{
+		width: 40%;
+		height: 100%;
+
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: flex-start;
-		
-		width: 100%;
-		height: 100%;
-		
-		gap: 30px;
-		
-		padding-left: 16px;
+
+		padding: 1rem;
+		gap:1rem;
 	}
-	
-	.index-event-comment{
+
+	.indexPost-controller-title{
 		background-color: black;
-		color: white;
-		width: 250px;
-		height: 32px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		border-radius: 200px;
-		border-bottom-left-radius: 0%;
+		color:white;
+		padding : 0.5rem 1rem;
+		
+		border-radius: 50px;
+		border-bottom-left-radius: 0px;
 	}
 
-	.index-event-buttonArea{
+	.index-btn-area{
+		width: 100%;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		width: 200px;
+		gap: 1rem;
 	}
 
-	.index-btn{
-		width: 3rem;
-		height: 3rem;
-
-		margin: 0 1rem;
-
+	.index-btn-area button{
+		width: 2rem;
+		height: 2rem;
+		
 		border-radius: 100%;
-	}
-
-	.index-event-nextbtn, .index-event-prevbtn{
 		background-color: white;
-		border: 0.05px solid black;
-		border-radius: 100%;
-		font-size: 0.6rem;
-		padding: 5px;
 	}
 
-	.index-event-btn{
-		background: #ECECEC;
-		width: 1.2rem;
-		height: 1.2rem;
-		border: none;
-		border-radius: 100%;
-	}
-
-	.index-event-activebtn{
-		background-color: #2986FF;
-	}
-
-	.index-event-viewer{
-		width: 100%;
+	/* index view 영역 */
+	.indexPost-view{
+		width: 60%;
 		height: 100%;
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		border-radius: 50px;
+
+		padding : 2rem;
 	}
 
-	.index-event-img{
-		background-color: white;
+	.indexPost-view-img{
 		width: 100%;
 		height: 100%;
 
-		/* border-radius: 50px; */
-
-		background-size: cover;
-		background-repeat: no-repeat;
 		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 
-	/* 반응형 : 1023px */
-	@media (max-width : 1023px){
-		.index-eventbox{
-			grid-template-columns: none;
-			grid-template-rows: 1fr 1fr;
-		}
-
-		.index-event-viewer{
-			padding: 20px;
-		}
+	/* swier 영역 */
+	.swiper-horizontal{
+		width: 100% !important;
+	}
+	.swiper-slide {
+    	max-width: 100%;  /* 슬라이드의 최대 너비를 부모에 맞춤 */
+    	flex-shrink: 0;   /* 슬라이드가 축소되지 않도록 설정 */
+		box-sizing: border-box;
 	}
 
-	/* 반응형 : 599px 이하 */
-	@media (max-width : 599px){
-		.index-eventbox{
-			width: 90%;
-			padding: 0;
-		}
-		.index-event-comment{
-			width: 200px;
-		}
-		.index-event-comment p{
-			font-size: 0.7rem;
-		}
-		h1{
-			font-size: 1.5rem;
-		}
+	/* 페이지네이션 불릿 기본 스타일 */
+	.swiper-pagination-bullet {
+		width: 240px !important; 
+		height: 240px !important; 
+		background: rgba(0, 0, 0, 0.5) !important; 
+		opacity: 1 !important; 
+	}
+
+	/* 페이지네이션 불릿 활성화 시 스타일 */
+	.swiper-pagination-bullet-active {
+		/* background: #007aff;  */
+		background: #ff0000 !important; 
 	}
 </style>
