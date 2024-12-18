@@ -71,7 +71,7 @@
 								<li class="dropdown-sub">굿즈</li>
 							</ul>
 						</li> -->
-						<li><router-link to="/community/notice">커뮤니티</router-link></li>
+						<li @click="pushNoticeList"><a>커뮤니티</a></li>
 					</ul>
 				</div>
 
@@ -93,13 +93,21 @@
 </header>
 </template>
 <script setup>
-import { RouterLink } from 'vue-router';
 import { useStore } from 'vuex';
+import router from '../../../js/router.js'
 import { ref } from 'vue';
 
 const store = useStore();
 
 const id = ref(store.state.auth.userInfo.user_id);
+
+// 헤더 커뮤니티 이동 처리
+const pushNoticeList = () => {
+	store.commit('notice/setCurrentPage', 1); // page 1페이지로 초기화
+	store.dispatch('notice/noticeList', 1); // 공지리스트 획득
+	router.push('/community/notice'); // 이동
+}
+
 
 </script>
 <style>
