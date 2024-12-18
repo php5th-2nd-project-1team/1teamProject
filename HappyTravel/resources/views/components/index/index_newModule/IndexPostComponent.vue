@@ -20,7 +20,7 @@
 			</Swiper>
 			<div class="index-btn-area">
 				<button class="indexPost-btn-next"><</button>
-				<div class="swiper-pagination" style="position: static; width: 30%;"></div> 
+				<div class="swiper-pagination" style="position: static; width: 50%;"></div> 
 				<button class="indexPost-btn-prev">></button>
 			</div>
 		</div>
@@ -146,17 +146,15 @@
 		box-sizing: border-box;
 	}
 
-	/* 페이지네이션 불릿 기본 스타일 */
-	.swiper-pagination-bullet {
-		width: 240px !important; 
-		height: 240px !important; 
-		background: rgba(0, 0, 0, 0.5) !important; 
-		opacity: 1 !important; 
+	:deep(.swiper-pagination-bullet) {
+		width: 24px; /* 불릿 크기 설정 */
+		height: 24px; /* 불릿 크기 설정 */
+		background: rgba(0, 0, 0, 0.5); /* 기본 색상 */
+		opacity: 1; /* 불릿의 불투명도 */
 	}
 
 	/* 페이지네이션 불릿 활성화 시 스타일 */
-	.swiper-pagination-bullet-active {
-		/* background: #007aff;  */
-		background: #ff0000 !important; 
+	:deep(.swiper-pagination-bullet-active) {
+		background: #007aff; /* 활성화 시 색상 (예: 파란색) */
 	}
 </style>
