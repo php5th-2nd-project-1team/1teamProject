@@ -36,7 +36,7 @@ export default {
             context.commit('setLoadingFlg', true);
 
             page = page === 0 ? context.state.currentPage : page;
-            const url = '/api/community/notice?page=' + page;
+            const url = '/api/community/notice?page=' + page + '#';
             
             axios.get(url) 
             .then(response => {
@@ -52,7 +52,7 @@ export default {
         },
         noticeDetailList(context, id) {
            
-            const url = '/api/community/notice/' + id;
+            const url = '/api/community/notice/' + id ;
             axios.get(url)
             .then(response => {
                 context.commit('setNoticeDetail', response.data.noticeDetail);

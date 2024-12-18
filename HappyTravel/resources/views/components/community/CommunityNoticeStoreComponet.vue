@@ -23,7 +23,8 @@
         </div>  
         <div class="notice_detail_content_box">
             <p class="notice_detail_content">내용</p>
-            <div class="notice_detail_content_textarea" style="padding : 50px; height: auto; ">{{ noticeDetailList.notice_content }}</div>                 
+            <!-- <textarea  disabled :style="newStyle">{{ noticeDetailList.notice_content }}</textarea>                  -->
+            <textarea>{{ noticeDetailList.notice_content }}</textarea>                 
         </div> 
 
         <div>
@@ -35,17 +36,21 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const store = useStore();
 
+// const newStyle = ref('');
 
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
 
 const route = useRoute();
 
 onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
+// onMounted(()=>{
+//     newStyle.value = 'padding : 50px; height: auto;'
+// });
 
 </script>
 
@@ -110,7 +115,7 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
         color: #2986FF;
     }
     /* 공지사항 상세 내용 롱텍스트 */
-    .notice_detail_content_textarea {      
+    .notice_detail_content_box >textarea {      
          background-color: #EFEFEF;
         font-size: 1.2rem;
         font-weight: bold;
@@ -118,14 +123,6 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
         resize: none;
         overflow: hidden;
     }
-    /* .notice_detail_content_box >textarea {      
-         background-color: #EFEFEF;
-        font-size: 1.2rem;
-        font-weight: bold;
-        line-height: 2;
-        resize: none;
-        overflow: hidden;
-    } */
     /* 공지사항 상세 이미지 */
     .notice_detail_file {
         display: grid;
