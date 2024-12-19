@@ -27,6 +27,8 @@ export default {
 		,isSearching : false
 		,beforeSearch : ''
 		,beforeLocal : '00'
+		,controllerFlg : false
+		,lastPageFlg : false
 		,postCommentCnt : 0
 		
 		// index 부분
@@ -78,6 +80,14 @@ export default {
 		// 포스트 댓글 작성 최상위로 이동
 		,setPostCommentListUnshift(state, comment) {
 			state.postCommentList.unshift(comment);
+		}
+		// 포스트 댓글 페이지네이션 컨트롤
+		,setControllerFlg(state, flg) {
+			state.controllerFlg = flg;
+		}
+		// 포스트 댓글 페이지네이션 컨트롤
+		,setLastPageFlg(state, flg) {
+			state.lastPageFlg = flg;
 		}
 		// // 포스트 댓글 갯수
 		,setpostCommentCnt(state, count) {
@@ -287,6 +297,26 @@ export default {
 				console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
 				console.error(error); // 서버의 에러 메시지 출력
     			alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
+			});
+		}
+
+		// 포스트 댓글 페이지네이션
+		,postCommentPagination(context) {
+			// if(context.state.controllerFlg && !context.state.lastPageFlg) {
+			// 	context.commit('setControllerFlg', false);
+			// }
+			context.commit('setIsLoading', true);
+			const url = '/api/posts/' + data.post_id;
+			axios.get(url, config)
+			.then(response => {
+				context.commit('setPostCommentList', response.data.PostComment.data);
+				conte
+			})
+			.catch(error => {
+				console.error(error);
+			})
+			.finally(() => {
+				context.commit('setIsLoading', true);
 			});
 		}
 	}
