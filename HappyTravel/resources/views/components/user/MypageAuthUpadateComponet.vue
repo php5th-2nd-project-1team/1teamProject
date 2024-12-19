@@ -33,7 +33,7 @@
 
                     <div class="mypage-number">
                         <p class="mypage-all-title">전화번호</p>
-                        <input v-model="detailUserInfo.phone_number" type="text" class="mypage-number-border">
+                        <input @input="formatPhoneNumber" v-model="detailUserInfo.phone_number" type="text" class="mypage-number-border">
                     </div>
 
                     <div class="registration-grid">
@@ -85,6 +85,31 @@ const setFile = (e) => {
     detailUserInfo.file = e.target.files[0];
     detailUserInfo.profile = URL.createObjectURL(detailUserInfo.file);
 }
+
+const formatPhoneNumber = (e) => {
+        detailUserInfo.phone_number = e.target.value.replace(/[^0-9]/g, '');
+
+        if (detailUserInfo.phone_number.length < 4) {
+        // 4자리 미만은 하이픈 없이 입력
+        detailUserInfo.phone_number = detailUserInfo.phone_number;
+
+        } else if (detailUserInfo.phone_number.length < 7) {
+            // 4자리에서 6자리까지는 3-4자리 형태로 하이픈 추가
+            detailUserInfo.phone_number = detailUserInfo.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        } else if (detailUserInfo.phone_number.length < 11) {
+            // 7자리에서 10자리까지는 3-4-4자리 형태로 하이픈 추가
+            detailUserInfo.phone_number = detailUserInfo.phone_number.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+        } else {
+            // 11자리 이상은 3-4-4자리 형태로 하이픈 추가
+            detailUserInfo.phone_number = detailUserInfo.phone_number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        }
+
+        // 추가 조건: 7자리가 되었을 때 하이픈이 다시 생기지 않도록 방지
+        if (detailUserInfo.phone_number.length === 7 && detailUserInfo.phone_number.indexOf('-') !== 3) {
+        // 하이픈이 3번째 자리에 없으면, 강제로 추가
+        detailUserInfo.phone_number = detailUserInfo.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        };
+    };
 
 // 스크립트를 동적으로 로드하는 함수
 const loadDaumPostcodeScript = () => {

@@ -87,7 +87,7 @@ export default {
                     context.commit('setAuthFlg', false);
                     context.commit('setUserInfo', {});
                     
-                    router.replace('/login');
+                    router.replace('/login'); 
                 });
             }, {root: true});
         },
