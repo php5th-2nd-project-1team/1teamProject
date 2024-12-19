@@ -125,7 +125,7 @@ export default {
 				context.commit('setIsLoading', true);
 				
 								
-				const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}`;
+				const url = `/api/posts?page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
 					context.commit('setPostList', response.data.PostList.data);
@@ -153,7 +153,7 @@ export default {
 			
 			context.commit('setIsLoading', true);
 
-			const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}&search=${payload}`;
+			const url = `/api/posts?page=${context.getters['getNextPage']}&search=${payload}`;
 			axios.get(url)
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
@@ -184,7 +184,7 @@ export default {
 
 			context.commit('setIsLoading', true);
 
-			const url = `http://127.0.0.1:8000/api/posts?page=${context.getters['getNextPage']}&local=${payload}`;
+			const url = `/api/posts?page=${context.getters['getNextPage']}&local=${payload}`;
 			axios.get(url)
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
@@ -202,9 +202,9 @@ export default {
 		}
 		// index 페이지에 필요한 애들 가져오기
 		,indexes(context, payload){
-			const url ='http://127.0.0.1:8000/api/posts/type';
-			const urlView = 'http://127.0.0.1:8000/api/posts/type?type=view';
-			const urlLike = 'http://127.0.0.1:8000/api/posts/type?type=like';
+			const url ='/api/posts/type';
+			const urlView = '/api/posts/type?type=view';
+			const urlLike = '/api/posts/type?type=like';
 
 			// 조회수 순 데이터 가져오기
 			axios.get(urlView)
