@@ -124,6 +124,8 @@
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
+
+		cursor: pointer;
 	}
 
 	/* index view 영역 */

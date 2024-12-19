@@ -6,6 +6,7 @@
 		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>
 		<IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/>
 	</div>
+	<div class="index-btn-top" @click="onClickTopBtn"></div>
 </template>
 
 <script setup>
@@ -28,6 +29,10 @@ onBeforeUnmount(()=>{
 	store.commit('post/setInitialize');
 })
 
+const onClickTopBtn = () =>{
+	window.scrollTo(0, 0);
+}
+
 </script>
 
 <style scoped>
@@ -41,6 +46,27 @@ onBeforeUnmount(()=>{
 		gap:40px;
 
 		padding: 0 200px;
+	}
+
+	/* top button */
+	.index-btn-top{
+		position: fixed;
+
+		width: 100px;
+		height: 100px;
+
+		/* background-color: rgb(41, 134, 255); */
+		background-image: url('/developImg/goTop.png');
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+
+		/* opacity: 0.5; */
+
+		bottom: 10%;
+		right: 10%;
+
+		z-index: 1000;
 	}
 
 	/* 반응형 : 1439px */
