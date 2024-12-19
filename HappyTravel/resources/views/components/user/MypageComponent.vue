@@ -103,7 +103,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 70%;
-    height: 95%;
+    padding-bottom: 20px;
 }
 
     
@@ -131,11 +131,11 @@ button {
     font-size: 20px;
     width: 15%;
     height: 55px;
+    border: 3px solid #2986FF;
 }
 
 .mypage-back-btn:hover {
     background-color: white;
-    border: 3px solid #2986FF;
     color: black;
 }
 
@@ -262,11 +262,11 @@ button {
     width: 15%;
     height: 55px;
     margin-left: 15px;
+    border: 3px solid #2986FF;
 }
 
 .mypage-user-update-btn:hover {
     background-color: white;
-    border: 3px solid #2986FF;
     color: black;
 }
 

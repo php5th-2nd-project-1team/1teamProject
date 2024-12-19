@@ -155,7 +155,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 70%;
-    height: 93%;
+    padding-bottom: 20px;
 }
 
     
@@ -167,7 +167,7 @@ button {
 
 .mypage-back-btn {
     background-color: #2986FF;
-    border: none;
+    border: 3px solid #2986FF;
     border-radius: 10px;
     color: white;
     font-size: 20px;
@@ -177,7 +177,6 @@ button {
 
 .mypage-back-btn:hover {
     background-color: white;
-    border: 3px solid #2986FF;
     color: black;
 }
 
@@ -251,7 +250,6 @@ button {
     justify-content: center;
     align-items: center;
     background-color: #2986FF;
-    border: none;
     border-radius: 10px;
     color: white;
     font-size: 1rem;
@@ -260,6 +258,13 @@ button {
     width: 100%;
     height: 40px;
     cursor: pointer;
+    border: 3px solid #2986FF;
+    font-weight: 900;
+}
+
+.file-insert-btn:hover {
+    background-color: white;
+    color: black;
 }
 
 .mypage-update-btn {
@@ -322,8 +327,7 @@ button {
 }
 
 .footer-title {
-    display: flex;
-    justify-content: space-between;
+    text-align: right;
 }
 
 .mypage-user-update-btn {
@@ -335,11 +339,12 @@ button {
     width: 15%;
     height: 55px;
     margin-left: 15px;
+    border: 3px solid #2986FF;
+    margin-right: 10px;
 }
 
 .mypage-user-update-btn:hover {
     background-color: white;
-    border: 3px solid #2986FF;
     color: black;
 }
 
@@ -352,17 +357,17 @@ button {
     width: 15%;
     height: 55px;
     margin-right: 15px;
+    border: 3px solid #FF5353;
 }
 
 .mypage-user-delete-btn:hover {
     background-color: white;
-    border: 3px solid #FF5353;
     color: black;
 }
 
 .address-btn {
-    background-color: #35e625;
-    border: none;
+    background-color: #2986FF;
+    font-weight: 900;
     border-radius: 10px;
     color: white;
     font-size: 1rem;
@@ -371,5 +376,11 @@ button {
     width: 30%;
     height: 40px;
     cursor: pointer;
+    border: 3px solid #2986FF;
+}
+
+.address-btn:hover {
+    background-color: white;
+    color: black;
 }
 </style>

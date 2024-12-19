@@ -56,7 +56,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 70%;
-    height: 100%;
+    padding-bottom: 20px;
 }
 
 .pet-breeze-title {
@@ -107,11 +107,11 @@ hr {
     padding: 15px;
     margin-top: 2vh;
     margin-right: 2vh;
+    border: 3px solid #2986FF;
 }
 
 .clear-btn:hover {
     background-color: white;
-    border: 3px solid #2986FF;
     color: black;
 }
 
@@ -126,11 +126,11 @@ hr {
     padding: 15px;
     margin-top: 2vh;
     margin-right: 2vh;
+    border: 3px solid #FF5353;
 }
 
 .delete-btn:hover {
     background-color: white;
-    border: 3px solid #FF5353;
     color: black;
 }
 </style>
