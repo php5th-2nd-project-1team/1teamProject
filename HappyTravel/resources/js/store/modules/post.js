@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios";
 
 // const store = useStore();
 
@@ -27,6 +27,7 @@ export default {
 		,isSearching : false
 		,beforeSearch : ''
 		,beforeLocal : '00'
+		,postCommentCnt : 0
 		
 		// index 부분
 		,postIndexList :[]
@@ -76,7 +77,11 @@ export default {
 		}
 		// 포스트 댓글 작성 최상위로 이동
 		,setPostCommentListUnshift(state, comment) {
-			state.postComment.unshift(comment);
+			state.postCommentList.unshift(comment);
+		}
+		// // 포스트 댓글 갯수
+		,setpostCommentCnt(state, count) {
+			state.postCommentCnt = count;
 		}
 
 		// post 전체 초기화
@@ -90,6 +95,7 @@ export default {
 			state.isLoading = false;
 			state.postComment = '';
 			state.postCommentList = [];
+			state.postCommentCnt = 0;
 		}
 
 		// index 부분
@@ -237,6 +243,7 @@ export default {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
 				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
 				context.commit('setPostCommentList', response.data.PostComment.data);
+				context.commit('setpostCommentCnt', response.data.postCommentCnt);
 
 				context.commit('setCurrentPage', response.data.PostComment.current_page);
 				if(context.state.totalPage === 0) {
@@ -251,11 +258,8 @@ export default {
 			});
 		}
 
-		// ---------------댓글 작성 진짜 모르겠다.---------------------------------
-
 		// 포스트 댓글 작성(하는중)
 		,storePostComment(context, data) {
-			// console.log('data:', data);
 			const url = '/api/posts/' + data.post_id;
 			// const url = `/api/posts/${data.post_id}`;
 
@@ -264,30 +268,24 @@ export default {
 					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
 				}
 			}
-			// // form data 생성
-			// const formData = new formData();
-			// // 전달 데이터 셋팅
-			// formData.append('post_comment', data.post_comment);
-			// const serialize = new serialize();
-			const commentData = {
+
+			const useData = {
 				post_comment: data.post_comment,
-				post_id: data.post_id,
 			};
 			// json으로 파싱
-			const Data = JSON.stringify(commentData);
-			// 전송 데이터 확인
-			// console.log( Data );
+			const param = JSON.stringify(useData);
 
-			axios.post(url, Data, config)
+			axios.post(url, param, config)
 			.then(response => {
-				context.commit('setPostCommentListUnshift', response.data.postComment);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+				context.commit('setPostCommentListUnshift', response.data.storePostComment);
 				alert('댓글을 작성하였습니다.');
 				
 				// console.log(response.data.postComment);
 			})
 			.catch(error => {
 				// console.error('댓글 작성 실패');
-				console.error('댓글 작성 실패:', error.response.data); // 서버의 에러 메시지 출력
+				console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
+				console.error(error); // 서버의 에러 메시지 출력
     			alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
 			});
 		}
