@@ -68,6 +68,12 @@ class PostController extends Controller
 						->groupBy('post_id')
 						->get();
 
+		DB::beginTransaction();
+		// 조회수 추가
+		$PostDetail->post_view += 1;
+		$PostDetail->save();
+		DB::commit();
+
 
 		$responseData = [
 			'success' => true
@@ -113,6 +119,8 @@ class PostController extends Controller
 
 		// insert
 		$storePostComment = PostComments::create($insertData);
+
+		$storePostComment->load('user');
 
 		$responseData = [
 			'success' => true

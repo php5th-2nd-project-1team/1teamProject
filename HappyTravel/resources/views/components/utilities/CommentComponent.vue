@@ -25,7 +25,6 @@ const store = useStore();
 
 // 댓글 리스트 (댓글 정보 가져온다~)
 const PostComment = computed(() => store.state.post.postCommentList);
-console.log(PostComment);
 
 const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
 // const loadMoreComments = computed(() => );

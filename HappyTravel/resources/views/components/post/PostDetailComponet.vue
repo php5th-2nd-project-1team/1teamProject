@@ -180,6 +180,7 @@ const route = useRoute();
 // 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
 // const isLoading = computed(() => store.state.post.isLoading);
+const PostCommentCnt = computed(() => store.state.post.postCommentCnt);
 
 //  ------------------------------------------
 // 라우트 변경 시 데이터 다시 호출 
@@ -228,10 +229,7 @@ const storeComment = () => {
 		alert('댓글을 작성 해주세요.');
 	}
 	store.dispatch('post/storePostComment', commentData);
-	// console.log(commentData);
 };
-
-// console.log(commentData);
 
 
 // ------------------------------------------
