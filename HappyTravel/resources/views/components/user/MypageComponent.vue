@@ -30,6 +30,11 @@
                         <p class="mypage-number-border">{{ allUserInfo.phone_number }}</p>
                     </div>
 
+                    <div class="mypage-number"> 
+                        <p class="mypage-all-title">우편번호</p>
+                        <input type="text" v-model="allUserInfo.post_code" placeholder="우편번호" readonly class="mypage-name-border">
+                    </div>
+
                     <div class="mypage-adress">
                         <p class="mypage-all-title">주소</p>
                         <p class="mypage-adress-border">{{ allUserInfo.address }}</p>
@@ -97,8 +102,8 @@ button {
 .mypage-border {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    width: 60%;
-    height: 85%;
+    width: 70%;
+    height: 95%;
 }
 
     
@@ -210,6 +215,7 @@ button {
 
 .mypage-name-border {
     background-color: #EFEFEF;
+    border: none;
     text-align: center;
     line-height: 30px;
     font-size: 15px;

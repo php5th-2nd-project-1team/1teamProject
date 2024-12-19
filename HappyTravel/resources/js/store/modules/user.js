@@ -1,5 +1,6 @@
 import axios from '../../axios';
 import router from '../../router';
+import store from '../store';
 
 export default {
 	namespaced: true,
@@ -157,15 +158,16 @@ export default {
 
                 axios.post(url, config)
                 .then(response => {
-                    alert('회원탈퇴 처리 완료했습니다.');
+                    // Auth 플레그 했던 거 지우기
+                    context.commit('auth/setAuthFlg', false, {root: true});
+                    context.commit('auth/setUserInfo', {}, {root: true});
+
                     // 로컬 스토리지 비우기
                     localStorage.clear();
 
-                    // Auth 플레그 했던 거 지우기
-                    context.commit('auth/setAuthFlg', false);
-                    context.commit('auth/setUserInfo', {});
-
-                    router.replace('/index');
+                    alert('회원탈퇴 처리가 완료되었습니다.');
+                    // index 페이지로 이동
+                    router.replace('/');
                 })
                 .catch(error => {
                     alert('오류로 인해 회원탈퇴 처리를 못 했습니다.');

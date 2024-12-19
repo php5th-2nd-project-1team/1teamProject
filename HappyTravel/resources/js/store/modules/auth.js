@@ -104,6 +104,7 @@ export default {
 
             // form data 세팅
             const formData = new FormData();
+
             formData.append('account', form.account);
             formData.append('name', form.name);
             formData.append('password', form.password);
@@ -115,6 +116,9 @@ export default {
             formData.append('post_code', form.zonecode);
             formData.append('gender', form.gender);
             formData.append('file', form.file);
+
+            console.log(form.file);
+            console.log(form.detail_address);
 
             axios.post(url, formData, config)
             .then(response => {

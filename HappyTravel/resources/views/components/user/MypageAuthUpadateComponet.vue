@@ -36,15 +36,24 @@
                         <input v-model="detailUserInfo.phone_number" type="text" class="mypage-number-border">
                     </div>
 
-                    <div class="mypage-adress">
-                        <p class="mypage-all-title">주소</p>
-                        <input v-model="detailUserInfo.address" type="text" class="mypage-adress-border">
-                    </div>
-                    
-                    <div class="mypage-adress-detail">
-                        <p class="mypage-all-title">상세주소</p>
-                        <input v-model="detailUserInfo.detail_address" type="text" class="mypage-adress-detail-border">
-                    </div>
+                    <div class="registration-grid">
+                        </div>
+                        <div class="address-container">
+                            <div class="registration-grid"> 
+                                <p class="mypage-all-title">우편번호</p>
+                                <input type="text" v-model="detailUserInfo.post_code" placeholder="우편번호" readonly class="mypage-name-border">
+                            </div>
+                            <div class="mypage-adress"> 
+                                <p class="mypage-all-title">주소</p>
+                                <input type="text" v-model="detailUserInfo.address" placeholder="주소" readonly class="mypage-adress-border">
+                            </div>
+                            <div class="registration-grid">
+                                <p class="mypage-all-title">상세 주소</p>
+                                <input type="text" v-model="detailUserInfo.detail_address" placeholder="상세 주소 입력" class="mypage-adress-border">
+                            </div>
+
+                            <button @click="openAddressSearch" class="address-btn">주소 수정</button>
+                        </div>    
                 </div>
             </div>
             <hr class="footer-hr">
@@ -60,7 +69,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -70,15 +79,50 @@ const id = ref(store.state.auth.userInfo.user_id);
 
 const loadingFlg = computed(() => store.state.user.loadingFlg);
 
-// onBeforeMount(() => store.dispatch('user/userDetailPage', id.value));
-
-// const detailUserInfo = computed(() => store.state.user.detailUserInfo);
 const detailUserInfo = store.state.auth.userInfo;
 
 const setFile = (e) => {
     detailUserInfo.file = e.target.files[0];
     detailUserInfo.profile = URL.createObjectURL(detailUserInfo.file);
 }
+
+// 스크립트를 동적으로 로드하는 함수
+const loadDaumPostcodeScript = () => {
+        return new Promise((resolve) => {
+        const scriptId = "daum-postcode-script";
+        if (document.getElementById(scriptId)) {
+            return resolve(); // 이미 스크립트가 로드된 경우
+        }
+    
+        // html 코드에 script 코드를 동적으로 요소를 넣어주는 역할
+        const script = document.createElement("script");
+        script.id = scriptId;
+        script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+        script.onload = () => resolve();
+        document.head.appendChild(script);
+        });
+    };
+    
+    // 주소 검색 팝업을 여는 함수
+    const openAddressSearch = () => {
+        if (!window.daum || !window.daum.Postcode) {
+        alert("카카오 주소 API가 아직 로드되지 않았습니다.");
+        return;
+        }
+    
+        new window.daum.Postcode({
+            oncomplete: (data) => {
+                detailUserInfo.zonecode = data.post_code;      // 우편번호
+                detailUserInfo.address = data.address;    // 도로명 주소
+            },
+        
+        }).open();
+    };
+    // 컴포넌트가 마운트될 때 스크립트 로드
+    onMounted(async () => {
+        await loadDaumPostcodeScript();
+    });
+    
 
 </script>
 
@@ -107,10 +151,11 @@ button {
 }
 
 .mypage-border {
+    margin-top: 100px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    width: 60%;
-    height: 85%;
+    width: 70%;
+    height: 105%;
 }
 
     
@@ -170,6 +215,7 @@ button {
 }
 
 .mypage-nickname-border {
+    border: none;
     background-color: #EFEFEF;
     text-align: center;
     line-height: 30px;
@@ -235,6 +281,7 @@ button {
 
 .mypage-name-border {
     background-color: #EFEFEF;
+    border: none;
     text-align: center;
     line-height: 30px;
     font-size: 15px;
@@ -243,6 +290,7 @@ button {
 
 .mypage-number-border {
     background-color: #EFEFEF;
+    border: none;
     text-align: center;
     line-height: 30px;
     font-size: 15px;
@@ -251,6 +299,7 @@ button {
 
 .mypage-adress-border {
     background-color: #EFEFEF;
+    border: none;   
     text-align: center;
     line-height: 30px;
     font-size: 15px;
@@ -311,5 +360,16 @@ button {
     color: black;
 }
 
-
+.address-btn {
+    background-color: #35e625;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    margin-top: 20px;
+    padding: 5px;  
+    width: 30%;
+    height: 40px;
+    cursor: pointer;
+}
 </style>

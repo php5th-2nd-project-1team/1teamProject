@@ -45,7 +45,7 @@ button {
 
 .PasswordCheck-container {
     width: 100%;
-    height: 600px;
+    height: 550px;
     
     display: flex;
     justify-content: center;
@@ -55,7 +55,7 @@ button {
 .PasswordCheck-border {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    width: 60%;
+    width: 70%;
     height: 95%;
 }
 

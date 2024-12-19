@@ -22,7 +22,7 @@ class User extends Model
         'phone_number',
         'refresh_token',
         'post_code'
-
+        ,'profile'
     ];
     protected $hidden = [
         'password',

@@ -95,7 +95,11 @@ class AuthController extends Controller
         $userId = UserToken::getInPayload($request->bearerToken(), 'idt');
 
         // 유저 정보 획득
-        $userInfo = User::find($userId); 
+        $userInfo = User::find($userId);
+
+        if(is_null($userInfo)) {
+            throw new MyAuthException('E24');
+        }
 
         // 리프레쉬 토큰 비교
         if($request->bearerToken() !== $userInfo->refresh_token) {
@@ -135,8 +139,12 @@ class AuthController extends Controller
 
     public function registration(UserRequest $request) {
         $insertData = $request->only('account', 'name', 'gender');
+        if($request->file('file')) {
+            $insertData['profile'] = '/'.$request->file('file')->store('profile');
+        }else {
+            $insertData['profile'] = '/profile/default.png';
+        }
         $insertData['password'] = Hash::make($request->password);
-        $insertData['profile'] = '/'.$request->file('file')->store('profile');
         $insertData['nickname'] = $request->nickname;
         $insertData['phone_number'] = $request->phone_number;
         $insertData['address'] = $request->address;

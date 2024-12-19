@@ -21,7 +21,7 @@
         <div class="registration-grid">
             <span>프로필 사진</span>
             <label for="file" class="profile-btn">프로필 사진 선택</label>
-            <input @change="setFile" type="file" name="profile" accept="image/*" id="file" style="display: none;">
+            <input @change="setFile" type="file" name="file" accept="image/*" id="file" style="display: none;">
         </div>
         <div class="registration-grid">
             <span>성함 <span class="span-color">*</span></span>
@@ -53,12 +53,12 @@
             </div>
             <div class="registration-grid">
                 <label>상세 주소 <span class="span-color">*</span></label>
-                <input type="text" v-model="form.detailAddress" placeholder="상세 주소 입력" class="input-box-address">
+                <input type="text" v-model="form.detail_address" placeholder="상세 주소 입력" class="input-box-address">
             </div>
         </div>    
         <!-- 카카오 주소 검색 api --------------------------------------------------- -->
         <div class="registration-grid">
-            <span>성별 *</span>
+            <span>성별 <span class="span-color">*</span></span>
             <div class="id-container gender-gap">
                 <div>
                     <input v-model="form.gender"type="radio" name="gender" value="0"> 남
@@ -77,6 +77,9 @@
 <script setup>
 
 import { reactive, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
     
     // 데이터 객체
     const form = reactive({
@@ -89,8 +92,9 @@ import { reactive, onMounted, ref } from "vue";
         file: null,         // 프로필 사진
         zonecode: '',       // 우편번호 
         address: '',        // 기본 주소
-        detailAddress: '',  // 상세 주소
-        gender: ''          // 성별
+        detail_address: '',  // 상세 주소
+        gender: '',         // 성별
+        profile: '/profile/default.png',
     });
 
     const setFile = (e) => {
@@ -147,7 +151,7 @@ import { reactive, onMounted, ref } from "vue";
         display: flex;
         flex-direction: column;
         text-align: center;
-        padding: 0 10%;
+        padding: 0 5%;
     }
 
     .registration-title {
