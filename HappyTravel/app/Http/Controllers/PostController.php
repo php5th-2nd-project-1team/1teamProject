@@ -8,6 +8,7 @@ use App\Models\PostComments;
 use App\Models\PostDetail;
 use UserToken;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -16,16 +17,15 @@ class PostController extends Controller
 		$local = $request->local;
 		$key = $request->search;
 		if(!is_null($local)){
-			$PostList = Post::where('category_local_num', '=', $local)->orderBy('created_at', 'DESC')->paginate(1);
+			$PostList = Post::where('category_local_num', '=', $local)->orderBy('created_at', 'DESC')->paginate(4);
 		} else if(!is_null($key)) {
 			$PostList = Post::where(function($query)use($key){
 				$query->where('post_title', 'LIKE', '%' . $key . '%')
 				->orWhere('post_content', 'LIKE', '%' . $key . '%')
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
-			})->orderBy('created_at', 'DESC')->paginate(1);
+			})->orderBy('created_at', 'DESC')->paginate(4);
 		} else {
-			$PostList = Post::orderBy('created_at', 'DESC')->paginate(1);
-			$PostList = Post::orderBy('created_at', 'DESC')->paginate(1);
+			$PostList = Post::orderBy('created_at', 'DESC')->paginate(4);
 		}
 
 		$responseData = [
@@ -64,7 +64,9 @@ class PostController extends Controller
 		$PostComment = null;
 		$PostDetail = Post::with('manager')->find($request->id);
 		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
-		// $PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->get();
+		$PostCommentCnt = PostComments::select('post_id', PostComments::raw('COUNT(post_comment) cnt'))
+						->groupBy('post_id')
+						->get();
 
 
 		$responseData = [
@@ -72,7 +74,9 @@ class PostController extends Controller
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
 			,'PostComment' => $PostComment->toArray()
+			,'PostCommentCnt' => $PostCommentCnt->toArray()
 		];
+		// printf($PostCommentCnt);
 
 		return response()->json($responseData, 200);
 	}
