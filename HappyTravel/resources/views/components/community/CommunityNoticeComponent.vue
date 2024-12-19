@@ -20,7 +20,8 @@
             </div>      
         </div>
         <!-- 공지사항 컨텐츠 박스 -->
-        <div v-if="LoadingFlg"> 로딩 중 </div>
+         <!-- LoadingFlg -->
+         <LoadingComponent v-if="LoadingFlg" />
         <div v-else v-for="item in noticeList" :key="item" class="notice_content_box">
             <div class="notice_content_num" id="{{ itme.notice_id }}">
                 <p>{{ item.notice_id }}</p>
@@ -49,12 +50,12 @@
             </div>
         </div> -->
         <div class="pagination">
-            <div v-for="item in links" :key="item.label">
-                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url ))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+            <div v-for="item in links" :key="item.label" @click="scrollToTop()">
+                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
                     <span v-if="item.label === backBtn">{{ '이전' }}</span> 
                     <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
                     <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
-                    <span v-else>{{ item.label }}</span>
+                    <span  v-else>{{ item.label }}</span>
                 </button>
             </div>
         </div>
@@ -62,6 +63,7 @@
 </template>
 
 <script setup>    
+    import LoadingComponent from '../utilities/LoadingComponent.vue';
     import { computed, onBeforeMount} from 'vue';
     import { useStore } from 'vuex';
 
@@ -91,6 +93,10 @@
         return url.split('page=')[1];
     }
     
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
     
 </script>
 
