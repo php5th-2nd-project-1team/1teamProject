@@ -28,7 +28,7 @@
 
         <div>
             <!-- <button @click="$route.push('/community/notice', noticeUrl)">이전</button> -->
-            <router-link to="/community/notice"><button>이전</button></router-link>           
+            <router-link to="/community/notice"><button @click="goBack()">이전</button></router-link>           
         </div>
     </div>   
 </template>
@@ -36,7 +36,7 @@
 <script setup>
 import { useStore } from 'vuex';
 import { computed, onBeforeMount } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 
@@ -44,6 +44,18 @@ const store = useStore();
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
 
 const route = useRoute();
+
+const router = useRouter();
+
+const goBack = () => {
+      router.go(-1); // 이전 페이지로 이동
+      scrollToTop(); // 최상단으로 스크롤
+}
+
+const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 
 onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
 
