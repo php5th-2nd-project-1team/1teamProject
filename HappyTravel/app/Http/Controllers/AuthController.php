@@ -123,7 +123,7 @@ class AuthController extends Controller
     }
 
     public function userIdChk(UserRequest $request) {
-        $userId = User::where('account', $request->account)->exists();
+        $userId = User::withTrashed()->where('account', $request->account)->exists();
 
         if($userId) {
             throw new MyAuthException('E25');
@@ -131,7 +131,8 @@ class AuthController extends Controller
         
         $responseData = [
             'success' => true,
-            'msg' => '사용가능한 아이디입니다.'
+            'msg' => '사용가능한 아이디입니다.',
+            'exists' => $userId
         ];
 
         return response()->json($responseData, 200);

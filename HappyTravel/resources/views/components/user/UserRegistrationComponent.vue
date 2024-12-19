@@ -7,7 +7,7 @@
             <span>아이디 <span class="span-color">*</span></span>
             <div class="id-container">
                 <input type="text" v-model="form.account" placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합" class="input-box id-box"> 
-                <button @click="$store.dispatch('user/userIdCheck', form)" class="duplication-btn">중복확인</button>
+                <button @click="$store.dispatch('auth/userIdCheck', form)" class="duplication-btn">중복확인</button>
             </div>
         </div>
         <div class="registration-grid">
@@ -33,7 +33,7 @@
         </div>
         <div class="registration-grid">
             <span>휴대폰 <span class="span-color">*</span></span>
-            <input type="text" v-model="form.phone_number" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다. 하이픈 포함(-)" class="input-box">
+            <input type="text" @input="formatPhoneNumber" v-model="form.phone_number" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다." class="input-box">
         </div>
         <!-- 카카오 주소 검색 api --------------------------------------------------- -->
         <!-- 주소 검색 버튼 -->
@@ -103,6 +103,32 @@ const store = useStore();
     }
 
     let addressFlg = ref(false);
+
+    const formatPhoneNumber = (e) => {
+        form.phone_number = e.target.value.replace(/[^0-9]/g, '');
+
+        if (form.phone_number.length < 4) {
+        // 4자리 미만은 하이픈 없이 입력
+        form.phone_number = form.phone_number;
+
+        } else if (form.phone_number.length < 7) {
+            // 4자리에서 6자리까지는 3-4자리 형태로 하이픈 추가
+            form.phone_number = form.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        } else if (form.phone_number.length < 11) {
+            // 7자리에서 10자리까지는 3-4-4자리 형태로 하이픈 추가
+            form.phone_number = form.phone_number.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+        } else {
+            // 11자리 이상은 3-4-4자리 형태로 하이픈 추가
+            form.phone_number = form.phone_number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        }
+
+        // 추가 조건: 7자리가 되었을 때 하이픈이 다시 생기지 않도록 방지
+        if (form.phone_number.length === 7 && form.phone_number.indexOf('-') !== 3) {
+        // 하이픈이 3번째 자리에 없으면, 강제로 추가
+        form.phone_number = form.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        };
+    };
+
     
     // 스크립트를 동적으로 로드하는 함수
     const loadDaumPostcodeScript = () => {

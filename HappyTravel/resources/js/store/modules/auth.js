@@ -9,6 +9,8 @@ export default {
         
         // 로컬 스토리지에 userInfo가 있으면 그대로 저장, 혹은 빈 객체
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}, 
+
+        userIdChkFlg: false,
 	})
 	,mutations: {
         setAuthFlg(state, flg) {
@@ -18,6 +20,10 @@ export default {
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
         },
+        
+        setUserIdChkFlg(state, flg) {
+            state.userIdChkFlg = flg;
+        }
 	}   
 	,actions: {
         login(context, userInfo) {
@@ -86,25 +92,60 @@ export default {
             }, {root: true});
         },
 
+         // 아이디 중복 체크 
+         userIdCheck(context, userId) {
+            const url = '/api/userIdCheck';
+
+            const data = JSON.stringify(userId);
+
+            console.log(userId);
+
+            axios.post(url, data)
+            .then(response => {
+
+                context.commit('setUserIdChkFlg', true);
+                alert('사용 가능한 아이디입니다.');
+            })
+            .catch(error => {
+                context.commit('setUserIdChkFlg', false);
+
+                let errorMsgList = [];
+                const errorData = error.response.data;
+
+                if(error.response.status === 422) {
+                    console.log(errorData.data.account)
+                    if(errorData.data.account) {
+                        errorMsgList.push(errorData.data.account[0]);
+                    }
+                    alert(errorMsgList.join('\n'));
+                }else if(error.response.status === 402) {
+                    alert('이미 사용중인 아이디입니다.');
+                }
+                
+            });
+        },
+
         
         
         
         
         
         
-    // 유저 정보 수정 처리
+    // 유저 회원가입 처리
     userRegistration(context, form) {
+        if(!context.state.userIdChkFlg) {
+            alert('아이디 중복 체크를 확인해주세요.');
+        }else {
             const url = '/api/registration'
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             };
-
-
+    
             // form data 세팅
             const formData = new FormData();
-
+    
             formData.append('account', form.account);
             formData.append('name', form.name);
             formData.append('password', form.password);
@@ -116,14 +157,14 @@ export default {
             formData.append('post_code', form.zonecode);
             formData.append('gender', form.gender);
             formData.append('file', form.file);
-
+    
             console.log(form.file);
             console.log(form.detail_address);
-
+    
             axios.post(url, formData, config)
             .then(response => {
                 alert('회원 가입이 완료되었습니다.');
-
+    
                 router.replace('/login');
             })
             .catch(error => {
@@ -131,9 +172,6 @@ export default {
                 let errorMsgList = [];
                 const errorData = error.response.data;
                 if(error.response.status === 422) {
-                    if(errorData.data.account) {
-                        errorMsgList.push('아이디 중복 체크를 확인해주세요.');
-                    }
                     if(errorData.data.password_chk) {
                         errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
                     }
@@ -158,9 +196,10 @@ export default {
                 }else{
                     alert('알 수 없는 에러입니다.')
                 }
-
+    
                 alert(errorMsgList.join('\n'));
             });
+        }
     },
        
        
