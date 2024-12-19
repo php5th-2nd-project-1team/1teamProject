@@ -4,8 +4,9 @@
 		<div class="about-introduce">
 			<div>
 				<h1>펫브리즈 소개</h1>
-				<iframe width="560" height="315" src="https://www.youtube.com/embed/kdhQZjiMY88?si=3QbQJ6ckHimS7CHw" 
-				title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+				<iframe src="https://www.youtube.com/embed/mTF9Yjszwx4?si=z6KjuXvEmH21F_gq" 
+				title="YouTube video player" 
+				frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
 				referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 			</div>
 		</div>
@@ -73,6 +74,11 @@
 		gap:40px;
 
 		padding: 0 200px;
+	}
+
+	iframe{
+		width: 50%;
+		height: 80%;
 	}
 
 	/* 팻브리즈 소개 */

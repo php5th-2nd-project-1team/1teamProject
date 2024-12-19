@@ -16,13 +16,14 @@
 					<h1 class="index-controller-cardTitle">{{ value.post_title }}</h1>
 					<br>
 					<h3>{{ value.post_local_name }}</h3>
-					<h4 @click="$router.push(`/posts/${value.post_id}`)" style="cursor: pointer; font-weight: 400;">자세히 보기</h4>
+					<br>
+					<span @click="$router.push(`/posts/${value.post_id}`)" style="cursor: pointer; font-weight: 400;">자세히 보기</span>
 				</SwiperSlide>
 			</Swiper>
 			<div class="index-btn-area">
-				<button class="indexPost-btn-next"><</button>
+				<button class="indexPost-btn-prev" style="background-image: url('/developImg/arrow_left.png');"></button>
 				<div class="swiper-pagination" style="position: static; width: 50%;"></div> 
-				<button class="indexPost-btn-prev">></button>
+				<button class="indexPost-btn-next" style="background-image: url('/developImg/arrow_right.png');"></button>
 			</div>
 		</div>
 		<div class="indexPost-view">
@@ -117,8 +118,12 @@
 		width: 2rem;
 		height: 2rem;
 		
+		border: none;
 		border-radius: 100%;
-		background-color: white;
+
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 
 	/* index view 영역 */

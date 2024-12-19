@@ -1,7 +1,8 @@
 <template>
 	<div class="index-mediabox">
-		<iframe src="https://www.youtube.com/embed/4Yd7hXtwhDU?si=HvwyEkjoby6blbKn" title="YouTube video player" frameborder="0" 
-		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		<iframe src="https://www.youtube.com/embed/mTF9Yjszwx4?si=z6KjuXvEmH21F_gq" 
+		title="YouTube video player" 
+		frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
 		referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 		<p>멍멍냥냥멍멍냥냥멍멍냥냥멍멍냥멍멍냥<br>반려동물과 함께 여행을</p>
 		<button @click="$router.push('/about')">더 알아보기</button>

@@ -58,6 +58,7 @@ const chkAuth = (to, from, next) => {
 	// 로그인 시 접근 가능 페이지
 	const AuthPassFlg = (to.path === '/mypage'); 
 
+	window.scrollTo(0, 0);
     if(authFlg && noAuthPassFlg) {
         // 인증된 유저가 비인증으로 이동할 수 있는 페이지에 접근할 경우 board로 이동
         next('/index');
