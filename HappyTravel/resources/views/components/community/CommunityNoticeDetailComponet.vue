@@ -1,47 +1,52 @@
 <template>
-    <div v-if="noticeDetailList.notice_id" class="community_notice_detail_container">
-        <h1>공지사항</h1> 
-    <!-- 공지사항 태그 박스 -->
-        <div class="notice_tag_detail_box">
-            <div class="notice_tag_detail_number">
-                <p>{{ noticeDetailList.notice_id }}</p>
+    <LoadingComponent v-if="LoadingFlg" />
+    <div v-else-if="noticeDetailList.notice_id && !LoadingFlg">
+        <div class="community_notice_detail_container">
+            <h1>공지사항</h1> 
+        <!-- 공지사항 태그 박스 -->
+            <div class="notice_tag_detail_box">
+                <div class="notice_tag_detail_number">
+                    <p>{{ noticeDetailList.notice_id }}</p>
+                </div>
+                <div class="notice_tag_detail_manager">
+                    <p>{{ noticeDetailList.managers.m_nickname }}</p>
+                </div>
+                <div class="notice_tag_detail_date">
+                    <p>{{ noticeDetailList.created_at }}</p>
+                </div>
             </div>
-            <div class="notice_tag_detail_manager">
-                <p>{{ noticeDetailList.managers.m_nickname }}</p>
-            </div>
-            <div class="notice_tag_detail_date">
-                <p>{{ noticeDetailList.created_at }}</p>
-            </div>
-        </div>
-        <div class="notice_detail_title_box">
-            <p class="notice_detail_title">제목</p>
-            <p class="notice_detail_title_info">{{ noticeDetailList.notice_title }}</p>
-        </div>   
-        <div class="notice_detail_file">
-            <p>첨부파일</p>
-            <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
-        </div>  
-        <div class="notice_detail_content_box">
-            <p class="notice_detail_content">내용</p>
-            <div class="notice_detail_content_textarea" style="padding : 50px; height: auto; ">{{ noticeDetailList.notice_content }}</div>                 
-        </div> 
+            <div class="notice_detail_title_box">
+                <p class="notice_detail_title">제목</p>
+                <p class="notice_detail_title_info">{{ noticeDetailList.notice_title }}</p>
+            </div>   
+            <div class="notice_detail_file">
+                <p>첨부파일</p>
+                <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
+            </div>  
+            <div class="notice_detail_content_box">
+                <p class="notice_detail_content">내용</p>
+                <div class="notice_detail_content_textarea" style="padding : 50px; height: auto; ">{{ noticeDetailList.notice_content }}</div>                 
+            </div> 
 
-        <div>
-            <!-- <button @click="$route.push('/community/notice', noticeUrl)">이전</button> -->
-            <router-link to="/community/notice"><button @click="goBack()">이전</button></router-link>           
-        </div>
-    </div>   
+            <div>
+                <!-- <button @click="$route.push('/community/notice', noticeUrl)">이전</button> -->
+                <router-link to="/community/notice"><button @click="goBack()">이전</button></router-link>                
+            </div>
+        </div>   
+    </div>
 </template>
 
 <script setup>
+import LoadingComponent from '../utilities/LoadingComponent.vue';
 import { useStore } from 'vuex';
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 
-
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
+
+const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
 
 const route = useRoute();
 
@@ -50,11 +55,11 @@ const router = useRouter();
 const goBack = () => {
       router.go(-1); // 이전 페이지로 이동
       scrollToTop(); // 최상단으로 스크롤
-}
+    };
 
 const scrollToTop = () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
 
 onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));

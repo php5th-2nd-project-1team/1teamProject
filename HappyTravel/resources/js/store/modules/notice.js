@@ -4,8 +4,7 @@ export default {
 	namespaced: true,
 	state: () =>({
 		noticeList: []
-        ,noticePage: 0
-        ,LoadingFlg:false
+        ,LoadingFlg: false
         ,links: []        
         ,currentPage: localStorage.getItem('noticeCurrentPage') ? localStorage.getItem('noticeCurrentPage') : 1
         ,noticeDetail: {}
@@ -13,9 +12,6 @@ export default {
 	,mutations: {
         setNoticeList(state, noticeList) {
             state.noticeList = noticeList;
-        }
-        ,setNoticePage(state, noticePage) {
-            state.noticePage = noticePage;
         }
         ,setLoadingFlg(state, LoadingFlg) {
             state.LoadingFlg = LoadingFlg;
@@ -36,13 +32,13 @@ export default {
             context.commit('setLoadingFlg', true);
 
             page = page === 0 ? context.state.currentPage : page;
-            const url = '/api/community/notice?page=' + page + '#';
+            const url = '/api/community/notice?page=' + page;
             
             axios.get(url) 
             .then(response => {
                 console.log(response);
                 context.commit('setNoticeList', response.data.notice.data);
-                context.commit('setLoadingFlg', false)
+                context.commit('setLoadingFlg', false);
                 context.commit('setLinks', response.data.notice.links);
                 context.commit('setCurrentPage', response.data.notice.current_page);
             })
@@ -51,14 +47,15 @@ export default {
             })
         },
         noticeDetailList(context, id) {
-           
+            context.commit('setLoadingFlg', true);
+
             const url = '/api/community/notice/' + id ;
             axios.get(url)
             .then(response => {
                 context.commit('setNoticeDetail', response.data.noticeDetail);
                 console.log(response.data.noticeDetail);
 
-                router.push('/community/notice/' + id);
+                context.commit('setLoadingFlg', false);
             })    
             .catch(error => {
                 console.error(error);

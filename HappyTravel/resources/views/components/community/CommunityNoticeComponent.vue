@@ -27,7 +27,7 @@
                 <p>{{ item.notice_id }}</p>
             </div>      
             <div class="notice_content_title"> 
-                <p @click="$router.push('/community/notice/' + item.notice_id)">{{ item.notice_title }}</p>     
+                <p @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</p>     
             </div>  
             <div class="notice_content_manager">
                 <p>{{  item.managers.m_nickname}}</p>
@@ -66,6 +66,7 @@
     import LoadingComponent from '../utilities/LoadingComponent.vue';
     import { computed, onBeforeMount} from 'vue';
     import { useStore } from 'vuex';
+    import router from '../../../js/router.js';
 
     const store = useStore();
     const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
@@ -94,9 +95,13 @@
     }
     
     const scrollToTop = () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
+    const redirectDetaile = (id) => {
+        scrollToTop();
+        router.push('/community/notice/' + id);
+    };
     
 </script>
 
