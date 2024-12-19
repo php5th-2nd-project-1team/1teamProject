@@ -242,7 +242,7 @@ export default {
 				if(context.state.totalPage === 0) {
 					context.commit('setTotalPage', response.data.PostComment.last_page);
 				}
-				// console.log(response.data.PostComment);
+				// console.log(response.data.PostComment.data);
 			})
 			.catch(error => {
 				console.error(error);
@@ -257,6 +257,7 @@ export default {
 		,storePostComment(context, data) {
 			// console.log('data:', data);
 			const url = '/api/posts/' + data.post_id;
+			// const url = `/api/posts/${data.post_id}`;
 
 			const config = {
 				headers: {
@@ -274,16 +275,20 @@ export default {
 			};
 			// json으로 파싱
 			const Data = JSON.stringify(commentData);
+			// 전송 데이터 확인
+			// console.log( Data );
 
-			// axios
 			axios.post(url, Data, config)
 			.then(response => {
 				context.commit('setPostCommentListUnshift', response.data.postComment);	// response.data.??? 이뒤에 포스트댓글 어디로 오는지 체크
+				alert('댓글을 작성하였습니다.');
+				
 				// console.log(response.data.postComment);
-				// alert('댓글을 작성하였습니다.');
 			})
 			.catch(error => {
-				console.error('댓글 작성 실패');
+				// console.error('댓글 작성 실패');
+				console.error('댓글 작성 실패:', error.response.data); // 서버의 에러 메시지 출력
+    			alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
 			});
 		}
 	}

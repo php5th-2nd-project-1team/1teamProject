@@ -94,8 +94,8 @@
 	</div>
 	<div class="postdetail-comment-form-box">
 		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
-		<textarea v-model="comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
-		<button @click="$store.dispatch('post/storePostComment', commentData)" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
+		<textarea @click="checkToken" v-model="commentData.post_comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
+		<button @click="storeComment" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
 	<!-- 댓글 리스트 -->
 	<CommentComponent />
@@ -164,6 +164,7 @@ import { Pagination, Navigation, Thumbs, FreeMode } from 'swiper/modules';
 import { computed, onBeforeMount, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import router from '../../../js/router';
 
 const modules = reactive([Navigation, Pagination, Thumbs]);
 const thumbsSwiper = ref(null);
@@ -178,7 +179,7 @@ const route = useRoute();
 
 // 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
-const isLoading = computed(() => store.state.post.isLoading);
+// const isLoading = computed(() => store.state.post.isLoading);
 
 //  ------------------------------------------
 // 라우트 변경 시 데이터 다시 호출 
@@ -217,12 +218,32 @@ const toggleContent = () => {
 
 // ------------------------------------------
 // 댓글 작성
-const comment = ref('');
-// const postId = this.$route.params.id;
 const commentData = reactive({
-	post_comment : comment.value
+	post_comment : ''
 	,post_id : route.params.id
 });
+
+const storeComment = () => {
+	if(commentData.post_comment === '') {
+		alert('댓글을 작성 해주세요.');
+	}
+	store.dispatch('post/storePostComment', commentData);
+	// console.log(commentData);
+};
+
+// console.log(commentData);
+
+
+// ------------------------------------------
+// 댓글작성시 로그인 확인
+// const hasToken = ref(localStorage.getItem('accessToken'));
+const checkToken = () => {
+	if(!localStorage.getItem('accessToken')) {
+		alert('로그인 후 댓글을 작성 해주세요.');
+		router.replace('/login');
+		// hasToken.value = false;
+	}
+};
 
 </script>
 	
