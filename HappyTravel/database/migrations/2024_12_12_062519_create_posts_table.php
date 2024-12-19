@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('post_content', 50)->nullable(false)->comment('상단 내용 ex) 강화도 방직공장을 개조한 레트로 감성카페');
             $table->longText('post_detail_content')->nullable(false);
             $table->string('post_img', 200)->nullable(false);
-            $table->integer('post_like')->nullable(false)->default(0);
             $table->bigInteger('post_view')->nullable(false)->default(0);
             $table->timestamps();
             $table->softDeletes();
