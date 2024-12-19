@@ -56,7 +56,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 70%;
-    height: 95%;
+    height: 100%;
 }
 
 .pet-breeze-title {
@@ -82,7 +82,7 @@ button {
 .password-box {
     width: 55%;
     font-size: 2rem;
-    padding: 10px;
+    padding: 20px;
     border-radius: 5px;
     background-color: #EFEFEF;
     border: none;

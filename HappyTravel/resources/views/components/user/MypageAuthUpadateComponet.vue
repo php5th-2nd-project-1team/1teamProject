@@ -142,7 +142,7 @@ button {
 
 .mypage-container {
     width: 100%;
-    height: 620px;
+    height: 700px;
 
     
     display: flex;
@@ -155,7 +155,7 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 70%;
-    height: 105%;
+    height: 93%;
 }
 
     

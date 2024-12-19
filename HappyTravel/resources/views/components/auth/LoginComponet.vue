@@ -50,8 +50,8 @@ import { reactive } from 'vue';
     .login-border{
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        width: 50%;
-        height: 80%;
+        width: 60%;
+        height: 85%;
 
         display: flex;
         flex-direction: column;
@@ -127,5 +127,9 @@ import { reactive } from 'vue';
 
     .login-guidebook {
         padding-left: 10px;
+    }
+
+    .login-main {
+        padding: 5px;
     }
 </style>
