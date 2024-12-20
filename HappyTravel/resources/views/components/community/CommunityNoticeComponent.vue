@@ -1,69 +1,52 @@
 <template>
-    <div class="community_notice_container">
-            <h1>공지사항</h1> 
-        <!-- 공지사항 태그 박스 -->
-        <div class="notice_tag_box">
-            <div class="notice_tag_number">
-                <p>번호</p>
-            </div>
-            <div class="notice_tag_title">
-                <p>제목</p>
-            </div>  
-            <div class="notice_tag_manager">
-                <p>작성자</p>
-            </div>
-            <div class="notice_tag_date">
-                <p>작성일자</p>
-            </div>
-            <div class="notice_tag_file">
-                <p>파일</p>
-            </div>      
+    <LoadingComponent v-if="LoadingFlg" />
+
+    <div class="notice_title_bg" >
+        <h1 class="notice_title">공지사항</h1>
+    </div>
+
+    <div class="notice-container">
+        <div class="notice-header">
+            <div class="notice-item">공지</div>
+            <div class="notice-item">제목</div>
+            <div class="notice-item">작성자</div>
+            <div class="notice-item">작성일자</div>
         </div>
-        <!-- 공지사항 컨텐츠 박스 -->
-         <!-- LoadingFlg -->
-         <LoadingComponent v-if="LoadingFlg" />
-        <div v-else v-for="item in noticeList" :key="item" class="notice_content_box">
-            <div class="notice_content_num" id="{{ itme.notice_id }}">
-                <p>{{ item.notice_id }}</p>
-            </div>      
-            <div class="notice_content_title"> 
-                <p @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</p>     
-            </div>  
-            <div class="notice_content_manager">
-                <p>{{  item.managers.m_nickname}}</p>
+            <!-- <div class="notice-row">
+            <div class="notice-item">1</div>
+            <div class="notice-item">공지사항 제목</div>
+            <div class="notice-item">관리자</div>
+            <div class="notice-item">2024-12-20</div>
             </div>
-            <div class="notice_content_date">
-                <p>{{ item.created_at }}</p>
-            </div>
-            <div class="link_file">
-                <img v-if="item.notice_img !== null" :src="item.notice_img">
-            </div>     
-        </div>
-        <!-- <div class="pagination">
-            <div v-for="item in links" :key="item.label">
-                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeLinkList', item.url)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
-                    <span v-if="item.label === backBtn">{{ '이전' }}</span> 
-                    <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
-                    <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
-                    <span v-else>{{ item.label }}</span>
-                </button>
-            </div>
-        </div> -->
-        <div class="pagination">
-            <div v-for="item in links" :key="item.label" @click="scrollToTop()">
-                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
-                    <span v-if="item.label === backBtn">{{ '이전' }}</span> 
-                    <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
-                    <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
-                    <span  v-else>{{ item.label }}</span>
-                </button>
-            </div>
+            -->    
+        <div v-for="item in noticeList" :key="item" class="notice-row">
+            <div class="notice-item notice_inportant" v-if="item.notice_tag === '1'">중요</div> 
+            <div class="notice-item notice_common" v-else-if="item.notice_tag === '0'">일반</div> 
+            <div class="notice-item">{{ item.notice_title }}</div>
+            <div class="notice-item">{{ item.managers.m_nickname }}</div>
+            <div class="notice-item">{{ item.created_at }}</div>
         </div>
     </div>
+
+    <!-- <div class="pagination">
+        <button class="prev-next">이전</button>
+        <button class="page-number">1</button>
+        <button class="page-number">2</button>
+        <button class="page-number active">3</button>
+        <button class="page-number">4</button>
+        <button class="page-number">5</button>
+        <button class="prev-next">다음</button>
+    </div> -->
+
+    
+    <div class="pagination">      
+        <button @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url))" class="page-number" v-for="item in links" :key="item.label">{{ item.label }}</button> 
+    </div>
+
 </template>
 
 <script setup>    
-    import LoadingComponent from '../utilities/LoadingComponent.vue';
+   import LoadingComponent from '../utilities/LoadingComponent.vue';
     import { computed, onBeforeMount} from 'vue';
     import { useStore } from 'vuex';
     import router from '../../../js/router.js';
@@ -74,9 +57,11 @@
 
     onBeforeMount(() => {
             store.dispatch('notice/noticeList', 0);
-        }
-    );
-   
+          }
+        );
+        
+     
+        
     const links = computed(()=> store.state.notice.links);
 
     const backBtn = "&laquo; Previous";
@@ -85,6 +70,7 @@
     const currentPage = computed(() => store.state.notice.currentPage);
     
     const limitPage = 2;
+    
 
     // url에서 페이지 번호만 획득
     const getPageOnUrl = (url) => {
@@ -102,95 +88,95 @@
         scrollToTop();
         router.push('/community/notice/' + id);
     };
+
     
 </script>
 
 <style scoped>
-    * {
-  box-sizing: border-box;
+    .notice_title_bg {  
+        font-size: 2rem;
+        padding: 15px;
+        margin:0 auto;
+        width: 80%;
+        text-align: center;
     }
-
-    body {
-     margin: 0;
-    padding: 0;
+    .notice-container {
+      display: grid;
+      grid-template-columns: 0.5fr 3fr 1fr 1fr; /* 번호를 줄이고 제목을 늘림 */
+      width: 80%;
+      margin: 20px 0;
+      margin: 0 auto;
+      margin-top: 50px;
     }
-    .community_notice_container {
-        min-width: 800px;
+    .notice-header {
+      display: contents;
     }
-    h1 { 
-        margin: 20px;
+    .notice-row {
+      display: contents;
     }
-    /* 공지사항 태그 박스  */
-    .notice_tag_box {
-    display: grid; 
-    grid-template-columns:repeat(5,1fr);
-    justify-content: space-around;
-    gap:10px;
-    border-top : 1px solid black;
-    border-bottom : 1px solid black;
-    padding: 20px; 
-    margin:20px;  
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: #2986FF;
+    .notice-item {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid  #D9D9D9; /* 게시글의 하단 보더 */
     }
-    /* 공지사항 콘텐츠 박스  */
-    .notice_content_box {
-    display: grid;
-    grid-template-columns:repeat(5,1fr);  
-    justify-items: start;
-    align-items: center;
-    gap: 10px;    
-    background-color: #EFEFEF;
-    width:auto;
-    font-size: 0.8rem;
-    font-weight: bold;
-    height: 50px;
-    margin: 20px;  
-    min-width: 500px;
+    .notice-header .notice-item {
+      background-color: #2986FF;
+      color: #fff;
+      font-weight: bold;
+      border-top: 2px solid #2986FF; /* 헤더의 상단 보더 */
+      padding: 10px;
     }
-    .notice_content_num >p {
-        margin-left:35px;
+    .notice-row:hover .notice-item {
+      background-color: #f9f9f9;
     }
-    .notice_content_title >p {
-        margin-right:35px;
-        min-width: 100px;
-        cursor:pointer;
-    }
-    .notice_content_manager >p {
-        margin-left:35px;
-    }
-    /* 첨부 파일 이미지 */
-    .link_file >img{
-    width:30px;
-    height:30px;
-    }
-    /* 버튼 박스 */
-    .btn_box {
-        margin:50px;
-        text-align: right;
-        align-items: center;
-    }
-
-    button {
-        cursor: pointer;
-    }
-
-    /* 페이지 */
+    
     .pagination {
-        display: flex;
-        justify-content: center;
-    }    
-    .pagenate-btn {
-        width:50px;
-        height: 50px;
-        border-radius: 50px;
-        border:none;
-        color:black;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 4px;
     }
-    .main-Btn {
-        font-size: 30px;
-        border:none;
-        color: darkblue;
+    .pagination .prev-next {
+      background-color: #2986FF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
     }
+    .pagination .prev-next:hover {
+      background-color: #0056b3;
+    }
+    .pagination .page-number {
+      font-size: 16px;
+      color: #000;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      width:40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+    }
+    .pagination .page-number.active {
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #2986FF;
+      color: #ffff;
+      width:40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;    
+    }
+    .pagination .page-number:hover {
+      text-decoration: underline;
+    }
+
+
+
+
+
+
 </style>
