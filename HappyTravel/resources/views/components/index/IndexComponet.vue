@@ -6,12 +6,12 @@
 		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>
 		<IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/>
 	</div>
-	<div class="index-btn-top" @click="onClickTopBtn"></div>
+	<div @click="onClickTopBtn" :class="isActiveTopBtn"></div>
 </template>
 
 <script setup>
 
-import { onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount } from 'vue';
 import IndexCommentBoxComponent from './index_module/IndexCommentBoxComponent.vue';
 import IndexMediaboxComponent from './index_module/IndexMediaboxComponent.vue';
 import IndexPostListComponent from './index_newModule/IndexPostListComponent.vue';
@@ -20,7 +20,25 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
+const isActiveTopBtn = ref('index-btn-top');
+const canClickBtn = ref('false');
 
+const onScroll = () =>{
+	const docHeight = document.documentElement.scrollHeight; // 문서 기준 Y축 총 길이
+	const winHeight = window.innerHeight;											// window Y축 총 길이
+	const nowHeight = window.scrollY;												// 현재 Y축
+	const viewHeight = docHeight - winHeight;								// 끝까지 스크롤 했을 때 Y축의 길이
+
+	if(nowHeight >= viewHeight * 0.3 ){
+		isActiveTopBtn.value = 'index-btn-top index-btn-top-active';
+		canClickBtn.value = true;
+	} else {
+		isActiveTopBtn.value = 'index-btn-top';
+		canClickBtn.value = false;
+	}
+}
+
+window.addEventListener('scroll', onScroll);
 onBeforeMount(() => {
 	store.dispatch('post/indexes');
 });
@@ -30,8 +48,13 @@ onBeforeUnmount(()=>{
 })
 
 const onClickTopBtn = () =>{
-	window.scrollTo(0, 0);
+	if(canClickBtn.value){
+		window.scrollTo(0, 0);
+	}
 }
+
+
+
 
 </script>
 
@@ -61,12 +84,20 @@ const onClickTopBtn = () =>{
 		background-size: cover;
 		background-repeat: no-repeat;
 
-		/* opacity: 0.5; */
+		opacity: 0;
 
 		bottom: 10%;
 		right: 10%;
 
 		z-index: 1000;
+
+		transition: all 0.5s;
+	}
+
+	.index-btn-top-active{
+		opacity: 1;
+
+		transition: all 0.5s;
 	}
 
 	/* 반응형 : 1439px */

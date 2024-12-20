@@ -101,7 +101,7 @@ export default {
 			state.totalPage = 0;
 			state.isSearching = false;
 			state.beforeSearch = '';
-			state.beforeLocal = '00';
+			state.beforeLocal = '';
 			state.isLoading = false;
 			state.postComment = '';
 			state.postCommentList = [];
@@ -131,10 +131,16 @@ export default {
 				context.commit('setInitialize');
 			}
 
-			if(context.state.beforeSearch === '' && context.state.beforeLocal === '00'){
+			if(context.state.beforeLocal !== ''){
+				if(context.state.beforeSearch !== ''){
+					context.dispatch('search', context.state.beforeSearch);
+				}
+				else{
+					context.dispatch('localSearch', context.state.beforeLocal);
+				}
+			} else {
 				context.commit('setIsLoading', true);
-				
-								
+
 				const url = `/api/posts?page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
@@ -148,22 +154,20 @@ export default {
 				}).finally(() => {
 					context.commit('setIsLoading', false);
 				});
-			} else if( context.state.beforeSearch !== '' ) {
-				context.dispatch('search', context.state.beforeSearch);
-			} else {
-				context.dispatch('localSearch', context.state.beforeLocal);
 			}
 		}
 		// 포스트 검색 찾기
 		,search(context, payload){
-			
 			if(context.state.beforeSearch !== payload){
+				const beforeLocal = context.state.beforeLocal;
 				context.commit('setInitialize');
+				context.commit('setBeforeLocal', beforeLocal);
+				console.log(context.state.beforeLocal);
 			}
 			
 			context.commit('setIsLoading', true);
 
-			const url = `/api/posts?page=${context.getters['getNextPage']}&search=${payload}`;
+			const url = `/api/posts?page=${context.getters['getNextPage']}&search=${payload}&local=${context.state.beforeLocal}`;
 			axios.get(url)
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
@@ -181,11 +185,9 @@ export default {
 		} 
 		// 포스트 지역 찾기
 		,localSearch(context, payload){			
-			if(context.state.beforeLocal === '00' || context.state.beforeLocal !== payload){
+			if(context.state.beforeLocal === '' || context.state.beforeLocal !== payload){
 				context.commit('setInitialize');
-				// TODO 00번일 때 context.dispatch('index'); 실행시키고 return 시키기
-				if(payload === '00'){
-					console.log(payload);
+				if(payload === ''){
 					context.dispatch('index');
 					return;
 				}
@@ -207,7 +209,6 @@ export default {
 				console.log(error);
 			}).finally(() => {
 				context.commit('setIsLoading', false);
-				context.commit('setBeforeLocal', payload);
 			});
 		}
 		// index 페이지에 필요한 애들 가져오기
