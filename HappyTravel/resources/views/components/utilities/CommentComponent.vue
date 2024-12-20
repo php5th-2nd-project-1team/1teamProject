@@ -1,12 +1,12 @@
 <template>
-    <div v-for="item in PostComment" :key="item" class="comment-box">
+    <div v-for="(item, key) in PostComment" :key="item" class="comment-box">
         <img class="comment-img" :src="item.user.profile">
         <!-- <img class="comment-img" src="/profile/GJfqlZza8AAd1_K.jfif"> -->
         <div class="comment-txt">
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
 				<button type="button">신고하기</button>
-				<button>삭제</button>
+				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete">X</button>
 			</div>
             <div class="comment-created">
                 <span class="comment-name">{{ item.user.nickname }}</span>
@@ -21,13 +21,26 @@
 <script setup>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 const store = useStore();
+const route = useRoute();
 
 // 댓글 리스트 (댓글 정보 가져온다~)
 const PostComment = computed(() => store.state.post.postCommentList);
 
-const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
-// const loadMoreComments = computed(() => );
+const isLastPage = computed(() => store.state.post.lastPageFlg);
+// ------------------------------------------
+// 댓글 페이지네이션
+const loadMoreComments = () => {
+	store.dispatch('post/postCommentPagination', route.params.id);
+};
+
+// ------------------------------------------
+// 댓글 삭제
+const deleteComment = (id, key) => {
+	store.dispatch('post/postCommentDelete', [id, key]);
+};
+
 </script>
 
 <style scoped>
@@ -66,5 +79,13 @@ const isLastPage = computed(() => store.state.post.currentPage >= store.state.po
  .btn-more {
 	width: 100px;
 	margin: 20px 0;
+ }
+
+ .btn-comment-delete {
+	color: red;
+	background-color: transparent;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
  }
 </style>

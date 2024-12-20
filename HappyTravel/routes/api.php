@@ -35,8 +35,10 @@ Route::middleware('my.auth')->group(function() {
     
     Route::post('/user/withdraw', [UserController::class, 'passwordChk'])->name('user.passwordChk');
 
-    // 댓글 작성
+    // 포스트 댓글 작성(id가 post_id)
     Route::post('/posts/{id}', [PostController::class, 'storePostComment'])->name('store.postComment');
+    // 포스트 댓글 삭제(id가 comment_id)
+    Route::delete('/posts/{id}', [PostController::class, 'deletePostComment'])->name('destroy.postComment');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

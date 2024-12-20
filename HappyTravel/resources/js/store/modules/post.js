@@ -22,13 +22,15 @@ export default {
 		,postList : []
 		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
 		,currentPage : 0
+		,commentCurrentPage : 1
 		,totalPage : 0
 		,isLoading : false
 		,isSearching : false
 		,beforeSearch : ''
 		,beforeLocal : '00'
-		,controllerFlg : false
+		,controllerFlg : true
 		,lastPageFlg : false
+		,commentPage : 0
 		,postCommentCnt : 0
 		
 		// index 부분
@@ -52,6 +54,10 @@ export default {
 
 		,setCurrentPage(state, page){
 			state.currentPage = page;
+		}
+
+		,setCommentCurrentPage(state, page) {
+			state.commentCurrentPage = page;
 		}
 
 		,setTotalPage(state, page){
@@ -81,23 +87,40 @@ export default {
 		,setPostCommentListUnshift(state, comment) {
 			state.postCommentList.unshift(comment);
 		}
-		// 포스트 댓글 페이지네이션 컨트롤
+		// // 디바운싱
 		,setControllerFlg(state, flg) {
 			state.controllerFlg = flg;
 		}
-		// 포스트 댓글 페이지네이션 컨트롤
+		// // 디바운싱
 		,setLastPageFlg(state, flg) {
 			state.lastPageFlg = flg;
 		}
+		// 포스트 댓글 페이지네이션
+		,setCommentPage(state, page) {
+			state.commentPage = page;
+		}
 		// // 포스트 댓글 갯수
-		,setpostCommentCnt(state, count) {
+		,setPostCommentCnt(state, count) {
 			state.postCommentCnt = count;
+		}
+		// 댓글갯수 +1
+		,addPostCommentCnt(state) {
+			state.postCommentCnt.cnt += 1;
+		}
+		// 댓글 삭제(댓글의 key값을 받아서 삭제)
+		,deleteComment(state, key) {
+			state.postCommentList.splice(key, 1);  // splice로 ket값받아서 1개 삭제
+		}
+		// 댓글갯수 -1
+		,subPostCommentCnt(state) {
+			state.postCommentCnt.cnt -= 1;
 		}
 
 		// post 전체 초기화
 		,setInitialize(state){
 			state.postList = [];
 			state.currentPage = 0;
+			state.commentCurrentPage = 1;
 			state.totalPage = 0;
 			state.isSearching = false;
 			state.beforeSearch = '';
@@ -244,17 +267,23 @@ export default {
 
 		// 포스트 상세 출력
 		,showPost(context, id){
-			const url = '/api/posts/' + id;
-			
-			
 			context.commit('setIsLoading', true);
+			
+			const url = '/api/posts/' + id;
 			
 			axios.get(url)
 			.then(response => {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
 				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
 				context.commit('setPostCommentList', response.data.PostComment.data);
-				context.commit('setpostCommentCnt', response.data.postCommentCnt);
+
+				// 지금 페이지랑 마지막 페이지가 같으면 setLastPageFlg true로 바꾸고 댓글더보기 버튼 없애기
+				if(response.data.PostComment.current_page === response.data.PostComment.last_page) {
+					context.commit('setLastPageFlg', true);
+				}
+
+				context.commit('setPostCommentCnt', response.data.PostCommentCnt);
+				console.log(response.data.PostComment);
 
 				context.commit('setCurrentPage', response.data.PostComment.current_page);
 				if(context.state.totalPage === 0) {
@@ -269,7 +298,7 @@ export default {
 			});
 		}
 
-		// 포스트 댓글 작성(하는중)
+		// 포스트 댓글 작성
 		,storePostComment(context, data) {
 			const url = '/api/posts/' + data.post_id;
 			// const url = `/api/posts/${data.post_id}`;
@@ -289,6 +318,7 @@ export default {
 			axios.post(url, param, config)
 			.then(response => {
 				context.commit('setPostCommentListUnshift', response.data.storePostComment);
+				context.commit('addPostCommentCnt');		// 펫브리즈고 댓글갯수 +
 				alert('댓글을 작성하였습니다.');
 				
 				// console.log(response.data.postComment);
@@ -301,25 +331,66 @@ export default {
 			});
 		}
 
-		// 포스트 댓글 페이지네이션
-		,postCommentPagination(context) {
-			// if(context.state.controllerFlg && !context.state.lastPageFlg) {
-			// 	context.commit('setControllerFlg', false);
-			// }
+
+		// 포스트 댓글 페이지네이션(작업중)
+		,postCommentPagination(context, id) {
+			// lastPageFlg 가 true일때는 밑에 처리를 하지 않는다.
+			if(context.state.lastPageFlg === true){
+				return;
+			}
+
+			if(context.state.controllerFlg && !context.state.lastPageFlg) {
+				context.commit('setControllerFlg', false);
+			}
+			
 			context.commit('setIsLoading', true);
-			const url = '/api/posts/' + data.post_id;
-			axios.get(url, config)
+			const url = '/api/posts/' + id + '?page=' + context.getters['getCommentNextPage'];	// 페이지네이션 꼭?page 로 적어야함
+			axios.get(url)
 			.then(response => {
+				// console.log('댓글 추가 요청', response.data.PostComment);
 				context.commit('setPostCommentList', response.data.PostComment.data);
-				conte
+				context.commit('setCommentCurrentPage', response.data.PostComment.current_page);
+				
+				console.log(response.data.PostComment.current_page, context.state.commentCurrentPage);
+				if(response.data.PostComment.current_page >= response.data.PostComment.last_page) {
+					console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
+					context.commit('setLastPageFlg', true);
+				}
 			})
 			.catch(error => {
 				console.error(error);
 			})
 			.finally(() => {
-				context.commit('setIsLoading', true);
+				context.commit('setIsLoading', false);
+				context.commit('setControllerFlg', true);
 			});
 		}
+
+		// 포스트 댓글 삭제
+		,postCommentDelete(context, id) {
+			if(context.state.controllerFlg && !context.state.lastPageFlg) {
+				context.commit('setControllerFlg', false);
+			}
+			const url = '/api/posts/' + id[0];
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+
+			axios.delete(url, config)
+			.then(response => {
+				alert('댓글이 삭제되었습니다.');
+				context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
+				context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
+			})
+			.catch(error => {
+				console.error(error);
+			});
+		}
+
+
+
 	}
 	,getters: {
 		getNextPage(state){
@@ -327,6 +398,10 @@ export default {
 		}
 		,getIsLastPage(state){
 			return state.currentPage >= state.totalPage;
+		}
+
+		,getCommentNextPage(state) {
+			return state.commentCurrentPage + 1;
 		}
 	}
 }

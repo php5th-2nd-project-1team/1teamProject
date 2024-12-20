@@ -79,8 +79,9 @@ class PostController extends Controller
 		$PostDetail = Post::with('manager')->find($request->id);
 		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
 		$PostCommentCnt = PostComments::select('post_id', PostComments::raw('COUNT(post_comment) cnt'))
+						->where('post_id', '=', $request->id)
 						->groupBy('post_id')
-						->get();
+						->first();		// 하나만 가져오기 때문에 get() 이 아니라 first() 이다.
 
 		DB::beginTransaction();
 		// 조회수 추가
@@ -96,24 +97,23 @@ class PostController extends Controller
 			,'PostComment' => $PostComment->toArray()
 			,'PostCommentCnt' => $PostCommentCnt->toArray()
 		];
-		// printf($PostCommentCnt);
 
 		return response()->json($responseData, 200);
 	}
 
-	// // 포스트 댓글 리스트 출력 (showPost에서 댓글도 같이 가져오기, 따로 뺄 필요없음)
-	// public function postCommentList() {
-	// 	$postCommentList = PostComments::with('user')->orderBy('created_at', 'DESC')->paginate(5);
+	// 실제로 댓글 페이지네이션시 PostComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
+	public function getComment(Request $request) {
+		$PostComment = null;
+		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
 
-	// 	$responseData = [
-	// 		'success' => true
-	// 		,'msg' => '포스트 댓글 리스트 출력'
-	// 		,'postCommentList' => $postCommentList->toArray()
-	// 	];
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 코멘트 출력'
+			,'PostComment' => $PostComment->toArray()
+		];
 
-	// 	return response()->json($responseData, 200);
-	// }
-
+		return response()->json($responseData, 200);
+	}
 	
 	// 포스트 댓글 작성
 	public function storePostComment(StoreCommentRequest $request, $id) {
@@ -145,24 +145,19 @@ class PostController extends Controller
 		return response()->json($responseData, 200);
 	}
 
+	// 포스트 댓글 삭제
+	public function deletePostComment($id) {
+		DB::beginTransaction();
+		// TODO: destroy시 $id값이 성공할시 commit 실패할시 rollback 추가해야함(지금은 commit하기만 함)
+		PostComments::destroy($id);
+		DB::commit();
 
-	// 게시글 작성
-	public function store() {
-				
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 코멘트 삭제'
+		];
+		return response()->json($responseData, 200);
 	}
 
-	// 
-	public function edit() {
 
-	}
-
-	// 게시글 수정
-	public function update() {
-
-	}   
-
-	// 게시글 삭제
-	public function destroy() {
-
-	}
 }

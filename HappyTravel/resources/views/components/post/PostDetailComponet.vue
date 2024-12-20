@@ -90,7 +90,7 @@
 	</div>
 
 	<div class="postdetail-comment-title" id="section3">
-		<h3>펫브리즈 톡 <span>50</span></h3>
+		<h3>펫브리즈 톡 <span>{{ PostCommentCnt.cnt }}</span></h3>
 	</div>
 	<div class="postdetail-comment-form-box">
 		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
@@ -229,6 +229,7 @@ const storeComment = () => {
 		alert('댓글을 작성 해주세요.');
 	}
 	store.dispatch('post/storePostComment', commentData);
+	commentData.post_comment = '';	// 댓글작성후 댓글창에 댓글내용 초기화
 };
 
 
@@ -372,8 +373,7 @@ const checkToken = () => {
 .postdetail-comment-form-box {
 	width: 60%;
 	padding: 20px;
-	/* display: grid;
-	grid-template-columns: repeat(auto-fill, minmax( 1fr)); */
+	display: grid;
 	background-color: #CDECFF;
 	
 
@@ -394,6 +394,7 @@ const checkToken = () => {
 	font-size: 15px;
 	border: none;
 	cursor: pointer;
+	justify-self: flex-end;
 }
 
 
