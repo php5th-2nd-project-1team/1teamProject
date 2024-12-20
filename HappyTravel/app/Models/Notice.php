@@ -17,6 +17,7 @@ class Notice extends Model
         'notice_title',
         'notice_content',
         'notice_img',
+        'notice_tag',
     ];
     
     protected function serializeDate(DateTimeInterface $date)
