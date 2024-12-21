@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\post_likes>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PostLike>
  */
-class PostLikesFactory extends Factory
+class PostLikeFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -39,6 +39,9 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/posts/{id}', [PostController::class, 'storePostComment'])->name('store.postComment');
     // 포스트 댓글 삭제(id가 comment_id)
     Route::delete('/posts/{id}', [PostController::class, 'deletePostComment'])->name('destroy.postComment');
+
+    // 포스트 좋아요 클릭
+    Route::post('/posts/like/{id}', [PostController::class, 'postLike'])->name('post.like');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

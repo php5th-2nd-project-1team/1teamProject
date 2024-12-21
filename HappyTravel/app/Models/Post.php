@@ -31,4 +31,8 @@ class Post extends Model
     public function categoryTheme(){
         return $this->belongsTo(CategoryTheme::class, 'category_theme_num');
     }
+
+    public function postLikes(){
+        return $this->hasMany(PostLike::class, 'post_id')->where('post_likes_flg', '=', '1');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
 use App\Models\PostComments;
 use App\Models\PostDetail;
+use App\Models\PostLike;
 use UserToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,7 +77,7 @@ class PostController extends Controller
 	// postDetail 도 PostController에 작성 => PostDetailController 은 불필요
 	public function showPost(Request $request) {
 		$PostComment = null;
-		$PostDetail = Post::with('manager')->find($request->id);
+		$PostDetail = Post::with('manager')->withCount('postLikes')->find($request->id);
 		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
 		$PostCommentCnt = PostComments::select('post_id', PostComments::raw('COUNT(post_comment) cnt'))
 						->where('post_id', '=', $request->id)
@@ -159,5 +160,32 @@ class PostController extends Controller
 		return response()->json($responseData, 200);
 	}
 
+		/**
+	 * 포스트 좋아요 클릭 관련 여부
+	 * 
+	 */
+	public function postLike(Request $request, $id){
+		$token = $request->bearerToken();
+		$user_id = UserToken::getInPayload($token, 'idt');
+		$post_id = $id;
+		$post_likes_flg = $request->post_likes_flg;
+
+		DB::beginTransaction();
+
+		$like_flg = PostLike::upsert([
+			['user_id' => $user_id, 'post_id' => $post_id, 'post_likes_flg' => $post_likes_flg]
+		], ['user_id', 'post_id' ,'post_likes_flg']
+		,['post_likes_flg']);
+
+		DB::commit();
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 좋아요 클릭 여부'
+			,'like_flg' => $like_flg
+		];
+
+		return response()->json($responseData, 200);
+	}
 
 }
