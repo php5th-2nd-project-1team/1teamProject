@@ -17,14 +17,16 @@
 	</ul>
 
 	<div class="postdetail-post-area">
-		<button class="btn btn-bg-gray" type="button">
-			<span><img src="/developImg/seoul_icon.png" alt=""></span>
-			<span>{{ PostDetail.post_like }}</span>
-		</button>
-		<span>
-			<span>조회수: </span>
-			<span>{{ PostDetail.post_view }}</span>
-		</span>
+		<div class="postdetail-post-info">
+			<div class="postdetail-post-info-area likeArea" >
+				<button class="likeBtn" :class="likeBtnClassName" @click="onClkLikeBtn"></button>
+				<p>좋아요 : {{ PostDetail.post_likes_count }}</p>
+			</div>
+			<div class="postdetail-post-info-area viewArea">
+				<div class="viewImg"></div>
+				<p>조회수 : {{ PostDetail.post_view }}</p>
+			</div>
+		</div>
 	</div>
 
 		<!-- 이미지 슬라이드 -->
@@ -210,6 +212,27 @@ const scrollTo = (id) => {
 	}
 };
 
+// 좋아요 버튼 관련
+const isClked = computed(() => store.state.post.isClkedLike);
+const likeBtnClassName = ref('');
+
+likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+
+const onClkLikeBtn = () => {
+	if(!store.state.auth.authFlg){
+		alert('로그인 후 이용할 수 있습니다.');
+		router.push('/login');
+		return;
+	}
+
+	store.dispatch('post/postClickLike', route.params.id);
+
+	likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+
+	console.log(isClked.value);
+	console.log(likeBtnClassName.value);
+}
+
 // ------------------------------------------
 // 포스트 상세 내용 모두 출력 => 기존에 false로 줄임상태에서 버튼 클릭 이벤트시 true로 전환하고 css 바꾸기
 const isExpanded = ref(false);
@@ -266,8 +289,57 @@ const checkToken = () => {
 	align-items: center;
 }
 
+/* 좋아요, 조회수 영역 */
 .postdetail-post-area {
-	margin-left: 300px;
+	display: flex;
+	justify-content: center;
+
+	width: 50%;
+	/* margin-left: 300px; */
+}
+
+.postdetail-post-info{
+	display: flex;
+	gap: 2rem;
+}
+
+.postdetail-post-info-area{
+	display: flex;
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: center;
+
+	gap: 0.5rem;
+}
+
+.likeBtn{
+	width: 5rem;
+	height: 5rem;
+
+	border: 1px solid rgb(0, 0, 0);
+	border-radius: 100%;
+}
+
+.noClk{
+	background-color: magenta;
+}
+
+.clk{
+	background-color: #2986FF;
+}
+
+.viewImg{
+	width: 5rem;
+	height: 5rem;
+
+	border: 1px solid rgb(0, 0, 0);
+	border-radius: 100%;
+
+	background-image: url('/developImg/views.png');
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .postdetail-title {

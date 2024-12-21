@@ -32,6 +32,7 @@ export default {
 		,lastPageFlg : false
 		,commentPage : 0
 		,postCommentCnt : 0
+		,isClkedLike : null
 		
 		// index 부분
 		,postIndexList :[]
@@ -116,6 +117,16 @@ export default {
 			state.postCommentCnt.cnt -= 1;
 		}
 
+		// 좋아요 여부 
+		,setIsClkedLike(state, flg){
+			state.isClkedLike = flg;
+		}
+
+		// 좋아요 개수 여부
+		,addLikeCnt(state, flg){
+			state.postDetail.post_likes_count += flg;
+		}
+
 		// post 전체 초기화
 		,setInitialize(state){
 			state.postList = [];
@@ -129,6 +140,7 @@ export default {
 			state.postComment = '';
 			state.postCommentList = [];
 			state.postCommentCnt = 0;
+			state.isClkedLike = false;
 		}
 
 		// index 부분
@@ -267,15 +279,25 @@ export default {
 
 		// 포스트 상세 출력
 		,showPost(context, id){
+			// 민주님, 좋아요 버튼 추가에 따라 해당 로직을 수정 및 추가했으니, 확인 후 주석을 지우시거나 놔두시면 됩니다.
+			
 			context.commit('setIsLoading', true);
 			
 			const url = '/api/posts/' + id;
+
+			// 계정 로그인 확인 여부 (단, 로그인 여부를 확인하기 위함이므로 미들웨어에서 체크 할 필요 없음. 포스트에서 좋아요가 그리 중요한 것도 아니기 때문에. 좋아요 누를 때 중요한거지.)
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
 			
-			axios.get(url)
+			axios.get(url, config) // config 추가함
 			.then(response => {
 				// context.commit('post/setPostDetail', response.data.post, {root: true});
 				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
 				context.commit('setPostCommentList', response.data.PostComment.data);
+				context.commit('setIsClkedLike', response.data.PostClkLike);
 
 				// 지금 페이지랑 마지막 페이지가 같으면 setLastPageFlg true로 바꾸고 댓글더보기 버튼 없애기
 				if(response.data.PostComment.current_page === response.data.PostComment.last_page) {
@@ -331,6 +353,27 @@ export default {
 			});
 		}
 
+		// 좋아요 클릭 기능 만들기
+		,postClickLike(context, payload){
+			const url = '/api/posts/like/' + payload;
+			const data = JSON.stringify({
+				post_likes_flg : !context.state.isClkedLike
+			});
+
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+
+			axios.post(url, data, config)
+			.then( response => {
+				context.commit('setIsClkedLike', response.data.like_flg.post_likes_flg === '1' ? true : false);
+				context.commit('addLikeCnt', response.data.like_flg.post_likes_flg === '1' ? 1 : -1);
+			}) .catch (error => {
+				console.log(error.response);
+			});
+		}
 
 		// 포스트 댓글 페이지네이션(작업중)
 		,postCommentPagination(context, id) {

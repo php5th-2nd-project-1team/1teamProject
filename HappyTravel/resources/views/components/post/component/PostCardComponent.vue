@@ -5,7 +5,7 @@
 		<p>{{ props.cardData.post_local_name }}</p>
 		<div class="post-content-card-info">
 			<p>조회수 : {{ props.cardData.post_view }}</p>
-			<p>좋아요 : {{ props.cardData.post_like }}</p>
+			<p>좋아요 : {{ props.cardData.post_likes_count }}</p>
 		</div>
 	</div>
 </template>

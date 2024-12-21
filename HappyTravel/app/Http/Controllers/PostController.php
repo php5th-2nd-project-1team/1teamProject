@@ -41,7 +41,7 @@ class PostController extends Controller
 				->orWhere('post_content', 'LIKE', '%' . $key . '%')
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
 			});
-		})->orderBy('created_at', 'DESC')->paginate(4);
+		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(4);
 
 		$responseData = [
 			'success' => true
@@ -57,11 +57,14 @@ class PostController extends Controller
 		$type = $request->type;
 		$PostList = null;
 		if($type === 'view'){
-			$PostList = Post::orderBy('post_view', 'DESC')->orderBy('created_at', 'DESC')->paginate(5);
+			$PostList = Post::withCount('postLikes')->orderBy('post_view', 'DESC')->orderBy('created_at', 'DESC')->paginate(5);
 		} else if($type === 'like'){
-			$PostList = Post::orderBy('post_like', 'DESC')->orderBy('created_at', 'DESC')->paginate(5);
+			$PostList = Post::withCount('postLikes')
+							->orderBy('post_likes_count', 'DESC') 
+							->orderBy('created_at', 'DESC')
+							->paginate(5);
 		} else {
-			$PostList = Post::orderBy('created_at', 'DESC')->paginate(5);
+			$PostList = Post::withCount('postLikes')->orderBy('created_at', 'DESC')->paginate(5);
 		}
 
 		$responseData = [
@@ -76,6 +79,15 @@ class PostController extends Controller
 	// 포스트 상세 출력
 	// postDetail 도 PostController에 작성 => PostDetailController 은 불필요
 	public function showPost(Request $request) {
+		// 민주님, post detail에서 좋아요 버튼 눌렀을 때 로직 추가했습니다. 확인 후에 주석 지우거나 놔두시면 됩니다.
+
+		$token = $request->bearerToken(); // 로그인 여부 확인
+		
+		// 중요. 만약에 vuex에서 
+		// 'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+		// 로 보낼 때 localStorage.getItem('accessToken')가 null이면 보내지는 값은 null이 아니라 문자열 'null'이므로 꼭꼭 체크해야 함
+		$token = $token === 'null' ? null : $token; 
+
 		$PostComment = null;
 		$PostDetail = Post::with('manager')->withCount('postLikes')->find($request->id);
 		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
@@ -83,6 +95,28 @@ class PostController extends Controller
 						->where('post_id', '=', $request->id)
 						->groupBy('post_id')
 						->first();		// 하나만 가져오기 때문에 get() 이 아니라 first() 이다.
+		$PostClkLike = false; // 클릭 여부 담는 변수 추가
+
+		if (is_null($token)) {
+			Log::info('진짜 토큰 null임');
+		} elseif ($token === '') {
+			Log::info('빈 문자열임');
+		} else {
+			Log::info('값을 가지고 있음: ', ['token' => $token]);
+		}
+
+		Log::debug(is_null($token));
+
+		// 로그인 했으면 해당 유저가 좋아요 눌렀는지 안눌렀는지 확인
+		if(!is_null($token)){
+
+			$idt = UserToken::getInPayload($token, 'idt');
+			$clkData = PostLike::where('user_id', '=', $idt)->where('post_id', '=', $request->id)->first();
+
+			if(!is_null($clkData)){
+				$PostClkLike = $clkData->post_likes_flg === '1' ? true : false;
+			}
+		}
 
 		DB::beginTransaction();
 		// 조회수 추가
@@ -90,13 +124,13 @@ class PostController extends Controller
 		$PostDetail->save();
 		DB::commit();
 
-
 		$responseData = [
 			'success' => true
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
 			,'PostComment' => $PostComment->toArray()
 			,'PostCommentCnt' => $PostCommentCnt->toArray()
+			,'PostClkLike' => $PostClkLike
 		];
 
 		return response()->json($responseData, 200);
@@ -179,10 +213,14 @@ class PostController extends Controller
 
 		DB::commit();
 
+		$resultData = PostLike::where('user_id', $user_id)
+								->where('post_id', $post_id)
+								->first();
+
 		$responseData = [
 			'success' => true
 			,'msg' => '포스트 좋아요 클릭 여부'
-			,'like_flg' => $like_flg
+			,'like_flg' => $resultData->toArray()
 		];
 
 		return response()->json($responseData, 200);
