@@ -32,7 +32,10 @@ export default {
 		,lastPageFlg : false
 		,commentPage : 0
 		,postCommentCnt : 0
+
+		// 좋아요 부분
 		,isClkedLike : null
+		,isLikeLoading : false
 		
 		// index 부분
 		,postIndexList :[]
@@ -127,6 +130,11 @@ export default {
 			state.postDetail.post_likes_count += flg;
 		}
 
+		// 좋아요 로딩 여부
+		,isLikeLoading(state, flg){
+			state.isLikeLoading = flg;
+		}
+
 		// post 전체 초기화
 		,setInitialize(state){
 			state.postList = [];
@@ -141,6 +149,7 @@ export default {
 			state.postCommentList = [];
 			state.postCommentCnt = 0;
 			state.isClkedLike = false;
+			state.isLikeLoading = false;
 		}
 
 		// index 부분
@@ -355,6 +364,13 @@ export default {
 
 		// 좋아요 클릭 기능 만들기
 		,postClickLike(context, payload){
+
+			if(context.state.isLikeLoading){
+				return;
+			}
+
+			context.commit('isLikeLoading', true);
+
 			const url = '/api/posts/like/' + payload;
 			const data = JSON.stringify({
 				post_likes_flg : !context.state.isClkedLike
@@ -370,8 +386,10 @@ export default {
 			.then( response => {
 				context.commit('setIsClkedLike', response.data.like_flg.post_likes_flg === '1' ? true : false);
 				context.commit('addLikeCnt', response.data.like_flg.post_likes_flg === '1' ? 1 : -1);
-			}) .catch (error => {
+			}).catch (error => {
 				console.log(error.response);
+			}).finally(()=>{
+				context.commit('isLikeLoading', false);
 			});
 		}
 
