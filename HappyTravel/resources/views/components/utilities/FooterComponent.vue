@@ -13,10 +13,10 @@
             <div class="footer-content">
                 <h3>Quick List</h3>
                 <ul class="footer-list">
-                    <li>펫브리즈 소개</li>
-                    <li>펫브리즈 고</li>
-                    <li>상품</li>
-                    <li>커뮤니티</li>
+                    <li @click="pushAbout">펫브리즈 소개</li>
+                    <li @click="pushPosts">펫브리즈 고</li>
+                    <!-- <li>상품</li> -->
+                    <li @click="pushNoticeList">커뮤니티</li>
                 </ul>
             </div>
             <div class="footer-content">
@@ -32,6 +32,28 @@
 </template>
 <script setup>
 
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
+const router = useRouter();
+const store = useStore();
+
+// about 페이지 이동 시
+const pushAbout = function(){
+	router.push('/about');
+}
+
+// posts 페이지 이동 시
+const pushPosts = function(){
+	router.push('/posts');
+}
+
+// 헤더 커뮤니티 이동 처리
+const pushNoticeList = () => {
+	store.commit('notice/setCurrentPage', 1); // page 1페이지로 초기화
+	store.dispatch('notice/noticeList', 1); // 공지리스트 획득
+	router.push('/community/notice'); // 이동
+}
 </script>
 <style>
 	

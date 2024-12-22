@@ -5,9 +5,7 @@
 		<div class="header-top">
 			<!-- 로고 -->
 			<h1>
-				<router-link to="/">
-					<img class="header-logo" src="/developImg/petbreeze_logo.png" alt="펫브리즈">
-				</router-link>
+				<img @click="pushIndex" class="header-logo" src="/developImg/petbreeze_logo.png" alt="펫브리즈" style="cursor: pointer;">
 			</h1>
 			<!-- 네비게이션 -->
 			<!-- <div class="header-nav"> -->
@@ -53,9 +51,9 @@
 						<div></div>
 					</div>
 					<ul>
-						<li><router-link to="/about">펫브리즈 소개</router-link></li>
-						<li>
-							<router-link to="/posts">펫브리즈 고</router-link> 
+						<li @click="pushAbout"><a>펫브리즈 소개</a></li>
+						<li @click="pushPosts">
+							<a>펫브리즈 고</a> 
 							<!-- <ul class="dropdown" >
 								<li class="dropdown-sub">숙소</li>
 								<li class="dropdown-sub">식&음료</li>
@@ -100,6 +98,21 @@ import { ref } from 'vue';
 const store = useStore();
 
 const id = ref(store.state.auth.userInfo.user_id);
+
+// 메인 페이지 이동 시
+const pushIndex = function(){
+	router.push('/');
+}
+
+// about 페이지 이동 시
+const pushAbout = function(){
+	router.push('/about');
+}
+
+// posts 페이지 이동 시
+const pushPosts = function(){
+	router.push('/posts');
+}
 
 // 헤더 커뮤니티 이동 처리
 const pushNoticeList = () => {
