@@ -1,38 +1,51 @@
 <template>
     <LoadingComponent v-if="LoadingFlg" />
     <div v-else-if="noticeDetailList.notice_id && !LoadingFlg">
-        <div class="community_notice_detail_container">
-            <h1>공지사항</h1> 
-        <!-- 공지사항 태그 박스 -->
-            <div class="notice_tag_detail_box">
-                <div class="notice_tag_detail_number">
-                    <p>{{ noticeDetailList.notice_id }}</p>
+      <div class="community-notice-detail-container">
+                <h1>공지사항</h1> 
+                <br><br>
+        <div class="container">
+            <!-- <div class="first-line">
+                <span class="notice">공지</span>
+                <span class="noticetitle">{{ noticeDetailList.notice_title }}</span>
+            </div>
+        
+            <div class="second-line">
+                <div class="left-group">
+                    <span>작성자</span>
+                    <span>{{ noticeDetailList.managers.m_nickname }}</span>
                 </div>
-                <div class="notice_tag_detail_manager">
-                    <p>{{ noticeDetailList.managers.m_nickname }}</p>
-                </div>
-                <div class="notice_tag_detail_date">
-                    <p>{{ noticeDetailList.created_at }}</p>
+                <div class="right-group">
+                    <span>작성날짜</span>
+                    <span>{{ noticeDetailList.created_at }}</span>
                 </div>
             </div>
-            <div class="notice_detail_title_box">
-                <p class="notice_detail_title">제목</p>
-                <p class="notice_detail_title_info">{{ noticeDetailList.notice_title }}</p>
-            </div>   
-            <div class="notice_detail_file">
-                <p>첨부파일</p>
-                <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
-            </div>  
-            <div class="notice_detail_content_box">
-                <p class="notice_detail_content">내용</p>
-                <div class="notice_detail_content_textarea" style="padding : 50px; height: auto; ">{{ noticeDetailList.notice_content }}</div>                 
-            </div> 
-
-            <div>
-                <!-- <button @click="$route.push('/community/notice', noticeUrl)">이전</button> -->
-                <router-link to="/community/notice"><button @click="goBack()">이전</button></router-link>                
+            <hr> -->
+            <div class="community-notice-detail-header">
+                <div class="community-notice-detail-header-tag">일반</div>
+                <div>
+                    <div>제목</div>
+                    <div>작성자</div>
+                    <div>작성일자</div>
+                </div>
+                
             </div>
-        </div>   
+        
+            <div class="container">
+                <div class="content">
+                    <p>{{ noticeDetailList.notice_content }}</p>
+                </div>
+                <div class="image">
+                    <!-- 이미지가 없으면 아래의 img 태그를 제외하거나 숨깁니다 -->
+                    <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
+                </div>
+            </div>
+            <hr>
+            <div class="list_btn">
+                <router-link to="/community/notice"><button class="btn btn-bg-blue btn-header" @click="goBack()">목록</button></router-link>
+            </div>
+        </div>
+      </div>   
     </div>
 </template>
 
@@ -67,95 +80,96 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
 </script>
 
 <style scoped>
-      h1 { 
-        margin: 20px;
-    }
-    .community_notice_detail_container {
+
+    .community-notice-detail-container {
         margin: 100px;
+        padding:0 300px;
+    }
+    .community-notice-detail-header {
+        display: flex;
+        justify-content: space-between;
+    }
+    /* 새로작성한 구간 */
+    .container {
+    display: flex;
+    flex-direction: column; 
+    }
+    .community-notice-detail-header {
+    padding: 50px;
+    border: 1px solid black;
+    }
+/* 
+    .first-line {
+    display: flex;
+    align-items: center; 
+    width: 100%;
+    font-size: 3rem;
+    
     }
 
-    /* 공지사항 상세 태그 박스 */
-    .notice_tag_detail_box {
-        display: grid; 
-        grid-template-columns:repeat(3,1fr);
-        justify-content: space-around;
-        gap:10px;
-        border-top : 1px solid black;
-        border-bottom : 1px solid black;
-        padding: 20px; 
-        margin:20px;  
-        font-size: 1.5rem;
-        font-weight: 300;
-        color: #2986FF;
+    .notice {
+    flex: 0 0 auto; 
+    margin-right: 10px; 
+    text-align: center;
     }
-    /* 공지사항 상세 제목 박스 */
-    .notice_detail_title_box {
-        display: grid;
-        grid-template-columns: 40px 1fr;
-        margin:20px;
-        padding:20px;
-        border-bottom : 1px solid black;
-        text-align: center;
-        line-height: 100px;
+
+    .title {
+    flex: 1; 
+    text-align: center; 
     }
-    /* 공지사항 상세 제목 */
-    .notice_detail_title {    
-        font-size: 1.2rem;
-        color: #2986FF;
+
+    .second-line {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    font-size: 1.5rem;
     }
-    /* 공지사항 상세 제목 정보 */
-    .notice_detail_title_info {
-        width: auto;
-        min-height: 70px;
-        background-color: #EFEFEF;
-        border:1px solid #EFEFEF;
-        font-size: 1.2rem;
-        font-weight: bold;
-        
+
+    .left-group {
+    display: flex;
+    gap: 10px; 
     }
-     /* 공지사항 상세 내용 박스 */
-    .notice_detail_content_box {
-        display: grid;
-        grid-template-columns: 40px 1fr;        
-        margin:20px;
-        padding:20px;        
-       
-    }
-     /* 공지사항 상세 내용 */
-    .notice_detail_content {    
-        font-size: 1.2rem;
-        color: #2986FF;
-    }
-    /* 공지사항 상세 내용 롱텍스트 */
-    .notice_detail_content_textarea {      
-         background-color: #EFEFEF;
-        font-size: 1.2rem;
-        font-weight: bold;
-        line-height: 2;
-        resize: none;
-        overflow: hidden;
-    }
-    /* .notice_detail_content_box >textarea {      
-         background-color: #EFEFEF;
-        font-size: 1.2rem;
-        font-weight: bold;
-        line-height: 2;
-        resize: none;
-        overflow: hidden;
+
+    .right-group {
+    display: flex;
+    gap:10px;
     } */
-    /* 공지사항 상세 이미지 */
-    .notice_detail_file {
-        display: grid;
-        grid-template-columns: 40px 1fr;        
-        margin:20px;
-        padding:20px;        
-        border-bottom : 1px solid black;         
-    }   
-    .notice_detail_file >p {
-        color:#2986FF
+
+    /* 컨텐츠  */
+    .container {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    gap: 20px; /* 콘텐츠와 이미지 영역 사이의 간격 */
     }
-    .notice_detail_file >img {
-        width:50px;
-        height: 50px;
+
+    .content {
+    flex: 1; /* 콘텐츠가 가능한 모든 세로 공간을 차지 */
     }
+
+    .image {
+    flex: 0; /* 이미지 영역은 기본적으로 공간을 차지하지 않음 */
+    display: flex; /* 이미지를 중앙에 정렬 */
+    align-items: center;
+    justify-content: center;
+    }
+
+    /* 이미지가 없을 때 .image를 숨기기 */
+    .image:empty {
+    display: none; /* 이미지가 없으면 숨김 */
+    }
+
+    .list_btn {
+        text-align: center;
+        margin-top:20px;
+    }
+    .list_btn >.btn-header {
+        font-size: 2rem;
+        width:200px;
+        height:50px;
+        
+    } 
 </style>
+
+
+
