@@ -1,73 +1,48 @@
-<template>   
-    <div v-if="loadingFlg" class="loading-title">로딩중</div>
-    <div v-else class="mypage-container">
-        <div class="mypage-border">
-            <div class="mypage-title">
-                <h1>마이페이지</h1>
-                <button @click="router.push('/index')" class="mypage-back-btn">홈으로</button>
+<template>
+    <h1>내 정보</h1>
+    <hr>
+    <div class="container">
+        <div class="profile-card">
+            <div class="info-group">
+                <label>이름</label>
+                <input v-model="detailUserInfo.name" type="text" class="info-text">
             </div>
-            <hr class="title-hr">
-            <div class="mypage-main">
-                <div class="mypage-profile">
-                    <div class="profile">
-                        <img :src="detailUserInfo.profile">
-                    </div>
-                    <div>
-                        <label for="file">
-                            <div class="file-insert-btn">프로필 수정</div>
-                        </label>
-                    </div>
-                    <input @change="setFile" type="file" name="profile" accept="image/*" id="file" style="display: none">
-                </div>
-                <div class="mypage-detail">
-                    <div class="mypage-name">
-                        <div class="mypage-name-title">
-                            <p class="mypage-all-title">성함</p>
-                            <input v-model="detailUserInfo.name" type="text" class="mypage-name-border">
-                        </div>
-                        <div class="mypage-nickname">
-                            <p class="mypage-all-title">닉네임</p>
-                            <input v-model="detailUserInfo.nickname" type="text" class="mypage-nickname-border">
-                        </div>
-                    </div>
-
-                    <div class="mypage-number">
-                        <p class="mypage-all-title">전화번호</p>
-                        <input @input="formatPhoneNumber" v-model="detailUserInfo.phone_number" type="text" class="mypage-number-border">
-                    </div>
-
-                    <div class="registration-grid">
-                        </div>
-                        <div class="address-container">
-                            <div class="registration-grid"> 
-                                <p class="mypage-all-title">우편번호</p>
-                                <input type="text" v-model="detailUserInfo.post_code" placeholder="우편번호" readonly class="mypage-name-border">
-                            </div>
-                            <div class="mypage-adress"> 
-                                <p class="mypage-all-title">주소</p>
-                                <input type="text" v-model="detailUserInfo.address" placeholder="주소" readonly class="mypage-adress-border">
-                            </div>
-                            <div class="registration-grid">
-                                <p class="mypage-all-title">상세 주소</p>
-                                <input type="text" v-model="detailUserInfo.detail_address" placeholder="상세 주소 입력" class="mypage-adress-border">
-                            </div>
-
-                            <button @click="openAddressSearch" class="address-btn">주소 수정</button>
-                        </div>    
-                </div>
+            <div class="info-group">
+                <label>닉네임</label>
+                <input v-model="detailUserInfo.nickname" type="text" class="info-text">
             </div>
-            <hr class="footer-hr">
-            <div class="footer-title">
-                <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPageUpdate', detailUserInfo)">수정</button>
-                <button class="mypage-user-delete-btn" @click="router.push('/passwordcheck')">회원 탈퇴</button>
+            <div class="info-group">
+                <label>전화번호</label>
+                <input v-model="detailUserInfo.phone_number" type="text" class="info-text" @input="formatPhoneNumber">
+            </div>
+            <div class="info-group">
+                <label>우편번호</label>
+                <input v-model="detailUserInfo.post_code" type="text" class="info-text" readonly>
+            </div>
+            <div class="info-group">
+                <label>주소</label>
+                <input v-model="detailUserInfo.address" type="text" class="info-text" readonly>
+            </div>
+            <div class="info-group">
+                <label>상세주소</label>
+                <input v-model="detailUserInfo.detail_address" type="text" class="info-text">
             </div>
         </div>
+        <div>
+            <label for="file">
+                    <div class="file-insert-btn" for="file">프로필 수정</div>
+            </label>
+            <button @click="openAddressSearch" class="file-insert-btn">주소 수정</button>
+        </div>
+        <input @change="setFile" type="file" name="profile" accept="image/*" id="file" style="display: none">
     </div>
 
 
-    <router-view></router-view>
+    <div class="button-container">
+        <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPageUpdate', detailUserInfo)">수정</button>
+        <button class="mypage-user-delete-btn" @click="router.push('/user/passwordcheck')">회원 탈퇴</button>
+    </div>
 </template>
-
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -137,7 +112,7 @@ const loadDaumPostcodeScript = () => {
     
         new window.daum.Postcode({
             oncomplete: (data) => {
-                detailUserInfo.zonecode = data.post_code;      // 우편번호
+                detailUserInfo.post_code = data.zonecode;      // 우편번호
                 detailUserInfo.address = data.address;    // 도로명 주소
             },
         
@@ -147,265 +122,127 @@ const loadDaumPostcodeScript = () => {
     onMounted(async () => {
         await loadDaumPostcodeScript();
     });
-    
+
+
 
 </script>
-
-<style scoped> 
-button {
-    cursor: pointer;
-}
-
-.loading-title {
+<style scoped>
+   
+.container {
     width: 100%;
-    height: 100%;
-    background-color: #2986FF;
-    color: white;
-    font-size: 4rem;
-    text-align: center;
-}
-
-.mypage-container {
-    width: 100%;
-    height: 700px;
-
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.mypage-border {
-    margin-top: 100px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    width: 70%;
-    padding-bottom: 20px;
-}
-
-    
-.mypage-title {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-}
-
-.mypage-back-btn {
-    background-color: #2986FF;
-    border: 3px solid #2986FF;
-    border-radius: 10px;
-    color: white;
-    font-size: 20px;
-    width: 15%;
-    height: 55px;
-}
-
-.mypage-back-btn:hover {
     background-color: white;
-    color: black;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.mypage-main {
-    display: grid;
-    grid-template-columns: 0.3fr 0.7fr;
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.mypage-detail {
-    line-height: 2rem;
+hr {
+    margin-bottom: 10px;
+    border: 2px solid #BDBDBD;
 }
 
-.mypage-name {
+.profile-card {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    padding: 30px;
 }
 
-.mypage-name-title {
-    width: 100%;
+.info-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.title-hr {
-   width: 100%;
-   margin-bottom: 40px;
-   border-color: rgba(0, 0, 0, 0.2);
+label {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    width: 100px;
 }
 
-.mypage-all-title {
-    font-size: 10px;
+.info-text {
+    font-size: 16px;
+    width: 50%;
+    color: #555;
+    padding: 10px 20px ;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f1f1f1;
     font-weight: 900;
 }
 
-.mypage-nickname {
-    width: 50%;
+.info-group p {
+    margin: 0;
 }
 
-.mypage-nickname-border {
-    border: none;
-    background-color: #EFEFEF;
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
-}
-
-.mypage-profile {
+.button-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    margin-top: 20px;
 }
 
-.profile {
-    /* background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; */
-    width: 180px;
-    height: 180px;
-    border: 1px solid black;
-    border-radius: 50%;
-}
-
-.profile > img {
-    width: 180px;
-    height: 180px;
+.mypage-user-delete-btn {
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 16px;
+    background-color: red;
+    color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 900;
 }
+
+.mypage-user-delete-btn:hover {
+    background-color: rgb(250, 200, 200);
+    transform: translateY(-2px);
+}
+
+.mypage-user-update-btn {
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 16px;
+    background-color: #2986FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 900;
+}
+
+.mypage-user-update-btn:hover {
+    background-color: #CDECFF;
+    transform: translateY(-2px);
+}
+
 
 .file-insert-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 12px 20px;
+    margin-left: 20px;
+    font-size: 16px;
     background-color: #2986FF;
-    border-radius: 10px;
     color: white;
-    font-size: 1rem;
-    margin-top: 20px;
-    padding: 20px;
-    width: 100%;
-    height: 40px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    border: 3px solid #2986FF;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
     font-weight: 900;
 }
 
 .file-insert-btn:hover {
-    background-color: white;
-    color: black;
+    background-color: #CDECFF;
+    transform: translateY(-2px);
 }
 
-.mypage-update-btn {
-    background-color: #EFEFEF;
-    border: none;
-    border-radius: 10px;
-    width: 50px;
-    height: 30px;
-    margin-right: 20px;
-}
 
-.mypage-delete-btn {
-    background-color: #EFEFEF;
-    border: none;
-    border-radius: 10px;
-    width: 50px;
-    height: 30px;
-}
-
-.mypage-name-border {
-    background-color: #EFEFEF;
-    border: none;
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
-    width: 20%;
-}
-
-.mypage-number-border {
-    background-color: #EFEFEF;
-    border: none;
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
-    width: 30%;
-}
-
-.mypage-adress-border {
-    background-color: #EFEFEF;
-    border: none;   
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
-    width: 80%;
-}
-
-.mypage-adress-detail-border {
-    background-color: #EFEFEF;
-    text-align: center;
-    line-height: 30px;
-    font-size: 15px;
-    width: 80%;
-}
-
-.footer-hr {
-    width: 100%;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    border-color: rgba(0, 0, 0, 0.2);
-}
-
-.footer-title {
-    text-align: right;
-}
-
-.mypage-user-update-btn {
-    background-color: #2986FF;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 20px;
-    width: 15%;
-    height: 55px;
-    margin-left: 15px;
-    border: 3px solid #2986FF;
-    margin-right: 10px;
-}
-
-.mypage-user-update-btn:hover {
-    background-color: white;
-    color: black;
-}
-
-.mypage-user-delete-btn {
-    background-color: #FF5353;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 20px;
-    width: 15%;
-    height: 55px;
-    margin-right: 15px;
-    border: 3px solid #FF5353;
-}
-
-.mypage-user-delete-btn:hover {
-    background-color: white;
-    color: black;
-}
-
-.address-btn {
-    background-color: #2986FF;
-    font-weight: 900;
-    border-radius: 10px;
-    color: white;
-    font-size: 1rem;
-    margin-top: 20px;
-    padding: 5px;  
-    width: 30%;
-    height: 40px;
-    cursor: pointer;
-    border: 3px solid #2986FF;
-}
-
-.address-btn:hover {
-    background-color: white;
-    color: black;
-}
+    
 </style>

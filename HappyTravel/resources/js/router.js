@@ -11,9 +11,10 @@ import LogoutComponet from '../views/components/auth/LogoutComponet.vue';
 
 // ----------------------------------------------------------------------
 import MypageComponet from '../views/components/user/MypageComponent.vue';
+import MypageAuthUpadateComponet from '../views/components/user/MypageAuthUpadateComponet.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
 import UserWithdrawComponet from '../views/components/user/UserWithdrawComponet.vue';
-import MypageAuthUpadateComponet from '../views/components/user/MypageAuthUpadateComponet.vue';
+import MypageAuthComponet from '../views/components/user/MypageAuthComponet.vue';
 import MypagePuchadeComponent from '../views/components/user/MypagePurchadeComponet.vue';
 import MypageReservationComponet from '../views/components/user/MypageReservationComponet.vue';
 import UserPasswordCheckComponent from '../views/components/user/UserPasswordCheckComponent';
@@ -108,10 +109,18 @@ const routes=[
 		beforeEnter: chkAuth,
 	},	 
 	{
-		path:'/user/mypage',   // 마이페이지
+		path:'/user',   // 마이페이지
 		component: MypageComponet,
 		beforeEnter: chkAuth,
 		children : [
+			{
+				path:'mypage', // 내 정보
+				component:MypageAuthComponet,
+			},
+			{
+				path:'mypage/update', // 내 정보 수정
+				component:MypageAuthUpadateComponet,
+			},
 			{
 				path:'purchade', // 마이페이지 구매 내역
 				component:MypagePuchadeComponent,
@@ -120,16 +129,12 @@ const routes=[
 				path:'reservation', // 마이페이지 예약 내역
 				component: MypageReservationComponet,
 			},	
+			{
+				path: 'passwordcheck',
+				component: UserPasswordCheckComponent,
+				beforeEnter: chkAuth,
+			},
 		]
-	},
-	{
-		path: '/passwordcheck',
-		component: UserPasswordCheckComponent,
-		beforeEnter: chkAuth,
-	},
-	{	path: '/mypage/auth/update',
-		component: MypageAuthUpadateComponet,
-		beforeEnter: chkAuth,
 	},
 	{
 		path: '/community',     // 커뮤니티

@@ -41,6 +41,7 @@ class UserController extends Controller
         $user->phone_number = $request->phone_number;
         $user->address = $request->address;
         $user->detail_address = $request->detail_address;
+        $user->post_code = $request->post_code;
         
         if(!empty($profile)) {
             $user->profile = $profile;

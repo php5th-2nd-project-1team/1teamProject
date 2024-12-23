@@ -6,10 +6,14 @@ export default {
 	namespaced: true,
 	state: () => ({
         loadingFlg: false,
+        modalFlg: false,
 	})
 	,mutations: {
         setLoadingFlg(state, loadingFlg) {
             state.loadingFlg = loadingFlg;
+        },
+        setModalFlg(state, modalFlg) {
+            state.modalFlg = modalFlg;
         },
 	}
 	,actions: {
@@ -26,8 +30,6 @@ export default {
                 
                 axios.get(url, config)
                 .then(response => {
-                    console.log('userDetailPage then', response.data);
-
                     context.commit('setLoadingFlg', false);
                 })
                 .catch(error => {
@@ -57,6 +59,7 @@ export default {
                 formData.append('name', detailUserInfo.name);
                 formData.append('phone_number', detailUserInfo.phone_number);
                 formData.append('address', detailUserInfo.address);
+                formData.append('post_code', detailUserInfo.post_code);
                 formData.append('detail_address', detailUserInfo.detail_address);
                 formData.append('file', detailUserInfo.file);
 
@@ -106,9 +109,11 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
+                console.log(userInfo);
+
                 axios.post(url, data)
                 .then(response => {
-                    router.replace('/mypage/auth/update');
+                    router.replace('/user/mypage/update');
                 })
                 .catch(error => {
                     alert('비밀번호가 일치하지 않습니다.');
@@ -116,8 +121,28 @@ export default {
             }, {root: true});
         },
 
+        userDeletePasswordChk(context, userInfo) {
+            context.dispatch('auth/chkTokenAndContinueProcess', () => {
+            
+                const url = '/api/user/withdraw';
+
+                const data = JSON.stringify(userInfo);
+
+
+                axios.post(url, data)
+                .then(response => {
+                    context.commit('setModalFlg', true);
+                })
+                .catch(error => {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    context.commit('setModalFlg', false);
+                });
+            }, {root: true});
+        },
+
         userDelete(context, id) {
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
+                console.log(id);
                 const url = '/api/user/withdraw/' + id;
 
                 const config = {

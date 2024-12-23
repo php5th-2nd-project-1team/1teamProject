@@ -1,39 +1,59 @@
 <template>
+    <ModalComponent v-if="modalFlg" :data="data"/>
     <div class="PasswordCheck-container">
         <div class="PasswordCheck-border">
             <h1 class="pet-breeze-title">Pet Breeze</h1>
-            <hr>
             <div class="PasswordCheck-main">
                 <label for="password" class="password-title">본인 확인을 위해 비밀번호를 입력해주세요.</label>
                 <br>
                 <input v-model="userInfo.password" type="password" id="password" class="password-box">
             </div>
-            <hr>
             <div class="btn-div">
                 <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
-                <button v-else-if="previusPath === '/mypage/auth/update'" class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button>
+                <!-- <button v-else-if="previusPath === '/user/mypage/update'" class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button> -->
+                <button v-else-if="previusPath === '/user/mypage/update'" class="delete-btn" @click="$store.dispatch('user/userDeletePasswordChk', userInfo)">회원탈퇴</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import ModalComponent from '../utilities/ModalComponent.vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import router from '../../../js/router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
-const id = computed(() => store.state.auth.userInfo.user_id);
+// const id = computed(() => store.state.auth.userInfo.user_id);
+
+const user_id = ref(store.state.auth.userInfo.user_id);
 
 const previusPath = ref(router.options.history.state.back);
 
-const user_id = ref(store.state.auth.userInfo.user_id);
+const modalFlg = computed(() => store.state.user.modalFlg);
+
+onMounted(()=>{
+    store.commit('user/setModalFlg', false);
+})
 
 const userInfo = reactive({
         password: ''
         ,user_id: user_id
     });
+
+
+const data = reactive({
+    title : '회원 탈퇴'
+    ,content : '귀하는 현재 회원 탈퇴를 하려 합니다. 동의하십니까?'
+    ,warningContent : '회원 탈퇴 후 되돌릴 수 없으며, 향후 1년간 같은 아이디로 로그인을 할 수 없습니다.'
+    ,onClickCancel : function(){
+        store.commit('user/setModalFlg', false);
+    }
+    ,onClickConfirm : function(){
+        store.dispatch('user/userDelete', user_id.value);
+    }
+});
 
 
 </script>
@@ -45,22 +65,18 @@ button {
 
 .PasswordCheck-container {
     width: 100%;
-    height: 550px;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .PasswordCheck-border {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    width: 70%;
     padding-bottom: 20px;
 }
 
 .pet-breeze-title {
-    font-size: 4rem;
+    font-size: 2rem;
     padding: 15px
 }
 
@@ -70,28 +86,28 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 12vh;
-    margin-bottom: 12vh;
+    margin-top: 9vh;
+    margin-bottom: 9vh;
 }
 
 .password-title {
-    font-size: 1.7rem;
+    font-size: 1.3rem;
     font-weight: 900;
 }
 
 .password-box {
-    width: 55%;
-    font-size: 2rem;
+    width: 50%;
+    font-size: 1.5rem;
     padding: 20px;
     border-radius: 5px;
     background-color: #EFEFEF;
     border: none;
 }
 
-hr {
+/* hr {
     width: 100%;
     border-color: rgba(0, 0, 0, 0.2);
-}
+} */
 
 .btn-div {
     text-align: right;
@@ -102,7 +118,7 @@ hr {
     border: none;
     border-radius: 10px;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     width: 15%;
     padding: 15px;
     margin-top: 2vh;
