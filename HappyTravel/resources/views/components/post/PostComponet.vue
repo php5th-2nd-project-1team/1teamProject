@@ -17,7 +17,7 @@
                 class="mySwiper">
                 <!-- <div class="slide-container"> -->
                     <swiper-slide @click="getLocalResult('')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
-                    <swiper-slide @click="getLocalResult('01')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
+                    <swiper-slide @click="getLocalResult('01')"><img class="slide-img"  src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('02')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('03')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('04')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>인천</p></swiper-slide>
@@ -155,10 +155,6 @@ const getLocalResult = (num) => {
     border: 3px solid #10b3ff;
     width: 90px;
     padding: 0;
-}
-
-.slide-img:focus {
-    border: 3px solid #000;
 }
 
 .btn-slide-resize {
