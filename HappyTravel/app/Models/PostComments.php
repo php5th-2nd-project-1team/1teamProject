@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,9 +19,15 @@ class PostComments extends Model
         'post_comment',
     ];
 
+    
     protected function serializeDate(\DateTimeInterface $date) {
-        // 댓글 기능은 일자를 날짜만 둠 (시간x)
-        return $date->format('Y-m-d');
+        $today = Carbon::instance($date)->isToday();
+        if($today) {
+            return $date->format('H:i:s');
+        }else {
+            // 댓글 기능은 일자를 날짜만 둠 (시간x)
+            return $date->format('Y-m-d');
+        }
     }
 
     public function post(){

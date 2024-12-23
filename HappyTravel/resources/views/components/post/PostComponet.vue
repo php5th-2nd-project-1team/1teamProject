@@ -15,8 +15,7 @@
                 spaceBetween="10"
                 :width="400"
                 class="mySwiper">
-                <!-- <div class="slide-container"> -->
-                    <swiper-slide @click="getLocalResult('')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
+                    <!-- <swiper-slide @click="getLocalResult('')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전체</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('01')"><img class="slide-img"  src="/developImg/seoul_icon.png" alt=""><p>서울</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('02')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경기</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('03')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>강원</p></swiper-slide>
@@ -29,8 +28,10 @@
                     <swiper-slide @click="getLocalResult('10')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>경남</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('11')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전북</p></swiper-slide>
                     <swiper-slide @click="getLocalResult('12')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>전남</p></swiper-slide>
-                    <swiper-slide @click="getLocalResult('13')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide>
-                <!-- </div> -->
+                    <swiper-slide @click="getLocalResult('13')"><img class="slide-img" src="/developImg/seoul_icon.png" alt=""><p>제주</p></swiper-slide> -->
+                    <swiper-slide v-for="region in regions" :key="region.id" @click="selectRegion(region.id)">
+                        <img class="slide-img" :src="region.img" alt="" :class="{ 'selected': selectedRegion === region.id }"><p>{{ region.name }}</p>
+                    </swiper-slide>
                 <div class="custom-prev"><img class="btn-slide-resize" src="/developImg/arrow_left.png" alt=""></div>
                 <div class="custom-next"><img class="btn-slide-resize" src="/developImg/arrow_right.png" alt=""></div>
             </swiper>
@@ -90,11 +91,37 @@ const breakpoints = {
 // 메인 출력 지역
 
 import { useStore } from 'vuex';
-import { computed, reactive, onUnmounted, onMounted, onBeforeMount } from 'vue';
+import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
 
 const store = useStore();
+
+// 지역 슬라이드 분기
+const selectedRegion = ref('');
+const selectRegion = (regionId) => {
+    selectedRegion.value = regionId;
+    getLocalResult(regionId);
+};
+
+const regions = [
+    { id: '', name: '전체', img: '/developImg/all_icon.png'},
+    { id: '01', name: '서울', img: '/developImg/seoul_icon.png'},
+    { id: '02', name: '경기', img: '/developImg/gyeonggi_icon.png'},
+    { id: '03', name: '강원', img: '/developImg/gangwon_icon.png'},
+    { id: '04', name: '인천', img: '/developImg/incheon_icon.png'},
+    { id: '05', name: '세종', img: '/developImg/sejong_icon.png'},
+    { id: '06', name: '대전', img: '/developImg/daejeon_icon.png'},
+    { id: '07', name: '충북', img: '/developImg/chungbuk_icon.png'},
+    { id: '08', name: '충남', img: '/developImg/chungnam_icon.png'},
+    { id: '09', name: '경북', img: '/developImg/geongbuk_icon.png'},
+    { id: '10', name: '경남', img: '/developImg/geongnam_icon.png'},
+    { id: '11', name: '전북', img: '/developImg/jeonbuk_icon.png'},
+    { id: '12', name: '전남', img: '/developImg/jeonnam_icon.png'},
+    { id: '13', name: '제주', img: '/developImg/jeju_icon.png'},
+];
+
+// -------------------------------------------
 
 onBeforeMount(()=>{
     store.commit('post/setInitialize');
@@ -143,7 +170,8 @@ const getLocalResult = (num) => {
 
 .swiper-slide {
     text-align: center;
-    /* width: 150px !important; */
+    border: 2px solid transparent; /* 기본 상태는 투명 */
+    transition: border 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 .swiper-slide p {
@@ -152,9 +180,14 @@ const getLocalResult = (num) => {
 
 .slide-img {
     border-radius: 50%;
-    border: 3px solid #10b3ff;
+    border: 4px solid transparent;
     width: 90px;
     padding: 0;
+    cursor: pointer;
+}
+
+.selected {
+    border: 4px solid #10b3ff;
 }
 
 .btn-slide-resize {

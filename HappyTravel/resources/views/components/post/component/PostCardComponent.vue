@@ -29,6 +29,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap : 0.1rem;
+		cursor: pointer;
 	}
 
 	.post-content-card-img {

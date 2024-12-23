@@ -25,6 +25,7 @@ export default {
 		,commentCurrentPage : 1
 		,totalPage : 0
 		,isLoading : false
+		,isDetailLoading : false
 		,isSearching : false
 		,beforeSearch : ''
 		,beforeLocal : '00'
@@ -54,6 +55,10 @@ export default {
 
 		,setIsLoading(state, flg){
 			state.isLoading = flg;
+		}
+
+		,setDetailIsLoading(state, flg){
+			state.isDetailLoading = flg;
 		}
 
 		,setCurrentPage(state, page){
@@ -291,7 +296,8 @@ export default {
 		// 포스트 상세 출력
 		,showPost(context, id){
 			
-			context.commit('setIsLoading', true);
+			context.commit('setInitialize');
+			context.commit('setDetailIsLoading', true);
 			
 			const url = '/api/posts/' + id;
 
@@ -326,41 +332,50 @@ export default {
 			.catch(error => {
 				console.error(error);
 			}).finally(() => {
-				context.commit('setIsLoading', false);
+				context.commit('setDetailIsLoading', false);
 			});
 		}
 
 		// 포스트 댓글 작성
 		,storePostComment(context, data) {
-			const url = '/api/posts/' + data.post_id;
-			// const url = `/api/posts/${data.post_id}`;
-
-			const config = {
-				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-				}
-			}
-
-			const useData = {
-				post_comment: data.post_comment,
-			};
-			// json으로 파싱
-			const param = JSON.stringify(useData);
-
-			axios.post(url, param, config)
-			.then(response => {
-				context.commit('setPostCommentListUnshift', response.data.storePostComment);
-				context.commit('addPostCommentCnt');		// 펫브리즈고 댓글갯수 +
-				alert('댓글을 작성하였습니다.');
+			context.dispatch('auth/chkTokenAndContinueProcess', () => {
 				
-				// console.log(response.data.postComment);
-			})
-			.catch(error => {
-				// console.error('댓글 작성 실패');
-				console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
-				console.error(error); // 서버의 에러 메시지 출력
-    			alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
-			});
+				const url = '/api/posts/' + data.post_id;
+				// const url = `/api/posts/${data.post_id}`;
+				if(context.state.controllerFlg) {
+					context.commit('setControllerFlg', false);
+				}
+
+				const config = {
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+					}
+				}
+
+				const useData = {
+					post_comment: data.post_comment,
+				};
+				// json으로 파싱
+				const param = JSON.stringify(useData);
+
+				axios.post(url, param, config)
+				.then(response => {
+					context.commit('setPostCommentListUnshift', response.data.storePostComment);
+					context.commit('addPostCommentCnt');		// 펫브리즈고 댓글갯수 +
+					alert('댓글을 작성하였습니다.');
+					
+					// console.log(response.data.postComment);
+				})
+				.catch(error => {
+					// console.error('댓글 작성 실패');
+					console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
+					console.error(error); // 서버의 에러 메시지 출력
+					alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
+				})
+				.finally(() => {
+					context.commit('setControllerFlg', true);
+				});
+			}, {root: true});
 		}
 
 		// 좋아요 클릭 기능 만들기
@@ -401,11 +416,10 @@ export default {
 				return;
 			}
 
-			// if(context.state.controllerFlg && !context.state.lastPageFlg) {
-			// 	context.commit('setControllerFlg', false);
-			// }
-			
 			context.commit('setIsLoading', true);
+			if(context.state.controllFlg && !context.state.lastPageFlg) {
+				context.commit('setControllerFlg', false);
+			}
 			const url = '/api/posts/' + id + '?page=' + context.getters['getCommentNextPage'];	// 페이지네이션 꼭?page 로 적어야함
 			axios.get(url)
 			.then(response => {
@@ -415,7 +429,7 @@ export default {
 				
 				console.log(response.data.PostComment.current_page, context.state.commentCurrentPage);
 				if(response.data.PostComment.current_page >= response.data.PostComment.last_page) {
-					console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
+					// console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
 					context.commit('setLastPageFlg', true);
 				}
 			})
@@ -424,34 +438,39 @@ export default {
 			})
 			.finally(() => {
 				context.commit('setIsLoading', false);
-				// context.commit('setControllerFlg', true);
+				context.commit('setControllerFlg', true);
 			});
 		}
 
 		// 포스트 댓글 삭제
 		,postCommentDelete(context, id) {
-			if(!confirm('댓글을 삭제하시겠습니까?')) {
-				return;
-			}
-			if(context.state.controllerFlg && !context.state.lastPageFlg) {
-				context.commit('setControllerFlg', false);
-			}
-			const url = '/api/posts/' + id[0];
-			const config = {
-				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+			context.dispatch('auth/chkTokenAndContinueProcess', () => {
+				if(!confirm('댓글을 삭제하시겠습니까?')) {
+					return;
 				}
-			}
+				if(context.state.controllerFlg) {
+					context.commit('setControllerFlg', false);
+				}
+				const url = '/api/posts/' + id[0];
+				const config = {
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+					}
+				}
 
-			axios.delete(url, config)
-			.then(response => {
-				alert('댓글이 삭제되었습니다.');
-				context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
-				context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
-			})
-			.catch(error => {
-				console.error(error);
-			});
+				axios.delete(url, config)
+				.then(response => {
+					alert('댓글이 삭제되었습니다.');
+					context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
+					context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
+				})
+				.catch(error => {
+					console.error(error);
+				})
+				.finally(() => {
+					context.commit('setControllerFlg', true);
+				});
+			}, {root: true});
 		}
 
 

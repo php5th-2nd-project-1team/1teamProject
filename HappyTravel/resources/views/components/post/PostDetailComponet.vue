@@ -1,5 +1,5 @@
 <template>
-<!-- <LoadingComponent v-if="isLoading"/> -->
+<LoadingComponent v-if="isLoading === true"/>
 <div class="btn-postdetail-pagenav">
 	<router-link to="/index"><span>홈</span></router-link>
 	<span> > </span>
@@ -151,6 +151,8 @@
 import PostMapComponent from './component/PostMapComponent.vue';
 // 댓글 컴포넌트
 import CommentComponent from '../utilities/CommentComponent.vue';
+// 로딩 컴포넌트
+import LoadingComponent from '../utilities/LoadingComponent.vue';
 // 이미지 슬라이드
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -181,14 +183,14 @@ const route = useRoute();
 
 // 포스트 상세 정보    !성공!
 const PostDetail = computed(() => store.state.post.postDetail);
-// const isLoading = computed(() => store.state.post.isLoading);
+const isLoading = computed(() => store.state.post.isDetailLoading);
 const PostCommentCnt = computed(() => store.state.post.postCommentCnt);
 
 //  ------------------------------------------
 // 라우트 변경 시 데이터 다시 호출 
 onBeforeMount(()=>{
 	store.dispatch('post/showPost', route.params.id);
-	store.commit('post/setInitialize');
+	// store.commit('post/setInitialize');
 });
 
 // ------------------------------------------
