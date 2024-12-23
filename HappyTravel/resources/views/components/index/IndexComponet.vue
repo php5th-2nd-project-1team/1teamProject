@@ -11,12 +11,13 @@
 
 <script setup>
 
-import { ref, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount, reactive } from 'vue';
 import IndexCommentBoxComponent from './index_module/IndexCommentBoxComponent.vue';
 import IndexMediaboxComponent from './index_module/IndexMediaboxComponent.vue';
 import IndexPostListComponent from './index_newModule/IndexPostListComponent.vue';
 import IndexPostComponent from './index_newModule/IndexPostComponent.vue';
 import { useStore } from 'vuex';
+import ModalComponent from '../utilities/ModalComponent.vue';
 
 const store = useStore();
 
@@ -52,10 +53,6 @@ const onClickTopBtn = () =>{
 		window.scrollTo(0, 0);
 	}
 }
-
-
-
-
 </script>
 
 <style scoped>
