@@ -123,6 +123,8 @@ export default {
 		// 좋아요 여부 
 		,setIsClkedLike(state, flg){
 			state.isClkedLike = flg;
+
+			console.log( '좋아요 무엇 : ' + state.isClkedLike);
 		}
 
 		// 좋아요 개수 여부

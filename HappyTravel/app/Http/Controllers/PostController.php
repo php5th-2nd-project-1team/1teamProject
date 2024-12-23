@@ -105,7 +105,7 @@ class PostController extends Controller
 			Log::info('값을 가지고 있음: ', ['token' => $token]);
 		}
 
-		Log::debug(is_null($token));
+		// Log::debug(is_null($token));
 
 		// 로그인 했으면 해당 유저가 좋아요 눌렀는지 안눌렀는지 확인
 		if(!is_null($token)){
@@ -124,12 +124,15 @@ class PostController extends Controller
 		$PostDetail->save();
 		DB::commit();
 
+		Log::debug('postCommentCnt');
+		Log::debug($PostCommentCnt);
+
 		$responseData = [
 			'success' => true
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
 			,'PostComment' => $PostComment->toArray()
-			,'PostCommentCnt' => $PostCommentCnt->toArray()
+			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $request->id, "cnt" => 0]
 			,'PostClkLike' => $PostClkLike
 		];
 

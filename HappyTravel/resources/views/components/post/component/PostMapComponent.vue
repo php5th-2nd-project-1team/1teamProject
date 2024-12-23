@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading">    
   </div>
-  <KakaoMap v-else :lat="PostDetail.post_lat" :lng="PostDetail.post_lon" :draggable="false" @onLoadKakaoMap="onLoadKakaoMap" >
+  <KakaoMap v-else :lat="PostDetail.post_lat" :lng="PostDetail.post_lon" :draggable="true" :scrollwheel="false" @onLoadKakaoMap="onLoadKakaoMap" >
     <KakaoMapMarker :lat="PostDetail.post_lat" :lng="PostDetail.post_lon" />
   </KakaoMap>
 

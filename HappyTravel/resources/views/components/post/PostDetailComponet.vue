@@ -214,7 +214,7 @@ const scrollTo = (id) => {
 
 // 좋아요 버튼 관련
 const isClked = computed(() => store.state.post.isClkedLike);
-const likeBtnClassName = ref('');
+const likeBtnClassName = computed(() => (isClked.value ? 'clk' : 'noClk'));
 
 likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
 
