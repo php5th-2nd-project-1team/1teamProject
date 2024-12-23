@@ -17,7 +17,6 @@ import IndexMediaboxComponent from './index_module/IndexMediaboxComponent.vue';
 import IndexPostListComponent from './index_newModule/IndexPostListComponent.vue';
 import IndexPostComponent from './index_newModule/IndexPostComponent.vue';
 import { useStore } from 'vuex';
-import ModalComponent from '../utilities/ModalComponent.vue';
 
 const store = useStore();
 
