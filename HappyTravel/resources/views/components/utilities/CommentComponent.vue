@@ -5,8 +5,10 @@
         <div class="comment-txt">
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
-				<button type="button">신고하기</button>
-				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete">X</button>
+				<!-- 신고버튼 -->
+				<!-- <button v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button> -->
+				<!-- 삭제버튼 -->
+				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete"><img style="width: 25px;" src="/developImg/btn-delete.png" alt=""></button>
 			</div>
             <div class="comment-created">
                 <span class="comment-name">{{ item.user.nickname }}</span>
@@ -56,7 +58,7 @@ const deleteComment = (id, key) => {
 
 .etc-btn {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 }
 
  .comment-img {
@@ -82,10 +84,17 @@ const deleteComment = (id, key) => {
  }
 
  .btn-comment-delete {
-	color: red;
-	background-color: transparent;
-	border: none;
-	font-size: 20px;
+	text-align: center;
 	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	margin: 0 5px;
+	width: 30px;
+ }
+
+ .btn-comment-report {
+	border: 0;
+	outline: 0;
+	background-color: transparent;
  }
 </style>

@@ -142,7 +142,7 @@ class PostController extends Controller
 	// 실제로 댓글 페이지네이션시 PostComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
 	public function getComment(Request $request) {
 		$PostComment = null;
-		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->orderBy('created_at', 'DESC')->paginate(5);
+		$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)->whereNull('deleted_at')->orderBy('created_at', 'DESC')->paginate(5);
 
 		$responseData = [
 			'success' => true
@@ -184,7 +184,7 @@ class PostController extends Controller
 	}
 
 	// 포스트 댓글 삭제
-	public function deletePostComment($id) {
+	public function deletePostComment( $id) {
 		DB::beginTransaction();
 		// TODO: destroy시 $id값이 성공할시 commit 실패할시 rollback 추가해야함(지금은 commit하기만 함)
 		PostComments::destroy($id);
@@ -196,6 +196,27 @@ class PostController extends Controller
 		];
 		return response()->json($responseData, 200);
 	}
+
+	// public function deletePostComment(Request $request) {
+	// 	DB::beginTransaction();
+	// 	$comment = PostComments::find($request->post_comment_id);
+	// 	$comment->deleted_at = now();
+	// 	$comment->save();
+	// 	$comment->delete();
+
+	// 	$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)
+	// 					->whereNull('deleted_at')
+	// 					->orderBy('created_at', 'DESC')
+	// 					->paginate(5);
+
+	// 	$responseData = [
+	// 		'success' => true
+	// 		,'msg' => '포스트 코멘트 삭제'
+	// 		,'PostComment' => $PostComment->toArray()
+	// 	];
+	// 	DB::commit();	
+	// 	return response()->json($responseData, 200);
+	// }
 
 		/**
 	 * 포스트 좋아요 클릭 관련 여부

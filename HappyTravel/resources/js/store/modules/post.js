@@ -290,7 +290,6 @@ export default {
 
 		// 포스트 상세 출력
 		,showPost(context, id){
-			// 민주님, 좋아요 버튼 추가에 따라 해당 로직을 수정 및 추가했으니, 확인 후 주석을 지우시거나 놔두시면 됩니다.
 			
 			context.commit('setIsLoading', true);
 			
@@ -402,9 +401,9 @@ export default {
 				return;
 			}
 
-			if(context.state.controllerFlg && !context.state.lastPageFlg) {
-				context.commit('setControllerFlg', false);
-			}
+			// if(context.state.controllerFlg && !context.state.lastPageFlg) {
+			// 	context.commit('setControllerFlg', false);
+			// }
 			
 			context.commit('setIsLoading', true);
 			const url = '/api/posts/' + id + '?page=' + context.getters['getCommentNextPage'];	// 페이지네이션 꼭?page 로 적어야함
@@ -425,12 +424,15 @@ export default {
 			})
 			.finally(() => {
 				context.commit('setIsLoading', false);
-				context.commit('setControllerFlg', true);
+				// context.commit('setControllerFlg', true);
 			});
 		}
 
 		// 포스트 댓글 삭제
 		,postCommentDelete(context, id) {
+			if(!confirm('댓글을 삭제하시겠습니까?')) {
+				return;
+			}
 			if(context.state.controllerFlg && !context.state.lastPageFlg) {
 				context.commit('setControllerFlg', false);
 			}
