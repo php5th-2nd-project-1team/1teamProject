@@ -13,17 +13,24 @@
           <div class="notice-item notice-cursor-pointer">작성일자</div>
       </div>
         
-      <div v-for="item in noticeList" :key="item" class="notice-row">
-          <div class="notice-item" v-if="item.notice_tag === '1'">
+      <div v-for="item in noticeImportantList" :key="item" class="notice-row">
+          <div class="notice-item">
              <span class="notice-inportant">중요</span>  
           </div> 
-          <div class="notice-item" v-else-if="item.notice_tag === '0'">
+          <div class="notice-item notice-title notice-cursor-pointer" @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</div>
+          <div class="notice-item">{{ item.managers.m_nickname }}</div>
+          <div class="notice-item">{{ item.created_at }}</div>
+      </div>
+
+      <div v-for="item in noticeList" :key="item" class="notice-row">
+          <div class="notice-item">
              <span  class="notice-common">일반</span>
           </div> 
           <div class="notice-item notice-title notice-cursor-pointer" @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</div>
           <div class="notice-item">{{ item.managers.m_nickname }}</div>
           <div class="notice-item">{{ item.created_at }}</div>
       </div>
+
     </div>
 
     <div class="pagination">      
@@ -50,9 +57,11 @@
     const store = useStore();
     const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
     const noticeList = computed(() => store.state.notice.noticeList);
+    const noticeImportantList = computed(() => store.state.notice.noticeImportant);
 
     onBeforeMount(() => {
             store.dispatch('notice/noticeList', 0);
+            console.log(noticeImportantList);
           }
         );
         

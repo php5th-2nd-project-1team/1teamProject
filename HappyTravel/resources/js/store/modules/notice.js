@@ -8,6 +8,8 @@ export default {
         ,links: []        
         ,currentPage: localStorage.getItem('noticeCurrentPage') ? localStorage.getItem('noticeCurrentPage') : 1
         ,noticeDetail: {}
+        ,noticeNomal : []
+        ,noticeImportant: []
 	})
 	,mutations: {
         setNoticeList(state, noticeList) {
@@ -26,6 +28,9 @@ export default {
         ,setNoticeDetail(state, noticeDetail) {
             state.noticeDetail = noticeDetail;
         }
+        ,setNoticeImportant(state, noticeImportant) {
+            state.noticeImportant = noticeImportant;
+        }
 	}   
 	,actions: {
         noticeList(context, page) {
@@ -37,10 +42,11 @@ export default {
             axios.get(url) 
             .then(response => {
                 console.log(response);
-                context.commit('setNoticeList', response.data.notice.data);
+                context.commit('setNoticeList', response.data.noticeListPageNomal.data);
+                context.commit('setNoticeImportant', response.data.noticeListPageimportant);
                 context.commit('setLoadingFlg', false);
-                context.commit('setLinks', response.data.notice.links);
-                context.commit('setCurrentPage', response.data.notice.current_page);
+                context.commit('setLinks', response.data.noticeListPageNomal.links);
+                context.commit('setCurrentPage', response.data.noticeListPageNomal.current_page);
             })
             .catch(error=> {
                 console.error(error);

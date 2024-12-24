@@ -39,16 +39,6 @@
                 <img v-if="item.notice_img !== null" :src="item.notice_img">
             </div>     
         </div>
-        <!--    <div class="pagination">
-            <div v-for="item in links" :key="item.label">
-                <button class="pagenate-btn" @click="$store.dispatch('notice/noticeLinkList', item.url)" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
-                    <span v-if="item.label === backBtn">{{ '이전' }}</span> 
-                    <span v-else-if="item.label === nextBtn">{{ '다음' }}</span>
-                    <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
-                    <span v-else>{{ item.label }}</span>
-                </button>
-            </div>
-        </div> -->
         <div class="pagination">
             <div v-for="item in links" :key="item.label" @click="scrollToTop()">
                 <button class="pagenate-btn" @click="$store.dispatch('notice/noticeList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">

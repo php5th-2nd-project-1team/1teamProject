@@ -5,30 +5,22 @@
                 <h1>공지사항</h1> 
                 <br><br>
         <div class="container">
-            <!-- <div class="first-line">
-                <span class="notice">공지</span>
-                <span class="noticetitle">{{ noticeDetailList.notice_title }}</span>
-            </div>
-        
-            <div class="second-line">
-                <div class="left-group">
-                    <span>작성자</span>
-                    <span>{{ noticeDetailList.managers.m_nickname }}</span>
-                </div>
-                <div class="right-group">
-                    <span>작성날짜</span>
-                    <span>{{ noticeDetailList.created_at }}</span>
-                </div>
-            </div>
-            <hr> -->
             <div class="community-notice-detail-header">
-                <div class="community-notice-detail-header-tag">일반</div>
-                <div>
-                    <div>제목</div>
-                    <div>작성자</div>
-                    <div>작성일자</div>
+                <div class="community-notice-detail-header-left-tag" v-if="noticeDetailList.notice_tag === '0'">
+                    <span>일반</span>
                 </div>
-                
+                <div class="community-notice-detail-header-left-tag-important" v-else>
+                    <span>중요</span>                  
+                </div>
+                <div class="community-notice-detail-header-right">
+                    <div class=community-notice-detail-header-right-top>
+                        <span>{{ noticeDetailList.notice_title }}</span>
+                    </div>
+                    <div class="community-notice-detail-header-right-bottom">
+                        <span>{{ noticeDetailList.managers.m_nickname }}</span>
+                        <span>{{ noticeDetailList.created_at }}</span>
+                    </div>
+                </div>
             </div>
         
             <div class="container">
@@ -64,7 +56,6 @@ const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
 const route = useRoute();
 
 const router = useRouter();
-
 const goBack = () => {
       router.go(-1); // 이전 페이지로 이동
       scrollToTop(); // 최상단으로 스크롤
@@ -85,56 +76,57 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
         margin: 100px;
         padding:0 300px;
     }
+
     .community-notice-detail-header {
         display: flex;
-        justify-content: space-between;
+        height:150px;       
+        border: 1px solid #BDBDBD;
     }
     /* 새로작성한 구간 */
-    .container {
-    display: flex;
-    flex-direction: column; 
+  
+    .community-notice-detail-header-left-tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 180px;
+        background-color: #BDBDBD;
+        color:#fff;
+        font-size:1.8rem;
     }
-    .community-notice-detail-header {
-    padding: 50px;
-    border: 1px solid black;
+    .community-notice-detail-header-left-tag-important {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 180px;
+        background-color: #2986FF;
+        color:#fff;
+        font-size:1.8rem;
     }
-/* 
-    .first-line {
-    display: flex;
-    align-items: center; 
-    width: 100%;
-    font-size: 3rem;
+    .community-notice-detail-header-right { 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+    }
+    .community-notice-detail-header-right-top {
+        display:flex;
+        justify-content: center;
+        height: 100%;
+        align-items: center;
+        font-size: 2rem;
+    }
     
+    .community-notice-detail-header-right-bottom {
+        display: flex;
+        justify-content: flex-end;
+        width:100%;
+        padding:10px;
+        margin-right: 30px;
+        gap: 100px;
+        font-size:1rem;
+        border-top: 1px solid #BDBDBD;
+        color:#000;
     }
-
-    .notice {
-    flex: 0 0 auto; 
-    margin-right: 10px; 
-    text-align: center;
-    }
-
-    .title {
-    flex: 1; 
-    text-align: center; 
-    }
-
-    .second-line {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    width: 100%;
-    font-size: 1.5rem;
-    }
-
-    .left-group {
-    display: flex;
-    gap: 10px; 
-    }
-
-    .right-group {
-    display: flex;
-    gap:10px;
-    } */
 
     /* 컨텐츠  */
     .container {
@@ -152,6 +144,11 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
     display: flex; /* 이미지를 중앙에 정렬 */
     align-items: center;
     justify-content: center;
+    }
+    .image img {
+    width: 100%;   /* 이미지 너비를 div에 맞게 100% */
+    height: 100%;  /* 이미지 높이를 div에 맞게 100% */
+    object-fit: cover; /* 이미지가 div 크기에 맞게 비율 유지하며 잘라냄 */
     }
 
     /* 이미지가 없을 때 .image를 숨기기 */
