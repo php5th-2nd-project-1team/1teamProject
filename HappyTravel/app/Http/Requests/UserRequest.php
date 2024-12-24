@@ -43,7 +43,7 @@ class UserRequest extends FormRequest
             unset($rules['password']);
             $rules['name'] = ['required', 'regex:/^[가-힣]{2,4}$/u'];
             $rules['nickname'] = ['required', 'regex:/^[a-zA-Z0-9가-힣]{1,8}$/u'];
-            $rules['detail_address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/'];
+            $rules['detail_address'] = ['required', 'regex:/^[가-힣0-9]{1,20}$/u'];
             $rules['phone_number'] = ['required', 'regex:/^010-\d{4}-\d{4}$/'];
         }else if($this->routeIs('auth.IdChk')) {
             unset($rules['password']);

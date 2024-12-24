@@ -18,7 +18,7 @@
 
 
     <div class="button-container">
-        <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPasswordUpdate', userInfo)">변경</button>
+        <button class="file-insert-btn" @click="$store.dispatch('user/myPasswordUpdate', userInfo)">변경</button>
         <button type="button" @click="$router.push('/user/mypage')" class="mypage-user-update-btn">취소</button>
     </div>
 </template>
@@ -148,7 +148,7 @@ label {
     padding: 12px 20px;
     margin: 5px;
     font-size: 16px;
-    background-color: #2986FF;
+    background-color: #939393;
     color: white;
     border: none;
     border-radius: 10px;
@@ -158,15 +158,15 @@ label {
 }
 
 .mypage-user-update-btn:hover {
-    background-color: #CDECFF;
+    background-color: #BDBDBD;
     transform: translateY(-2px);
 }
 
 
 .file-insert-btn {
     padding: 12px 20px;
-    margin-left: 20px;
     font-size: 16px;
+    margin: 5px;
     background-color: #2986FF;
     color: white;
     border: none;
