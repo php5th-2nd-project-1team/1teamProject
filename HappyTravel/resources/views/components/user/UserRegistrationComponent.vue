@@ -4,31 +4,31 @@
         <span class="registration-making"><span class="span-color" style="position: relative;">*<div class="profile-imgArea" :style="{backgroundImage: 'url('+ form.profile +')'}"><span class="profile-imgArea-child">프로필 사진</span></div></span> 필수입력사항</span>
         <hr>
         <div class="registration-grid">
-            <span>아이디 <span class="span-color">*</span></span>
+            <span class="span-content">아이디 <span class="span-color">*</span></span>
             <div class="id-container">
                 <input type="text" v-model="form.account" placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합" class="input-box id-box"> 
                 <button @click="$store.dispatch('auth/userIdCheck', form)" class="duplication-btn">중복확인</button>
             </div>
         </div>
         <div class="registration-grid">
-            <span>비밀번호 <span class="span-color">*</span></span>
+            <span class="span-content">비밀번호 <span class="span-color">*</span></span>
             <input type="password" v-model="form.password" placeholder="비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수 문자(!, @)만 사용 가능합니다." class="input-box">
         </div>
         <div class="registration-grid">
-            <span>비밀번호 확인 <span class="span-color">*</span></span>
+            <span class="span-content">비밀번호 확인 <span class="span-color">*</span></span>
             <input type="password"  v-model="form.passwordChk" placeholder="비밀번호를 한 번 더 입력해주세요." class="input-box">
         </div>
         <div class="registration-grid">
-            <span>프로필 사진</span>
+            <span class="span-content">프로필 사진</span>
             <label for="file" class="profile-btn">프로필 사진 선택</label>
             <input @change="setFile" type="file" name="file" accept="image/*" id="file" style="display: none;">
         </div>
         <div class="registration-grid">
-            <span>성함 <span class="span-color">*</span></span>
+            <span class="span-content">성함 <span class="span-color">*</span></span>
             <input type="text" v-model="form.name" placeholder="이름은 한글로 2글자에서 4글자 사이로 입력해주세요." class="input-box">
         </div>
         <div class="registration-grid">
-            <span>닉네임 <span class="span-color">*</span></span>
+            <span class="span-content">닉네임 <span class="span-color">*</span></span>
             <input type="text" v-model="form.nickname" placeholder="닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 해주세요." class="input-box">
         </div>
         <div class="registration-grid">
@@ -39,26 +39,26 @@
         <!-- 주소 검색 버튼 -->
         <!-- v-if="!addressFlg" -->
         <div class="registration-grid">
-            <span>주소 <span class="span-color">*</span></span>
+            <span class="span-content">주소 <span class="span-color">*</span></span>
             <button @click="openAddressSearch" class="address-btn">주소 검색</button>
         </div>
-        <div v-if="addressFlg" class="address-container">
-            <div class="registration-grid"> 
-                <label>우편번호 <span class="span-color">*</span></label>
+        <div v-if="addressFlg" class="address-container"> 
+            <div class="registration-grid-adress"> 
+                <label class="span-content">우편번호 <span class="span-color">*</span></label>
                 <input type="text" v-model="form.zonecode" placeholder="우편번호" readonly class="input-box-address">
             </div>
-            <div class="registration-grid"> 
-                <label>주소 <span class="span-color">*</span></label>
+            <div class="registration-grid-adress"> 
+                <label class="span-content">주소 <span class="span-color">*</span></label>
                 <input type="text" v-model="form.address" placeholder="주소" readonly class="input-box-address">
             </div>
-            <div class="registration-grid">
-                <label>상세 주소 <span class="span-color">*</span></label>
+            <div class="registration-grid-adress">
+                <label class="span-content">상세 주소 <span class="span-color">*</span></label>
                 <input type="text" v-model="form.detail_address" placeholder="상세 주소 입력" class="input-box-address">
             </div>
         </div>    
         <!-- 카카오 주소 검색 api --------------------------------------------------- -->
         <div class="registration-grid">
-            <span>성별 <span class="span-color">*</span></span>
+            <span class="span-content">성별 <span class="span-color">*</span></span>
             <div class="id-container gender-gap">
                 <div>
                     <input v-model="form.gender"type="radio" name="gender" value="0"> 남
@@ -172,11 +172,18 @@ const store = useStore();
 </script>
   
 <style scoped>
+
+    .span-content {
+        align-self: center;
+        line-height: 16px;
+    }
     
     .registration-container {
         display: flex;
         flex-direction: column;
         text-align: center;
+        /* justify-content: center; */
+        /* align-items: center; */
         padding: 0 5%;
     }
 
@@ -188,15 +195,16 @@ const store = useStore();
     .registration-making {
         text-align: right;
         margin-right: 10%;
+        font-size: 0.6rem;
     }
 
     .profile-btn {
         width: 45%;
         height: 40px;
-        padding-top: 3px;
+        padding-top: 6px;
         border: 2px solid black;
         background-color: white;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 900;
         cursor: pointer;
 
@@ -207,7 +215,7 @@ const store = useStore();
         height: 40px;
         border: 2px solid black;
         background-color: white;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 900;
         cursor: pointer;
     }
@@ -225,8 +233,10 @@ const store = useStore();
     .registration-grid {
         display: grid;
         grid-template-columns: 0.3fr 0.7fr;
-        margin: 1.5%;
-        font-size: 1.2rem;
+        margin-left: 100px;
+        margin-top: 30px;
+        /* margin: 1.5%; */
+        font-size: 0.9rem;
         font-weight: 900;
     }
     
@@ -257,7 +267,7 @@ const store = useStore();
         height: 40px;
         border: 2px solid black;
         background-color: white;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 900;
         cursor: pointer;
     }
@@ -268,10 +278,21 @@ const store = useStore();
         border: 2px solid rgba(0, 0, 0, 0.25);
     }
 
+    .registration-grid-adress {
+        display: grid;
+        grid-template-columns: 0.3fr 0.7fr;
+        margin: 20px;
+        font-size: 0.9rem;
+        font-weight: 900;
+    }
+
     .address-container {
-        border: 2px solid rgba(0, 0, 0, 0.25);
-        width: 80%;
+        width: 46%;
         margin: 0 auto;
+        margin-top: 40px;
+        background-color: #F3F3F3;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
 
     .insert-container {
