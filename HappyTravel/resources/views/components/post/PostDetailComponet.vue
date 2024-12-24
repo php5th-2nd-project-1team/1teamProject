@@ -28,11 +28,11 @@
 			</div>
 		</div>
 	</div>
+	<!-- :ref="{swiperRef}" -->
 
 		<!-- 이미지 슬라이드 -->
 		 <div class="w-full" id="section1">
 			 <swiper
-			 	:ref="{swiperRef}"
 				 :pagination="{
 					el: '.swiper-pagination',
 					type: 'fraction',
@@ -102,7 +102,7 @@
 	<!-- 댓글 리스트 -->
 	<CommentComponent />
 
-	<!-- 슬라이드 이미지 modal -->
+	<!-- 슬라이드 이미지 modal
 	<div v-show="modalFlg" class="slide-img-box">
 		<div class="swiper-wrapper">
 			<swiper
@@ -142,7 +142,7 @@
 		</div>
 		</swiper>
 			<button @click="closeModal" class="btn btn-bg-blue btn-header next-item4">닫기</button>
-		</div>
+		</div> -->
 	 </div>
 </template>
 	
@@ -164,18 +164,18 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 
 // import required modules
-import { Pagination, Navigation, Thumbs, FreeMode } from 'swiper/modules';
-import { computed, onBeforeMount, reactive, ref} from 'vue';
+import { Pagination, Navigation, Thumbs } from 'swiper/modules';
+import { computed, onBeforeMount, onMounted, reactive, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import router from '../../../js/router';
 
 const modules = reactive([Navigation, Pagination, Thumbs]);
-const thumbsSwiper = ref(null);
-// const thumbs = { swiper: thumbsSwiper.value };
-const setThumbsSwiper = (swiper) => {
-	thumbsSwiper.value = swiper;
-}
+// const thumbsSwiper = ref(null);
+// // const thumbs = { swiper: thumbsSwiper.value };
+// const setThumbsSwiper = (swiper) => {
+// 	thumbsSwiper.value = swiper;
+// }
 // ------------------------------------------
 
 const store = useStore();
@@ -192,7 +192,6 @@ onBeforeMount(()=>{
 	store.dispatch('post/showPost', route.params.id);
 	// store.commit('post/setInitialize');
 });
-
 // ------------------------------------------
 // 모달 관련
 // 모달숨기기
@@ -218,7 +217,9 @@ const scrollTo = (id) => {
 const isClked = computed(() => store.state.post.isClkedLike);
 const likeBtnClassName = computed(() => (isClked.value ? 'clk' : 'noClk'));
 
-likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+onMounted(()=>{
+	likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+})
 
 const onClkLikeBtn = () => {
 	if(!store.state.auth.authFlg){
@@ -230,9 +231,6 @@ const onClkLikeBtn = () => {
 	store.dispatch('post/postClickLike', route.params.id);
 
 	likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
-
-	console.log(isClked.value);
-	console.log(likeBtnClassName.value);
 }
 
 // ------------------------------------------
@@ -321,6 +319,8 @@ const checkToken = () => {
 
 	border: 1px solid rgb(0, 0, 0);
 	border-radius: 100%;
+
+	cursor: pointer;
 }
 
 .noClk{
