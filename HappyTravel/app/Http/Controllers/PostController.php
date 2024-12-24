@@ -118,11 +118,16 @@ class PostController extends Controller
 			}
 		}
 
-		DB::beginTransaction();
-		// 조회수 추가
-		$PostDetail->post_view += 1;
-		$PostDetail->save();
-		DB::commit();
+		// 쿠키에 
+		if(!isset($_COOKIE['views'.$request->id])){
+			DB::beginTransaction();
+			// 조회수 추가
+			$PostDetail->post_view += 1;
+			$PostDetail->save();
+			DB::commit();
+
+			setcookie('views'.$request->id , true, time() + 60 * 60 * 24);
+		}
 
 		Log::debug('postCommentCnt');
 		Log::debug($PostCommentCnt);
