@@ -96,14 +96,23 @@
 	</div>
 	<div class="postdetail-comment-form-box">
 		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
-		<textarea @click="checkToken" v-model="commentData.post_comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1"></textarea>
+		<textarea @click="checkToken" v-model="commentData.post_comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1" maxlength="200"></textarea>
 		<button @click="storeComment" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
 	<!-- 댓글 리스트 -->
 	<CommentComponent />
 
-	<!-- 슬라이드 이미지 modal
-	<div v-show="modalFlg" class="slide-img-box">
+	<!-- <button type="button" id="shareX" class="btn">x공유하기</button> -->
+
+	<button @click="openModal" class="btn btn-bg-grey btn-more">공유하기</button>
+	<ShareModalComponent :isOpen="isModalOpen" :onClickClose="closeModal"/>
+
+
+
+
+	
+	<!-- 슬라이드 이미지 modal -->
+	<!-- <div v-show="modalFlg" class="slide-img-box">
 		<div class="swiper-wrapper">
 			<swiper
 				:style="{
@@ -153,6 +162,8 @@ import PostMapComponent from './component/PostMapComponent.vue';
 import CommentComponent from '../utilities/CommentComponent.vue';
 // 로딩 컴포넌트
 import LoadingComponent from '../utilities/LoadingComponent.vue';
+// 공유 모달 컴포넌트
+import ShareModalComponent from '../utilities/ShareModalComponent.vue';
 // 이미지 슬라이드
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -197,13 +208,13 @@ onBeforeMount(()=>{
 // 모달숨기기
 const modalFlg = ref(false);
 // 모달 열기
-const openModal = () => {
-	modalFlg.value = true;
-}; 
+// const openModal = () => {
+// 	modalFlg.value = true;
+// }; 
 // 모달 닫기
-const closeModal = () => {
-	modalFlg.value = false;
-};
+// const closeModal = () => {
+// 	modalFlg.value = false;
+// };
 // ------------------------------------------
 // 상단 사진,내용,여행톡 이동
 const scrollTo = (id) => {
@@ -266,6 +277,27 @@ const checkToken = () => {
 		// hasToken.value = false;
 	}
 };
+// ------------------------------------------
+// 공유하기
+// window.onload = function() {
+// 	const btnShareX = document.querySelector('#shareX');
+// 	btnShareX.addEventListener('click', () => {
+// 		const pageUrl = 'http://127.0.0.1:8000/posts/30';
+// 		const text = '야호테스트';
+// 		window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + pageUrl);
+// 	})
+// };
+
+const isModalOpen = ref(false);
+// 모달 열기
+const openModal = () => {
+	isModalOpen.value = true;
+};
+
+const closeModal = () => {
+	isModalOpen.value = false;
+};
+
 
 </script>
 	
