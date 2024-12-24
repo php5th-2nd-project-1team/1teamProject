@@ -24,7 +24,7 @@ class PostSeeder extends Seeder
         // API 호출, 헤더에 application/json 추가
         $response = Http::withHeaders([
             'Accept' => 'application/json', // JSON 형식으로 요청
-        ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=14&pageNo=1&category=%ED%8E%9C%EC%85%98');
+        ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=80&pageNo=1&category=%EC%97%AC%ED%96%89%EC%A7%80');
 
         // API로부터 받은 데이터를 배열로 변환
         $data = json_decode($response->body(), true);
@@ -47,6 +47,7 @@ class PostSeeder extends Seeder
             '대구광역시' => '09',
             '부산광역시' => '09',
             '광주광역시' => '12',
+            '울산광역시' => '10',
         ];
 
         // Log::debug($data); -> 데이터 출력 잘 되는지 테스트용
@@ -97,7 +98,7 @@ class PostSeeder extends Seeder
             $post->post_lat = $post_lat;
             $post->post_lon = $post_lon;
             $post->category_local_num = $category_local_num;
-            $post->category_theme_num = '01';
+            $post->category_theme_num = '03';
             $post->created_at = now();
             $post->updated_at = now();
             $post->post_detail_num = $post_detail_num;

@@ -6,8 +6,8 @@
 				<p>{{ content }}</p>
 			</div>
 			<div class="postList-inner">
-				<button :class="`${props.type}-prev`"><</button>
-				<button :class="`${props.type}-next`">></button>
+				<button :class="`${props.type}-prev`" style="cursor: pointer;"><</button>
+				<button :class="`${props.type}-next`" style="cursor: pointer;">></button>
 			</div>
 		</div>
 		<swiper

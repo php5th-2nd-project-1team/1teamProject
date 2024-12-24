@@ -40,6 +40,9 @@ const modalFlg = computed(() => store.state.user.modalFlg);
 
 onMounted(()=>{
     store.commit('user/setModalFlg', false);
+    if(!(flg.value === '0' || flg.value === '1' || flg.value ==='2')){
+        router.push('/');
+    } 
 })
 
 const userInfo = reactive({

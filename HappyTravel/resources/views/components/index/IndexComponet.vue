@@ -6,7 +6,7 @@
 		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>
 		<IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/>
 	</div>
-	<div @click="onClickTopBtn" :class="isActiveTopBtn"></div>
+	<div @click="onClickTopBtn" :class="isActiveTopBtn" ></div>
 </template>
 
 <script setup>
@@ -24,10 +24,10 @@ const isActiveTopBtn = ref('index-btn-top');
 const canClickBtn = ref('false');
 
 const onScroll = () =>{
-	const docHeight = document.documentElement.scrollHeight; // 문서 기준 Y축 총 길이
-	const winHeight = window.innerHeight;											// window Y축 총 길이
-	const nowHeight = window.scrollY;												// 현재 Y축
-	const viewHeight = docHeight - winHeight;								// 끝까지 스크롤 했을 때 Y축의 길이
+	const docHeight = document.documentElement.scrollHeight; 	// 문서 기준 Y축 총 길이
+	const winHeight = window.innerHeight;						// window Y축 총 길이
+	const nowHeight = window.scrollY;							// 현재 Y축
+	const viewHeight = docHeight - winHeight;					// 끝까지 스크롤 했을 때 Y축의 길이
 
 	if(nowHeight >= viewHeight * 0.3 ){
 		isActiveTopBtn.value = 'index-btn-top index-btn-top-active';
@@ -92,6 +92,7 @@ const onClickTopBtn = () =>{
 
 	.index-btn-top-active{
 		opacity: 1;
+		cursor: pointer;
 
 		transition: all 0.5s;
 	}
