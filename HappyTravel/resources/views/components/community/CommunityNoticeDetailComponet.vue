@@ -136,12 +136,14 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
     }
 
     .content {
-    flex: 1; /* 콘텐츠가 가능한 모든 세로 공간을 차지 */
+    
+    padding: 30px;
+    margin-top: 100px;
     }
 
-    .image {
-    flex: 0; /* 이미지 영역은 기본적으로 공간을 차지하지 않음 */
+    .image {    
     display: flex; /* 이미지를 중앙에 정렬 */
+    padding: 30px;
     align-items: center;
     justify-content: center;
     }
