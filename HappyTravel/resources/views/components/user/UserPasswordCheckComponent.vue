@@ -9,9 +9,10 @@
                 <input v-model="userInfo.password" type="password" id="password" class="password-box">
             </div>
             <div class="btn-div">
-                <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="previusPath === '/user/mypage'" class="clear-btn">회원수정</button>
+                <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="flg === '0'" class="clear-btn">회원수정</button>
                 <!-- <button v-else-if="previusPath === '/user/mypage/update'" class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button> -->
-                <button v-else-if="previusPath === '/user/mypage/update'" class="delete-btn" @click="$store.dispatch('user/userDeletePasswordChk', userInfo)">회원탈퇴</button>
+                <button v-else-if="flg === '1'" class="delete-btn" @click="$store.dispatch('user/userDeletePasswordChk', userInfo)">회원탈퇴</button>
+                <button v-else-if="flg === '2'" class="password-btn" @click="$store.dispatch('user/PasswordUpdateChk', userInfo)">비밀번호 변경</button>
             </div>
         </div>
     </div>
@@ -22,8 +23,12 @@ import ModalComponent from '../utilities/ModalComponent.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import router from '../../../js/router';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
+const route = useRoute();
+
+const flg = ref(route.query.flg);
 
 // const id = computed(() => store.state.auth.userInfo.user_id);
 
@@ -127,6 +132,24 @@ button {
 }
 
 .clear-btn:hover {
+    background-color: white;
+    color: black;
+}
+
+.password-btn {
+    background-color: #2986FF;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+    width: 20%;
+    padding: 15px;
+    margin-top: 2vh;
+    margin-right: 2vh;
+    border: 3px solid #2986FF;
+}
+
+.password-btn:hover {
     background-color: white;
     color: black;
 }

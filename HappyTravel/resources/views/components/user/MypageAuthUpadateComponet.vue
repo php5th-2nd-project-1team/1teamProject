@@ -1,5 +1,8 @@
 <template>
-    <h1>내 정보</h1>
+     <div class="mypage-container-title">
+        <h1>내 정보</h1>
+        <router-link to="/"><button class="home-btn">홈으로</button></router-link>
+    </div>
     <hr>
     <div class="container">
         <div class="profile-card">
@@ -17,11 +20,11 @@
             </div>
             <div class="info-group">
                 <label>우편번호</label>
-                <input v-model="detailUserInfo.post_code" type="text" class="info-text" readonly>
+                <input v-model="detailUserInfo.post_code" type="text" class="info-text info-border-none-text" readonly>
             </div>
             <div class="info-group">
                 <label>주소</label>
-                <input v-model="detailUserInfo.address" type="text" class="info-text" readonly>
+                <input v-model="detailUserInfo.address" type="text" class="info-text info-border-none-text" readonly>
             </div>
             <div class="info-group">
                 <label>상세주소</label>
@@ -39,8 +42,8 @@
 
 
     <div class="button-container">
-        <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPageUpdate', detailUserInfo)">수정</button>
-        <button class="mypage-user-delete-btn" @click="router.push('/user/passwordcheck')">회원 탈퇴</button>
+        <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPageUpdate', detailUserInfo)">수정 완료</button>
+        <button class="mypage-user-delete-btn" @click="router.push('/user/passwordcheck?flg=1')">회원 탈퇴</button>
     </div>
 </template>
 <script setup>
@@ -127,6 +130,28 @@ const loadDaumPostcodeScript = () => {
 
 </script>
 <style scoped>
+
+.mypage-container-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.home-btn {
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 16px;
+    background-color: #2986FF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-btn:hover {
+    background-color: #CDECFF;
+    transform: translateY(-2px);
+}
    
 .container {
     width: 100%;
@@ -171,10 +196,14 @@ label {
     width: 50%;
     color: #555;
     padding: 10px 20px ;
-    border: 1px solid #ddd;
+    border: 1px solid black;
     border-radius: 5px;
     background-color: #f1f1f1;
     font-weight: 900;
+}
+
+.info-border-none-text {
+    border: 1px solid #BDBDBD;
 }
 
 .info-group p {
@@ -212,7 +241,7 @@ label {
     background-color: #2986FF;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: 900;
@@ -231,7 +260,7 @@ label {
     background-color: #2986FF;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     display: inline-block;

@@ -1,51 +1,41 @@
 <template>
-    <div class="mypage-container-title">
-        <h1>내 정보</h1>
+     <div class="mypage-container-title">
+        <h1>비밀번호 변경</h1>
     </div>
     <hr>
     <div class="container">
         <div class="profile-card">
             <div class="info-group">
-                <label>이름</label>
-                <span class="info-text">{{ allUserInfo.name }}</span>
+                <label>변경할 비밀번호</label>
+                <input v-model="userInfo.password" type="password" class="info-text">
             </div>
             <div class="info-group">
-                <label>닉네임</label>
-                <span class="info-text">{{ allUserInfo.nickname }}</span>
-            </div>
-            <div class="info-group">
-                <label>전화번호</label>
-                <span class="info-text">{{ allUserInfo.phone_number }}</span>
-            </div>
-            <div class="info-group">
-                <label>우편번호</label>
-                <span class="info-text">{{ allUserInfo.post_code }}</span>
-            </div>
-            <div class="info-group">
-                <label>주소</label>
-                <span class="info-text">{{ allUserInfo.address }}</span>
-            </div>
-            <div class="info-group">
-                <label>상세주소</label>
-                <span class="info-text">{{ allUserInfo.detail_address }}</span>
+                <label>비밀번호 확인</label>
+                <input v-model="userInfo.passwordChk" type="password" class="info-text">
             </div>
         </div>
     </div>
 
+
     <div class="button-container">
-        <router-link to="/user/passwordcheck?flg=0"><button>정보 수정</button></router-link>
-        <button @click="$router.push('/')">홈으로</button>
+        <button class="mypage-user-update-btn" @click="$store.dispatch('user/myPasswordUpdate', userInfo)">변경</button>
+        <button type="button" @click="$router.push('/user/mypage')" class="mypage-user-update-btn">취소</button>
     </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
 const router = useRouter();
+const id = ref(store.state.auth.userInfo.user_id);
 
-const allUserInfo = store.state.auth.userInfo;
-
+const userInfo = reactive({
+        password: '',
+        passwordChk: '',
+        user_id: id
+    });
 
 
 </script>
@@ -108,17 +98,22 @@ label {
     font-size: 16px;
     color: #333;
     font-weight: bold;
-    width: 100px;
+    width: 150px;
 }
 
 .info-text {
     font-size: 16px;
+    width: 50%;
     color: #555;
     padding: 10px 20px ;
-    border: 1px solid #ddd;
+    border: 1px solid black;
     border-radius: 5px;
     background-color: #f1f1f1;
     font-weight: 900;
+}
+
+.info-border-none-text {
+    border: 1px solid #BDBDBD;
 }
 
 .info-group p {
@@ -131,7 +126,25 @@ label {
     margin-top: 20px;
 }
 
-.button-container button {
+.mypage-user-delete-btn {
+    padding: 12px 20px;
+    margin: 5px;
+    font-size: 16px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 900;
+}
+
+.mypage-user-delete-btn:hover {
+    background-color: rgb(250, 200, 200);
+    transform: translateY(-2px);
+}
+
+.mypage-user-update-btn {
     padding: 12px 20px;
     margin: 5px;
     font-size: 16px;
@@ -141,11 +154,34 @@ label {
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 900;
 }
 
-.button-container button:hover {
+.mypage-user-update-btn:hover {
     background-color: #CDECFF;
     transform: translateY(-2px);
 }
+
+
+.file-insert-btn {
+    padding: 12px 20px;
+    margin-left: 20px;
+    font-size: 16px;
+    background-color: #2986FF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    font-weight: 900;
+}
+
+.file-insert-btn:hover {
+    background-color: #CDECFF;
+    transform: translateY(-2px);
+}
+
+
     
 </style>

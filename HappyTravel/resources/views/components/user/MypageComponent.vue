@@ -6,12 +6,14 @@
                 <img :src="allUserInfo.profile" class="page-img">
             </div>
             <ul class="page-ul">
-                <li><a href="#">내 정보</a></li>
+                <router-link to="/user/mypage"><li class="page-li">내 정보</li></router-link>
+                <br>
+                <router-link to="/user/passwordcheck?flg=2"><li class="page-li">비밀번호 변경</li></router-link>
             </ul>
         </div>
 
         <div class="mypage-container">
-            <router-view></router-view :userData="allUserInfo">
+            <router-view :userData="allUserInfo"></router-view>
         </div>
     </div>
 
@@ -56,13 +58,18 @@
 
     .page-img {
         background-color: black;
-        width: 150px;
-        height: 150px;
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
         border: none;
     }
     .page-ul {
-        margin-top: 10px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .page-li {
+        margin-top: 20px;
     }
 
     .mypage-container {

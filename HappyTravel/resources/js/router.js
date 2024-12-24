@@ -18,6 +18,7 @@ import MypageAuthComponet from '../views/components/user/MypageAuthComponet.vue'
 import MypagePuchadeComponent from '../views/components/user/MypagePurchadeComponet.vue';
 import MypageReservationComponet from '../views/components/user/MypageReservationComponet.vue';
 import UserPasswordCheckComponent from '../views/components/user/UserPasswordCheckComponent';
+import MypageAuthPasswordUpadateComponet from '../views/components/user/MypageAuthPasswordUpadateComponet.vue'
 // ----------------------------------------------------------------------
 
 // commuity
@@ -120,6 +121,10 @@ const routes=[
 			{
 				path:'mypage/update', // 내 정보 수정
 				component:MypageAuthUpadateComponet,
+			},
+			{
+				path:'mypage/password/update', // 내 정보 수정
+				component:MypageAuthPasswordUpadateComponet,
 			},
 			{
 				path:'purchade', // 마이페이지 구매 내역

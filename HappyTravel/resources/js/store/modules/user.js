@@ -121,6 +121,26 @@ export default {
             }, {root: true});
         },
 
+        PasswordUpdateChk(context, userInfo) {
+            context.dispatch('auth/chkTokenAndContinueProcess', () => {
+            
+                const url = '/api/user/withdraw';
+
+                const data = JSON.stringify(userInfo);
+
+                console.log(userInfo);
+
+                axios.post(url, data)
+                .then(response => {
+                    router.replace('/user/mypage/password/update');
+                })
+                .catch(error => {
+                    alert('비밀번호가 일치하지 않습니다.');
+                });
+            }, {root: true});
+        },
+        
+
         userDeletePasswordChk(context, userInfo) {
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
             
@@ -169,7 +189,47 @@ export default {
                     console.error(error);
                 });
             }, {root: true});
-        }
+        },
+
+        myPasswordUpdate(context, userInfo) {
+            context.dispatch('auth/chkTokenAndContinueProcess', () => {
+                const url = '/api/mypage/password/update'
+
+                const config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                };
+
+                // form data 세팅
+                const formData = new FormData();
+                formData.append('user_id', userInfo.user_id);
+                formData.append('password', userInfo.password);
+                formData.append('passwordChk', userInfo.passwordChk);
+
+                axios.post(url, formData, config)
+                .then(response => {
+                    console.log(response.data);
+                    alert('비밀번호 변경 완료했습니다.');
+
+                    router.replace('/user/mypage');
+                })
+                .catch(error => {
+                    console.error(error.response.data); // 오류 메시지 확인
+                    let errorMsgList = [];
+                    const errorData = error.response.data;
+                    if(error.response.status === 422) {
+                        if(errorData.data.passwordChk) {
+                            errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                        }
+                    }else{
+                        alert('알 수 없는 에러입니다.')
+                    }
+    
+                    alert(errorMsgList.join('\n'));
+                });
+            }, {root: true});
+        },
     }
 	,getters: {
 		

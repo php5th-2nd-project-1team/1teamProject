@@ -59,6 +59,23 @@ class UserController extends Controller
         return response()->json($responseData, 200);
     }
 
+    public function userPasswordUpdate(UserRequest $request) {
+
+        $user = User::find($request->user_id);
+
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        $responseData = [
+            'success' => true,
+            'msg' => '성공',
+            'userInfo' => $user->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
+
     public function UserDestroy($id) {
 
         $user = User::find($id);

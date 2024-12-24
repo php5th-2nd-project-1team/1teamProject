@@ -172,7 +172,7 @@ export default {
                 let errorMsgList = [];
                 const errorData = error.response.data;
                 if(error.response.status === 422) {
-                    if(errorData.data.password_chk) {
+                    if(errorData.data.passwordChk) {
                         errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
                     }
                     if(errorData.data.name) {
@@ -262,6 +262,13 @@ export default {
            })
            .catch(error => {
                console.error(error);
+               context.commit('user/setLoadingFlg', false, {root: true});
+               localStorage.clear();
+               // Auth 플레그 했던 거 지우기
+               context.commit('setAuthFlg', false);
+               context.commit('setUserInfo', {});
+               alert('중복 로그인으로 인한 로그아웃');
+               router.replace('/login');
            });
        }
         

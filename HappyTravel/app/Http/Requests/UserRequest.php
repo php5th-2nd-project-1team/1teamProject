@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
         }else if($this->routeIs('auth.registration')) {
             // 회원가입 할 때 처리
             $rules['account'][] = 'unique:users,account';
-            $rules['password_chk'] = ['same:password'];
+            $rules['passwordChk'] = ['same:password'];
             $rules['name'] = ['required', 'between:1,20', 'regex:/^[가-힣]+$/u'];
             $rules['gender'] = ['required', 'regex:/^[0-2]{1}$/'];
             $rules['nickname'] = ['required', 'regex:/^[a-zA-Z0-9가-힣]{1,8}$/u'];
@@ -47,6 +47,9 @@ class UserRequest extends FormRequest
             $rules['phone_number'] = ['required', 'regex:/^010-\d{4}-\d{4}$/'];
         }else if($this->routeIs('auth.IdChk')) {
             unset($rules['password']);
+        }else if($this->routeIs('user.password')) {
+            unset($rules['account']);
+            $rules['passwordChk'] = ['same:password'];
         }
 
 

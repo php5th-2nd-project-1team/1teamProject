@@ -78,8 +78,7 @@ class UserToken {
 
         // 토큰 위조 검사
         list($header, $payload, $signature) = $this->explodeToken($token);
-        Log::debug('header : '.$header);
-        if(UserEncrypt::subSalt($this->createSignature($header, $payload), env('TOKEN_SALT_LENGTH')) 
+        if(UserEncrypt::subSalt($this->createSignature($header, $payload), env('TOKEN_SALT_LENGTH'))
             !== UserEncrypt::subSalt($signature, env('TOKEN_SALT_LENGTH'))) {
             throw new MyAuthException('E22'); 
         }
@@ -224,10 +223,10 @@ class UserToken {
         $arrToken = explode('.', $token);
 
         // 토큰 분리 후 오류 체크 (토큰은 헤더 . 페이로드 . 시그니처 총 2개의 점이 있으므로 3개로 나눠져야 함)
-        if(count($arrToken) === 3) {
-            return $arrToken;
-        } else {
-            return '토큰 오류';
+        if(count($arrToken) !== 3) {
+            throw new MyAuthException('E23');
         }
-    }
+
+        return $arrToken;
+      }
 }
