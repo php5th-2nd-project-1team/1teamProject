@@ -18,7 +18,7 @@
                     </button>   
                 </div>
             <div class="copy">
-                <p class="copyUrl">{{ test }}</p>
+                <p class="copyUrl">{{ pageUrl }}</p>
                 <button class="btn-copy btn-bg-blue" @click="copy">복사</button>
             </div>
             <button @click="props.onClickClose" class="btn btn-header">닫기</button>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, onMounted } from 'vue';
 const props = defineProps({
     isOpen: {
         type: Boolean,
@@ -53,28 +53,52 @@ window.onload = function() {
 		window.open("http://www.facebook.com/sharer/sharer.php?u=" + FacebookUrl);
 	})
 
-    // // kakao
-    // KakaoMap.init('88b9686891fe93d8f46cf1e55fa7f3ba');
 
-    // // 카카오링크 버튼 생성
-    // KakaoMap.Link.createDefaultButton({
-    //     container: '#shareKakao',
-    //     objectType: 'feed',
-    //     content: {
-    //         title: '펫브리즈고',
-    //         description: '펫브리즈고 입니다.',
-    //         KaKaoUrl = window.location.href,
-    //         link: {
-    //             mobileWebUrl: window.location.href,
-    //             webUrl: window.location.href,
-    //         }
-    //     }
-    // });
+    const btnShareKakao = document.querySelector('#shareKakao');
+    btnShareKakao.addEventListener('click', () => {
+        Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+        const currentURL = window.location.href;
+        Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: 'PetBreeze',
+                description: '#펫브리즈고 입니다.',
+                imageUrl: '/developImg/kakao.png',
+                link: {
+                    mobileWebUrl: currentURL,
+                    webUrl: currentURL,
+                },
+            },
+            buttons: [
+                {
+                    title: '웹으로 보기',
+                    link: {
+                        mobileWebUrl: currentURL,
+                        webUrl: currentURL,
+                    },
+                },
+            ],
+            // 카카오톡 미설치 시 카카오톡 설치 경로이동
+            installTalk: true,
+            
+        });
+        // Kakao 초기화(카카오 오류가 나요... )
+        // message : Kakao.init: Already initialized'
+        onMounted(() => {
+            if (!window.Kakao.isInitialized()) {
+                window.Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+                console.log('Kakao SDK initialized');
+            } else {
+                console.log('Kakao SDK already initialized');
+            }
+        });
+    })
+
 };
 
 
 
-let test = window.location.href;
+let pageUrl = window.location.href;
 
 const copy = function(){
     navigator.clipboard.writeText(test);
@@ -93,6 +117,7 @@ const copy = function(){
     background-color: rgba(0, 0, 0, 0.7);
     width: 100vw;
     height: 100vh;
+    z-index: 10000;
 }
 
 .modal-content {

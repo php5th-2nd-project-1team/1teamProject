@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Petbreeze</title>
 		    <script src="{{ asset('js/app.js')}}" defer></script>
+            <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     </head>
     <body>
         <div id="app">                                       
