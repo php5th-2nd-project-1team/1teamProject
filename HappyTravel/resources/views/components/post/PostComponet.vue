@@ -125,7 +125,6 @@ const regions = [
 
 onBeforeMount(()=>{
     store.commit('post/setInitialize');
-    store.dispatch('post/indexes', true);
 });
 
 onMounted(()=>{

@@ -351,6 +351,8 @@ const closeModal = () => {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 50%;
+
+	background-color: white;
 }
 
 .noClk{
@@ -359,8 +361,9 @@ const closeModal = () => {
 }
 
 .clk{
-	background-color: #2986FF;
+	/* background-color: #2986FF; */
 	background-image: url('/developImg/like_yes.png');
+	color: red;
 }
 
 .viewImg{

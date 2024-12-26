@@ -463,8 +463,8 @@ export default {
 				axios.delete(url, config)
 				.then(response => {
 					alert('댓글이 삭제되었습니다.');
-					context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
-					context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
+					// context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
+					// context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
 
 					location.reload(true); 						// 새로고침
 				})

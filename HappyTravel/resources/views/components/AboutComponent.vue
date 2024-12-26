@@ -24,24 +24,24 @@
 
 		<div class="about-three">
 			<h1>"펫브리즈"의 좋은 3가지</h1>
-			<p class="about-three-comment"><span>팻브리즈</span>는 무슨 좋은 점을 가지고 있을까요? 알아맞춰봅시다.</p>
+			<p class="about-three-comment"><span>팻브리즈</span>는 무슨 좋은 점을 가지고 있을까요? 한 번 알아봅시다!</p>
 			<div class="about-three-picture-box">
 				<div class="about-three-picture" style="background-image: url('/developImg/about-three1.png');">
 					<div class="about-three-picture-comment">
-						<h2>즐거움</h2>
-						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+						<h2>편리함</h2>
+						<p>반려동물과 함께할 여행지를 쉽게 찾을 수 있습니다.</p>
 					</div>
 				</div>
 				<div class="about-three-picture" style="background-image: url('/developImg/about-three2.png');">
 					<div class="about-three-picture-comment">
-						<h2>즐거움</h2>
-						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+						<h2>소통</h2>
+						<p>여행 경험을 공유하고 다른 애호가와 소통할 수 있습니다.</p>
 					</div>
 				</div>
 				<div class="about-three-picture" style="background-image: url('/developImg/about-three3.png');">
 					<div class="about-three-picture-comment">
-						<h2>즐거움</h2>
-						<p>더 쉽고 간편하게 댕댕이와의 여행을 계획할 수 있습니다.</p>
+						<h2>안전함</h2>
+						<p>안전하고 편안한 장소만을 엄선하여 제공합니다.</p>
 					</div>
 				</div>
 			</div>

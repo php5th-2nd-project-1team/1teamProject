@@ -4,7 +4,7 @@
 		title="YouTube video player" 
 		frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
 		referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-		<p>멍멍냥냥멍멍냥냥멍멍냥냥멍멍냥멍멍냥<br>반려동물과 함께 여행을</p>
+		<p>반려동물과의 활동을 위해<br>함께 방문할 수 있는 여행지가 어디인가!</p>
 		<button @click="$router.push('/about')">더 알아보기</button>
 	</div>
 </template>
