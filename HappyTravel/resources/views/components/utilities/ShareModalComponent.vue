@@ -36,27 +36,30 @@ const props = defineProps({
     onClickClose : Function
 });
 
+if(!Kakao.isInitialized()) {
+    Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+}
 window.onload = function() {
     // X
 	const btnShareX = document.querySelector('#shareX');
     if(btnShareX) {
         btnShareX.addEventListener('click', () => {
             const XUrl = window.location.href;
-            const text = '펫브리즈고';
-            window.open("https://twitter.com/intent/tweet?text=" + text + "&url=" + XUrl);
+            const XText = '펫브리즈고';
+            window.open("https://twitter.com/intent/tweet?text=" + XText + "&url=" + XUrl);
         });
     }
     // facebook
     const btnShareFacebook = document.querySelector('#shareFacebook');
 	btnShareFacebook.addEventListener('click', () => {
 		const FacebookUrl = window.location.href;
-		window.open("http://www.facebook.com/sharer/sharer.php?u=" + FacebookUrl);
-	})
+        const FacebookText = '펫브리즈고';
+		window.open("http://www.facebook.com/sharer/sharer.php?u=" + FacebookUrl + "&t=" + FacebookText )});
 
 
     const btnShareKakao = document.querySelector('#shareKakao');
     btnShareKakao.addEventListener('click', () => {
-        Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+
         const currentURL = window.location.href;
         Kakao.Link.sendDefault({
             objectType: 'feed',
@@ -83,15 +86,17 @@ window.onload = function() {
             
         });
         // Kakao 초기화(카카오 오류가 나요... )
-        // message : Kakao.init: Already initialized'
-        onMounted(() => {
-            if (!window.Kakao.isInitialized()) {
-                window.Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
-                console.log('Kakao SDK initialized');
-            } else {
-                console.log('Kakao SDK already initialized');
-            }
-        });
+        // 에러: Kakao.init: Already initialized
+        // Kakao.init('코드')가 한번만 실행해야될거같아서 밖으로빼고 한번만 실행하게 함
+        // onMounted(() => {
+        //     if (!window.Kakao.isInitialized()) {
+        //         window.Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+        //         console.log('Kakao SDK initialized');
+        //     } else {
+        //         console.log('Kakao SDK already initialized');
+        //         return;
+        //     }
+        // });
     })
 
 };
@@ -101,7 +106,7 @@ window.onload = function() {
 let pageUrl = window.location.href;
 
 const copy = function(){
-    navigator.clipboard.writeText(test);
+    navigator.clipboard.writeText(pageUrl);
     alert('복사완료');
 }
 </script>

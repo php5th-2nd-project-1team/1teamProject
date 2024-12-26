@@ -29,6 +29,8 @@
 		</div>
 	</div>
 	<!-- :ref="{swiperRef}" -->
+	<button @click="openModal" class="btn btn-bg-grey btn-more">공유하기</button>
+	<ShareModalComponent :isOpen="isModalOpen" :onClickClose="closeModal"/>
 
 		<!-- 이미지 슬라이드 -->
 		 <div class="w-full" id="section1">
@@ -45,9 +47,9 @@
 				 :touchRatio="0"
 				 class="mySwiper"
 			 >
-				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg1"></swiper-slide>
-				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg2"></swiper-slide>
-				<swiper-slide @click="openModal"><img class="postdetail-img" :src="PostDetail.post_subimg3"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg1"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg2"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg3"></swiper-slide>
 				 <div class="swiper-button-next"></div>
 				 <div class="swiper-button-prev"></div>
 				 <div class="swiper-pagination"></div>
@@ -101,14 +103,6 @@
 	</div>
 	<!-- 댓글 리스트 -->
 	<CommentComponent />
-
-	<!-- <button type="button" id="shareX" class="btn">x공유하기</button> -->
-
-	<button @click="openModal" class="btn btn-bg-grey btn-more">공유하기</button>
-	<ShareModalComponent :isOpen="isModalOpen" :onClickClose="closeModal"/>
-
-
-
 
 	
 	<!-- 슬라이드 이미지 modal -->
