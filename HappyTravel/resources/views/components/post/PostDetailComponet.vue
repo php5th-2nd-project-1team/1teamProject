@@ -67,7 +67,7 @@
 	<div class="postdetail-info-content">
 		<div class="bottom-none">
 			<strong>문의 전화: </strong>
-			<span>{{ PostDetail.post_detail_num === null ? '없음' : PostDetail.post_detail_num }}</span>
+			<span>{{ PostDetail.post_detail_num === '0' ? '없음' : PostDetail.post_detail_num }}</span>
 		</div>
 		<div class="bottom-none">
 			<strong>주소: </strong>
