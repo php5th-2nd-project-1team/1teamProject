@@ -450,7 +450,6 @@ const closeModal = () => {
 .postdetail-long-content {
 	margin-top: 10px;
 	font-size: 20px;
-
 	width: 60%;
 }
 
@@ -458,7 +457,7 @@ const closeModal = () => {
 	margin-top: 10px;
 	font-size: 20px;
 	display: -webkit-box;
-	-webkit-line-clamp: 7;
+	-webkit-line-clamp: 4;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-webkit-box-orient: vertical;
