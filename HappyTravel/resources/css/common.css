@@ -1,26 +1,27 @@
 @font-face {
-    font-family: 'KimjungchulMyungjo-Light';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Light.woff2') format('woff2');
-    font-weight: 300;
+    font-family: 'GmarketSansLight';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+    font-weight: normal;
     font-style: normal;
 }
-@font-face {
-    font-family: 'KimjungchulMyungjo-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Regular.woff2') format('woff2');
-    font-weight: 400;
+              @font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
     font-style: normal;
 }
-@font-face {
-    font-family: 'KimjungchulMyungjo-Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/KimjungchulMyungjo-Bold.woff2') format('woff2');
-    font-weight: 700;
+              @font-face {
+    font-family: 'GmarketSansBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: normal;
     font-style: normal;
 }
-          
+            
+
 * {
     margin: 0;
     padding: 0;
-    /* font-family: 'KimjungchulMyungjo-Bold'; */
+    font-family: 'GmarketSansMedium';
     box-sizing: border-box;
     scroll-behavior: smooth;
 }

@@ -294,46 +294,47 @@ export default {
 
 		// 포스트 상세 출력
 		,showPost(context, id){	
-			context.dispatch('auth/chkTokenAndContinueProcess', () => {
-				context.commit('setInitialize');
-				context.commit('setDetailIsLoading', true);
+			// context.dispatch('auth/chkTokenAndContinueProcess', () => {
 				
-				const url = '/api/posts/' + id;
+			// }, {root: true});
+			context.commit('setInitialize');
+			context.commit('setDetailIsLoading', true);
+			
+			const url = '/api/posts/' + id;
 
-				// 계정 로그인 확인 여부 (단, 로그인 여부를 확인하기 위함이므로 미들웨어에서 체크 할 필요 없음. 포스트에서 좋아요가 그리 중요한 것도 아니기 때문에. 좋아요 누를 때 중요한거지.)
-				const config = {
-					headers: {
-						'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-					}
+			// 계정 로그인 확인 여부 (단, 로그인 여부를 확인하기 위함이므로 미들웨어에서 체크 할 필요 없음. 포스트에서 좋아요가 그리 중요한 것도 아니기 때문에. 좋아요 누를 때 중요한거지.)
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
 				}
-				
-				axios.get(url, config) // config 추가함
-				.then(response => {
-					// context.commit('post/setPostDetail', response.data.post, {root: true});
-					context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
-					context.commit('setPostCommentList', response.data.PostComment.data);
-					context.commit('setIsClkedLike', response.data.PostClkLike);
+			}
+			
+			axios.get(url, config) // config 추가함
+			.then(response => {
+				// context.commit('post/setPostDetail', response.data.post, {root: true});
+				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
+				context.commit('setPostCommentList', response.data.PostComment.data);
+				context.commit('setIsClkedLike', response.data.PostClkLike);
 
-					// 지금 페이지랑 마지막 페이지가 같으면 setLastPageFlg true로 바꾸고 댓글더보기 버튼 없애기
-					if(response.data.PostComment.current_page === response.data.PostComment.last_page) {
-						context.commit('setLastPageFlg', true);
-					}
+				// 지금 페이지랑 마지막 페이지가 같으면 setLastPageFlg true로 바꾸고 댓글더보기 버튼 없애기
+				if(response.data.PostComment.current_page === response.data.PostComment.last_page) {
+					context.commit('setLastPageFlg', true);
+				}
 
-					context.commit('setPostCommentCnt', response.data.PostCommentCnt);
-					console.log(response.data.PostComment);
+				context.commit('setPostCommentCnt', response.data.PostCommentCnt);
+				console.log(response.data.PostComment);
 
-					context.commit('setCurrentPage', response.data.PostComment.current_page);
-					if(context.state.totalPage === 0) {
-						context.commit('setTotalPage', response.data.PostComment.last_page);
-					}
-					// console.log(response.data.PostComment.data);
-				})
-				.catch(error => {
-					console.error(error);
-				}).finally(() => {
-					context.commit('setDetailIsLoading', false);
-				});	
-			}, {root: true});
+				context.commit('setCurrentPage', response.data.PostComment.current_page);
+				if(context.state.totalPage === 0) {
+					context.commit('setTotalPage', response.data.PostComment.last_page);
+				}
+				// console.log(response.data.PostComment.data);
+			})
+			.catch(error => {
+				console.error(error);
+			}).finally(() => {
+				context.commit('setDetailIsLoading', false);
+			});	
 		}
 
 		// 포스트 댓글 작성

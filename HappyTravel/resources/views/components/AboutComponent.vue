@@ -14,9 +14,18 @@
 		<!-- 중간 코멘트 -->
 		<div class="about-comment">
 			<h1>펫브리즈 반려동물과 함께 여행을 떠나자</h1>
-			<p>멍멍멍 으르렁 컹컹 멍멍멍 으르렁 컹컹</p>
-			<p>멍멍멍 으르렁 컹컹 멍멍멍 으르렁 컹컹</p>
-			<p>멍멍멍 으르렁 컹컹 멍멍멍 으르렁 컹컹컹</p>	
+			<div class="about-comment-grid">
+				<h2>목적</h2>
+				<p>반려동물과 함께 할 수 있는 여행지 소개하기</p>
+			</div>
+			<div class="about-comment-grid">
+				<h2>과정</h2>
+				<p>자료조사를 통해 반려동물 동반 가능한 <br>여행치 탐색하기</p>
+			</div>
+			<div class="about-comment-grid">
+				<h2>바램</h2>
+				<p>21세기 반려동물이 항상 함께하는 만큼<br>좋은 장소가 많았으면!</p>	
+			</div>
 		</div>
 
 		<!-- 좋은 점 3가지 -->
@@ -114,10 +123,41 @@
 		align-items: center;
 
 		text-align: center;
+		gap: 1rem;
 	}
 
 	.about-comment h1{
 		margin-bottom: 42px;
+	}
+
+	.about-comment-grid{
+		display: grid;
+		grid-template-columns: 1fr 3fr;
+
+		border: 1px solid black;
+		border-radius: 10px;
+
+		width: 100%;
+		height: 120px;
+
+		align-items: center;			
+	}
+
+	.about-comment-grid h2{
+		font-size: 30px;
+		background-color: #2986FF;
+		color : white;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+
+		width: 100%;
+		height: 100%;
+		
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		font-size: 1.4rem;
 	}
 
 	.about-comment p{
