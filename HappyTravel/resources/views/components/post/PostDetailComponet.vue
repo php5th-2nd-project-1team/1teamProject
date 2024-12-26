@@ -347,14 +347,20 @@ const closeModal = () => {
 	border-radius: 100%;
 
 	cursor: pointer;
+
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 50%;
 }
 
 .noClk{
-	background-color: magenta;
+	/* background-color: magenta; */
+	background-image: url('/developImg/like_no.png');
 }
 
 .clk{
 	background-color: #2986FF;
+	background-image: url('/developImg/like_yes.png');
 }
 
 .viewImg{
@@ -426,7 +432,7 @@ const closeModal = () => {
 
 .postdetail-img {
 	width: 100%;
-	height: 100%;
+	aspect-ratio: 4/3;
 	margin-bottom: 20px;
 }
 
