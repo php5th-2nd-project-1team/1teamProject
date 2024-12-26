@@ -19,6 +19,8 @@ class AuthController extends Controller
         // 유저 정보 획득
         $userInfo = User::where('account', $request->account)->first();
 
+        $hardLoginFlg = $request->hardLoginFlg ? $request->hardLoginFlg : false;
+
         Log::debug('로그인 파라미터', $request->all());
 
         // 탈토된 유저 체크
@@ -29,6 +31,10 @@ class AuthController extends Controller
         // 비밀번호 체크
         if(!(Hash::check($request->password, $userInfo->password))) {
             throw new AuthenticationException('비밀번호 체크 오류');
+        }
+        
+        if(!is_null($userInfo->refresh_token) && !$hardLoginFlg) {
+            throw new MyAuthException('E26');
         }
 
         // 토큰 발행

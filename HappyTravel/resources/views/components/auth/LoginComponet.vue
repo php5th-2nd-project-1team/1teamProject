@@ -21,10 +21,11 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
+
 
     const userInfo = reactive({
         account: ''

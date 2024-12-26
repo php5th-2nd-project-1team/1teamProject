@@ -20,6 +20,7 @@ class MyAuthException extends Exception
             ,'E23' => ['status' => 401, 'msg' => '양식에 맞지 않는 토큰입니다.']
             ,'E24' => ['status' => 401, 'msg' => '토큰 정보에 이상이 있습니다.']
             ,'E25' => ['status' => 402, 'msg' => '이미 있는 아이디입니다.']
+            ,'E26' => ['status' => 402, 'msg' => '이미 접속되어 있는 아이디입니다.']
         ];
     }
 }

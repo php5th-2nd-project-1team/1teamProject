@@ -1,5 +1,6 @@
 import axios from '../../axios';
 import router from '../../router';
+import { createStore } from "vuex";
 
 export default {
 	namespaced: true,
@@ -11,6 +12,7 @@ export default {
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {}, 
 
         userIdChkFlg: false,
+
 	})
 	,mutations: {
         setAuthFlg(state, flg) {
@@ -23,38 +25,49 @@ export default {
         
         setUserIdChkFlg(state, flg) {
             state.userIdChkFlg = flg;
-        }
+        },
 	}   
 	,actions: {
         login(context, userInfo) {
-            const url = '/api/login';
 
-            const data = JSON.stringify(userInfo);
+                const url = '/api/login';
 
-            axios.post(url, data)
-            .then(response => {
-                localStorage.setItem('accessToken', response.data.accessToken);
-                localStorage.setItem('refreshToken', response.data.refreshToken);
-                localStorage.setItem('userInfo', JSON.stringify(response.data.data));
-                context.commit('setAuthFlg', true);
-                context.commit('setUserInfo', response.data.data);
-
-                router.replace('/index');
-            })
-            .catch(error => {
-                console.error(error.response.data); // 오류 메시지 확인
-                let errorMsgList = [];
-                const errorData = error.response.data;
-
-                if(error.response.status === 500) {
-                    errorMsgList.push('알 수 없는 에러');
-                }else {
-                    errorMsgList.push('아이디 또는 비밀번호가 잘못되었습니다.');
-                }
-
-                alert(errorMsgList.join('\n'));
-                    
-            });
+                const data = JSON.stringify(userInfo);
+    
+                axios.post(url, data)
+                .then(response => {
+                    localStorage.setItem('accessToken', response.data.accessToken);
+                    localStorage.setItem('refreshToken', response.data.refreshToken);
+                    localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+                    context.commit('setAuthFlg', true);
+                    context.commit('setUserInfo', response.data.data);
+    
+                    router.replace('/index');
+                })
+                .catch(error => {
+                    console.error(error.response.data); // 오류 메시지 확인
+                    let errorMsgList = [];
+                    const errorData = error.response.data;
+    
+                    if(error.response.status === 500) {
+                        errorMsgList.push('알 수 없는 에러');
+                    }else {
+                        errorMsgList.push('아이디 또는 비밀번호가 잘못되었습니다.');
+                    }
+                    if(error.response.status === 402) {
+                        const userLoginChk = confirm("이미 로그인이 되어 있는 계정입니다. 계속 로그인 하시겠습니까?");
+                        if(userLoginChk) {
+                            userInfo.hardLoginFlg = true;
+                            console.log(userInfo);
+                            context.dispatch('login', userInfo);
+                        }else {
+                            router.replace('/login');
+                        }
+                    }
+                    if(error.response.status !== 402) {
+                        alert(errorMsgList.join('\n'));
+                    }
+                });
         },
 
         
