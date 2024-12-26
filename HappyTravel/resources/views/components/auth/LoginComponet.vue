@@ -9,9 +9,9 @@
                 </div>
                 <div class="input-password-box">
                     <p class="login-guidebook">비밀번호</p>
-                    <input v-model="userInfo.password" type="password" name="password" class="login-main">
+                    <input v-model="userInfo.password" type="password" name="password" class="login-main" @keyup.enter="onLogin()">
                 </div>
-                <button @click="$store.dispatch('auth/login', userInfo)">로그인</button>
+                <button @click="onLogin()">로그인</button>
             </div>
         </div>
         <div class="login-password-regist">
@@ -22,11 +22,18 @@
 
 <script setup>
 import { reactive } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
     const userInfo = reactive({
         account: ''
         ,password: ''
     });
+
+    const onLogin = () => {
+        store.dispatch('auth/login', userInfo);
+    }
 
 </script>
 <style scoped>
@@ -50,13 +57,14 @@ import { reactive } from 'vue';
     .login-border{
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        width: 60%;
-        height: 85%;
+        width: 50%;
+        height: 80%;
 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
     }
 
     /* 로그인 타이틀 및 아래 부분 */
@@ -69,6 +77,7 @@ import { reactive } from 'vue';
 
     .title {
         font-size: 70px;
+        padding-top: 30px;
     }
 
     .input-id-box{
@@ -95,7 +104,7 @@ import { reactive } from 'vue';
 
     .login-title button{
         margin-top: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
         width: 100%;
         height: 70px;
         background-color : #2986FF;
@@ -120,7 +129,7 @@ import { reactive } from 'vue';
         border: none;
         outline: none;
         width: 100%;
-        font-size: 30px;
+        font-size: 20px;
         margin-top: 10px;
         margin-bottom: 10px;
     }

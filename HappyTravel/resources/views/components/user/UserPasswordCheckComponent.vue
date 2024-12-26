@@ -6,13 +6,13 @@
             <div class="PasswordCheck-main">
                 <label for="password" class="password-title">본인 확인을 위해 비밀번호를 입력해주세요.</label>
                 <br>
-                <input v-model="userInfo.password" type="password" id="password" class="password-box">
+                <input v-model="userInfo.password" type="password" id="password" class="password-box" @keyup.enter="onPasswordChk()">
             </div>
             <div class="btn-div">
-                <button @click="$store.dispatch('user/userPasswordChk', userInfo)" v-if="flg === '0'" class="clear-btn">회원수정</button>
+                <button @click="onPasswordChk()" v-if="flg === '0'" class="clear-btn">회원수정</button>
                 <!-- <button v-else-if="previusPath === '/user/mypage/update'" class="delete-btn" @click="$store.dispatch('user/userDelete', id)" >회원탈퇴</button> -->
-                <button v-else-if="flg === '1'" class="delete-btn" @click="$store.dispatch('user/userDeletePasswordChk', userInfo)">회원탈퇴</button>
-                <button v-else-if="flg === '2'" class="password-btn" @click="$store.dispatch('user/PasswordUpdateChk', userInfo)">비밀번호 변경</button>
+                <button v-else-if="flg === '1'" class="delete-btn" @click="onPasswordChk()">회원탈퇴</button>
+                <button v-else-if="flg === '2'" class="password-btn" @click="onPasswordChk()">비밀번호 변경</button>
             </div>
         </div>
     </div>
@@ -44,6 +44,15 @@ onMounted(()=>{
         router.push('/');
     } 
 })
+const onPasswordChk = () => {
+        if(flg.value === '0') {
+            store.dispatch('user/userPasswordChk', userInfo);
+        }else if(flg.value === '1') {
+            store.dispatch('user/userDeletePasswordChk', userInfo);
+        }else if(flg.value === '2') {
+            store.dispatch('user/PasswordUpdateChk', userInfo);
+        }
+}
 
 const userInfo = reactive({
         password: ''
