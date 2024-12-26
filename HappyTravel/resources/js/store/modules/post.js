@@ -362,7 +362,7 @@ export default {
 				.then(response => {
 					context.commit('setPostCommentListUnshift', response.data.storePostComment);
 					context.commit('addPostCommentCnt');		// 펫브리즈고 댓글갯수 +
-					alert('댓글을 작성하였습니다.');
+					// alert('댓글을 작성하였습니다.');
 					
 					// console.log(response.data.postComment);
 				})

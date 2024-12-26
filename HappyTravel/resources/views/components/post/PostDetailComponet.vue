@@ -30,7 +30,7 @@
 	</div>
 	<!-- :ref="{swiperRef}" -->
 	<button @click="openModal" class="btn btn-bg-grey btn-more">공유하기</button>
-	<ShareModalComponent :isOpen="isModalOpen" :onClickClose="closeModal"/>
+	<ShareModalComponent v-show="isModalOpen" @eventClickClose="closeModal" />
 
 		<!-- 이미지 슬라이드 -->
 		 <div class="w-full" id="section1">
