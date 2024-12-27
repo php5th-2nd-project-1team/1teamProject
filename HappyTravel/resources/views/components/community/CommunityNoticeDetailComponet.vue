@@ -25,7 +25,7 @@
         
             <div class="container">
                 <div class="content">
-                    <p v-html="noticeDetailList.notice_content.replace(/(?:\r\n|\r|\n)/g, '<br>')"></p>
+                    <p v-html="noticeDetailList.notice_content.replace(/(?:\r\n|\r|\n)/g, '<br>')"></p>                    
                 </div>
                 <div class="image">
                     <!-- 이미지가 없으면 아래의 img 태그를 제외하거나 숨깁니다 -->
@@ -44,7 +44,7 @@
 <script setup>
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import { useStore } from 'vuex';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
@@ -151,8 +151,7 @@ onBeforeMount(() => store.dispatch('notice/noticeDetailList', route.params.id));
     justify-content: center;
     }
     .image img {
-    width: 100%;   /* 이미지 너비를 div에 맞게 100% */
-    height: 100%;  /* 이미지 높이를 div에 맞게 100% */
+    width: 70%;   /* 이미지 너비를 div에 맞게 100% */
     object-fit: cover; /* 이미지가 div 크기에 맞게 비율 유지하며 잘라냄 */
     }
 

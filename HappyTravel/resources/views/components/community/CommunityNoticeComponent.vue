@@ -61,7 +61,7 @@
 
     onBeforeMount(() => {
             store.dispatch('notice/noticeList', 0);
-            console.log(noticeImportantList);
+            // console.log(noticeImportantList);
           }
         );
         

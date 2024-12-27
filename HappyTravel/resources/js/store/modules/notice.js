@@ -1,5 +1,5 @@
 import axios from '../../axios';
-import router from '../../router';
+// import router from '../../router';
 export default {
 	namespaced: true,
 	state: () =>({
@@ -41,7 +41,7 @@ export default {
             
             axios.get(url) 
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 context.commit('setNoticeList', response.data.noticeListPageNomal.data);
                 context.commit('setNoticeImportant', response.data.noticeListPageimportant);
                 context.commit('setLoadingFlg', false);
@@ -60,7 +60,7 @@ export default {
             axios.get(url)
             .then(response => {
                 context.commit('setNoticeDetail', response.data.noticeDetail);
-                console.log(response.data.noticeDetail);
+                // console.log(response.data.noticeDetail);
 
                 context.commit('setLoadingFlg', false);
             })    
