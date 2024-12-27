@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MyAuthException;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use UserToken;
@@ -62,6 +63,11 @@ class UserController extends Controller
     public function userPasswordUpdate(UserRequest $request) {
 
         $user = User::find($request->user_id);
+
+        if(Hash::check($request->password, $user->password)) {
+            throw new MyAuthException('E27');
+        }
+        
 
         $user->password = Hash::make($request->password);
 

@@ -65,7 +65,7 @@ export default {
 
                 axios.post(url, formData, config)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
                     context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
                     alert('수정 완료했습니다.');
@@ -109,7 +109,7 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                console.log(userInfo);
+                // console.log(userInfo);
 
                 axios.post(url, data)
                 .then(response => {
@@ -128,14 +128,16 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                console.log(userInfo);
+                // console.log(userInfo);
 
                 axios.post(url, data)
                 .then(response => {
                     router.replace('/user/mypage/password/update');
                 })
                 .catch(error => {
-                    alert('비밀번호가 일치하지 않습니다.');
+                    if (error.response.status === 401) {
+                        alert('비밀번호가 일치하지 않습니다.');
+                    }
                 });
             }, {root: true});
         },
@@ -162,7 +164,7 @@ export default {
 
         userDelete(context, id) {
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
-                console.log(id);
+                // console.log(id);
                 const url = '/api/user/withdraw/' + id;
 
                 const config = {
@@ -209,24 +211,24 @@ export default {
 
                 axios.post(url, formData, config)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     alert('비밀번호 변경 완료했습니다.');
 
                     router.replace('/user/mypage');
                 })
                 .catch(error => {
                     console.error(error.response.data); // 오류 메시지 확인
-                    let errorMsgList = [];
-                    const errorData = error.response.data;
                     if(error.response.status === 422) {
                         if(errorData.data.passwordChk) {
-                            errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                           alesrt('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
                         }
-                    }else{
+                    }else if (error.response.status === 403) {
+                        alert('이전과 동일한 비밀번호는 사용할 수 없습니다. 다른 비밀번호를 입력해주세요.');
+                    }
+                    else{
                         alert('알 수 없는 에러입니다.')
                     }
     
-                    alert(errorMsgList.join('\n'));
                 });
             }, {root: true});
         },

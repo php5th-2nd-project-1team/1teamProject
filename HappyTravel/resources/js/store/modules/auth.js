@@ -100,7 +100,7 @@ export default {
 
             const data = JSON.stringify(userId);
 
-            console.log(userId);
+            // console.log(userId);
 
             axios.post(url, data)
             .then(response => {
@@ -115,7 +115,7 @@ export default {
                 const errorData = error.response.data;
 
                 if(error.response.status === 422) {
-                    console.log(errorData.data.account)
+                    // console.log(errorData.data.account)
                     if(errorData.data.account) {
                         errorMsgList.push(errorData.data.account[0]);
                     }
@@ -160,8 +160,8 @@ export default {
             formData.append('gender', form.gender);
             formData.append('file', form.file);
     
-            console.log(form.file);
-            console.log(form.detail_address);
+            // console.log(form.file);
+            // console.log(form.detail_address);
     
             axios.post(url, formData, config)
             .then(response => {

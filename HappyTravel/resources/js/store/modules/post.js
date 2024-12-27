@@ -34,6 +34,7 @@ export default {
 		,lastPageFlg : false
 		,commentPage : 0
 		,postCommentCnt : 0
+		,postResultCnt : 0
 
 		// 좋아요 부분
 		,isClkedLike : null
@@ -85,6 +86,9 @@ export default {
 		,setBeforeSearch(state, comment){
 			state.beforeSearch = comment;
 		}
+		,setPostResultCnt(state, cnt){
+			state.postResultCnt = cnt;
+		}
 		,setBeforeLocal(state, comment){
 			// default : '00'
 			state.beforeLocal = comment;
@@ -129,8 +133,6 @@ export default {
 		// 좋아요 여부 
 		,setIsClkedLike(state, flg){
 			state.isClkedLike = flg;
-
-			console.log( '좋아요 무엇 : ' + state.isClkedLike);
 		}
 
 		// 좋아요 개수 여부
@@ -158,6 +160,7 @@ export default {
 			state.postCommentCnt = 0;
 			state.isClkedLike = false;
 			state.isLikeLoading = false;
+			state.postResultCnt = 0;
 		}
 
 		// index 부분
@@ -196,6 +199,7 @@ export default {
 				const url = `/api/posts?page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
+					context.commit('setPostResultCnt', response.data.PostList.total);
 					context.commit('setPostList', response.data.PostList.data);
 					context.commit('setCurrentPage', response.data.PostList.current_page);					
 					if(context.state.totalPage === 0){
@@ -214,7 +218,6 @@ export default {
 				const beforeLocal = context.state.beforeLocal;
 				context.commit('setInitialize');
 				context.commit('setBeforeLocal', beforeLocal);
-				console.log(context.state.beforeLocal);
 			}
 			
 			context.commit('setIsLoading', true);
@@ -225,6 +228,7 @@ export default {
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeSearch', payload);
+				context.commit('setPostResultCnt', response.data.PostList.total);
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
@@ -253,6 +257,7 @@ export default {
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeLocal', payload);
+				context.commit('setPostResultCnt', response.data.PostList.total);
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
@@ -323,7 +328,6 @@ export default {
 				}
 
 				context.commit('setPostCommentCnt', response.data.PostCommentCnt);
-				console.log(response.data.PostComment);
 
 				context.commit('setCurrentPage', response.data.PostComment.current_page);
 				if(context.state.totalPage === 0) {
@@ -434,7 +438,6 @@ export default {
 				context.commit('setPostCommentList', response.data.PostComment.data);
 				context.commit('setCommentCurrentPage', response.data.PostComment.current_page);
 				
-				console.log(response.data.PostComment.current_page, context.state.commentCurrentPage);
 				if(response.data.PostComment.current_page >= response.data.PostComment.last_page) {
 					// console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
 					context.commit('setLastPageFlg', true);
