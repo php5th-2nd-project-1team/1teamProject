@@ -259,12 +259,16 @@ export default {
            .catch(error => {
                console.error(error);
                context.commit('user/setLoadingFlg', false, {root: true});
-               localStorage.clear();
-               // Auth 플레그 했던 거 지우기
-               context.commit('setAuthFlg', false);
-               context.commit('setUserInfo', {});
-               alert('로그인 시간이 만료되었습니다.');
-               router.replace('/login');
+               if(error.response.status === 403) {
+                    localStorage.clear();
+                    // Auth 플레그 했던 거 지우기
+                    context.commit('setAuthFlg', false);
+                    context.commit('setUserInfo', {});
+                    alert('로그인 시간이 만료되었습니다.');
+                    router.replace('/login');
+               }else {
+                    alert('알 수 없는 오류');
+               }
            });
        }
         

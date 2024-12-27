@@ -97,6 +97,11 @@ class AuthController extends Controller
         // 쿠키에 저장된 리프레쉬 토큰 가져오기
         $cookieValue = $request->cookie('refreshToken');
 
+
+        if (!$cookieValue) {
+            throw new MyAuthException('E24');
+        }
+
         UserToken::chkToken($cookieValue);
 
         // if(is_null($userInfo)) {
