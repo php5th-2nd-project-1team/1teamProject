@@ -33,7 +33,7 @@
 
 		<div class="about-three">
 			<h1>"펫브리즈"의 좋은 3가지</h1>
-			<p class="about-three-comment"><span>팻브리즈</span>는 무슨 좋은 점을 가지고 있을까요? 한 번 알아봅시다!</p>
+			<p class="about-three-comment"><span>펫브리즈</span>는 무슨 좋은 점을 가지고 있을까요? 한 번 알아봅시다!</p>
 			<div class="about-three-picture-box">
 				<div class="about-three-picture" style="background-image: url('/developImg/about-three1.png');">
 					<div class="about-three-picture-comment">
@@ -209,7 +209,7 @@
 		border-radius: 50px;
 	}
 
-	.about-three-picture:hover .about-three-picture-comment{
+	.about-three-picture-comment{
 		display: flex;
 
 		flex-direction: column;
@@ -229,10 +229,16 @@
 		padding: 30px;
 
 		border-radius: 50px;
+
+		opacity: 0;
+
+		cursor: default;
 	}
 
-	.about-three-picture-comment{
-		display: none;
+	.about-three-picture-comment:hover{
+		opacity: 1;
+
+		transition: all 0.5s;
 	}
 
 	.about-three-picture-comment p{
