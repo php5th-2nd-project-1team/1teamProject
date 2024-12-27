@@ -34,6 +34,7 @@ export default {
 		,lastPageFlg : false
 		,commentPage : 0
 		,postCommentCnt : 0
+		,postResultCnt : 0
 
 		// 좋아요 부분
 		,isClkedLike : null
@@ -84,6 +85,9 @@ export default {
 		
 		,setBeforeSearch(state, comment){
 			state.beforeSearch = comment;
+		}
+		,setPostResultCnt(state, cnt){
+			state.postResultCnt = cnt;
 		}
 		,setBeforeLocal(state, comment){
 			// default : '00'
@@ -158,6 +162,7 @@ export default {
 			state.postCommentCnt = 0;
 			state.isClkedLike = false;
 			state.isLikeLoading = false;
+			state.postResultCnt = 0;
 		}
 
 		// index 부분
@@ -196,6 +201,7 @@ export default {
 				const url = `/api/posts?page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
+					context.commit('setPostResultCnt', response.data.PostList.total);
 					context.commit('setPostList', response.data.PostList.data);
 					context.commit('setCurrentPage', response.data.PostList.current_page);					
 					if(context.state.totalPage === 0){
@@ -225,6 +231,7 @@ export default {
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeSearch', payload);
+				context.commit('setPostResultCnt', response.data.PostList.total);
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
@@ -253,6 +260,7 @@ export default {
 				context.commit('setPostList', response.data.PostList.data);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setBeforeLocal', payload);
+				context.commit('setPostResultCnt', response.data.PostList.total);
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}

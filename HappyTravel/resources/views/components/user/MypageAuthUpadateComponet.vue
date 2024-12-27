@@ -223,7 +223,7 @@ label {
     background-color: red;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: 900;

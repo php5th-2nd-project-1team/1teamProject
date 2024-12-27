@@ -41,7 +41,7 @@ class PostController extends Controller
 				->orWhere('post_content', 'LIKE', '%' . $key . '%')
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
 			});
-		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(4);
+		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
 
 		$responseData = [
 			'success' => true

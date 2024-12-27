@@ -46,6 +46,9 @@
             <button class="btn btn-bg-blue btn-search" type="button" @click="getSearchResult">검색</button>
         </div>
     </div>
+    <div class="post-searchResult-Count">
+        <h2 style="margin-left: 45px;">검색 결과 : <span style="color:#007aff;">{{ postResultCnt }}</span>개</h2>
+    </div>
     <!-- 여행지 포스트 -->
     <div class="post-all">
         <div class="post-content">
@@ -140,6 +143,7 @@ const isLoading = computed(() => store.state.post.isLoading);
 const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
 // 검색 지역
 const searchData = reactive({search : ''});
+const postResultCnt = computed(() => store.state.post.postResultCnt);
 const getSearchResult = () => {
     searchData.search.trim();
 
