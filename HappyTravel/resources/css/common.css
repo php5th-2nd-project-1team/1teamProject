@@ -88,8 +88,8 @@ ul li:hover ul.dropdown {
 
 /* 헤더 */
 .header-logo {
-    width: 120px;
-    margin: 20px;
+    width: 130px;
+    margin: 20px 20px 20px 50px;
 }
 
 .header-top {

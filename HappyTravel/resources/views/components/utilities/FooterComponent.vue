@@ -27,7 +27,7 @@
                 <p><span>최상기:</span> #야호야호야호야호</p>
             </div>
         </div>
-        <div class="footer-bottom-bar">Copyright 2021. 개인회사명 Co. All rights reserved.</div>
+        <div class="footer-bottom-bar">Copyright 2024. Pettagon Co. All rights reserved.</div>
     </footer>
 </template>
 <script setup>
