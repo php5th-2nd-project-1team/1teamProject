@@ -44,7 +44,7 @@
 				 :modules="modules"
 				 :slidePerView="1"
 				 :centeredSlides="true"
-				 :touchRatio="0"
+				 :touchRatio="1"
 				 class="mySwiper"
 			 >
 				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg1"></swiper-slide>
