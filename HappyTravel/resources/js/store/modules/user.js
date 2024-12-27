@@ -65,7 +65,7 @@ export default {
 
                 axios.post(url, formData, config)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
                     context.commit('auth/setUserInfo', response.data.userInfo, {root: true});
                     alert('수정 완료했습니다.');
@@ -109,7 +109,7 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                console.log(userInfo);
+                // console.log(userInfo);
 
                 axios.post(url, data)
                 .then(response => {
@@ -128,7 +128,7 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                console.log(userInfo);
+                // console.log(userInfo);
 
                 axios.post(url, data)
                 .then(response => {
@@ -164,7 +164,7 @@ export default {
 
         userDelete(context, id) {
             context.dispatch('auth/chkTokenAndContinueProcess', () => {
-                console.log(id);
+                // console.log(id);
                 const url = '/api/user/withdraw/' + id;
 
                 const config = {
@@ -211,7 +211,7 @@ export default {
 
                 axios.post(url, formData, config)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     alert('비밀번호 변경 완료했습니다.');
 
                     router.replace('/user/mypage');
