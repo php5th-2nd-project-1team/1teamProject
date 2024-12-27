@@ -41,7 +41,7 @@ export default {
                     context.commit('setAuthFlg', true);
                     context.commit('setUserInfo', response.data.data);
     
-                    router.replace('/index');
+                    router.go(-1);
                 })
                 .catch(error => {
                     console.error(error.response.data); // 오류 메시지 확인
