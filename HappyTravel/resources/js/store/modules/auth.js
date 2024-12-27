@@ -37,7 +37,6 @@ export default {
                 axios.post(url, data)
                 .then(response => {
                     localStorage.setItem('accessToken', response.data.accessToken);
-                    localStorage.setItem('refreshToken', response.data.refreshToken);
                     localStorage.setItem('userInfo', JSON.stringify(response.data.data));
                     context.commit('setAuthFlg', true);
                     context.commit('setUserInfo', response.data.data);
@@ -53,16 +52,6 @@ export default {
                         errorMsgList.push('알 수 없는 에러');
                     }else {
                         errorMsgList.push('아이디 또는 비밀번호가 잘못되었습니다.');
-                    }
-                    if(error.response.status === 402) {
-                        const userLoginChk = confirm("이미 로그인이 되어 있는 계정입니다. 계속 로그인 하시겠습니까?");
-                        if(userLoginChk) {
-                            userInfo.hardLoginFlg = true;
-                            console.log(userInfo);
-                            context.dispatch('login', userInfo);
-                        }else {
-                            router.replace('/login');
-                        }
                     }
                     if(error.response.status !== 402) {
                         alert(errorMsgList.join('\n'));
@@ -258,17 +247,11 @@ export default {
        reissueAccessToken(context, callbackProcess) {
            // console.log('토큰 재발급 처리');
            const url = '/api/reissue'
-           const config = {
-               headers: {
-                   'Authorization' : 'Bearer ' + localStorage.getItem('refreshToken')
-               }
-           };
 
-           axios.post(url, null, config)
+           axios.post(url)
            .then(response => {
                // 토큰 세팅
                localStorage.setItem('accessToken', response.data.accessToken);
-               localStorage.setItem('refreshToken', response.data.refreshToken);
 
                // 후속 처리 진행
                callbackProcess();
@@ -280,7 +263,7 @@ export default {
                // Auth 플레그 했던 거 지우기
                context.commit('setAuthFlg', false);
                context.commit('setUserInfo', {});
-               alert('중복 로그인으로 인한 로그아웃');
+               alert('로그인 시간이 만료되었습니다.');
                router.replace('/login');
            });
        }

@@ -19,7 +19,7 @@ class AuthController extends Controller
         // 유저 정보 획득
         $userInfo = User::where('account', $request->account)->first();
 
-        $hardLoginFlg = $request->hardLoginFlg ? $request->hardLoginFlg : false;
+        // $hardLoginFlg = $request->hardLoginFlg ? $request->hardLoginFlg : false;
 
         Log::debug('로그인 파라미터', $request->all());
 
@@ -32,47 +32,43 @@ class AuthController extends Controller
         if(!(Hash::check($request->password, $userInfo->password))) {
             throw new AuthenticationException('비밀번호 체크 오류');
         }
-        
-        if(!is_null($userInfo->refresh_token) && !$hardLoginFlg) {
-            throw new MyAuthException('E26');
-        }
 
         // 토큰 발행
         list($accessToken, $refreshToken) = UserToken::createTokens($userInfo);
 
         // 리프레쉬 토큰 저장
-        UserToken::updateRefreshToken($userInfo, $refreshToken);
- 
+        // UserToken::updateRefreshToken($userInfo, $refreshToken);
+        $cookieRefrash = cookie('refreshToken', $refreshToken, env('TOKEN_EXP_REFRESH') / 60);
+
         $responseData = [
             'success' => true,
             'msg' => '로그인 성공',
             'accessToken' => $accessToken,
-            'refreshToken' => $refreshToken,
             'data' => $userInfo->toArray()
         ];
 
-        return response()->json($responseData, 200);
+        return response()->json($responseData, 200)->withCookie($cookieRefrash);
     }
     
     public function logout(Request $request) {
         // 페이로드에서 유저 id 획득
-        $id = UserToken::getInPayload($request->bearerToken(), 'idt');
+        // $id = UserToken::getInPayload($request->bearerToken(), 'idt');
 
-        DB::beginTransaction();
-        // 유저 정보 획득
-        $userInfo = User::find($id);
+        // DB::beginTransaction();
+        // // 유저 정보 획득
+        // $userInfo = User::find($id);
 
-        // 리프레쉬 토큰 업데이트
-        UserToken::updateRefreshToken($userInfo, null);
+        // // 리프레쉬 토큰 업데이트
+        // UserToken::updateRefreshToken($userInfo, null);
 
-        DB::commit();
+        $cookieRefrash = cookie('refreshToken', '', -1);
 
         $responseData = [
             'success' => true,
             'msg' => '로그아웃 성공',
         ];
 
-        return response()->json($responseData, 200);
+        return response()->json($responseData, 200)->withCookie($cookieRefrash);
     }
 
     public function passwordChk(UserRequest $request) {
@@ -97,35 +93,40 @@ class AuthController extends Controller
     }
 
     public function reissue(Request $request) {
-        // 페이로드에서 유저 PK 획득
-        $userId = UserToken::getInPayload($request->bearerToken(), 'idt');
+        
+        // 쿠키에 저장된 리프레쉬 토큰 가져오기
+        $cookieValue = $request->cookie('refreshToken');
 
-        // 유저 정보 획득
-        $userInfo = User::find($userId);
+        UserToken::chkToken($cookieValue);
 
-        if(is_null($userInfo)) {
-            throw new MyAuthException('E24');
-        }
+        // if(is_null($userInfo)) {
+        //     throw new MyAuthException('E24');
+        // }
 
-        // 리프레쉬 토큰 비교
-        if($request->bearerToken() !== $userInfo->refresh_token) {
-            throw new MyAuthException('E22');
-        }
+        // // 리프레쉬 토큰 비교
+        // if($request->bearerToken() !== $userInfo->refresh_token) {
+        //     throw new MyAuthException('E22');
+        // }
+        $user_id = UserToken::getInPayload($cookieValue, 'idt');
+        
+        $userInfo = User::find($user_id);
 
         // 토큰 발급
         list($accessToken, $refreshToken) = UserToken::createTokens($userInfo);
         
         // 리프레시 토큰 저장
-        UserToken::updateRefreshToken($userInfo, $refreshToken);
+        // UserToken::updateRefreshToken($userInfo, $refreshToken);
+
 
         $responseData = [
             'success' => true,
             'msg' => '토큰 재발급 성공',
             'accessToken' => $accessToken,
-            'refreshToken' => $refreshToken
         ];
 
-        return response()->json($responseData, 200);
+        $cookieRefrash = cookie('refreshToken', $refreshToken, env('TOKEN_EXP_REFRESH') / 60);
+
+        return response()->json($responseData, 200)->withCookie($cookieRefrash);
     }
 
     public function userIdChk(UserRequest $request) {
