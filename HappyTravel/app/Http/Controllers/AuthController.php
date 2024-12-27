@@ -98,7 +98,7 @@ class AuthController extends Controller
         $cookieValue = $request->cookie('refreshToken');
 
 
-        if (!$cookieValue) {
+        if(!isset($cookieValue)) {
             throw new MyAuthException('E24');
         }
 

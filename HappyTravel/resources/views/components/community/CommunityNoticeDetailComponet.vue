@@ -25,7 +25,7 @@
         
             <div class="container">
                 <div class="content">
-                    <p>{{ noticeDetailList.notice_content }}</p>
+                    <p v-html="noticeDetailList.notice_content.replace(/(?:\r\n|\r|\n)/g, '<br>')"></p>
                 </div>
                 <div class="image">
                     <!-- 이미지가 없으면 아래의 img 태그를 제외하거나 숨깁니다 -->
@@ -50,6 +50,9 @@ import { useRoute, useRouter } from 'vue-router';
 const store = useStore();
 
 const noticeDetailList = computed(() => store.state.notice.noticeDetail);
+
+// noticeDetailList.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
 
 const LoadingFlg = computed(() => store.state.notice.LoadingFlg);
 
