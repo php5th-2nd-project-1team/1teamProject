@@ -21,6 +21,7 @@ class MyAuthException extends Exception
             ,'E24' => ['status' => 401, 'msg' => '토큰 정보에 이상이 있습니다.']
             ,'E25' => ['status' => 402, 'msg' => '이미 있는 아이디입니다.']
             ,'E26' => ['status' => 403, 'msg' => 'RefreshToken 만료']
+            ,'E27' => ['status' => 403, 'msg' => '이전과 동일한 비밀번호']
         ];
     }
 }

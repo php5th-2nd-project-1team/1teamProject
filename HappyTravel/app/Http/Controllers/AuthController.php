@@ -99,7 +99,7 @@ class AuthController extends Controller
 
 
         if(!isset($cookieValue)) {
-            throw new MyAuthException('E24');
+            throw new MyAuthException('E26');
         }
 
         UserToken::chkToken($cookieValue);

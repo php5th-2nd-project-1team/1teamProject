@@ -56,6 +56,7 @@ export default {
             context.commit('setLoadingFlg', true);
 
             const url = '/api/community/notice/' + id ;
+
             axios.get(url)
             .then(response => {
                 context.commit('setNoticeDetail', response.data.noticeDetail);
