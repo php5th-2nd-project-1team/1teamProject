@@ -20,7 +20,6 @@
             <div class="copy">
                 <p ref="textElement" class="copyUrl">{{ pageUrl }}</p>
                 <button class="btn-copy btn-bg-blue" @click="copy">복사</button>
-                <p v-if="copySuccess">복사되었습니다!</p>
             </div>
             <button @click="$emit('eventClickClose')" class="btn btn-header">닫기</button>
 		</div>
@@ -60,9 +59,12 @@ const kakaoShare = () => {
 }
 
 const XShare = () => {
-    const XUrl = window.location.href;
-    const XText = '펫브리즈고';
-    window.open("https://twitter.com/intent/tweet?text=" + XText + "&url=" + XUrl);
+    const XUrl = encodeURIComponent(window.location.href);
+    const XText = encodeURIComponent('#펫브리즈고');
+    const XshareLink = `https://twitter.com/intent/tweet?text=${XText}&url=${XUrl}`
+    window.open(XshareLink, '_blank');
+    // console.log(XshareLink);
+    // window.open("https://twitter.com/intent/tweet?text=" + XText + "&url=" + XUrl);
 }
 
 const FacebookShare = () => {
