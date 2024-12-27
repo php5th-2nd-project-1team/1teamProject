@@ -376,7 +376,6 @@ export default {
 					// console.error('댓글 작성 실패');
 					console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
 					console.error(error); // 서버의 에러 메시지 출력
-					alert('댓글 작성에 실패했습니다. 에러 메시지: ' + (error.response?.data?.message || '알 수 없는 오류'));
 				})
 				.finally(() => {
 					context.commit('setControllerFlg', true);

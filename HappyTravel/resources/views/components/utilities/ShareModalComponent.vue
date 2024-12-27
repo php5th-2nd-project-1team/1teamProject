@@ -18,8 +18,9 @@
                     </button>   
                 </div>
             <div class="copy">
-                <p class="copyUrl">{{ pageUrl }}</p>
+                <p ref="textElement" class="copyUrl">{{ pageUrl }}</p>
                 <button class="btn-copy btn-bg-blue" @click="copy">복사</button>
+                <p v-if="copySuccess">복사되었습니다!</p>
             </div>
             <button @click="$emit('eventClickClose')" class="btn btn-header">닫기</button>
 		</div>
@@ -68,6 +69,12 @@ const FacebookShare = () => {
     const FacebookUrl = window.location.href;
     const FacebookText = '펫브리즈고';
     window.open("http://www.facebook.com/sharer/sharer.php?u=" + FacebookUrl + "&t=" + FacebookText )
+}
+let pageUrl = window.location.href;
+
+const copy = function(){
+    navigator.clipboard.writeText(pageUrl);
+    alert('복사완료');
 }
 
 window.onload = function() {
@@ -133,15 +140,6 @@ window.onload = function() {
     // })
 
 };
-
-
-
-let pageUrl = window.location.href;
-
-const copy = function(){
-    navigator.clipboard.writeText(pageUrl);
-    alert('복사완료');
-}
 </script>
 
 <style scoped>
