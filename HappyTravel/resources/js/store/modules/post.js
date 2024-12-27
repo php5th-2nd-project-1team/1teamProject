@@ -133,8 +133,6 @@ export default {
 		// 좋아요 여부 
 		,setIsClkedLike(state, flg){
 			state.isClkedLike = flg;
-
-			console.log( '좋아요 무엇 : ' + state.isClkedLike);
 		}
 
 		// 좋아요 개수 여부
@@ -220,7 +218,6 @@ export default {
 				const beforeLocal = context.state.beforeLocal;
 				context.commit('setInitialize');
 				context.commit('setBeforeLocal', beforeLocal);
-				console.log(context.state.beforeLocal);
 			}
 			
 			context.commit('setIsLoading', true);
@@ -331,7 +328,6 @@ export default {
 				}
 
 				context.commit('setPostCommentCnt', response.data.PostCommentCnt);
-				console.log(response.data.PostComment);
 
 				context.commit('setCurrentPage', response.data.PostComment.current_page);
 				if(context.state.totalPage === 0) {
@@ -442,7 +438,6 @@ export default {
 				context.commit('setPostCommentList', response.data.PostComment.data);
 				context.commit('setCommentCurrentPage', response.data.PostComment.current_page);
 				
-				console.log(response.data.PostComment.current_page, context.state.commentCurrentPage);
 				if(response.data.PostComment.current_page >= response.data.PostComment.last_page) {
 					// console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
 					context.commit('setLastPageFlg', true);
