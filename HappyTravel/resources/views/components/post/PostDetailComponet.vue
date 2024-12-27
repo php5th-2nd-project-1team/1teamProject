@@ -492,6 +492,7 @@ const closeModal = () => {
 	resize: none;
     width: 100%;
 	height: 10em;
+	font-size: 15px;
     padding: 10px;
 	margin-bottom: 10px;
 }
@@ -499,7 +500,7 @@ const closeModal = () => {
 .btn-postdetail-comment {
 	width: 100px;
 	padding: 10px;
-	font-size: 15px;
+	font-size: 20px;
 	border: none;
 	cursor: pointer;
 	justify-self: flex-end;

@@ -1,4 +1,5 @@
 import axios from "../../axios";
+import router from "../../router";
 
 // const store = useStore();
 
@@ -331,6 +332,10 @@ export default {
 				// console.log(response.data.PostComment.data);
 			})
 			.catch(error => {
+				if(error.response.status === 500) {
+					alert('유효하지 않은 URL입니다.');
+					router.replace('/posts');
+				}
 				console.error(error);
 			}).finally(() => {
 				context.commit('setDetailIsLoading', false);
