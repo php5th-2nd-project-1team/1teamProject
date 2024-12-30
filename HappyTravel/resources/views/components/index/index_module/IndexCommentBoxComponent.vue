@@ -2,7 +2,7 @@
 	<div class="index-commentbox">
 		<p>펫브리즈</p>
 		<p>반려동물과 함께 여행을 떠나자</p>
-		<p>"왈왈 으르렁 컹컹"</p>
+		<p>"왈왈(여행) 으르렁(신나요!) 컹컹(야호)"</p>
 	</div>
 </template>
 <script setup>
