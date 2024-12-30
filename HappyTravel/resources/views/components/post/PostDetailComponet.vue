@@ -98,7 +98,7 @@
 	</div>
 	<div class="postdetail-comment-form-box">
 		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
-		<textarea @click="checkToken" v-model="commentData.post_comment" name="comment" placeholder="로그인 후 댓글을 남겨주세요." minlength="1" maxlength="200"></textarea>
+		<textarea @click="checkToken" v-model="commentData.post_comment" :placeholder="placeholder" name="comment" minlength="1" maxlength="200"></textarea>
 		<button @click="storeComment" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
 	<!-- 댓글 리스트 -->
@@ -254,7 +254,8 @@ const commentData = reactive({
 
 const storeComment = () => {
 	if(commentData.post_comment === '') {
-		alert('댓글을 작성 해주세요.');
+		// post.js 에 422 에러문구 처리해서 주석
+		// alert('댓글을 작성 해주세요.');
 	}
 	store.dispatch('post/storePostComment', commentData);
 	commentData.post_comment = '';	// 댓글작성후 댓글창에 댓글내용 초기화
@@ -271,6 +272,18 @@ const checkToken = () => {
 		// hasToken.value = false;
 	}
 };
+
+// 댓글 placeholder 로그인, 비로그인시 코멘트
+const placeholder = ref('');
+const updatePlaceholder = () => {
+	if(!localStorage.getItem('accessToken')) {
+		placeholder.value='로그인 후 댓글을 남겨주세요.';
+	} else {
+		placeholder.value='반려동물과 함께한 추억을 작성 해 주세요.';
+	}
+};
+updatePlaceholder();
+window.addEventListener('storage', updatePlaceholder);	// storage가 비어질시 실시간 동기화
 // ------------------------------------------
 // 공유하기
 // window.onload = function() {

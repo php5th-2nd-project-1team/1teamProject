@@ -377,9 +377,12 @@ export default {
 					// console.log(response.data.postComment);
 				})
 				.catch(error => {
+					console.log(error);
+					if(error.response.status === 422) {
+						alert('내용을 입력 해 주세요.');
+					}
 					// console.error('댓글 작성 실패');
-					console.error('댓글 작성 실패:============='); // 서버의 에러 메시지 출력
-					console.error(error); // 서버의 에러 메시지 출력
+					// console.error(error); // 서버의 에러 메시지 출력
 				})
 				.finally(() => {
 					context.commit('setControllerFlg', true);

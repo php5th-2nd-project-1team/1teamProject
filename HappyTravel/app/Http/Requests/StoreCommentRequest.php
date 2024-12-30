@@ -30,7 +30,7 @@ class StoreCommentRequest extends FormRequest
 
         // routeIs('store.postComment')에서 ()는 route에 name 을 적는것이다. 댓글작성 name 은 store.postComment
         if($this->routeIs('store.postComment')) {
-            $rules['post_comment'] = ['required', 'between:1,200', 'regex:/^(?!\s*$).+$/'];
+            $rules['post_comment'] = ['required', 'between:1,200', 'regex:/\S/'];
         }
 
         return $rules;
