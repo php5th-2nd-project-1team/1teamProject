@@ -10,7 +10,7 @@ import LogoutComponet from '../views/components/auth/LogoutComponet.vue';
 // user
 
 // ----------------------------------------------------------------------
-import MypageComponet from '../views/components/user/MypageComponent.vue';
+import MypageComponent from '../views/components/user/MypageComponent.vue';
 import MypageAuthUpadateComponet from '../views/components/user/MypageAuthUpadateComponet.vue';
 import UserRegistrationComponent from '../views/components/user/UserRegistrationComponent.vue';
 import UserWithdrawComponet from '../views/components/user/UserWithdrawComponet.vue';
@@ -58,7 +58,7 @@ const chkAuth = (to, from, next) => {
 	// 비 로그인 시 접근 가능 페이지 플레그
     const noAuthPassFlg = (to.path === '/login' || to.path === '/registration');
 	// 로그인 시 접근 가능 페이지
-	const AuthPassFlg = (to.path === '/mypage'); 
+	const AuthPassFlg = to.path.startsWith('/user'); 
 
 	window.scrollTo(0, 0);
     if(authFlg && noAuthPassFlg) {
@@ -111,7 +111,7 @@ const routes=[
 	},	 
 	{
 		path:'/user',   // 마이페이지
-		component: MypageComponet,
+		component: MypageComponent,
 		beforeEnter: chkAuth,
 		children : [
 			{
