@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'account' => ['required', 'between:5,20', 'regex:/^[0-9a-zA-z]+$/']
+            'account' => ['required', 'between:6,20', 'regex:/^[0-9a-zA-z]+$/']
             ,'password' => ['required', 'between:5,20', 'regex:/^[0-9a-zA-z!@]+$/']
         ];
 

@@ -117,7 +117,7 @@ export default {
                 if(error.response.status === 422) {
                     // console.log(errorData.data.account)
                     if(errorData.data.account) {
-                        errorMsgList.push(errorData.data.account[0]);
+                        errorMsgList.push('아이디는 6자 이상 20자 이하의 영문 혹은 영문과 숫자를 조합해주세요.');
                     }
                     alert(errorMsgList.join('\n'));
                 }else if(error.response.status === 402) {
