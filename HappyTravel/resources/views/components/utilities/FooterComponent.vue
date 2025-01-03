@@ -21,10 +21,10 @@
             </div>
             <div class="footer-content">
                 <h3>제작자</h3>
-                <p><span>유원상:</span> #야호야호야호야호야호</p>
-                <p><span>우민주:</span> #야호야호야호야호</p>
-                <p><span>정한결:</span> #야호야호야호야호</p>
-                <p><span>최상기:</span> #야호야호야호야호</p>
+                <p><span>유원상:</span> 콘텐츠 더 넣어야해</p>
+                <p><span>우민주:</span> 왈왈 으르렁 컹컹컹</p>
+                <p><span>정한결:</span> 자료조사 그만</p>
+                <p><span>최상기:</span> 반갑습니다</p>
             </div>
         </div>
         <div class="footer-bottom-bar">Copyright 2024. Pettagon Co. All rights reserved.</div>
