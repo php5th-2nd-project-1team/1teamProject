@@ -32,7 +32,7 @@
             <input type="text" v-model="form.nickname" placeholder="닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 해주세요." class="input-box">
         </div>
         <div class="registration-grid">
-            <span>휴대폰 <span class="span-color">*</span></span>
+            <span class="span-content">휴대폰 <span class="span-color">*</span></span>
             <input type="text" @input="formatPhoneNumber" v-model="form.phone_number" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다." class="input-box">
         </div>
         <!-- 카카오 주소 검색 api --------------------------------------------------- -->
