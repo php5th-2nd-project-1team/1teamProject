@@ -219,7 +219,7 @@ export default {
                 .catch(error => {
                     console.error(error.response.data); // 오류 메시지 확인
                     if(error.response.status === 422) {
-                        if(errorData.data.passwordChk) {
+                        if(error.response.data.data.passwordChk) {
                            alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
                         }
                     }else if (error.response.status === 403) {
