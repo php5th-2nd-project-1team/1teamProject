@@ -220,7 +220,7 @@ export default {
                     console.error(error.response.data); // 오류 메시지 확인
                     if(error.response.status === 422) {
                         if(errorData.data.passwordChk) {
-                           alesrt('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                           alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
                         }
                     }else if (error.response.status === 403) {
                         alert('이전과 동일한 비밀번호는 사용할 수 없습니다. 다른 비밀번호를 입력해주세요.');
