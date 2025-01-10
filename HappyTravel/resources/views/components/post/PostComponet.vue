@@ -51,6 +51,8 @@
     </div>
     <div class="post-searchResult-Count">
         <h2 style="margin-left: 45px;">검색 결과 : <span style="color:#007aff;">{{ postResultCnt }}</span>개</h2>
+        <img @click="openFilterModal" class="post_filter" src="/developImg/fillter_icon.png" alt="">
+        <PostFilterModalComponent v-show="isOpenFilterModal"  @postFilterClose=closeFilterModal />
     </div>
     <!-- 여행지 포스트 -->
     <div class="post-all">
@@ -100,7 +102,11 @@ import { useStore } from 'vuex';
 import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
+<<<<<<< Updated upstream
 import { useRoute } from 'vue-router';
+=======
+import PostFilterModalComponent from '../utilities/PostFilterModalComponent.vue';
+>>>>>>> Stashed changes
 
 const store = useStore();
 const route = useRoute();
@@ -161,6 +167,16 @@ const getSearchResult = () => {
 
 const getLocalResult = (num) => {
     store.dispatch('post/localSearch', num);
+}
+
+// 포스트 필터 모달
+const isOpenFilterModal = ref(false);
+const openFilterModal = () => {
+    isOpenFilterModal.value = true;
+}
+
+const closeFilterModal = () => {
+    isOpenFilterModal.value = false;
 }
 </script>
 
@@ -297,6 +313,18 @@ const getLocalResult = (num) => {
 .btn-search {
     width: 100px;
     margin: 20px 0 0 20px;
+}
+
+.post-searchResult-Count {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 필터 커스텀 */
+.post_filter {
+    width: 50px;
+    margin-right: 30px;
+    cursor: pointer;
 }
 
 /* 미디어 쿼리 */
