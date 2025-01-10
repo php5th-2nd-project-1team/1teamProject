@@ -20,7 +20,7 @@
 		justify-content: center;
 		align-items: center;
 
-		z-index: 100;
+		z-index: 1000;
 	}
 
 	/* HTML: <div class="loader"></div> */

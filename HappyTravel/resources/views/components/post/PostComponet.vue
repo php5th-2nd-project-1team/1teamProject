@@ -35,8 +35,11 @@
                 <div class="custom-prev"><img class="btn-slide-resize" src="/developImg/arrow_left.png" alt=""></div>
                 <div class="custom-next"><img class="btn-slide-resize" src="/developImg/arrow_right.png" alt=""></div>
             </swiper>
-        </div>
-
+        </div>   
+    </div>
+    <!-- 제목 -->
+    <div class="post-title-area">
+        <h1 class="post-title">{{ postThemeTitle }}</h1>
     </div>
     <!-- 검색 창 -->
     <div class="post-search">
@@ -97,8 +100,10 @@ import { useStore } from 'vuex';
 import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
+const route = useRoute();
 
 // 지역 슬라이드 분기
 const selectedRegion = ref('');
@@ -131,16 +136,14 @@ onBeforeMount(()=>{
 });
 
 onMounted(()=>{
+    store.commit('post/setPostThemeId', route.params.theme);
     store.dispatch('post/index', true);
-});
-
-onUnmounted(()=>{
-    store.commit('post/setInitialize');
 });
 
 const postList = computed(() => store.state.post.postList);
 const isLoading = computed(() => store.state.post.isLoading);
 const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
+const postThemeTitle = computed(() => store.state.post.post_theme_title);
 // 검색 지역
 const searchData = reactive({search : ''});
 const postResultCnt = computed(() => store.state.post.postResultCnt);
@@ -216,6 +219,15 @@ const getLocalResult = (num) => {
   right: 0px;
   border-radius: 50%;
   text-align: center;
+}
+
+/* 제목 */
+.post-title-area{
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* -------------------------------------- */
 /* 지역 선택 카테고리 */

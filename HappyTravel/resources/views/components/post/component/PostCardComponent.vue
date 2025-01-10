@@ -11,16 +11,17 @@
 </template>
 <script setup>
 	import { defineProps } from 'vue';
-	import { useRouter } from 'vue-router';
+	import { useRoute, useRouter } from 'vue-router';
 
 	const router = useRouter();
+	const route = useRoute();
 
 	const props = defineProps({
 		cardData : Object
 	});
 
 	const redirectDetail = (post_id) => {
-		router.push('/posts/'+post_id);
+		router.push(`/posts/${route.params.theme}/${post_id}`);
 	}
 </script>
 <style scoped>

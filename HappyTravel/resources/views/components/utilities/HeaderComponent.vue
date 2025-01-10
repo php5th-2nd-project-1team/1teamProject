@@ -52,14 +52,14 @@
 					</div>
 					<ul>
 						<li @click="pushAbout"><a>펫브리즈 소개</a></li>
-						<li @click="pushPosts">
+						<li>
 							<a>펫브리즈 고</a> 
-							<!-- <ul class="dropdown" >
-								<li class="dropdown-sub">숙소</li>
-								<li class="dropdown-sub">식&음료</li>
-								<li class="dropdown-sub">관광지</li>
-								<li class="dropdown-sub">음료</li>
-							</ul> -->
+							<ul class="dropdown" >
+								<li @click="pushPosts('01')" class="dropdown-sub" style="cursor: pointer;">숙소</li>
+								<li @click="pushPosts('02')" class="dropdown-sub" style="cursor: pointer;">식&음료</li>
+								<li @click="pushPosts('03')" class="dropdown-sub" style="cursor: pointer;">관광지</li>
+								<li @click="pushPosts('04')" class="dropdown-sub" style="cursor: pointer;">병원</li>
+							</ul>
 						</li>
 						<!-- <li>
 							<a href="">상품</a>
@@ -110,8 +110,19 @@ const pushAbout = function(){
 }
 
 // posts 페이지 이동 시
-const pushPosts = function(){
-	router.push('/posts');
+const pushPosts = function(post_num = null){
+	if(post_num !== null){
+		router.push(`/posts/${post_num}`);
+
+		store.commit('post/setInitialize');
+		store.commit('post/setPostThemeId',post_num);
+		store.commit('post/setPostThemeTitle');
+		store.dispatch('post/index', true);
+
+		return;
+	}
+	
+	router.push(`/posts`);
 }
 
 // 헤더 커뮤니티 이동 처리

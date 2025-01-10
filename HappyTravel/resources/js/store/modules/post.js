@@ -12,13 +12,21 @@ import router from "../../router";
 // 	store.commit('setBeforeSearch', '');
 // 	store.commit('setBeforeLocal', '00');
 // }
+
+function setErrorRouter(error_response_data, path){
+	if(error_response_data === '테마 번호 오류'){
+		router.push(path);
+	}
+}
 let controller = null;
 
 export default {
 	namespaced: true,
 	state: () =>({
 		// post 부분
-		postCommentList : []
+		post_theme_id : 0
+		,post_theme_title : '숙소'
+		,postCommentList : []
 		,postComment : ''
 		,postList : []
 		,postDetail : {post_lat : 37.34083789, post_lon : 126.882195}
@@ -48,7 +56,26 @@ export default {
 	,mutations: {
 		// post 부분
 
-		setPostList(state, lists){
+		setPostThemeId(state, id){
+			state.post_theme_id = id;
+		}
+		,setPostThemeTitle(state){
+			switch(state.post_theme_id){
+				case '01' :
+					state.post_theme_title = '숙소';
+					break;
+				case '02' :
+					state.post_theme_title = '식&음료';
+					break;
+				case '03' :
+					state.post_theme_title = '관광지';
+					break;
+				case '04' :
+					state.post_theme_title = '병원';
+					break;
+			}
+		}
+		,setPostList(state, lists){
 			state.postList = state.postList.concat(lists);
 		}
 		,resetPostList(state){
@@ -196,7 +223,7 @@ export default {
 			} else {
 				context.commit('setIsLoading', true);
 
-				const url = `/api/posts?page=${context.getters['getNextPage']}`;
+				const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`;
 				axios.get(url)
 				.then( response => {
 					context.commit('setPostResultCnt', response.data.PostList.total);
@@ -206,7 +233,8 @@ export default {
 						context.commit('setTotalPage', response.data.PostList.last_page);
 					}
 				}).catch (error => {
-					console.log(error);
+					console.log(error.response);
+					setErrorRouter(error.response.data, '/');
 				}).finally(() => {
 					context.commit('setIsLoading', false);
 				});
@@ -222,7 +250,7 @@ export default {
 			
 			context.commit('setIsLoading', true);
 
-			const url = `/api/posts?page=${context.getters['getNextPage']}&search=${payload}&local=${context.state.beforeLocal}`;
+			const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}&search=${payload}&local=${context.state.beforeLocal}`;
 			axios.get(url)
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
@@ -234,6 +262,7 @@ export default {
 				}
 			}).catch (error => {
 				console.log(error);
+				setErrorRouter(error.response.data, '/');
 			}).finally(() => {
 				context.commit('setIsLoading', false);
 				context.commit('setIsSearching', true);
@@ -251,7 +280,7 @@ export default {
 
 			context.commit('setIsLoading', true);
 
-			const url = `/api/posts?page=${context.getters['getNextPage']}&local=${payload}`;
+			const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}&local=${payload}`;
 			axios.get(url)
 			.then( response => {
 				context.commit('setPostList', response.data.PostList.data);
@@ -263,6 +292,7 @@ export default {
 				}
 			}).catch (error => {
 				console.log(error);
+				setErrorRouter(error.response.data, '/');
 			}).finally(() => {
 				context.commit('setIsLoading', false);
 			});

@@ -11,6 +11,7 @@ use UserToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -18,8 +19,18 @@ class PostController extends Controller
 	public function index(Request $request) {
 		// 조건 : local은 반드시 있음
 		// 조건 : key는 있을 수도, 없을 수도 있음
+		$theme = $request->theme;
 		$local = $request->local;
 		$key = $request->search;
+
+		// post 테마 유효성 검사 부분
+		$validator = Validator::make($request->only('theme'), [
+			'theme' => ['exists:category_themes,category_theme_num']
+		]);
+
+		if($validator->fails()){
+			return response()->json('테마 번호 오류', 404); // 일단 404로 보냄
+		}
 		
 		// if(!is_null($local)){
 		// 		$PostList = Post::where('category_local_num', '=', $local)->orderBy('created_at', 'DESC')->paginate(4);
@@ -41,7 +52,8 @@ class PostController extends Controller
 				->orWhere('post_content', 'LIKE', '%' . $key . '%')
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
 			});
-		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
+		})->where('category_theme_num', '=', $theme)
+		->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
 
 		$responseData = [
 			'success' => true
