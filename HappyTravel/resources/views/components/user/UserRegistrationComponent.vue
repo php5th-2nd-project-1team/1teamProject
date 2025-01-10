@@ -16,7 +16,7 @@
             <div class="id-container">
                 <p v-if="errors.account" class="error-message">{{ errors.account }}</p>
                 <div class="id-box-container">
-                    <div style="width: 600px;">
+                    <div style="width: 650px;">
                         <input
                             type="text"
                             v-model="form.account"
@@ -422,7 +422,7 @@ const store = useStore();
     }
 
     .id-box {
-        width: 410px;
+        width: 510px;
     }
 
     .gender-gap {
