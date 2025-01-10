@@ -17,7 +17,7 @@
 					<br>
 					<h3>{{ value.post_local_name }}</h3>
 					<br>
-					<span @click="$router.push(`/posts/${value.post_id}`)" style="cursor: pointer; font-weight: 400;">자세히 보기</span>
+					<span @click="$router.push(`/posts/${value.category_theme_num}/${value.post_id}`)" style="cursor: pointer; font-weight: 400;">자세히 보기</span>
 				</SwiperSlide>
 			</Swiper>
 			<div class="index-btn-area">
