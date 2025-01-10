@@ -102,11 +102,8 @@ import { useStore } from 'vuex';
 import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
-<<<<<<< Updated upstream
-import { useRoute } from 'vue-router';
-=======
 import PostFilterModalComponent from '../utilities/PostFilterModalComponent.vue';
->>>>>>> Stashed changes
+import { useRoute } from 'vue-router';
 
 const store = useStore();
 const route = useRoute();
