@@ -214,7 +214,7 @@ export default {
                     // console.log(response.data);
                     alert('비밀번호 변경 완료했습니다.');
 
-                    router.replace('/user/mypage');
+                    context.dispatch('auth/logout', null, { root: true });
                 })
                 .catch(error => {
                     console.error(error.response.data); // 오류 메시지 확인

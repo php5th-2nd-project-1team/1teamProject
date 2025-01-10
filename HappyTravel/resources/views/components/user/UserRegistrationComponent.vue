@@ -1,79 +1,131 @@
 <template>
     <div class="registration-container">
-        <h1 class="registration-title" >회원가입</h1>
-        <span class="registration-making"><span class="span-color" style="position: relative;">*<div class="profile-imgArea" :style="{backgroundImage: 'url('+ form.profile +')'}"><span class="profile-imgArea-child">프로필 사진</span></div></span> 필수입력사항</span>
+        <h1 class="registration-title">회원가입</h1>
+        <span class="registration-making">
+            <span class="span-color" style="position: relative;">*
+                <div class="profile-imgArea" :style="{ backgroundImage: 'url(' + form.profile + ')' }">
+                    <span class="profile-imgArea-child">프로필 사진</span>
+                </div>
+            </span> 필수입력사항
+        </span>
         <hr>
+
+        <!-- 아이디 -->
         <div class="registration-grid">
             <span class="span-content">아이디 <span class="span-color">*</span></span>
             <div class="id-container">
-                <input type="text" v-model="form.account" placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합" class="input-box id-box"> 
-                <button @click="$store.dispatch('auth/userIdCheck', form)" class="duplication-btn">중복확인</button>
+                <p v-if="errors.account" class="error-message">{{ errors.account }}</p>
+                <div class="id-box-container">
+                    <div style="width: 600px;">
+                        <input
+                            type="text"
+                            v-model="form.account"
+                            @input="validateAccount"
+                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                            class="input-box id-box"
+                        />
+                        <button @click="$store.dispatch('auth/userIdCheck', form)" class="duplication-btn">중복확인</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 비밀번호 -->
         <div class="registration-grid">
             <span class="span-content">비밀번호 <span class="span-color">*</span></span>
-            <input type="password" v-model="form.password" placeholder="비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수 문자(!, @)만 사용 가능합니다." class="input-box">
+            <div  class="id-box-container">
+            <p v-if="errors.password" class="error-message">{{ errors.password }}</p>
+            <input
+                type="password"
+                v-model="form.password"
+                @input="validatePassword"
+                placeholder="비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수 문자(!, @)만 사용 가능합니다."
+                class="input-box"
+            />
+            </div>
         </div>
+
+        <!-- 비밀번호 확인 -->
         <div class="registration-grid">
             <span class="span-content">비밀번호 확인 <span class="span-color">*</span></span>
-            <input type="password"  v-model="form.passwordChk" placeholder="비밀번호를 한 번 더 입력해주세요." class="input-box">
+            <div  class="id-box-container">
+            <p v-if="errors.passwordChk" class="error-message">{{ errors.passwordChk }}</p>
+                <input
+                    type="password"
+                    v-model="form.passwordChk"
+                    @input="validatePasswordChk"
+                    placeholder="비밀번호를 한 번 더 입력해주세요."
+                    class="input-box"
+                />
+            </div>
         </div>
-        <div class="registration-grid">
-            <span class="span-content">프로필 사진</span>
-            <label for="file" class="profile-btn">프로필 사진 선택</label>
-            <input @change="setFile" type="file" name="file" accept="image/*" id="file" style="display: none;">
-        </div>
+
+        <!-- 이름 -->
         <div class="registration-grid">
             <span class="span-content">성함 <span class="span-color">*</span></span>
-            <input type="text" v-model="form.name" placeholder="이름은 한글로 2글자에서 4글자 사이로 입력해주세요." class="input-box">
+            <div  class="id-box-container">
+            <p v-if="errors.name" class="error-message">{{ errors.name }}</p>
+                <input
+                    type="text"
+                    v-model="form.name"
+                    @input="validateName"
+                    placeholder="이름은 한글로 1글자에서 20글자 사이로 입력해주세요."
+                    class="input-box"
+                />
+            </div>
         </div>
+
+        <!-- 닉네임 -->
         <div class="registration-grid">
             <span class="span-content">닉네임 <span class="span-color">*</span></span>
-            <input type="text" v-model="form.nickname" placeholder="닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 해주세요." class="input-box">
+            <div  class="id-box-container">
+                <p v-if="errors.nickname" class="error-message">{{ errors.nickname }}</p>
+                <input
+                    type="text"
+                    v-model="form.nickname"
+                    @input="validateNickname"
+                    placeholder="닉네임은 영어, 숫자, 한글만 가능하며 3자 이상 8자 이하로 입력 해주세요."
+                    class="input-box"
+                />
+            </div>
         </div>
+
+        <!-- 휴대폰 -->
         <div class="registration-grid">
             <span class="span-content">휴대폰 <span class="span-color">*</span></span>
-            <input type="text" @input="formatPhoneNumber" v-model="form.phone_number" placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다." class="input-box">
+            <div  class="id-box-container">
+                <p v-if="errors.phone_number" class="error-message">{{ errors.phone_number }}</p>
+                <input
+                    type="text"
+                    v-model="form.phone_number"
+                    @input="validatePhoneNumber"
+                    placeholder="전화번호는 010-0000-0000 형식으로 입력해야 합니다."
+                    class="input-box"
+                />
+            </div>
         </div>
-        <!-- 카카오 주소 검색 api --------------------------------------------------- -->
-        <!-- 주소 검색 버튼 -->
-        <!-- v-if="!addressFlg" -->
-        <div class="registration-grid">
-            <span class="span-content">주소 <span class="span-color">*</span></span>
-            <button @click="openAddressSearch" class="address-btn">주소 검색</button>
-        </div>
-        <div v-if="addressFlg" class="address-container"> 
-            <div class="registration-grid-adress"> 
-                <label class="span-content">우편번호 <span class="span-color">*</span></label>
-                <input type="text" v-model="form.zonecode" placeholder="우편번호" readonly class="input-box-address">
-            </div>
-            <div class="registration-grid-adress"> 
-                <label class="span-content">주소 <span class="span-color">*</span></label>
-                <input type="text" v-model="form.address" placeholder="주소" readonly class="input-box-address">
-            </div>
-            <div class="registration-grid-adress">
-                <label class="span-content">상세 주소 <span class="span-color">*</span></label>
-                <input type="text" v-model="form.detail_address" placeholder="상세 주소 입력" class="input-box-address">
-            </div>
-        </div>    
-        <!-- 카카오 주소 검색 api --------------------------------------------------- -->
+
+        <!-- 성별 -->
         <div class="registration-grid">
             <span class="span-content">성별 <span class="span-color">*</span></span>
-            <div class="id-container gender-gap">
-                <div>
-                    <input v-model="form.gender"type="radio" name="gender" value="0"> 남
-                </div>
-                <div>
-                    <input v-model="form.gender" type="radio" name="gender" value="1"> 여
+            <div  class="id-box-container">
+                <p v-if="errors.gender" class="error-message">{{ errors.gender }}</p>
+                <div class="id-container gender-gap">
+                    <div>
+                        <input v-model="form.gender" type="radio" name="gender" value="0" @change="validateGender"> 남
+                    </div>
+                    <div>
+                        <input v-model="form.gender" type="radio" name="gender" value="1" @change="validateGender"> 여
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="insert-container">
-        <button class="insert-btn" @click="$store.dispatch('auth/userRegistration', form)">가입하기</button>
-    </div>
 
-  </template>
+    <div class="insert-container">
+        <button class="insert-btn" @click="handleSubmit">가입하기</button>
+    </div>
+</template>
 <script setup>
 
 import { reactive, onMounted, ref } from "vue";
@@ -96,6 +148,108 @@ const store = useStore();
         gender: '',         // 성별
         profile: '/profile/default.png',
     });
+
+    const errors = reactive({
+    account: '',
+    password: '',
+    passwordChk: '',
+    name: '',
+    nickname: '',
+    phone_number: '',
+    gender: '',
+    });
+
+    // 유효성 검사 메서드
+    function validateAccount() {
+        const regex = /^[a-zA-Z0-9]{6,}$/;
+        if (!form.account) {
+            errors.account = '아이디를 입력해주세요.';
+        } else if (!regex.test(form.account)) {
+            errors.account = '아이디는 6자 이상의 영문 또는 숫자 조합이어야 합니다.';
+        } else {
+            errors.account = '';
+        }
+    }
+
+    function validatePassword() {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!])[A-Za-z\d@!]{5,20}$/;
+        if (!form.password) {
+            errors.password = '비밀번호를 입력해주세요.';
+        } else if (!regex.test(form.password)) {
+            errors.password = '비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수문자(@, !)를 포함해야 합니다.';
+        } else {
+            errors.password = '';
+        }
+    }
+
+    function validatePasswordChk() {
+        if (!form.passwordChk) {
+            errors.passwordChk = '비밀번호 확인을 입력해주세요.';
+        } else if (form.passwordChk !== form.password) {
+            errors.passwordChk = '비밀번호가 일치하지 않습니다.';
+        } else {
+            errors.passwordChk = '';
+        }
+    }
+
+    function validateName() {
+        const regex = /^[가-힣]{1,20}$/u;
+        if (!form.name) {
+            errors.name = '이름을 입력해주세요.';
+        } else if (!regex.test(form.name)) {
+            errors.name = '이름은 한글로 1자에서 20자 사이어야 합니다.';
+        } else {
+            errors.name = '';
+        }
+    }
+
+    function validateNickname() {
+        const regex = /^[a-zA-Z0-9가-힣]{3,8}$/u;
+        if (!form.nickname) {
+            errors.nickname = '닉네임을 입력해주세요.';
+        } else if (!regex.test(form.nickname)) {
+            errors.nickname = '닉네임은 영어, 숫자, 한글만 가능하며 최대 8자까지 가능합니다.';
+        } else {
+            errors.nickname = '';
+        }
+    }
+
+    function validatePhoneNumber() {
+        const regex = /^010-\d{4}-\d{4}$/;
+        if (!form.phone_number) {
+            errors.phone_number = '전화번호를 입력해주세요.';
+        } else if (!regex.test(form.phone_number)) {
+            errors.phone_number = '전화번호는 010-0000-0000 형식으로 입력해야 합니다.';
+        } else {
+            errors.phone_number = '';
+        }
+    }
+
+    function validateGender() {
+        if (!form.gender) {
+            errors.gender = '성별을 선택해주세요.';
+        } else {
+            errors.gender = '';
+        }
+    }
+
+    function handleSubmit() {
+        validateAccount();
+        validatePassword();
+        validatePasswordChk();
+        validateName();
+        validateNickname();
+        validatePhoneNumber();
+        validateGender();
+
+        const hasError = Object.values(errors).some(error => error);
+        if (hasError) {
+            alert('입력값을 확인해주세요.');
+            return;
+        }
+
+        store.dispatch('auth/userRegistration', form);
+    }
 
     const setFile = (e) => {
         form.file = e.target.files[0];
@@ -173,10 +327,15 @@ const store = useStore();
   
 <style scoped>
 
-    .span-content {
-        align-self: center;
-        line-height: 16px;
+    .error-message {
+        color: red;
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+        position: absolute;
+        bottom: 36px; /* 위치를 에러 메시지가 다른 요소와 겹치지 않도록 */
+        /* margin-left: 80px; */
     }
+
     
     .registration-container {
         display: flex;
@@ -185,6 +344,11 @@ const store = useStore();
         /* justify-content: center; */
         /* align-items: center; */
         padding: 0 5%;
+    }
+    
+    .span-content {
+        align-self: center;
+        line-height: 16px;
     }
 
     .registration-title {
@@ -211,7 +375,7 @@ const store = useStore();
     }
 
     .duplication-btn {
-        width: 30%;
+        width: 17%;
         height: 40px;
         border: 2px solid black;
         background-color: white;
@@ -232,12 +396,11 @@ const store = useStore();
 
     .registration-grid {
         display: grid;
-        grid-template-columns: 0.3fr 0.7fr;
-        margin-left: 100px;
-        margin-top: 30px;
-        /* margin: 1.5%; */
+        grid-template-columns: 1fr 2fr;
+        margin-top: 40px;
         font-size: 0.9rem;
         font-weight: 900;
+        position: relative; /* 추가: 자식 요소들에 영향을 미치지 않도록 */
     }
     
     .input-box {
@@ -247,20 +410,25 @@ const store = useStore();
     }
 
     .id-container{
-        width: 51%;
+        width: 100%;
         padding : 0;
         display: flex;
         gap : 0.5rem;
         text-align: left;
     }
 
+    .id-box-container {
+        display: flex;
+    }
+
+    .id-box {
+        width: 410px;
+    }
+
     .gender-gap {
         gap: 30px;
     }
 
-    .id-box{
-        width: 100%;
-    }
 
     .address-btn {
         width: 45%;

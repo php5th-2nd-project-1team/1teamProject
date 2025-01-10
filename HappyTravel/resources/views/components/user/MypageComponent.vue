@@ -3,7 +3,7 @@
     <div v-else class="my-page-container">
         <div class="my-page-sidebar">
             <div class="profile">
-                <img :src="allUserInfo.profile" class="page-img">
+                <img :src="$store.state.auth.userInfo.profile" class="page-img">
             </div>
             <ul class="page-ul">
                 <router-link to="/user/mypage"><li class="page-li">내 정보</li></router-link>
@@ -13,7 +13,7 @@
         </div>
 
         <div class="mypage-container">
-            <router-view :userData="allUserInfo"></router-view>
+            <router-view></router-view>
         </div>
     </div>
 
@@ -31,8 +31,6 @@
     const id = ref(store.state.auth.userInfo.user_id);
 
     onBeforeMount(() => store.dispatch('user/userDetailPage', id.value));
-
-    const allUserInfo = store.state.auth.userInfo;
 </script>
 
 <style scoped>
