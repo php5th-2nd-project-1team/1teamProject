@@ -23,6 +23,7 @@ class User extends Model
         'refresh_token',
         'post_code'
         ,'profile'
+        ,'email'
     ];
     protected $hidden = [
         'password',

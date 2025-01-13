@@ -157,12 +157,14 @@ class AuthController extends Controller
         }else {
             $insertData['profile'] = '/profile/default.png';
         }
+
         $insertData['password'] = Hash::make($request->password);
         $insertData['nickname'] = $request->nickname;
         $insertData['phone_number'] = $request->phone_number;
         $insertData['address'] = $request->address;
         $insertData['detail_address'] = $request->detail_address;
         $insertData['post_code'] = $request->post_code;
+        $insertData['email'] = $request->email;
 
         // insert 처리
         User::create($insertData);

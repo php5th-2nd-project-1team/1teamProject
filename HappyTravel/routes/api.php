@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -58,6 +59,8 @@ Route::post('/registration', [AuthController::class, 'registration'])->name('aut
 Route::post('/userIdCheck', [AuthController::class, 'userIdChk'])->name('auth.IdChk');
 Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.show');
 Route::post('/passwordcheck', [AuthController::class, 'passwordChk'])->name('auth.passwordcheck');
+Route::post('/send-verification-code', [EmailVerificationController::class, 'sendVerificationCode'])->name('user.email');
+Route::post('/verify-code', [EmailVerificationController::class, 'verifyCode'])->name('user.verifyCode');
 
 
 /**

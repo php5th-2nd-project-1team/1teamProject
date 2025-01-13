@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\MyAuthException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -50,6 +51,15 @@ class UserRequest extends FormRequest
         }else if($this->routeIs('user.password')) {
             unset($rules['account']);
             $rules['passwordChk'] = ['same:password'];
+        }else if($this->routeIs('user.email')) {
+            unset($rules['account']);
+            unset($rules['password']);
+            $rules['email'] = ['required', 'email', 'unique:users,email'];
+        }else if($this->routeIs('user.verifyCode')) {
+            unset($rules['account']);
+            unset($rules['password']);
+            $rules['email'] = ['required', 'email', 'unique:users,email'];
+            $rules['code'] = ['required', 'numeric'];
         }
 
 

@@ -34,14 +34,14 @@
         <div class="registration-grid">
             <span class="span-content">비밀번호 <span class="span-color">*</span></span>
             <div  class="id-box-container">
-            <p v-if="errors.password" class="error-message">{{ errors.password }}</p>
-            <input
-                type="password"
-                v-model="form.password"
-                @input="validatePassword"
-                placeholder="비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수 문자(!, @)만 사용 가능합니다."
-                class="input-box"
-            />
+                <p v-if="errors.password" class="error-message">{{ errors.password }}</p>
+                <input
+                    type="password"
+                    v-model="form.password"
+                    @input="validatePassword"
+                    placeholder="비밀번호는 5자 이상 20자 이하, 숫자, 영문 대소문자, 특수 문자(!, @)만 사용 가능합니다."
+                    class="input-box"
+                />
             </div>
         </div>
 
@@ -49,7 +49,7 @@
         <div class="registration-grid">
             <span class="span-content">비밀번호 확인 <span class="span-color">*</span></span>
             <div  class="id-box-container">
-            <p v-if="errors.passwordChk" class="error-message">{{ errors.passwordChk }}</p>
+                <p v-if="errors.passwordChk" class="error-message">{{ errors.passwordChk }}</p>
                 <input
                     type="password"
                     v-model="form.passwordChk"
@@ -58,6 +58,12 @@
                     class="input-box"
                 />
             </div>
+        </div>
+
+        <div class="registration-grid">
+            <span class="span-content">프로필 사진</span>
+            <label for="file" class="profile-btn">프로필 사진 선택</label>
+            <input @change="setFile" type="file" name="file" accept="image/*" id="file" style="display: none;">
         </div>
 
         <!-- 이름 -->
@@ -72,6 +78,42 @@
                     placeholder="이름은 한글로 1글자에서 20글자 사이로 입력해주세요."
                     class="input-box"
                 />
+            </div>
+        </div>
+
+        <!-- 이메일 -->
+        <div class="registration-grid">
+            <span class="span-content">이메일 <span class="span-color">*</span></span>
+            <div class="id-container">
+                <p v-if="errors.email" class="error-message">{{ errors.email }}</p>
+                <div class="id-box-container">
+                    <div style="width: 650px;">
+                        <input
+                            type="text"
+                            v-model="form.email"
+                            @input="validateEmail"
+                            placeholder="이메일을 입력해주세요"
+                            class="input-box id-box"
+                        />
+                        <button @click="startTimer" class="duplication-btn">{{ isTimerRunning ? `${formattedTime}` : "인증번호 받기" }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="emailFlg" class="registration-grid">
+            <span class="span-content">인증번호 <span class="span-color">*</span></span>
+            <div class="id-container">
+                <div class="id-box-container">
+                    <div style="width: 650px;">
+                        <input
+                            type="text"
+                            v-model="form.code"
+                            placeholder="인증번호를 입력해주세요"
+                            class="input-box id-box"
+                        />
+                        <button @click="$store.dispatch('auth/userVerificationCode', {email: form.email, code: form.code})" class="duplication-btn">인증번호 확인</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -105,6 +147,31 @@
             </div>
         </div>
 
+        <div class="registration-grid">
+            <span class="span-content">주소 <span class="span-color">*</span></span>
+            <button @click="openAddressSearch" class="address-btn">주소 검색</button>
+        </div>
+        <div v-if="addressFlg" class="address-container"> 
+            <div class="registration-grid-adress"> 
+                <label class="span-content">우편번호 <span class="span-color">*</span></label>
+                <input type="text" v-model="form.zonecode" placeholder="우편번호" readonly class="input-box-address">
+            </div>
+            <div class="registration-grid-adress"> 
+                <label class="span-content">주소 <span class="span-color">*</span></label>
+                <input type="text" v-model="form.address" placeholder="주소" readonly class="input-box-address">
+            </div>
+            <div class="registration-grid-adress">
+                <label class="span-content">상세 주소 <span class="span-color">*</span></label>
+                <div class="id-box-container">
+                    <input
+                    type="text"
+                    v-model="form.detail_address"
+                    placeholder="상세 주소 입력"
+                    class="input-box-address">
+                </div>
+            </div>
+        </div>    
+
         <!-- 성별 -->
         <div class="registration-grid">
             <span class="span-content">성별 <span class="span-color">*</span></span>
@@ -128,7 +195,7 @@
 </template>
 <script setup>
 
-import { reactive, onMounted, ref } from "vue";
+import { reactive, onMounted, ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -146,18 +213,54 @@ const store = useStore();
         address: '',        // 기본 주소
         detail_address: '',  // 상세 주소
         gender: '',         // 성별
+        email: '',
+        code: '',
         profile: '/profile/default.png',
     });
 
     const errors = reactive({
-    account: '',
-    password: '',
-    passwordChk: '',
-    name: '',
-    nickname: '',
-    phone_number: '',
-    gender: '',
+        account: '',
+        password: '',
+        passwordChk: '',
+        name: '',
+        nickname: '',
+        phone_number: '',
+        gender: '',
+        detail_address: '',
+        email: '',
     });
+
+    const timeLeft = ref(0); // 남은 시간(초)
+    const timer = ref(null); // 타이머를 관리하는 변수
+
+    // 타이머 실행 상태
+    const isTimerRunning = computed(() => timeLeft.value > 0);
+
+    // "분:초" 형식으로 변환된 시간
+    const formattedTime = computed(() => {
+        const minutes = Math.floor(timeLeft.value / 60);
+        const seconds = timeLeft.value % 60;
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    });
+    let emailFlg = ref(false);
+
+    // 타이머 시작 함수
+    const startTimer = async () => {
+        await store.dispatch('auth/userEmailChk', {email: form.email});
+        emailFlg.value = true;
+
+        if (isTimerRunning.value) return; // 이미 타이머 실행 중이면 종료
+        timeLeft.value = 300; // 5분 (300초)
+
+        timer.value = setInterval(() => {
+            if (timeLeft.value > 0) {
+            timeLeft.value--; // 매 초마다 감소
+            } else {
+            clearInterval(timer.value); // 타이머 종료
+            timer.value = null;
+            }
+        }, 1000);
+    };
 
     // 유효성 검사 메서드
     function validateAccount() {
@@ -215,6 +318,25 @@ const store = useStore();
     }
 
     function validatePhoneNumber() {
+    const rawPhone = form.phone_number.replace(/[^0-9]/g, ''); // 숫자만 남기기
+    let formattedPhone = '';
+
+        if (rawPhone.length <= 3) {
+            formattedPhone = rawPhone; // 3자리 이하일 경우 하이픈 없음
+        } else if (rawPhone.length <= 7) {
+            // 4~7자리: 010-0000 형식
+            formattedPhone = rawPhone.replace(/(\d{3})(\d{1,4})/, '$1-$2');
+        } else if (rawPhone.length <= 10) {
+            // 8~10자리: 010-0000-0000 형식
+            formattedPhone = rawPhone.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
+        } else {
+            // 11자리 이상: 010-0000-0000 형식
+            formattedPhone = rawPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+        }
+
+        form.phone_number = formattedPhone;
+
+        // 유효성 검사
         const regex = /^010-\d{4}-\d{4}$/;
         if (!form.phone_number) {
             errors.phone_number = '전화번호를 입력해주세요.';
@@ -233,18 +355,32 @@ const store = useStore();
         }
     }
 
-    function handleSubmit() {
-        validateAccount();
-        validatePassword();
-        validatePasswordChk();
-        validateName();
-        validateNickname();
-        validatePhoneNumber();
-        validateGender();
+    function validateEmail() {
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!form.email) {
+            errors.email = '이메일을 입력해주세요.';
+        } else if (!regex.test(form.email)) {
+            errors.email = '유효한 이메일 형식이 아닙니다.';
+        } else {
+            errors.email = '';
+        }
+    }
 
+    // watch 설정
+    watch(() => form.account, validateAccount);
+    watch(() => form.password, validatePassword);
+    watch(() => form.passwordChk, validatePasswordChk);
+    watch(() => form.name, validateName);
+    watch(() => form.nickname, validateNickname);
+    watch(() => form.phone_number, validatePhoneNumber);
+    watch(() => form.gender, validateGender);
+    watch(() => form.email, validateEmail);
+
+    function handleSubmit() {
+        
         const hasError = Object.values(errors).some(error => error);
         if (hasError) {
-            alert('입력값을 확인해주세요.');
+            alert('회원가입 정보를 확인해주세요.');
             return;
         }
 
@@ -257,32 +393,6 @@ const store = useStore();
     }
 
     let addressFlg = ref(false);
-
-    const formatPhoneNumber = (e) => {
-        form.phone_number = e.target.value.replace(/[^0-9]/g, '');
-
-        if (form.phone_number.length < 4) {
-        // 4자리 미만은 하이픈 없이 입력
-        form.phone_number = form.phone_number;
-
-        } else if (form.phone_number.length < 7) {
-            // 4자리에서 6자리까지는 3-4자리 형태로 하이픈 추가
-            form.phone_number = form.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-        } else if (form.phone_number.length < 11) {
-            // 7자리에서 10자리까지는 3-4-4자리 형태로 하이픈 추가
-            form.phone_number = form.phone_number.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-        } else {
-            // 11자리 이상은 3-4-4자리 형태로 하이픈 추가
-            form.phone_number = form.phone_number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-        }
-
-        // 추가 조건: 7자리가 되었을 때 하이픈이 다시 생기지 않도록 방지
-        if (form.phone_number.length === 7 && form.phone_number.indexOf('-') !== 3) {
-        // 하이픈이 3번째 자리에 없으면, 강제로 추가
-        form.phone_number = form.phone_number.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-        };
-    };
-
     
     // 스크립트를 동적으로 로드하는 함수
     const loadDaumPostcodeScript = () => {

@@ -13,6 +13,8 @@ export default {
 
         userIdChkFlg: false,
 
+        userEmailChkFlg: false,
+
 	})
 	,mutations: {
         setAuthFlg(state, flg) {
@@ -26,6 +28,10 @@ export default {
         setUserIdChkFlg(state, flg) {
             state.userIdChkFlg = flg;
         },
+        setUserEmailChkFlg(state, flg) {
+            state.userEmailChkFlg = flg;
+        }
+
 	}   
 	,actions: {
         login(context, userInfo) {
@@ -137,7 +143,10 @@ export default {
     userRegistration(context, form) {
         if(!context.state.userIdChkFlg) {
             alert('아이디 중복 체크를 확인해주세요.');
-        }else {
+        }else if(!context.state.userEmailChkFlg) {
+            alert('이메일 인증을 완료해주세요.');
+        }
+        else{
             const url = '/api/registration'
             const config = {
                 headers: {
@@ -158,15 +167,16 @@ export default {
             formData.append('detail_address', form.detail_address);
             formData.append('post_code', form.zonecode);
             formData.append('gender', form.gender);
+            formData.append('email', form.email);
             formData.append('file', form.file);
     
             // console.log(form.file);
             // console.log(form.detail_address);
-    
+    // 이상 무
             axios.post(url, formData, config)
             .then(response => {
                 alert('회원 가입이 완료되었습니다.');
-    
+                
                 router.replace('/login');
             })
             .catch(error => {
@@ -174,27 +184,7 @@ export default {
                 let errorMsgList = [];
                 const errorData = error.response.data;
                 if(error.response.status === 422) {
-                    if(errorData.data.passwordChk) {
-                        errorMsgList.push('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-                    }
-                    if(errorData.data.name) {
-                        errorMsgList.push('성함은 2~4글자의 한글만 입력 가능합니다.');
-                    }
-                    if(errorData.data.nickname) {
-                        errorMsgList.push('닉네임은 영어, 숫자, 한글만 가능하며 최대 8자리까지 입력 가능합니다.');
-                    }
-                    if(errorData.data.detail_address) {
-                        errorMsgList.push('상세주소는 한글과 숫자만 가능하며 최대 20자리까지 입력 가능합니다.');
-                    }
-                    if(errorData.data.phone_number) {
-                        errorMsgList.push('전화번호는 010-0000-0000 형식으로 입력해야 합니다.');
-                    }
-                    if(errorData.data.gender) {
-                        errorMsgList.push('성별을 선택해주세요.');
-                    }
-                    if(errorData.data.address) {
-                        errorMsgList.push('주소를 설정해주세요.');
-                    }
+                    errorMsgList.push('회원가입 정보를 다시 확인해주세요.');
                 }else{
                     alert('알 수 없는 에러입니다.')
                 }
@@ -203,7 +193,43 @@ export default {
             });
         }
     },
-       
+
+    
+    userEmailChk(context, userEmail) {
+        return new Promise((resolve, reject) => {
+            const url = '/api/send-verification-code';
+    
+            const data = JSON.stringify(userEmail);
+    
+            axios.post(url, data)
+            .then(response => {
+               alert(response.data.message);
+               return resolve();
+            })
+            .catch(error => {
+                console.error(error.response); // 오류 메시지 확인
+                alert('이미 사용중인 이메일입니다,');
+                return reject();
+            });
+        });
+    },
+
+    userVerificationCode(context, verificationCode) {
+
+        const url = '/api/verify-code';
+
+        const data = JSON.stringify(verificationCode);
+
+        axios.post(url, data)
+        .then(response => {
+            context.commit('setUserEmailChkFlg', true);
+            alert(response.data.message);
+        })
+        .catch(error => {
+            console.error(error.response); // 오류 메시지 확인
+            alert(error.response.data.message);
+        });
+    },
        
        
        

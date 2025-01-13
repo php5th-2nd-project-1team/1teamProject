@@ -103,6 +103,8 @@ class Handler extends ExceptionHandler
     public function context() {
         return [
             'E01' => ['status' => 401, 'msg' => '인증 실패'],
+            'E50' => ['status' => 400, 'msg' => '잘못된 인증번호입니다.'],
+            'E51' => ['status' => 400, 'msg' => '인증번호가 만료되었습니다.'],
             'E80' => ['status' => 500, 'msg' => 'DB 오류가 발생했습니다.'],
             'E99' => ['status' => 500, 'msg' => '시스템 에러가 발생했습니다.'],
         ];
