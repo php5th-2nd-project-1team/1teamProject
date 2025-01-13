@@ -4,17 +4,21 @@
     <div class="modal-content">
         <h2>반려동물 정보</h2>
         <h3>반려동물</h3>
-        <div>
-            <input type="checkbox">
-            <label for="">소형견</label>
-            <input type="checkbox">
-            <label for="">중형견</label>
-            <input type="checkbox">
-            <label for="">대형견</label>
+        <div class="pet-type">
+            <input type="checkbox" id="sDog" name="sDog">
+            <label for="sDog">소형견</label>
+            <input type="checkbox" id="mDog" name="mDog">
+            <label for="mDog">중형견</label>
+            <input type="checkbox" id="lDog" name="lDog">
+            <label for="lDog">대형견</label>
+            <input type="checkbox" id="cat" name="cat">
+            <label for="cat">고양이</label>
+            <input type="checkbox" id="bird" name="bird">
+            <label for="bird">조류</label>
         </div>
         <h3>몸무게</h3>
         <h3>반려동물 시설</h3>
-        <div>
+        <div class="pet-option">
             <input type="checkbox">
             <label for="">드라이룸</label>
             <input type="checkbox">
@@ -64,5 +68,18 @@
 .btn-filter {
     display: flex;
     justify-content: space-around;
+    margin-top: 10px;
+}
+
+.pet-type {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.pet-option {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
 }
 </style>

@@ -12,10 +12,14 @@
                         <img class="icon" src="/developImg/kakao.png" alt="">
                         <p>카카오톡</p>
                     </button>  
+                    <button type="button" @click="NaverShare" class="btn-icon naver">
+                        <img class="icon" src="/developImg/naver.png" alt="">
+                        <p>네이버</p>
+                    </button>      
                     <button type="button" @click="FacebookShare" class="btn-icon">
                         <img class="icon" src="/developImg/facebook.png" alt="">
                         <p>페이스북</p>
-                    </button>   
+                    </button>
                 </div>
             <div class="copy">
                 <p ref="textElement" class="copyUrl">{{ pageUrl }}</p>
@@ -71,6 +75,14 @@ const FacebookShare = () => {
     const FacebookUrl = window.location.href;
     const FacebookText = '펫브리즈고';
     window.open("http://www.facebook.com/sharer/sharer.php?u=" + FacebookUrl + "&t=" + FacebookText )
+}
+
+const NaverShare = () => {
+    const NaverUrl = encodeURIComponent(window.location.href);
+    const NaverTitle = encodeURI('펫브리즈고');
+    const NaverShareLink = "https://share.naver.com/web/shareView?url=" + NaverUrl + "&title=" + NaverTitle;
+    window.open(NaverShareLink, '_blank');
+    // document.location = NaverShareLink;
 }
 let pageUrl = window.location.href;
 
@@ -207,5 +219,9 @@ window.onload = function() {
     width: 50px;
     cursor: pointer;
     margin: 10px;
+}
+
+.naver {
+    padding: 0;
 }
 </style>
