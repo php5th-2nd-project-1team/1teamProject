@@ -112,12 +112,13 @@ const pushAbout = function(){
 // posts 페이지 이동 시
 const pushPosts = function(post_num = null){
 	if(post_num !== null){
-		router.push(`/posts/${post_num}`);
-
 		store.commit('post/setInitialize');
-		store.commit('post/setPostThemeId',post_num);
+		store.commit('post/setPostThemeId', post_num);
 		store.commit('post/setPostThemeTitle');
+		
 		store.dispatch('post/index', true);
+
+		router.push(`/posts/${post_num}`);
 
 		return;
 	}

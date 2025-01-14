@@ -209,6 +209,11 @@ export default {
 				return ;
 			}
 
+			if(context.state.isLoading){
+				console.log('로딩중입니다.');
+				return;
+			}
+			
 			if(payload === true){
 				context.commit('setInitialize');
 			}
