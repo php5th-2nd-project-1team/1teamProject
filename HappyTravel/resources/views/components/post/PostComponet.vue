@@ -99,11 +99,12 @@ const breakpoints = {
 // 메인 출력 지역
 
 import { useStore } from 'vuex';
-import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref } from 'vue';
+import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref, watch } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
 import PostFilterModalComponent from '../utilities/PostFilterModalComponent.vue';
 import { useRoute } from 'vue-router';
+import post from '../../../js/store/modules/post';
 
 const store = useStore();
 const route = useRoute();
@@ -133,6 +134,10 @@ const regions = [
 ];
 
 // -------------------------------------------
+const postList = computed(() => store.state.post.postList);
+const isLoading = computed(() => store.state.post.isLoading);
+const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
+const postThemeTitle = computed(() => store.state.post.post_theme_title);
 
 onBeforeMount(()=>{
     store.commit('post/setInitialize');
@@ -140,13 +145,13 @@ onBeforeMount(()=>{
 
 onMounted(()=>{
     store.commit('post/setPostThemeId', route.params.theme);
-    store.dispatch('post/index', true);
+
+    if(!isLoading){
+        store.dispatch('post/index', true);
+    }
 });
 
-const postList = computed(() => store.state.post.postList);
-const isLoading = computed(() => store.state.post.isLoading);
-const isLastPage = computed(() => store.state.post.currentPage >= store.state.post.totalPage);
-const postThemeTitle = computed(() => store.state.post.post_theme_title);
+
 // 검색 지역
 const searchData = reactive({search : ''});
 const postResultCnt = computed(() => store.state.post.postResultCnt);

@@ -6,7 +6,7 @@ import AppComponent from '../views/components/AppComponent.vue';
 import store from './store/store'
 import { useKakao } from 'vue3-kakao-maps';
 
-useKakao('5499095a710d76a06d421cdb1cb7efb2');
+useKakao('d0956fc225a54a34d5f36bcd17914798');
 createApp({
 	components:{
 		AppComponent

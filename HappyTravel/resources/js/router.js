@@ -38,9 +38,6 @@ import CommunityUpdateComponet from '../views/components/community/CommunityUpda
 // shop
 import ShopComponent from '../views/components/shop/ShopComponent.vue';
 import ShopDetailComponet from '../views/components/shop/ShopDetailComponet.vue';
-import ShopClassComponet from '../views/components/shop/ShopClassComponet.vue';
-import ShopPackageComponet from '../views/components/shop/ShopPackageComponet.vue';
-import ShopMerchComponet from '../views/components/shop/ShopMerchComponet.vue';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -184,27 +181,14 @@ const routes=[
 	{	
 		path: '/shop',           // 샵 (상품)
 		component:ShopComponent,
-		beforeEnter: chkAuth,
-		children: [
-			{	
-				path: 'class',  // 클래스
-				component: ShopClassComponet,
-			},
-			{
-				path: 'package', // 패키지
-				component: ShopPackageComponet,
-			},
-			{
-				path: 'merch', // 굿즈
-				component: ShopMerchComponet,
-			},
-			{
-				path : 'detail', // 상세
-				component: ShopDetailComponet,
-			},
-		]
-	},
-	{
+		beforeEnter: chkAuth
+	}
+	,{
+		path: '/shop/:id', // 샵 상세
+		component: ShopDetailComponet,
+		beforeEnter: chkAuth
+	}
+	,{
 		path:'/posts/:theme'   // 포스트 (펫브리즈고)
 		,component: PostComponet,
 		beforeEnter: chkAuth,

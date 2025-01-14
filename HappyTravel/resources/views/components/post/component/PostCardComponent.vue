@@ -1,5 +1,5 @@
 <template>
-	<div class="post-content-card" @click="redirectDetail(props.cardData.post_id)">
+	<div class="post-content-card" @click="redirectDetail">
 		<img class="post-content-card-img" :src="props.cardData.post_img" alt="">
 		<h3>{{ props.cardData.post_title }}</h3>
 		<p>{{ props.cardData.post_local_name }}</p>
@@ -20,8 +20,10 @@
 		cardData : Object
 	});
 
-	const redirectDetail = (post_id) => {
-		router.push(`/posts/${route.params.theme}/${post_id}`);
+	// console.log(props.cardData);
+
+	const redirectDetail = () => {
+		router.push(`/posts/${props.cardData.category_theme_num}/${props.cardData.post_id}`);
 	}
 </script>
 <style scoped>
