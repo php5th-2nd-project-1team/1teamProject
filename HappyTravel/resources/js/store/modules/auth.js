@@ -15,6 +15,8 @@ export default {
 
         userEmailChkFlg: false,
 
+        userVerificationCodeFlg: false,
+
 	})
 	,mutations: {
         setAuthFlg(state, flg) {
@@ -30,6 +32,9 @@ export default {
         },
         setUserEmailChkFlg(state, flg) {
             state.userEmailChkFlg = flg;
+        },
+        setUserVerificationCodeFlg(state, flg) {
+            state.userVerificationCodeFlg = flg;
         }
 
 	}   
@@ -223,6 +228,7 @@ export default {
         axios.post(url, data)
         .then(response => {
             context.commit('setUserEmailChkFlg', true);
+            context.commit('setUserVerificationCodeFlg', true);
             alert(response.data.message);
         })
         .catch(error => {

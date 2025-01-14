@@ -95,8 +95,8 @@
                             placeholder="이메일을 입력해주세요"
                             class="input-box id-box"
                         />
-                        <button v-if="isTimerRunning" @click="startTimer" class="duplication-btn" style="cursor: none; border: none;"><span class="span-color">{{`${formattedTime}`}}</span></button>
-                        <button v-else @click="userEmail" class="duplication-btn">인증번호 받기</button>
+                        <button v-if="isTimerRunning && !$store.state.auth.userVerificationCodeFlg" @click="startTimer" class="duplication-btn" style="cursor: none; border: none;"><span class="span-color">{{`${formattedTime}`}}</span></button>
+                        <button v-else-if="!isTimerRunning && !$store.state.auth.userVerificationCodeFlg" @click="userEmail" class="duplication-btn">인증번호 받기</button>
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                             placeholder="인증번호를 입력해주세요"
                             class="input-box id-box"
                         />
-                        <button @click="$store.dispatch('auth/userVerificationCode', {email: form.email, code: form.code})" class="duplication-btn">인증번호 확인</button>
+                        <button v-if="!$store.state.auth.userVerificationCodeFlg" @click="userVerificationCode" class="duplication-btn">인증번호 확인</button>
                     </div>
                 </div>
             </div>
@@ -265,6 +265,10 @@ const store = useStore();
         await store.dispatch('auth/userEmailChk', {email: form.email});
         emailFlg.value = true;
         startTimer();
+    }
+
+    const userVerificationCode = async () => {
+        store.dispatch('auth/userVerificationCode', {email: form.email, code: form.code});
     }
 
     // 유효성 검사 메서드
