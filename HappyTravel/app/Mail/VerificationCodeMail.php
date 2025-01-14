@@ -34,7 +34,7 @@ class VerificationCodeMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Your Verification Code', // 이메일 제목 설정
+            subject: '펫브리즈 인증번호입니다.', // 이메일 제목 설정
         );
     }
 

@@ -95,7 +95,8 @@
                             placeholder="이메일을 입력해주세요"
                             class="input-box id-box"
                         />
-                        <button @click="startTimer" class="duplication-btn">{{ isTimerRunning ? `${formattedTime}` : "인증번호 받기" }}</button>
+                        <button v-if="isTimerRunning" @click="startTimer" class="duplication-btn" style="cursor: none; border: none;"><span class="span-color">{{`${formattedTime}`}}</span></button>
+                        <button v-else @click="userEmail" class="duplication-btn">인증번호 받기</button>
                     </div>
                 </div>
             </div>
@@ -242,13 +243,11 @@ const store = useStore();
         const seconds = timeLeft.value % 60;
         return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     });
+
     let emailFlg = ref(false);
 
     // 타이머 시작 함수
     const startTimer = async () => {
-        await store.dispatch('auth/userEmailChk', {email: form.email});
-        emailFlg.value = true;
-
         if (isTimerRunning.value) return; // 이미 타이머 실행 중이면 종료
         timeLeft.value = 300; // 5분 (300초)
 
@@ -261,6 +260,12 @@ const store = useStore();
             }
         }, 1000);
     };
+
+    const userEmail = async () => {
+        await store.dispatch('auth/userEmailChk', {email: form.email});
+        emailFlg.value = true;
+        startTimer();
+    }
 
     // 유효성 검사 메서드
     function validateAccount() {
