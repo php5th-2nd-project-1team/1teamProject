@@ -19,4 +19,12 @@ class PostAnimalType extends Model
     protected function serialize(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function post() {
+        return $this->belongsTo(Post::class, 'post_id')->select('post_id');
+    }
+
+    public function animalType() {
+        return $this->belongsTo(AnimalType::class, 'animal_type_num')->select('animal_type_num');
+    }
 }

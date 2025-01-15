@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Post;
+use App\Models\PostAnimalType;
 use App\Models\PostComments;
 use App\Models\PostDetail;
+use App\Models\PostFacilityType;
 use App\Models\PostLike;
 use UserToken;
 use Illuminate\Http\Request;
@@ -22,6 +24,8 @@ class PostController extends Controller
 		$theme = $request->theme;
 		$local = $request->local;
 		$key = $request->search;
+		$animal_type_num = $request->animal_type_num;
+		$facility_type_num = $request->facility_type_num;
 
 		// post 테마 유효성 검사 부분
 		$validator = Validator::make($request->only('theme'), [
@@ -53,6 +57,18 @@ class PostController extends Controller
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
 			});
 		})->where('category_theme_num', '=', $theme)
+
+		->join('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
+		->join('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
+		->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
+		->when($animal_type_num, function($query, $animal_type_num) {
+			return $query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+		})
+		->whereIn('facility_type_num', ['01', '02', '03', '04', '05'])
+		->when($facility_type_num, function($query, $facility_type_num) {
+			return $query->whereIn('post_facility_types.facility_type_num', $facility_type_num);
+		})
+
 		->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
 
 		$responseData = [
@@ -266,5 +282,26 @@ class PostController extends Controller
 
 		return response()->json($responseData, 200);
 	}
+
+	// // 포스트 필터(동물종류, 시설)
+	// public function postFilter(Request $request) {
+	// 	$animal_type_num = $request->animal_type_num;
+	// 	$facility_type_num = $request->facility_type_num;
+
+	// 	// $postAnimalType = PostAnimalType::where('post_id', $post_id)
+	// 	// 							->where('animal_type_num', $animal_type_num);
+	// 	// $postFacilityType = PostFacilityType::where('post_id', $post_id)
+	// 	// 									->where('facility_type_num', $facility_type_num);
+	// 	$postAnimalType = PostAnimalType::where('animal_type_num', $animal_type_num);
+	// 	$postFacilityType = PostFacilityType::where('facility_type_num', $facility_type_num);									
+
+	// 	$responseData = [
+	// 		'success' => true
+	// 		,'msg' => '포스트 필터 적용'
+	// 		,'postAnimalFilter' => $postAnimalType->toArray()
+	// 		,'postFacilityFilter' => $postFacilityType->toArray()
+	// 	];
+	// 	return response()->json($responseData, 200);
+	// }
 
 }

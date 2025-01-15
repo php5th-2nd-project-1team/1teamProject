@@ -19,4 +19,12 @@ class PostFacilityType extends Model
     protected function serialize(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function post() {
+        return $this->belongsTo(Post::class, 'post_id')->select('post_id');
+    }
+
+    public function facilityType() {
+        return $this->belongsTo(FacilityType::class, 'facility_type_num')->select('facility_type_num');
+    }
 }
