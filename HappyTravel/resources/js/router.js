@@ -179,12 +179,12 @@ const routes=[
 		]
 	},
 	{	
-		path: '/shop',           // 샵 (상품)
+		path: '/shops',           // 샵 (상품)
 		component:ShopComponent,
 		beforeEnter: chkAuth
 	}
 	,{
-		path: '/shop/:id', // 샵 상세
+		path: '/shops/:id', // 샵 상세
 		component: ShopDetailComponet,
 		beforeEnter: chkAuth
 	}
