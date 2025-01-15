@@ -1,6 +1,6 @@
 <template>
 	<div class="shop-card-area">
-		<div class="shop-card" v-for="i in 10" :key="i" @click="router.push('/shop/1')">
+		<div class="shop-card" v-for="i in 10" :key="i" @click="router.push('/shops/1')">
 			<div class="shop-card-img" style="background-image: url('/developImg/about-three1.png');"></div>
 			<h2 class="shop-card-title">카드 제목</h2>
 			<div class="shop-card-info">

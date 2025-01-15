@@ -23,4 +23,7 @@
 
         gap : 2rem;
     }
+    .shopDetail-img{
+        width: 100%;
+    }
 </style>
