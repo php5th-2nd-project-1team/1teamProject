@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEmailToUsersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddEmailToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email'); // 이메일 컬럼 추가
+            $table->unique('email');
         });
     }
 
@@ -26,7 +26,7 @@ class AddEmailToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('email'); // 이메일 컬럼 삭제
+            $table->dropIndex(['users_email_unique']);
         });
     }
-}
+};
