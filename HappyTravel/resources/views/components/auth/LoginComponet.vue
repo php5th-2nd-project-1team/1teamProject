@@ -15,6 +15,8 @@
                 <button class="kakao-login" @click="loginWith('kakao')">
                     <img src="/developImg/kakao.png" />
                     카카오 로그인</button>
+                <button class="google-login" @click="loginWith('google')">
+                    <img src="/developImg/google.png" />구글 로그인</button>
             </div>
         </div>
         <div class="login-password-regist">
@@ -54,7 +56,7 @@ const store = useStore();
     /* 로그인 컨테이너 */
     .login-container{
         width: 100%;
-        height: 700px;
+        /* height: 700px; */
         
         display: flex;
         justify-content: center;
@@ -152,7 +154,7 @@ const store = useStore();
 
     .kakao-login {
         margin-top: 10px;
-        margin-bottom: 50px;
+        /* margin-bottom: 50px; */
         width: 100%;
         height: 70px;
         background-color: #FEE500; /* 카카오 로고 색상 */
@@ -165,7 +167,6 @@ const store = useStore();
         justify-content: center;
 
         border: none;
-
         border-radius: 10px;
         cursor: pointer;
     }
@@ -182,5 +183,29 @@ const store = useStore();
 
     .kakao-login:active {
         background-color: #E0C800; /* 클릭 시 색상 */
+    }
+    
+    .google-login {
+        margin-top: 10px;
+        margin-bottom: 50px;
+        width: 100%;
+        height: 70px;
+        background-color: #4285F4; /* 구글 파란색 */
+        color: white;
+        font-size: 35px;
+        font-weight: 900; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .google-login img {
+        width: 40px; /* 이미지 크기 */
+        height: 40px;
+        margin-right: 10px; /* 이미지와 텍스트 간격 */
     }
 </style>
