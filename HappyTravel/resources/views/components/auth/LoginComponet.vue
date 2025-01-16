@@ -11,8 +11,10 @@
                     <p class="login-guidebook">비밀번호</p>
                     <input v-model="userInfo.password" type="password" name="password" class="login-main" @keyup.enter="onLogin()">
                 </div>
-                <button @click="onLogin()">로그인</button>
-                <button @click="loginWith('kakao')">카카오로 로그인</button>
+                <button class="login-btn" @click="onLogin()">로그인</button>
+                <button class="kakao-login" @click="loginWith('kakao')">
+                    <img src="/developImg/kakao.png" />
+                    카카오 로그인</button>
             </div>
         </div>
         <div class="login-password-regist">
@@ -52,7 +54,7 @@ const store = useStore();
     /* 로그인 컨테이너 */
     .login-container{
         width: 100%;
-        height: 600px;
+        height: 700px;
         
         display: flex;
         justify-content: center;
@@ -108,9 +110,9 @@ const store = useStore();
         font-weight: 900;
     }
 
-    .login-title button{
+    .login-btn{
         margin-top: 20px;
-        margin-bottom: 50px;
+        /* margin-bottom: 50px; */
         width: 100%;
         height: 70px;
         background-color : #2986FF;
@@ -124,7 +126,7 @@ const store = useStore();
         cursor: pointer;
     }
 
-    .login-title button:hover {
+    .login-btn:hover {
         background-color: white;
         border: 3px solid #2986FF;
         color: black;
@@ -146,5 +148,39 @@ const store = useStore();
 
     .login-main {
         padding: 5px;
+    }
+
+    .kakao-login {
+        margin-top: 10px;
+        margin-bottom: 50px;
+        width: 100%;
+        height: 70px;
+        background-color: #FEE500; /* 카카오 로고 색상 */
+        color: #3C1E1E; /* 텍스트 색상 (카카오 브랜드 컬러) */
+        color: white;
+        font-size: 35px;
+        font-weight: 900; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: none;
+
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .kakao-login img {
+        width: 40px; /* 이미지 크기 */
+        height: 40px;
+        margin-right: 10px; /* 이미지와 텍스트 간격 */
+    }
+
+    .kakao-login:hover {
+        background-color: #FDD900; /* 호버 시 색상 변경 */
+    }
+
+    .kakao-login:active {
+        background-color: #E0C800; /* 클릭 시 색상 */
     }
 </style>
