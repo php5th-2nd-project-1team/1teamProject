@@ -94,6 +94,16 @@
                             @input="validateEmail"
                             placeholder="이메일을 입력해주세요"
                             class="input-box id-box"
+                            readonly
+                            v-if="userParameterEmail"
+                        />
+                        <input
+                            type="text"
+                            v-model="form.email"
+                            @input="validateEmail"
+                            placeholder="이메일을 입력해주세요"
+                            class="input-box id-box"
+                            v-else
                         />
                         <button v-if="isTimerRunning && !$store.state.auth.userVerificationCodeFlg" @click="startTimer" class="duplication-btn" style="cursor: none; border: none;"><span class="span-color">{{`${formattedTime}`}}</span></button>
                         <button v-else-if="!isTimerRunning && !$store.state.auth.userVerificationCodeFlg" @click="userEmail" class="duplication-btn">인증번호 받기</button>
@@ -197,9 +207,14 @@
 <script setup>
 
 import { reactive, onMounted, ref, watch, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+
+const route = useRoute();
+
+const userParameterEmail = route.query.user ? JSON.parse(route.query.user) : '';
     
     // 데이터 객체
     const form = reactive({
@@ -214,7 +229,7 @@ const store = useStore();
         address: '',        // 기본 주소
         detail_address: '',  // 상세 주소
         gender: '',         // 성별
-        email: '',
+        email: userParameterEmail,
         code: '',
         profile: '/profile/default.png',
     });

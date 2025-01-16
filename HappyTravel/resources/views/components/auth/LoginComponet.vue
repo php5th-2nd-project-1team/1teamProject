@@ -12,6 +12,7 @@
                     <input v-model="userInfo.password" type="password" name="password" class="login-main" @keyup.enter="onLogin()">
                 </div>
                 <button @click="onLogin()">로그인</button>
+                <button @click="loginWith('kakao')">카카오로 로그인</button>
             </div>
         </div>
         <div class="login-password-regist">
@@ -35,6 +36,10 @@ const store = useStore();
     const onLogin = () => {
         store.dispatch('auth/login', userInfo);
     }
+
+    const loginWith = (provider) => {
+      store.dispatch('auth/socialLogin', provider);
+    };
 
 </script>
 <style scoped>

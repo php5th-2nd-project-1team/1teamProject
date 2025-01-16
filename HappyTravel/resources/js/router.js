@@ -48,6 +48,7 @@ import AboutComponent from '../views/components/AboutComponent.vue';
 // ----------------------------------------------------------------------
 
 import { useStore } from 'vuex';
+import SocialComponent from '../views/components/auth/SocialComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -76,6 +77,10 @@ const routes=[
 	{
 		path: '/',
 		redirect: '/index',
+	},
+	{
+		path: '/social/info',
+		component: SocialComponent,
 	},
 	{
 		path: '/index',

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -177,4 +178,65 @@ class AuthController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+    public function redirectToProvider($provider) {
+        Log::debug($provider);
+        // return Socialite::driver($provider)->redirect();
+
+        $redirectUrl = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+
+        return response()->json([
+            'redirect_url' => $redirectUrl,
+        ], 200);
+        
+    }
+
+    // 카카오 콜백 처리
+    public function handleProviderCallback($provider)
+    {
+        // 카카오 사용자 정보 가져오기
+        $kakaoUser = Socialite::driver($provider)->stateless()->user();
+
+        $userInfo = User::where('email', $kakaoUser->getEmail())->first();
+
+        if($userInfo) {
+            list($accessToken, $refreshToken) = UserToken::createTokens($userInfo);
+    
+            // 토큰 발급
+            $cookieRefrash = cookie('refreshToken', $refreshToken, env('TOKEN_EXP_REFRESH') / 60);
+    
+            return redirect('/social/info')->withCookie($cookieRefrash);
+        }else {
+            return redirect('/registration?user='.urlencode(json_encode($kakaoUser->getEmail())));
+        }
+    }
+
+    public function socialInfo(Request $request) {
+        // 쿠키에 저장된 리프레쉬 토큰 가져오기
+        $cookieValue = $request->cookie('refreshToken');
+
+        if(!isset($cookieValue)) {
+            throw new MyAuthException('E26');
+        }
+
+        UserToken::chkToken($cookieValue);
+
+        $user_id = UserToken::getInPayload($cookieValue, 'idt');
+
+        $userInfo = User::find($user_id);
+        
+        // 토큰 발급
+        list($accessToken, $refreshToken) = UserToken::createTokens($userInfo);
+        $responseData = [
+            'success' => true,
+            'msg' => '로그인 성공',
+            'accessToken' => $accessToken,
+            'data' => $userInfo->toArray()
+        ];
+
+        $cookieRefrash = cookie('refreshToken', $refreshToken, env('TOKEN_EXP_REFRESH') / 60);
+        
+        return response()->json($responseData, 200)->withCookie($cookieRefrash);
+    }
+
 }

@@ -61,6 +61,9 @@ Route::get('/user/mypage/{id}', [UserController::class, 'show'])->name('user.sho
 Route::post('/passwordcheck', [AuthController::class, 'passwordChk'])->name('auth.passwordcheck');
 Route::post('/send-verification-code', [EmailVerificationController::class, 'sendVerificationCode'])->name('user.email');
 Route::post('/verify-code', [EmailVerificationController::class, 'verifyCode'])->name('user.verifyCode');
+Route::get('/auth/{provider}', [AuthController::class, 'redirectToProvider']); // 소셜 로그인 페이지로 리다이렉트
+Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']); // 콜백 처리
+Route::post('/api/auth/social/Info', [AuthController::class, 'socialInfo']); // 소셜 로그인 후 데이터 받아오는 처리
 
 
 /**

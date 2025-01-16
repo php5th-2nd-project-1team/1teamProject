@@ -70,6 +70,48 @@ export default {
                 });
         },
 
+        socialLogin(context, provider) {  
+            const url = `/api/auth/${provider}`;
+        
+            axios.get(url)
+                .then(response => {
+                    const redirectUrl = response.data.redirect_url;
+                    // 소셜 로그인 URL로 리다이렉트
+                    window.location.href = redirectUrl;
+                })
+                .catch(error => {
+                    console.error(error.response.data); // 에러 메시지 로깅
+                    alert('소셜 로그인 요청에 실패했습니다. 다시 시도해주세요.');
+                });
+        },
+
+        socialLoginInfo(context) {
+            const url = `/api/auth/social/Info`;
+            axios.post(url)
+            .then(response => {
+                localStorage.setItem('accessToken', response.data.accessToken);
+
+                localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+
+                context.commit('setAuthFlg', true);
+                context.commit(' ', response.data.data);
+
+                router.replace('/');
+            })
+            .catch(error => {
+                console.error(error.response.data); // 오류 메시지 확인
+                let errorMsgList = [];
+                const errorData = error.response.data;
+                if(error.response.status === 500) {
+                    errorMsgList.push('알 수 없는 에러');
+                }else {
+                    errorMsgList.push('아이디 또는 비밀번호가 잘못되었습니다.');
+                }
+                if(error.response.status !== 402) {
+                    alert(errorMsgList.join('\n'));
+                }
+            });
+        },
         
          /**
         * 로그아웃 처리
