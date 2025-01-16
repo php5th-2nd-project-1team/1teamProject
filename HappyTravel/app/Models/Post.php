@@ -35,4 +35,12 @@ class Post extends Model
     public function postLikes(){
         return $this->hasMany(PostLike::class, 'post_id')->where('post_likes_flg', '=', '1');
     }
+
+    // public function animalType(){
+    //     return $this->belongsTo(PostAnimalType::class, 'animal_type_num');
+    // }
+
+    // public function facilityType(){
+    //     return $this->belongsTo(PostFacilityType::class, 'facility_type_num');
+    // }
 }

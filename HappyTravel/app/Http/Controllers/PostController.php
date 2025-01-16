@@ -24,12 +24,14 @@ class PostController extends Controller
 		$theme = $request->theme;
 		$local = $request->local;
 		$key = $request->search;
-		$animal_type_num = $request->animal_type_num;
-		$facility_type_num = $request->facility_type_num;
+		$animal_type_num = $request->input('animal_type_num', []);
+		$facility_type_num = $request->input('facility_type_num', []);
 
 		// post 테마 유효성 검사 부분
-		$validator = Validator::make($request->only('theme'), [
+		$validator = Validator::make($request->only('theme', 'animal_type_num', 'facility_type_num'), [
 			'theme' => ['exists:category_themes,category_theme_num']
+			,'animal_type_num' => ['exists:post_animal_types,animal_type_num']
+			,'facility_type_num' => ['exists:post_facility_types,facility_type_num']
 		]);
 
 		if($validator->fails()){
@@ -48,7 +50,7 @@ class PostController extends Controller
 		// 	$PostList = Post::orderBy('created_at', 'DESC')->paginate(4);
 		// }
 
-		$PostList = Post::when($local, function($query, $local){
+		$PostList = Post::select(DB::raw('posts.*'))->distinct()->when($local, function($query, $local){
 			$query->where('category_local_num', '=', $local);
 		})->when($key, function($query, $key){
 			$query->where(function($query)use($key){
@@ -58,15 +60,17 @@ class PostController extends Controller
 			});
 		})->where('category_theme_num', '=', $theme)
 
-		->join('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-		->join('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
-		->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
+		
 		->when($animal_type_num, function($query, $animal_type_num) {
-			return $query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+			return $query->join('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
+						->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
+						->whereIn('post_animal_types.animal_type_num', $animal_type_num);
 		})
-		->whereIn('facility_type_num', ['01', '02', '03', '04', '05'])
+		
 		->when($facility_type_num, function($query, $facility_type_num) {
-			return $query->whereIn('post_facility_types.facility_type_num', $facility_type_num);
+			return $query->join('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
+						->whereIn('facility_type_num', ['01', '02', '03', '04', '05'])
+						->whereIn('post_facility_types.facility_type_num', $facility_type_num);
 		})
 
 		->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);

@@ -7,23 +7,23 @@
             <h3>반려동물</h3>
             <div class="pet-type">
                 <div>
-                    <input type="checkbox" id="sDog" name="sDog">
+                    <input type="checkbox" id="sDog" value="소형견" v-model="filters.animalType">
                     <label for="sDog">소형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="mDog" name="mDog">
+                    <input type="checkbox" id="mDog" value="중형견" v-model="filters.animalType">
                     <label for="mDog">중형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="lDog" name="lDog">
+                    <input type="checkbox" id="lDog" value="대형견" v-model="filters.animalType">
                     <label for="lDog">대형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="cat" name="cat">
+                    <input type="checkbox" id="cat" value="고양이" v-model="filters.animalType">
                     <label for="cat">고양이</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="bird" name="bird">
+                    <input type="checkbox" id="bird" value="조류" v-model="filters.animalType">
                     <label for="bird">조류</label>
                 </div>
             </div>
@@ -32,39 +32,46 @@
             <h3>반려동물 편의</h3>
             <div class="pet-option">
                 <div>
-                    <input type="checkbox" id="dry-room" name="dry-room">
+                    <input type="checkbox" id="dry-room" value="드라이룸" v-model="filters.facilityType">
                     <label for="dry-room">드라이룸</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="pool" name="pool">
+                    <input type="checkbox" id="pool" value="애견수영장" v-model="filters.facilityType">
                     <label for="pool">애견수영장</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="playroom" name="playroom">
+                    <input type="checkbox" id="playroom" value="애견놀이터" v-model="filters.facilityType">
                     <label for="playroom">애견놀이터</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="grass" name="grass">
+                    <input type="checkbox" id="grass" value="잔디마당" v-model="filters.facilityType">
                     <label for="grass">잔디마당</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="menu" name="menu">
+                    <input type="checkbox" id="menu" value="반려동물 메뉴" v-model="filters.facilityType">
                     <label for="menu">반려동물 메뉴</label>
                 </div>
             </div>
         </div>
         <div class="btn-delete">
             <img class="reset-icon" src="/developImg/reset.png" alt="">
-            <span>전체 해제</span>
+            <span @click="resetFiltesr">전체 해제</span>
         </div>
         <div class="btn-filter">
-            <button class="btn btn-header btn-bg-blue">적용</button>
+            <button class="btn btn-header btn-bg-blue" @click="setFilters">적용</button>
             <button @click="$emit('postFilterClose')" class="btn btn-header btn-bg-gray">닫기</button>
         </div>
     </div>
 </div>
 </template>
 <script setup>
+import { reactive } from 'vue';
+const filters = reactive({
+    animalType: []
+    ,facilityType: []
+});
+
+
 
 </script>
 <style scoped>
