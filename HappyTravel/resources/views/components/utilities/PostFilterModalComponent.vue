@@ -7,23 +7,23 @@
             <h3>반려동물</h3>
             <div class="pet-type">
                 <div>
-                    <input type="checkbox" id="sDog" value="소형견" v-model="filters.animalType">
+                    <input type="checkbox" id="sDog" value="01" v-model="filters.animalType">
                     <label for="sDog">소형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="mDog" value="중형견" v-model="filters.animalType">
+                    <input type="checkbox" id="mDog" value="02" v-model="filters.animalType">
                     <label for="mDog">중형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="lDog" value="대형견" v-model="filters.animalType">
+                    <input type="checkbox" id="lDog" value="03" v-model="filters.animalType">
                     <label for="lDog">대형견</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="cat" value="고양이" v-model="filters.animalType">
+                    <input type="checkbox" id="cat" value="04" v-model="filters.animalType">
                     <label for="cat">고양이</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="bird" value="조류" v-model="filters.animalType">
+                    <input type="checkbox" id="bird" value="05" v-model="filters.animalType">
                     <label for="bird">조류</label>
                 </div>
             </div>
@@ -32,30 +32,30 @@
             <h3>반려동물 편의</h3>
             <div class="pet-option">
                 <div>
-                    <input type="checkbox" id="dry-room" value="드라이룸" v-model="filters.facilityType">
+                    <input type="checkbox" id="dry-room" value="01" v-model="filters.facilityType">
                     <label for="dry-room">드라이룸</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="pool" value="애견수영장" v-model="filters.facilityType">
+                    <input type="checkbox" id="pool" value="02" v-model="filters.facilityType">
                     <label for="pool">애견수영장</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="playroom" value="애견놀이터" v-model="filters.facilityType">
+                    <input type="checkbox" id="playroom" value="03" v-model="filters.facilityType">
                     <label for="playroom">애견놀이터</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="grass" value="잔디마당" v-model="filters.facilityType">
+                    <input type="checkbox" id="grass" value="04" v-model="filters.facilityType">
                     <label for="grass">잔디마당</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="menu" value="반려동물 메뉴" v-model="filters.facilityType">
+                    <input type="checkbox" id="menu" value="05" v-model="filters.facilityType">
                     <label for="menu">반려동물 메뉴</label>
                 </div>
             </div>
         </div>
         <div class="btn-delete">
             <img class="reset-icon" src="/developImg/reset.png" alt="">
-            <span @click="resetFiltesr">전체 해제</span>
+            <span class="btn-reset" @click="resetFilter">전체 해제</span>
         </div>
         <div class="btn-filter">
             <button class="btn btn-header btn-bg-blue" @click="setFilters">적용</button>
@@ -66,10 +66,26 @@
 </template>
 <script setup>
 import { reactive } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore();
 const filters = reactive({
     animalType: []
     ,facilityType: []
 });
+
+const setFilters = () => {
+    store.dispatch('post/indexes', {
+        animalType: filters.animalType
+        ,facilityType : filters.facilityType
+    });
+}
+
+// 전체 해제
+const resetFilter = () => {
+    filters.animalType = [];
+    filters.facilityType = [];
+    setFilters();
+};
 
 
 
@@ -138,10 +154,14 @@ const filters = reactive({
     justify-content: flex-end;
     margin: 10px 0;
     color: #cacaca;
+}
+
+.btn-reset {
+    display: inline;
     cursor: pointer;
 }
 
-.btn-delete:hover {
+.btn-reset:hover {
     color: #000;
 }
 
