@@ -115,7 +115,7 @@ const pushPosts = function(post_num = null){
 		store.commit('post/setInitialize');
 		store.commit('post/setPostThemeId', post_num);
 		store.commit('post/setPostThemeTitle');
-		
+
 		store.dispatch('post/index', true);
 
 		router.push(`/posts/${post_num}`);

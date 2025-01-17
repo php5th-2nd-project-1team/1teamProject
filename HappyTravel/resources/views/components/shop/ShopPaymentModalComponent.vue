@@ -3,12 +3,14 @@
 		<div class="paymodal-container">
 			<div class="paymodal-clientInfo">
 				<ShopModalClientInfo/>
+				<ShopModalAnimalsInfo/>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup>
-	import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
+	import ShopModalAnimalsInfo from './shop_modal/ShopModalAnimalsInfo.vue';
+import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
 </script>
 <style scoped>
 	.paymodal-bg{
@@ -23,13 +25,23 @@
 		align-items: center;
 
 		z-index: 1000;
+
+		overflow: auto;
 	}
 	.paymodal-container{
 		width: 1300px;
 		height: 100%;
 		background-color: white;
 
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-rows: 1fr 1fr 0.1fr;
+
+		padding: 32px 50px;
+	}
+	.paymodal-clientInfo{
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+
+		gap : 20px;
 	}
 </style>

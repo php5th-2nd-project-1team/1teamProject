@@ -238,7 +238,7 @@ export default {
 						context.commit('setTotalPage', response.data.PostList.last_page);
 					}
 				}).catch (error => {
-					console.log(error.response);
+					console.log(error);
 					setErrorRouter(error.response.data, '/');
 				}).finally(() => {
 					context.commit('setIsLoading', false);

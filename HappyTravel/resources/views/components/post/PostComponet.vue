@@ -104,7 +104,6 @@ import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
 import PostFilterModalComponent from '../utilities/PostFilterModalComponent.vue';
 import { useRoute } from 'vue-router';
-import post from '../../../js/store/modules/post';
 
 const store = useStore();
 const route = useRoute();
@@ -145,10 +144,7 @@ onBeforeMount(()=>{
 
 onMounted(()=>{
     store.commit('post/setPostThemeId', route.params.theme);
-
-    if(!isLoading){
-        store.dispatch('post/index', true);
-    }
+    store.dispatch('post/index', true);
 });
 
 
