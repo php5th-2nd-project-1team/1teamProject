@@ -52,6 +52,10 @@ export default {
 		,postIndexList :[]
 		,viewList : []
 		,likeList : []
+
+		// filter
+		,animalType : []
+		,facilityType : []
 	})
 	,mutations: {
 		// post 부분
@@ -75,6 +79,7 @@ export default {
 					break;
 			}
 		}
+
 		,setPostList(state, lists){
 			state.postList = state.postList.concat(lists);
 		}
@@ -199,6 +204,13 @@ export default {
 		}
 		,setLikeList(state, lists){
 			state.likeList = lists;
+		}
+
+		,setanimalType(state) {
+			state.animalType = [];
+		}
+		,setfacilityType(state) {
+			state.animalType = [];
 		}
 
 	}
@@ -331,6 +343,30 @@ export default {
 			}).catch(error => {
 				console.log(error);
 			});	
+			// --------------------------------------------------------
+			const params = new URLSearchParams();
+			params.append('theme', context.state.post_theme_id);
+			params.append('page', context.getters['getNextPage']);
+
+			payload.animalType.forEach(type => {
+				params.append('animal_type_num[]', type);
+			});
+			payload.facilityType.forEach(type => {
+				params.append('facility_type_num[]', type);
+			});
+
+			// const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}
+			// 					&animal_type_num[]=${context.state.animalType}&facility_type_num[]=${context.state.facilityType}`
+			axios.get(`api/posts`, { params })
+			.then(response => {
+				context.commit('setPostList', response.data.postList);
+				// context.commit('setanimalType', payload.animalType);
+				// context.commit('setfacilityType', payload.facilityType);
+				console.log(payload.animalType);
+				console.log(payload.facilityType);
+			}).catch(error => {
+				console.error('Post list fetch error:', error);
+			});
 		}
 
 		// 포스트 상세 출력
