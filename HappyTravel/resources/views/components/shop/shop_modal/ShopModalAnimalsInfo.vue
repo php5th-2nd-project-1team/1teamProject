@@ -5,14 +5,14 @@
 		</div>
 		<div class="animalsInfo-form-container">
 			<div class="animalsInfo-form-buttonArea">
-				<button>-</button>
-				<button>+</button>
+				<button @click="discountAnimalInfo()">-</button>
+				<button @click="addAnimalInfo()">+</button>
 			</div>
 			<div class="animalsInfo-formArea">
-				<div class="animalsInfo-form">
+				<div class="animalsInfo-form" v-for="(animalInfo, i) in animalInfos" :key="i">
 					<div class="animalsInfo-form-type inner">
 						<label for="animalType">동물 종류</label>
-						<select v-model="animalInfos[0].animalType" name="animalType" id="animalType">
+						<select v-model="animalInfo.animalType" name="animalType" id="animalType">
 							<option value="소형견">소형견</option>
 							<option value="중형견">중형견</option>
 							<option value="대형견">대형견</option>
@@ -22,7 +22,7 @@
 					</div>
 					<div class="animalsInfo-precautions inner">
 						<label for="animalPrecautions">주의사항</label>
-						<textarea v-model="animalInfos[0].animalPrecautions" name="animalPrecautions" id="animalPrecautions"></textarea>
+						<textarea v-model="animalInfo.animalPrecautions" name="animalPrecautions" id="animalPrecautions"></textarea>
 					</div>
 				</div>
 			</div>
@@ -40,6 +40,18 @@ import { reactive } from 'vue';
 		,animalPrecautions : ''
 	}]);
 
+	function addAnimalInfo(){
+		animalInfos.push(sample);
+	}
+
+	function discountAnimalInfo(){
+		if(animalInfos.length === 1){
+			alert('최소 한개는 있어야 합니다.');
+			return;
+		}
+		animalInfos.pop();
+	}
+
 </script>
 <style scoped>
 	.animalsInfo-container{
@@ -48,7 +60,7 @@ import { reactive } from 'vue';
 		gap : 1rem;
 
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
 	}
 	/* 제목 부분 */
 	.animalsInfo-title{
@@ -59,7 +71,7 @@ import { reactive } from 'vue';
 	/* 폼 부분 */
 	.animalsInfo-form-container{
 		width: 100%;
-		height: 100%;
+		height: 450px;
 
 		border: 1px solid black;
 
@@ -68,13 +80,13 @@ import { reactive } from 'vue';
 	.animalsInfo-formArea{
 		width: 100%;
 		height: 100%;
-		overflow: auto;
+		overflow: scroll;
 	}
 	.animalsInfo-form{
 		display: flex;
 		flex-direction: column;;
 		width: 100%;
-		height: 90%;
+		max-height: 90%;
 
 		border:1px solid black;
 
@@ -103,7 +115,7 @@ import { reactive } from 'vue';
 	}
 	.animalsInfo-precautions textarea{
 		width: 100%;
-		height: 100%;
+		height: 91.8px;
 
 		resize: none;
 	}
