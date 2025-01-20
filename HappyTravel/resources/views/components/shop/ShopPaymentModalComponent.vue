@@ -5,12 +5,18 @@
 				<ShopModalClientInfo/>
 				<ShopModalAnimalsInfo/>
 			</div>
+			<div class="paymodal-rules">
+				<ShopModalRule/>
+			</div>
+			<button>예약하기</button>
+			<button>뒤로가기</button>
 		</div>
 	</div>
 </template>
 <script setup>
 	import ShopModalAnimalsInfo from './shop_modal/ShopModalAnimalsInfo.vue';
-import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
+	import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
+	import ShopModalRule from './shop_modal/ShopModalRule.vue';
 </script>
 <style scoped>
 	.paymodal-bg{
@@ -18,30 +24,32 @@ import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
 		background-color: rgba(0, 0, 0, 0.5);
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
 		z-index: 1000;
-
-		overflow: auto;
 	}
 	.paymodal-container{
 		width: 1300px;
-		height: 100%;
 		background-color: white;
 
-		display: grid;
-		grid-template-rows: 1fr 1fr 0.1fr;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 
 		padding: 32px 50px;
+
+		overflow: auto;
 	}
 	.paymodal-clientInfo{
 		display: grid;
 		grid-template-columns: 1fr 2fr;
 
 		gap : 20px;
+	}.paymodal-rules{
+		width: 100%;
 	}
 </style>
