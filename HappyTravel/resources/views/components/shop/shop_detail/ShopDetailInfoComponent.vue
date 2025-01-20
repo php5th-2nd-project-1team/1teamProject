@@ -20,24 +20,27 @@
 				<p>{{ shopDetailInfo.price.toLocaleString('ko-KR') }}원</p>
 			</div>
 			<div class="shopDetail-info-btn">
-				<button>구매하기</button>
+				<button @click="store.commit('shop/setIsModalOpen', true)">구매하기</button>
 			</div>
 		</div>
 	</div>
-	<ShopPaymentModalComponent v-if="true"/>
+	<ShopPaymentModalComponent v-if="isModalOpen"/>
 </template>
 <script setup>
-
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import ShopPaymentModalComponent from '../ShopPaymentModalComponent.vue';
+import { useStore } from 'vuex';
 
+	const store = useStore();
 	const shopDetailInfo = reactive({
-		code: '12345678',
+		code: '2',
 		name: '구릉이네 간식 만들기 맛있는 간식 만들자',
 		price: 10000000,
 		place: '비산 4동 주민센터',
 		date: '2999년 13월 32일'
 	});
+
+	const isModalOpen = computed(()=> store.state.shop.isModalOpen);
 
 </script>
 <style scoped>

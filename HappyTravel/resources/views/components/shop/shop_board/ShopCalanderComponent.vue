@@ -1,42 +1,130 @@
 <template>
 	<div class="shop-calander">
 		<div class="shop-calander-controller">
-			<button><</button>
-			<span>2025년 1월</span>
-			<button>></button>
+			<button @click="getPrevDate()"><</button>
+			<span>{{ activeDate.year }}년 {{ activeDate.month }}월</span>
+			<button @click="getNextDate()">></button>
 		</div>
 		<div class="shop-calander-date">
-			<button><</button>
 			<Swiper
+			:key="swiperKey"
 			:slides-per-view="15"
-			:space-between="5">
-				<SwiperSlide v-for="i in 31" :key="i">
-					<div class="swiper-slide holiday" v-if="i%7 === 0">
-						<p>{{ week(i) }}</p>
-						<p>{{i}}</p>
+			:space-between="30"
+			>
+				<SwiperSlide v-for="i in activeDate.day" :key="`${activeDate.year}-${activeDate.month}-${i.day}`" @click="onClickDay(i.day)">
+					<div class="swiper-slide holiday" v-if="i.weekday%7 === 0">
+						<p>{{ week(i.weekday) }}</p>
+						<p>{{i.day}}</p>
 					</div>
-					<div class="swiper-slide weekend" v-else-if="i%7 === 6">
-						<p>{{ week(i) }}</p>
-						<p>{{i}}</p>
+					<div class="swiper-slide weekend" v-else-if="i.weekday%7 === 6">
+						<p>{{ week(i.weekday) }}</p>
+						<p>{{i.day}}</p>
 					</div>
 					<div class="swiper-slide" v-else>
-						<p>{{ week(i) }}</p>
-						<p>{{i}}</p>
+						<p>{{ week(i.weekday) }}</p>
+						<p>{{i.day}}</p>
 					</div>
 				</SwiperSlide>
 			</Swiper>
-			<button>></button>
 		</div>
 	</div>
 </template>
 <script setup>
-	import { Swiper, SwiperSlide } from 'swiper/vue';
+	import { Swiper, SwiperSlide} from 'swiper/vue';
+	import { onBeforeMount, reactive, ref } from 'vue';
+	import 'swiper/swiper-bundle.css';
+	// 선언 부분
+	const swiperKey = ref(null);
+	// const mySwiper = ref(null);
 
-	// 테스트용
-	const week = function(num){
+	// 여기서부터 달력 출력을 위한 환장쇼
+	const activeDate = reactive({
+		year : 0
+		,month : 0
+		,day : [
+
+		]
+	});
+
+	const currentMonth = new Date().getMonth() + 1;
+	const currentYear = new Date().getFullYear();
+
+	// 월 일 계산해서 집어넣는 함수 
+	function setActiveDate(p_year, p_month){
+		let month = p_month;
+		let year = p_year;
+
+		// 만약 month가 13 이상이면 그만큼 빼고 year 1 증가
+		if(month > 12){
+			month -= 12;
+			year ++; 
+		} 
+		// 만약 month가 0 이하라면, 그만큼 더하고 year 1 감소
+		else if(month < 1){
+			month += 12;
+			year --;
+		}
+
+		// 총 월 계산
+		const targetDate = new Date(year, month, 0);
+		const totalDays = targetDate.getDate();
+
+		activeDate.year = targetDate.getFullYear();
+		activeDate.month = targetDate.getMonth() + 1;
+
+		activeDate.day.length = 0;
+
+		// 1일부터 마지막 날까지 반복
+		for (let day = 1; day <= totalDays; day++) {
+			// 요일 계산
+			const weekday = new Date(year, month - 1, day).getDay();
+
+			// 요일에 따라 색상 설정
+			let dayInfo = {
+				day: day,
+				weekday: weekday,
+			};
+
+			activeDate.day.push(dayInfo);
+		}
+
+		swiperKey.value ++;
+	}
+
+	// 이동 가능 여부
+	function isMoveable(targetMonth){
+		if(currentMonth > targetMonth) return false;
+		if(currentMonth + 2 < targetMonth ) return false;
+
+		return true;
+	}
+
+	// 다음 달, 이전 달로 이동
+	function getNextDate(){
+		if(isMoveable(activeDate.month + 1)){
+			setActiveDate(activeDate.year, activeDate.month + 1);
+		}
+	}
+
+	function getPrevDate(){
+		if(isMoveable(activeDate.month - 1)){
+			setActiveDate(activeDate.year, activeDate.month - 1);
+		}
+	}
+
+	// 클릭하면 클릭한 년, 월, 일 출력
+	function onClickDay(day){
+		console.log(`${activeDate.year}년 ${activeDate.month}월 ${day}일`)
+	}
+
+	function week(num){
 		const week = ['일', '월', '화', '수', '목', '금', '토'];
 		return week[num%7];
 	}
+
+	onBeforeMount(() => {
+		setActiveDate(currentYear, currentMonth);
+	});
 </script>
 <style scoped>
 	.shop-calander{
@@ -64,6 +152,12 @@
 		gap : 1rem;
 
 		width: 100%;
+	}
+	.shop-calander-controller button{
+		width: 3rem;
+		height: 3rem;
+
+		border-radius: 100%;
 	}
     .shop-calander-date{
         display: flex;

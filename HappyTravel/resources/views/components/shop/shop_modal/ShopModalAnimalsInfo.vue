@@ -35,6 +35,7 @@ import { reactive } from 'vue';
 		animalType : '소형견'
 		,animalPrecautions : ''
 	})
+
 	const animalInfos = reactive([{
 		animalType : '소형견'
 		,animalPrecautions : ''
@@ -67,11 +68,27 @@ import { reactive } from 'vue';
 		font-size: 1.5rem;
 		font-family: 'GmarketSansBold';
 	}
+	/* 버튼 부분 */
+	.animalsInfo-form-buttonArea{
+		display: flex;
+		justify-content: flex-start;
+
+		gap:1rem;
+	}
+	.animalsInfo-form-buttonArea button{
+		width: 3rem;
+		height: 3rem;
+		border-radius: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
 	/* 폼 부분 */
 	.animalsInfo-form-container{
 		width: 100%;
-		height: 450px;
+		height: 400px;
 
 		border: 1px solid black;
 
@@ -79,14 +96,14 @@ import { reactive } from 'vue';
 	}
 	.animalsInfo-formArea{
 		width: 100%;
-		height: 100%;
+		height: 95%;
 		overflow: auto;
 	}
 	.animalsInfo-form{
 		display: flex;
 		flex-direction: column;;
 		width: 100%;
-		max-height: 90%;
+		max-height: 95%;
 
 		border:1px solid black;
 
@@ -115,7 +132,7 @@ import { reactive } from 'vue';
 	}
 	.animalsInfo-precautions textarea{
 		width: 100%;
-		height: 91.8px;
+		height: 85px;
 
 		resize: none;
 	}

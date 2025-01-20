@@ -14,9 +14,9 @@
 		<div class="clientinfo-count clientinfo">
 			<p>참여 인원 수</p>
 			<div class="clientinfo-buttonarea">
-				<button><</button>
-				<input type="number" name="count" id="count" value="1">
-				<button>></button>
+				<button @click="subPeopleCount"><</button>
+				<input type="number" name="count" id="count" min="1" v-model="peopleCount">
+				<button @click="addPeopleCount">></button>
 			</div>
 		</div>
 		<div class="clientinfo-price clientinfo">
@@ -27,8 +27,26 @@
 </template>
 <script setup>
 
+import { ref } from 'vue';
+
+	const peopleCount = ref(1);
+
+	function addPeopleCount(){
+		peopleCount.value += 1;
+	}
+
+	function subPeopleCount(){
+		if(peopleCount.value > 1){
+			peopleCount.value -= 1;
+		}
+	}
+
 </script>
 <style scoped>
+	input:focus{
+		outline: none;
+	}
+
 	.clientinfo-container{
 		display: flex;
 		flex-direction: column;;
