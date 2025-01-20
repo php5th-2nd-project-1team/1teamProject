@@ -245,7 +245,8 @@ export default {
 				.then( response => {
 					context.commit('setPostResultCnt', response.data.PostList.total);
 					context.commit('setPostList', response.data.PostList.data);
-					context.commit('setCurrentPage', response.data.PostList.current_page);					
+					context.commit('setCurrentPage', response.data.PostList.current_page);
+										
 					if(context.state.totalPage === 0){
 						context.commit('setTotalPage', response.data.PostList.last_page);
 					}
@@ -256,6 +257,36 @@ export default {
 					context.commit('setIsLoading', false);
 				});
 			}
+			if(context.state.animalType !== '' && context.state.facilityType !== '') {
+				// --------------------------------------------------------
+				// const params = new URLSearchParams();
+				// params.append('theme', context.state.post_theme_id);
+				// params.append('page', context.getters['getNextPage']);
+	
+				// payload.animalType.forEach(type => {
+				// 	params.append('animal_type_num[]', type);
+				// });
+				// payload.facilityType.forEach(type => {
+				// 	params.append('facility_type_num[]', type);
+				// });
+	
+				const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}
+									&animal_type_num[]=${context.state.animalType}&facility_type_num[]=${context.state.facilityType}`
+				axios.get(filterUrl)
+				.then(response => {
+					context.commit('setPostList', response.data.postList);
+					console.log(response.data.postList);
+					console.log('Animal Type:', context.state.animalType);
+					console.log('Facility Type:', context.state.facilityType);
+				}).catch(error => {
+					console.log(error);
+					// console.log('Animal Type:', context.state.animalType);
+					// console.log('Facility Type:', context.state.facilityType);
+				});
+			}
+
+
+
 		}
 		// 포스트 검색 찾기
 		,search(context, payload){
@@ -343,30 +374,7 @@ export default {
 			}).catch(error => {
 				console.log(error);
 			});	
-			// --------------------------------------------------------
-			const params = new URLSearchParams();
-			params.append('theme', context.state.post_theme_id);
-			params.append('page', context.getters['getNextPage']);
-
-			payload.animalType.forEach(type => {
-				params.append('animal_type_num[]', type);
-			});
-			payload.facilityType.forEach(type => {
-				params.append('facility_type_num[]', type);
-			});
-
-			// const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}
-			// 					&animal_type_num[]=${context.state.animalType}&facility_type_num[]=${context.state.facilityType}`
-			axios.get(`api/posts`, { params })
-			.then(response => {
-				context.commit('setPostList', response.data.postList);
-				// context.commit('setanimalType', payload.animalType);
-				// context.commit('setfacilityType', payload.facilityType);
-				console.log(payload.animalType);
-				console.log(payload.facilityType);
-			}).catch(error => {
-				console.error('Post list fetch error:', error);
-			});
+			
 		}
 
 		// 포스트 상세 출력

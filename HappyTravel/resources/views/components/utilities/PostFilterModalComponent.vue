@@ -32,23 +32,23 @@
             <h3>반려동물 편의</h3>
             <div class="pet-option">
                 <div>
-                    <input type="checkbox" id="dry-room" value="01" v-model="filters.facilityType">
+                    <input type="checkbox" id="dry-room" value="02" v-model="filters.facilityType">
                     <label for="dry-room">드라이룸</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="pool" value="02" v-model="filters.facilityType">
+                    <input type="checkbox" id="pool" value="03" v-model="filters.facilityType">
                     <label for="pool">애견수영장</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="playroom" value="03" v-model="filters.facilityType">
+                    <input type="checkbox" id="playroom" value="04" v-model="filters.facilityType">
                     <label for="playroom">애견놀이터</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="grass" value="04" v-model="filters.facilityType">
+                    <input type="checkbox" id="grass" value="05" v-model="filters.facilityType">
                     <label for="grass">잔디마당</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="menu" value="05" v-model="filters.facilityType">
+                    <input type="checkbox" id="menu" value="01" v-model="filters.facilityType">
                     <label for="menu">반려동물 메뉴</label>
                 </div>
             </div>
@@ -74,7 +74,7 @@ const filters = reactive({
 });
 
 const setFilters = () => {
-    store.dispatch('post/indexes', {
+    store.dispatch('post/index', {
         animalType: filters.animalType
         ,facilityType : filters.facilityType
     });
