@@ -49,7 +49,6 @@ import AboutComponent from '../views/components/AboutComponent.vue';
 
 import { useStore } from 'vuex';
 import SocialComponent from '../views/components/auth/SocialComponent.vue';
-
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
