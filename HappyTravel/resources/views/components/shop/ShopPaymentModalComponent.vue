@@ -31,6 +31,8 @@
 		align-items: center;
 
 		z-index: 1000;
+
+		overflow: auto;
 	}
 	.paymodal-container{
 		width: 1300px;

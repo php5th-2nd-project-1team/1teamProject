@@ -39,6 +39,6 @@
 
 		border : 1px solid black;
 
-		overflow: scroll;
+		overflow: auto;
 	}
 </style>
