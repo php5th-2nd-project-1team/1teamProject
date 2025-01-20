@@ -193,6 +193,8 @@ export default {
 			state.isClkedLike = false;
 			state.isLikeLoading = false;
 			state.postResultCnt = 0;
+			state.animalType = [];
+			state.facilityType = [];
 		}
 
 		// index 부분
@@ -206,11 +208,11 @@ export default {
 			state.likeList = lists;
 		}
 
-		,setanimalType(state) {
-			state.animalType = [];
+		,setanimalType(state, animalType) {
+			state.animalType = animalType;
 		}
-		,setfacilityType(state) {
-			state.animalType = [];
+		,setfacilityType(state, facilityType) {
+			state.animalType = facilityType;
 		}
 
 	}
@@ -257,37 +259,53 @@ export default {
 					context.commit('setIsLoading', false);
 				});
 			}
-			if(context.state.animalType !== '' && context.state.facilityType !== '') {
-				// --------------------------------------------------------
-				// const params = new URLSearchParams();
-				// params.append('theme', context.state.post_theme_id);
-				// params.append('page', context.getters['getNextPage']);
-	
-				// payload.animalType.forEach(type => {
-				// 	params.append('animal_type_num[]', type);
-				// });
-				// payload.facilityType.forEach(type => {
-				// 	params.append('facility_type_num[]', type);
-				// });
-	
-				const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}
-									&animal_type_num[]=${context.state.animalType}&facility_type_num[]=${context.state.facilityType}`
+			// if(payload.animalType !== '' && payload.facilityType !== '') {
+				
+			// 	context.commit('setanimalType', payload.animalType);
+			// 	context.commit('setfacilityType', payload.facilityType);
+
+			// 	const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
+			// 					+ `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}`
+			// 					+ `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}`;
+			// 	axios.get(filterUrl)
+			// 	.then(response => {
+			// 		context.commit('setPostList', response.data.postList);
+			// 		console.log('Animal Type:', payload.animalType);
+			// 		console.log('Facility Type:', payload.facilityType);
+			// 	}).catch(error => {
+			// 		console.log(error);
+			// 		console.log('Animal Type error:', payload.animalType);
+			// 		console.log('Facility Type error:', payload.facilityType);
+			// 	});
+			// }
+		}
+		,indexFilter(context, payload) {
+			if(payload.animalType !== '' && payload.facilityType !== '') {
+
+				if(payload === true){
+					context.commit('setInitialize');
+				}
+				
+				const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
+								+ `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}`
+								+ `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}`;
 				axios.get(filterUrl)
 				.then(response => {
+					context.commit('setanimalType', payload.animalType);
+					context.commit('setfacilityType', payload.facilityType);
 					context.commit('setPostList', response.data.postList);
+
+					console.log('Animal Type:', payload.animalType);
+					console.log('Facility Type:', payload.facilityType);
 					console.log(response.data.postList);
-					console.log('Animal Type:', context.state.animalType);
-					console.log('Facility Type:', context.state.facilityType);
 				}).catch(error => {
 					console.log(error);
-					// console.log('Animal Type:', context.state.animalType);
-					// console.log('Facility Type:', context.state.facilityType);
+					console.log('Animal Type error:', payload.animalType);
+					console.log('Facility Type error:', payload.facilityType);
 				});
 			}
-
-
-
 		}
+
 		// 포스트 검색 찾기
 		,search(context, payload){
 			if(context.state.beforeSearch !== payload){

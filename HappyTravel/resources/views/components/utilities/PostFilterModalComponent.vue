@@ -59,7 +59,7 @@
         </div>
         <div class="btn-filter">
             <button class="btn btn-header btn-bg-blue" @click="setFilters">적용</button>
-            <button @click="$emit('postFilterClose')" class="btn btn-header btn-bg-gray">닫기</button>
+            <button @click="closeFilterModal" class="btn btn-header btn-bg-gray">닫기</button>
         </div>
     </div>
 </div>
@@ -67,24 +67,33 @@
 <script setup>
 import { reactive } from 'vue';
 import { useStore } from 'vuex';
+
 const store = useStore();
+const emit = defineEmits();
 const filters = reactive({
     animalType: []
     ,facilityType: []
 });
 
 const setFilters = () => {
-    store.dispatch('post/index', {
+    // console.log('A:', filters.animalType);
+    // console.log('F:', filters.facilityType);
+    store.dispatch('post/indexFilter', {
         animalType: filters.animalType
         ,facilityType : filters.facilityType
     });
+    closeFilterModal();
+};
+
+const closeFilterModal = () => {
+    emit('postFilterClose');
 }
 
 // 전체 해제
 const resetFilter = () => {
     filters.animalType = [];
     filters.facilityType = [];
-    setFilters();
+    // setFilters();
 };
 
 
