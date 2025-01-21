@@ -10,7 +10,10 @@
 			<button @click="setActiveDate(currentYear, currentMonth)">초기화</button>
 		</div>
 		<div class="shop-calander-date">
+			<button class="shop-calander-prev"><</button>
 			<Swiper
+			:modules="modules"
+			:navigation="{ nextEl:'.shop-calander-next', prevEl:'.shop-calander-prev'  }"
 			:key="swiperKey"
 			:slides-per-view="15"
 			:space-between="30"
@@ -33,13 +36,18 @@
 					</div>
 				</SwiperSlide>
 			</Swiper>
+			<button class="shop-calander-next">></button>
 		</div>
 	</div>
 </template>
 <script setup>
 	import { Swiper, SwiperSlide} from 'swiper/vue';
 	import { onBeforeMount, reactive, ref } from 'vue';
+	import { Navigation } from 'swiper/modules';
 	import 'swiper/swiper-bundle.css';
+	// swiper 네비게이션
+	const modules = [Navigation];
+
 	// 선언 부분
 	const swiperKey = ref(null);
 	// const mySwiper = ref(null);
@@ -193,6 +201,12 @@
 
 		padding : 1rem;
     }
+	.shop-calander-date button{
+		width: 4rem;
+		height: 2rem;
+
+		border-radius: 100%;
+	}
 	.shop-btn {
 		display: flex;
 		justify-content: center;
