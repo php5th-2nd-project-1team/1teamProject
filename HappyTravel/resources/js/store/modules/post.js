@@ -288,19 +288,29 @@ export default {
 		// }
 
 		index(context, payload){
+<<<<<<< Updated upstream
 			console.log(payload);
 			const isAnimalTypeReset = (context.state.animalType.length !== 0 && payload.hasOwnProperty('animalType') && context.state.animalType !== payload.animalType);
 			const isFacilityTypeReset = (context.state.facilityType.length !== 0 && payload.hasOwnProperty('facilityType') && context.state.facilityType !== payload.facilityType);
 
+=======
+>>>>>>> Stashed changes
 			if(payload === true || 
 				isAnimalTypeReset || 
 				isFacilityTypeReset){	
 				context.commit('setInitialize');
 			}
+<<<<<<< Updated upstream
 
 			// if(payload.animalType === null && payload.facilityType === null){
 			// 	context.commit('setInitialize');
 			// }
+=======
+			// 필터 전체 해제시 초기화
+			if(payload.animalType === null && payload.facilityType === null){
+				context.commit('setInitialize');
+			}
+>>>>>>> Stashed changes
 
 			if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
 				console.log('currentPage: ' + context.state.currentPage);
@@ -336,11 +346,19 @@ export default {
 				}
 				axios.get(url)
 				.then( response => {
-					console.log('와 됬당');
-
-					context.commit('setPostResultCnt', response.data.PostList.total);
-					context.commit('setPostList', response.data.PostList.data);
+					// context.commit('setPostResultCnt', response.data.PostList.total);
+					// context.commit('setPostList', response.data.PostList.data);
+					const beforePost = response.data.PostList.data;
+					const afterPost = [...new Map(beforePost.map(item => [item.post_id, item])).values()];
+					if(payload?.animalType?.length > 0 || payload?.facilityType?.length > 0) {
+						context.commit('setPostResultCnt', afterPost.length);
+					} else {
+						context.commit('setPostResultCnt', response.data.PostList.total);
+					}
+					context.commit('setPostList', beforePost);
 					context.commit('setCurrentPage', response.data.PostList.current_page);
+					console.log(response.data.PostList.data);
+					console.log(afterPost.length);
 
 
 					if(context.state.totalPage === 0){

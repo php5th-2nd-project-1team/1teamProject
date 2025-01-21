@@ -76,8 +76,8 @@ const filters = reactive({
 });
 
 const setFilters = () => {
-    // console.log('A:', filters.animalType);
-    // console.log('F:', filters.facilityType);
+    console.log('A:', filters.animalType);
+    console.log('F:', filters.facilityType);
     store.dispatch('post/index', {
         animalType: filters.animalType
         ,facilityType : filters.facilityType
@@ -93,7 +93,8 @@ const closeFilterModal = () => {
 const resetFilter = () => {
     filters.animalType = [];
     filters.facilityType = [];
-    // setFilters();
+    console.log('A:', filters.animalType);
+    console.log('F:', filters.facilityType);
 };
 
 

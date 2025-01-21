@@ -78,6 +78,7 @@ class PostController extends Controller
 		
 		->when($facility_type_num, function($query, $facility_type_num) {
 			return $query->join('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
+			// whereIn 은 where 의 or과 같음 01 or 02 or 03 ...  and로 교체해야함
 						->whereIn('facility_type_num', ['01', '02', '03', '04', '05'])
 						->whereIn('post_facility_types.facility_type_num', $facility_type_num);
 		})
