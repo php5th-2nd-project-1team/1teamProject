@@ -195,6 +195,7 @@ export default {
 			state.postResultCnt = 0;
 			state.animalType = [];
 			state.facilityType = [];
+			
 		}
 
 		// index 부분
@@ -208,16 +209,84 @@ export default {
 			state.likeList = lists;
 		}
 
-		,setanimalType(state, animalType) {
+		,setAnimalType(state, animalType) {
 			state.animalType = animalType;
 		}
-		,setfacilityType(state, facilityType) {
+		,setFacilityType(state, facilityType) {
 			state.animalType = facilityType;
 		}
 
 	}
 	,actions: {
 		// 포스트 찾기
+		// index(context, payload){
+		// 	if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
+		// 		return ;
+		// 	}
+
+		// 	if(context.state.isLoading){
+		// 		console.log('로딩중입니다.');
+		// 		return;
+		// 	}
+			
+		// 	if(payload === true){
+		// 		context.commit('setInitialize');
+		// 	}
+
+		// 	if(context.state.beforeLocal !== ''){
+		// 		if(context.state.beforeSearch !== ''){
+		// 			context.dispatch('search', context.state.beforeSearch);
+		// 		}
+		// 		else{
+		// 			context.dispatch('localSearch', context.state.beforeLocal);
+		// 		}
+		// 	} else {
+		// 		context.commit('setIsLoading', true);
+
+		// 		const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`;
+		// 		axios.get(url)
+		// 		.then( response => {
+		// 			context.commit('setPostResultCnt', response.data.PostList.total);
+		// 			context.commit('setPostList', response.data.PostList.data);
+		// 			context.commit('setCurrentPage', response.data.PostList.current_page);
+
+	
+		// 			if(context.state.totalPage === 0){
+		// 				context.commit('setTotalPage', response.data.PostList.last_page);
+		// 			}
+		// 		}).catch (error => {
+		// 			console.log(error);
+		// 			setErrorRouter(error.response.data, '/');
+		// 		}).finally(() => {
+		// 			context.commit('setIsLoading', false);
+		// 		});
+		// 	}
+		// 	if(payload.animalType !== '' && payload.facilityType !== '') {
+
+		// 		if(payload === true){
+		// 			context.commit('setInitialize');
+		// 		}
+				
+		// 		const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
+		// 						+ `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}`
+		// 						+ `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}`;
+		// 		axios.get(filterUrl)
+		// 		.then(response => {
+		// 			context.commit('setanimalType', payload.animalType);
+		// 			context.commit('setfacilityType', payload.facilityType);
+		// 			context.commit('setPostList', response.data.postList);
+
+		// 			console.log('Animal Type:', payload.animalType);
+		// 			console.log('Facility Type:', payload.facilityType);
+		// 			console.log(response.data.postList);
+		// 		}).catch(error => {
+		// 			console.log(error);
+		// 			console.log('Animal Type error:', payload.animalType);
+		// 			console.log('Facility Type error:', payload.facilityType);
+		// 		});
+		// 	}
+		// }
+
 		index(context, payload){
 			if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
 				return ;
@@ -228,7 +297,7 @@ export default {
 				return;
 			}
 			
-			if(payload === true){
+			if(payload === true || context.state.animalType !== payload.animalType || context.state.facilityType !== payload.facilityType){
 				context.commit('setInitialize');
 			}
 
@@ -241,16 +310,35 @@ export default {
 				}
 			} else {
 				context.commit('setIsLoading', true);
-
-				const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`;
+				let url;
+				if(payload?.animalType?.length > 0 || payload?.facilityType?.length > 0) {
+					url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
+							+(payload.animalType?.length > 0 
+								? `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}` 
+								: '')
+							+ (payload.facilityType?.length > 0 
+								? `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}` 
+								: '');
+				} else {
+					url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`;
+				}
 				axios.get(url)
 				.then( response => {
 					context.commit('setPostResultCnt', response.data.PostList.total);
 					context.commit('setPostList', response.data.PostList.data);
 					context.commit('setCurrentPage', response.data.PostList.current_page);
-										
+
+
 					if(context.state.totalPage === 0){
 						context.commit('setTotalPage', response.data.PostList.last_page);
+					}
+
+					// 선택된 필터 저장
+					if (payload?.animalType?.length > 0) {
+						context.commit('setAnimalType', payload.animalType);
+					  }
+					if (payload?.facilityType?.length > 0) {
+					context.commit('setFacilityType', payload.facilityType);
 					}
 				}).catch (error => {
 					console.log(error);
@@ -260,18 +348,23 @@ export default {
 				});
 			}
 			// if(payload.animalType !== '' && payload.facilityType !== '') {
-				
-			// 	context.commit('setanimalType', payload.animalType);
-			// 	context.commit('setfacilityType', payload.facilityType);
 
+			// 	if(payload === true){
+			// 		context.commit('setInitialize');
+			// 	}
+				
 			// 	const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
 			// 					+ `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}`
 			// 					+ `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}`;
 			// 	axios.get(filterUrl)
 			// 	.then(response => {
+			// 		context.commit('setanimalType', payload.animalType);
+			// 		context.commit('setfacilityType', payload.facilityType);
 			// 		context.commit('setPostList', response.data.postList);
+
 			// 		console.log('Animal Type:', payload.animalType);
 			// 		console.log('Facility Type:', payload.facilityType);
+			// 		console.log(response.data.postList);
 			// 	}).catch(error => {
 			// 		console.log(error);
 			// 		console.log('Animal Type error:', payload.animalType);
@@ -279,32 +372,7 @@ export default {
 			// 	});
 			// }
 		}
-		,indexFilter(context, payload) {
-			if(payload.animalType !== '' && payload.facilityType !== '') {
-
-				if(payload === true){
-					context.commit('setInitialize');
-				}
-				
-				const filterUrl = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
-								+ `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}`
-								+ `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}`;
-				axios.get(filterUrl)
-				.then(response => {
-					context.commit('setanimalType', payload.animalType);
-					context.commit('setfacilityType', payload.facilityType);
-					context.commit('setPostList', response.data.postList);
-
-					console.log('Animal Type:', payload.animalType);
-					console.log('Facility Type:', payload.facilityType);
-					console.log(response.data.postList);
-				}).catch(error => {
-					console.log(error);
-					console.log('Animal Type error:', payload.animalType);
-					console.log('Facility Type error:', payload.facilityType);
-				});
-			}
-		}
+		
 
 		// 포스트 검색 찾기
 		,search(context, payload){

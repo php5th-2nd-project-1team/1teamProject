@@ -102,7 +102,7 @@ import { useStore } from 'vuex';
 import { computed, reactive, onUnmounted, onMounted, onBeforeMount, ref, watch } from 'vue';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
 import PostCardComponent from './component/PostCardComponent.vue';
-import PostFilterModalComponent from '../utilities/PostFilterModalComponent.vue';
+import PostFilterModalComponent from './component/PostFilterModalComponent.vue';
 import { useRoute } from 'vue-router';
 
 const store = useStore();

@@ -78,7 +78,7 @@ const filters = reactive({
 const setFilters = () => {
     // console.log('A:', filters.animalType);
     // console.log('F:', filters.facilityType);
-    store.dispatch('post/indexFilter', {
+    store.dispatch('post/index', {
         animalType: filters.animalType
         ,facilityType : filters.facilityType
     });
