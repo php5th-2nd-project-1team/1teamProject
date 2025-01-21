@@ -51,6 +51,7 @@ import { useStore } from 'vuex';
 import SocialComponent from '../views/components/auth/SocialComponent.vue';
 import AdminFormComponent from '../views/components/admin/AdminFormComponent.vue';
 import AdminIndexComponent from '../views/components/admin/AdminIndexComponent.vue';
+import SmartEditorComponent from '../views/components/utilities/SmartEditorComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -82,6 +83,10 @@ const routes=[
 	{
 		path: '/social/info',
 		component: SocialComponent,
+	},
+	{
+		path: '/notice/store',
+		component: SmartEditorComponent,
 	},
 	{
 		path: '/index',

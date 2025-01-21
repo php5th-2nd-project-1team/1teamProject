@@ -18,7 +18,7 @@
              <span class="notice-inportant">중요</span>  
           </div> 
           <div class="notice-item notice-title notice-cursor-pointer" @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</div>
-          <div class="notice-item">{{ item.managers.m_nickname }}</div>
+          <div class="notice-item">{{ item.managers?.m_nickname }}</div>
           <div class="notice-item">{{ item.created_at }}</div>
       </div>
 
@@ -27,7 +27,7 @@
              <span  class="notice-common">일반</span>
           </div> 
           <div class="notice-item notice-title notice-cursor-pointer" @click="redirectDetaile(item.notice_id)">{{ item.notice_title }}</div>
-          <div class="notice-item">{{ item.managers.m_nickname }}</div>
+          <div class="notice-item">{{ item.managers?.m_nickname }}</div>
           <div class="notice-item">{{ item.created_at }}</div>
       </div>
 
@@ -44,6 +44,7 @@
       </div>
     </div>
    
+    <button @click="router.push('/notice/store')">글쓰기</button>
 
    
 </template>

@@ -13,6 +13,7 @@ class Notice extends Model
     protected $primaryKey = 'notice_id';
 
     protected $fillable = [
+        'notice_id',
         'manager_id',       
         'notice_title',
         'notice_content',
