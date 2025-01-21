@@ -213,7 +213,7 @@ export default {
 			state.animalType = animalType;
 		}
 		,setFacilityType(state, facilityType) {
-			state.animalType = facilityType;
+			state.facilityType = facilityType;
 		}
 
 	}
@@ -288,17 +288,26 @@ export default {
 		// }
 
 		index(context, payload){
+
+			if(payload === true || 
+				context.state.animalType !== payload.animalType || 
+				context.state.facilityType !== payload.facilityType){	
+				context.commit('setInitialize');
+			}
+
+			if(payload.animalType === null && payload.facilityType === null){
+				context.commit('setInitialize');
+			}
+
 			if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
+				console.log('currentPage: ' + context.state.currentPage);
+				console.log('totalPage: ' + context.state.totalPage);
 				return ;
 			}
 
 			if(context.state.isLoading){
 				console.log('로딩중입니다.');
 				return;
-			}
-			
-			if(payload === true || context.state.animalType !== payload.animalType || context.state.facilityType !== payload.facilityType){
-				context.commit('setInitialize');
 			}
 
 			if(context.state.beforeLocal !== ''){
@@ -324,6 +333,8 @@ export default {
 				}
 				axios.get(url)
 				.then( response => {
+					console.log('와 됬당');
+
 					context.commit('setPostResultCnt', response.data.PostList.total);
 					context.commit('setPostList', response.data.PostList.data);
 					context.commit('setCurrentPage', response.data.PostList.current_page);

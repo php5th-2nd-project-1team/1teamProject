@@ -49,6 +49,8 @@ import AboutComponent from '../views/components/AboutComponent.vue';
 
 import { useStore } from 'vuex';
 import SocialComponent from '../views/components/auth/SocialComponent.vue';
+import AdminFormComponent from '../views/components/admin/AdminFormComponent.vue';
+import AdminIndexComponent from '../views/components/admin/AdminIndexComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -198,12 +200,20 @@ const routes=[
 		beforeEnter: chkAuth,
 	},		
 	{
-		// TODO 3. id 없는거 가져오려 할 시 오류 및 뒤로 이동 (옵션)
-
 		path:'/posts/:theme/:id' // 포스트 상세 페이지
 		,component:PostDetailComponet,
 		beforeEnter: chkAuth,
 	},
+	{
+		path:'/admin'
+		,component: AdminFormComponent
+		,children:[
+			{
+				path : 'index'
+				,component: AdminIndexComponent
+			}
+		]
+	}
 ];
 
 const router = createRouter({
