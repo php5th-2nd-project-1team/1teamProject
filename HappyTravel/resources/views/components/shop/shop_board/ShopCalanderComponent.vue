@@ -1,9 +1,13 @@
 <template>
 	<div class="shop-calander">
 		<div class="shop-calander-controller">
-			<button @click="getPrevDate()"><</button>
-			<span>{{ activeDate.year }}년 {{ activeDate.month }}월</span>
-			<button @click="getNextDate()">></button>
+			<div></div>
+			<div class="shop-btn">
+				<button @click="getPrevDate()"><</button>
+				<span>{{ activeDate.year }}년 {{ activeDate.month }}월</span>
+				<button @click="getNextDate()">></button>
+			</div>
+			<button @click="setActiveDate(currentYear, currentMonth)">초기화</button>
 		</div>
 		<div class="shop-calander-date">
 			<Swiper
@@ -11,7 +15,10 @@
 			:slides-per-view="15"
 			:space-between="30"
 			>
-				<SwiperSlide v-for="i in activeDate.day" :key="`${activeDate.year}-${activeDate.month}-${i.day}`" @click="onClickDay(i.day)">
+				<SwiperSlide v-for="i in activeDate.day"
+						:key="`${activeDate.year}-${activeDate.month}-${i.day}`" 
+						@click="onClickDay(i.day)"
+						:class="['day', { selected: i.day === selectedDate }]">
 					<div class="swiper-slide holiday" v-if="i.weekday%7 === 0">
 						<p>{{ week(i.weekday) }}</p>
 						<p>{{i.day}}</p>
@@ -48,6 +55,16 @@
 
 	const currentMonth = new Date().getMonth() + 1;
 	const currentYear = new Date().getFullYear();
+	const currentDay = new Date().getDate();
+
+	const selectedDate = ref(currentDay);
+
+	
+	function selectDate(day) {
+  		selectedDate.value = day;
+	};
+	
+	console.log(currentDay);
 
 	// 월 일 계산해서 집어넣는 함수 
 	function setActiveDate(p_year, p_month){
@@ -89,6 +106,8 @@
 		}
 
 		swiperKey.value ++;
+		selectDate(currentDay);
+		console.log(selectedDate.value);
 	}
 
 	// 이동 가능 여부
@@ -147,7 +166,7 @@
     }
 	.shop-calander-controller{
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
 		gap : 1rem;
 
@@ -174,6 +193,15 @@
 
 		padding : 1rem;
     }
+	.shop-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		
+		gap: 1rem;
+
+		margin-left: 60px;
+	}
 	.swiper-slide{
 		cursor: pointer;
 
@@ -188,4 +216,7 @@
 	.weekend{
 		color: #00f;
 	}
+	/* .day {
+		background-color: #007bff !important;
+	} */
 </style>
