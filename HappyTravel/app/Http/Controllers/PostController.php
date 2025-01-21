@@ -27,6 +27,8 @@ class PostController extends Controller
 		$animal_type_num = $request->input('animal_type_num', []);
 		$facility_type_num = $request->input('facility_type_num', []);
 
+		// Log::debug($animal_type_num);
+
 		// post 테마 유효성 검사 부분
 		$validator = Validator::make($request->only('theme', 'animal_type_num', 'facility_type_num'), [
 			'theme' => ['exists:category_themes,category_theme_num']
@@ -62,9 +64,16 @@ class PostController extends Controller
 
 		
 		->when($animal_type_num, function($query, $animal_type_num) {
-			return $query->join('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-						->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
-						->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+			$query->join('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id');
+						// ->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
+
+			foreach($animal_type_num as $animal_type){
+				$query->where('post_animal_types.animal_type_num', '=' ,$animal_type);
+			}
+
+			return $query;
+
+						// $query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
 		})
 		
 		->when($facility_type_num, function($query, $facility_type_num) {

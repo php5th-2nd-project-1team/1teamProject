@@ -288,16 +288,19 @@ export default {
 		// }
 
 		index(context, payload){
+			console.log(payload);
+			const isAnimalTypeReset = (context.state.animalType.length !== 0 && payload.hasOwnProperty('animalType') && context.state.animalType !== payload.animalType);
+			const isFacilityTypeReset = (context.state.facilityType.length !== 0 && payload.hasOwnProperty('facilityType') && context.state.facilityType !== payload.facilityType);
 
 			if(payload === true || 
-				context.state.animalType !== payload.animalType || 
-				context.state.facilityType !== payload.facilityType){	
+				isAnimalTypeReset || 
+				isFacilityTypeReset){	
 				context.commit('setInitialize');
 			}
 
-			if(payload.animalType === null && payload.facilityType === null){
-				context.commit('setInitialize');
-			}
+			// if(payload.animalType === null && payload.facilityType === null){
+			// 	context.commit('setInitialize');
+			// }
 
 			if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
 				console.log('currentPage: ' + context.state.currentPage);
