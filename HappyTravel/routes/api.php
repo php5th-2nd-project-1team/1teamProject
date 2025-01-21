@@ -71,6 +71,7 @@ Route::post('/auth/social/Info', [AuthController::class, 'socialInfo']); // ì†Œì
  */
 Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
 Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
+Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
 
 
 /**

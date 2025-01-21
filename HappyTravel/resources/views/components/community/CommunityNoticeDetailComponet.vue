@@ -25,11 +25,11 @@
         
             <div class="container">
                 <div class="content">
-                    <p v-html="noticeDetailList.notice_content.replace(/(?:\r\n|\r|\n)/g, '<br>')"></p>                    
+                    <p v-html="noticeDetailList.notice_content"></p>                    
                 </div>
                 <div class="image">
                     <!-- 이미지가 없으면 아래의 img 태그를 제외하거나 숨깁니다 -->
-                    <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img">
+                    <!-- <img v-if="noticeDetailList.notice_img !== null" :src="noticeDetailList.notice_img"> -->
                 </div>
             </div>
             <hr>

@@ -14,6 +14,9 @@ export default {
 	,mutations: {
         setNoticeList(state, noticeList) {
             state.noticeList = noticeList;
+        },
+        setNoticeListUnshift(state, notice) {
+            state.noticeList.unshift(notice);
         }
         ,setLoadingFlg(state, LoadingFlg) {
             state.LoadingFlg = LoadingFlg;
@@ -54,7 +57,7 @@ export default {
         },
         noticeDetailList(context, id) {
             context.commit('setLoadingFlg', true);
-
+            
             const url = '/api/community/notice/' + id ;
 
             axios.get(url)
@@ -68,7 +71,6 @@ export default {
                 console.error(error);
             });
         },
-
         
 	}
 	,getters: {

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use UserToken;
 
 class NoticeController extends Controller
 {
@@ -31,4 +33,25 @@ class NoticeController extends Controller
         ];
         return response()->json($responseData, 200);
    }
+
+   public function store(Request $request) {
+    $cookieValue = $request->cookie('refreshToken');
+
+    $insertData = $request->only('notice_content', 'notice_title');
+    $insertData['user_id'] = UserToken::getInPayload($cookieValue, 'idt');
+    $insertData['manager_id'] = '1';
+
+    $notice = Notice::create($insertData);
+
+    $responseData =[
+        'success' => true
+        ,'msg'  =>'공지사항 작성 성공'
+        ,'notice' => $notice->toArray()
+    ];
+
+    return response()->json($responseData, 200);
+    
+    }
+    
+
 }
