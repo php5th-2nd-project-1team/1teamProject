@@ -58,7 +58,7 @@
             <span class="btn-reset" @click="resetFilter">전체 해제</span>
         </div>
         <div class="btn-filter">
-            <button class="btn btn-header btn-bg-blue" @click="setFilters">적용</button>
+            <button class="btn btn-header btn-bg-blue" @click="applyFilters">적용</button>
             <button @click="closeFilterModal" class="btn btn-header btn-bg-gray">닫기</button>
         </div>
     </div>
@@ -75,15 +75,21 @@ const filters = reactive({
     ,facilityType: []
 });
 
-const setFilters = () => {
-    console.log('A:', filters.animalType);
-    console.log('F:', filters.facilityType);
-    store.dispatch('post/index', {
-        animalType: filters.animalType
-        ,facilityType : filters.facilityType
-    });
-    closeFilterModal();
-};
+// const setFilters = () => {
+//     console.log('A:', filters.animalType);
+//     console.log('F:', filters.facilityType);
+//     store.dispatch('post/index', {
+//         animalType: filters.animalType
+//         ,facilityType : filters.facilityType
+//     });
+//     closeFilterModal();
+// };
+
+const applyFilters = () => {
+    store.commit('post/setAnimalType', filters.animalType);
+    store.commit('post/setFacilityType', filters.facilityType);
+    store.dispatch('post/index', 'filter');
+}
 
 const closeFilterModal = () => {
     emit('postFilterClose');
