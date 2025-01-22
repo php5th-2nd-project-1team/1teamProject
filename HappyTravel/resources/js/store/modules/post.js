@@ -196,6 +196,17 @@ export default {
 			state.animalType = [];
 			state.facilityType = [];
 		}
+		// post local 적용 시 초기화
+		,setLocalInitialize(state){
+			state.postList = [];
+			state.isLoading = false;
+			state.currentPage = 0;
+			state.totalPage = 0;
+			state.beforeSearch = '';
+			state.postResultCnt = 0;
+			state.animalType = [];
+			state.facilityType = [];
+		}
 		// post filter 적용 시 초기화
 		,setFilterInitialize(state){
 			state.postList = [];
@@ -237,7 +248,7 @@ export default {
 			// 키워드에 따라서 각자 다르게 초기화 시키기
 			switch(payload){
 				case 'local':
-					context.commit('setinitialize');
+					context.commit('setLocalInitialize');
 					break;
 				case 'filter':
 					context.commit('setFilterInitialize');
