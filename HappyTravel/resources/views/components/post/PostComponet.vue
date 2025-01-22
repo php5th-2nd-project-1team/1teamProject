@@ -158,13 +158,13 @@ const getSearchResult = () => {
         searchData.earch = null;
     }
 
-    store.commit('post/setIsSearching', true);
-
-    store.dispatch('post/search', searchData.search);
+    store.commit('post/setBeforeSearch', searchData.search);
+    store.dispatch('post/index', 'keyword');
 }
 
 const getLocalResult = (num) => {
-    store.dispatch('post/localSearch', num);
+    store.commit('post/setBeforeLocal', num);
+    store.dispatch('post/index', 'local');
 }
 
 // 포스트 필터 모달
