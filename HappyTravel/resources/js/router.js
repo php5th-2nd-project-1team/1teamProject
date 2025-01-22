@@ -32,6 +32,7 @@ import CommunityCommentComponet from '../views/components/community/CommunityCom
 import CommunityDetailComponet from '../views/components/community/CommunityDetailComponet.vue';
 import CommunityInsertComponet from '../views/components/community/CommunityInsertComponet.vue';
 import CommunityUpdateComponet from '../views/components/community/CommunityUpdateComponet.vue';
+import CommunityFreeComponet from '../views/components/community/CommunityFreeComponet.vue';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -186,7 +187,11 @@ const routes=[
 			{
 				path: 'update', // 수정 출력잘됨
 				component: CommunityUpdateComponet,
-			},		
+			},
+			{
+				path:'free',  // 자유
+				component: CommunityFreeComponet,
+			},
 		]
 	},
 	{	
