@@ -299,31 +299,13 @@ export default {
 
 			axios.get(url)
 			.then( response => {
-				context.commit('setPostResultCnt', response.data.PostList.total);
+				context.commit('setPostResultCnt', response.data.PostListCnt);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setPostList', response.data.PostList.data);
-				// const beforePost = response.data.PostList.data;
-				// const afterPost = [...new Map(beforePost.map(item => [item.post_id, item])).values()];
-				// if(payload?.animalType?.length > 0 || payload?.facilityType?.length > 0) {
-				// 	context.commit('setPostResultCnt', afterPost.length);
-				// } else {
-				// 	context.commit('setPostResultCnt', response.data.PostList.total);
-				// }
-				// context.commit('setPostList', beforePost);
-				// console.log(response.data.PostList.data);
-				// console.log(afterPost.length);
 
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
-
-				// 선택된 필터 저장
-				// if (payload?.animalType?.length > 0) {
-				// 	context.commit('setAnimalType', payload.animalType);
-				// }
-				// if (payload?.facilityType?.length > 0) {
-				// context.commit('setFacilityType', payload.facilityType);
-				// }
 			}).catch (error => {
 				console.log(error);
 				setErrorRouter(error.response.data, '/');
@@ -331,65 +313,6 @@ export default {
 				context.commit('setIsLoading', false);
 			});
 			
-		}
-		
-
-		// 포스트 검색 찾기
-		,search(context, payload){
-			if(context.state.beforeSearch !== payload){
-				const beforeLocal = context.state.beforeLocal;
-				context.commit('setInitialize');
-				context.commit('setBeforeLocal', beforeLocal);
-			}
-			
-			context.commit('setIsLoading', true);
-
-			const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}&search=${payload}&local=${context.state.beforeLocal}`;
-			axios.get(url)
-			.then( response => {
-				context.commit('setPostList', response.data.PostList.data);
-				context.commit('setCurrentPage', response.data.PostList.current_page);
-				context.commit('setBeforeSearch', payload);
-				context.commit('setPostResultCnt', response.data.PostList.total);
-				if(context.state.totalPage === 0){
-					context.commit('setTotalPage', response.data.PostList.last_page);
-				}
-			}).catch (error => {
-				console.log(error);
-				setErrorRouter(error.response.data, '/');
-			}).finally(() => {
-				context.commit('setIsLoading', false);
-				context.commit('setIsSearching', true);
-			});
-		} 
-		// 포스트 지역 찾기
-		,localSearch(context, payload){			
-			if(context.state.beforeLocal === '' || context.state.beforeLocal !== payload){
-				context.commit('setInitialize');
-				if(payload === ''){
-					context.dispatch('index');
-					return;
-				}
-			}
-
-			context.commit('setIsLoading', true);
-
-			const url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}&local=${payload}`;
-			axios.get(url)
-			.then( response => {
-				context.commit('setPostList', response.data.PostList.data);
-				context.commit('setCurrentPage', response.data.PostList.current_page);
-				context.commit('setBeforeLocal', payload);
-				context.commit('setPostResultCnt', response.data.PostList.total);
-				if(context.state.totalPage === 0){
-					context.commit('setTotalPage', response.data.PostList.last_page);
-				}
-			}).catch (error => {
-				console.log(error);
-				setErrorRouter(error.response.data, '/');
-			}).finally(() => {
-				context.commit('setIsLoading', false);
-			});
 		}
 		// index 페이지에 필요한 애들 가져오기
 		,indexes(context, payload){

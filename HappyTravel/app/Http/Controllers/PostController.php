@@ -39,19 +39,8 @@ class PostController extends Controller
 		if($validator->fails()){
 			return response()->json('테마 번호 오류', 404); // 일단 404로 보냄
 		}
-		
-		// if(!is_null($local)){
-		// 		$PostList = Post::where('category_local_num', '=', $local)->orderBy('created_at', 'DESC')->paginate(4);
-		// } else if(!is_null($key)) {
-		// 	$PostList = Post::where(function($query)use($key){
-		// 		$query->where('post_title', 'LIKE', '%' . $key . '%')
-		// 		->orWhere('post_content', 'LIKE', '%' . $key . '%')
-		// 		->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
-		// 	})->orderBy('created_at', 'DESC')->paginate(4);
-		// } else {
-		// 	$PostList = Post::orderBy('created_at', 'DESC')->paginate(4);
-		// }
 
+		// 데이터 구하는 부분
 		$PostList = Post::select(DB::raw('posts.*'))->distinct()->where('category_theme_num', '=', $theme)
 			->when($local, function($query, $local){
 			$query->where('category_local_num', '=', $local);
@@ -63,10 +52,10 @@ class PostController extends Controller
 			});
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
-			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id');
+			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
-			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id');
+			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
@@ -75,12 +64,39 @@ class PostController extends Controller
 			->when($facility_type_num, function($query, $facility_type_num){
 				$query->orWhereIn('post_facility_types.facility_type_num', $facility_type_num);
 			});
-		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
+		})->orderBy('posts.created_at', 'DESC')->withCount('postLikes')->paginate(8);
+
+		// 개수 구하는 부분
+		$postListCnt = Post::select(DB::raw('COUNT(DISTINCT posts.post_id) as count'))->where('category_theme_num', '=', $theme)
+			->when($local, function($query, $local){
+			$query->where('category_local_num', '=', $local);
+		})->when($key, function($query, $key){
+			$query->where(function($query)use($key){
+				$query->where('post_title', 'LIKE', '%' . $key . '%')
+				->orWhere('post_content', 'LIKE', '%' . $key . '%')
+				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
+			});
+		})
+		->when($animal_type_num, function($query, $animal_type_num) {
+			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')->whereNull('post_animal_types.deleted_at');
+		})
+		->when($facility_type_num, function($query, $facility_type_num) {
+			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at');
+		})
+		->where(function($query) use($animal_type_num, $facility_type_num){
+			$query->when($animal_type_num, function($query, $animal_type_num){
+				$query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+			})
+			->when($facility_type_num, function($query, $facility_type_num){
+				$query->orWhereIn('post_facility_types.facility_type_num', $facility_type_num);
+			});
+		})->first();
 
 		$responseData = [
 			'success' => true
 			,'msg' => '포스트 획득 성공'
 			,'PostList' => $PostList->toArray()
+			,'PostListCnt' => $postListCnt->count
 		];
 
 		return response()->json($responseData, 200);
