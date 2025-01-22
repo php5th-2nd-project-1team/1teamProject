@@ -135,7 +135,7 @@ const regions = [
 // -------------------------------------------
 const postList = computed(() => store.state.post.postList);
 const isLoading = computed(() => store.state.post.isLoading);
-const isLastPage = computed(() => store.state.post.postList.length + 8 >= store.state.post.postResultCnt);
+const isLastPage = computed(() => store.state.post.postList.length >= store.state.post.postResultCnt);
 const postThemeTitle = computed(() => store.state.post.post_theme_title);
 
 onBeforeMount(()=>{
