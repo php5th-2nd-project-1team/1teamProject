@@ -52,7 +52,8 @@ class PostController extends Controller
 		// 	$PostList = Post::orderBy('created_at', 'DESC')->paginate(4);
 		// }
 
-		$PostList = Post::select(DB::raw('posts.*'))->distinct()->when($local, function($query, $local){
+		$PostList = Post::select(DB::raw('posts.*'))->distinct()->where('category_theme_num', '=', $theme)
+			->when($local, function($query, $local){
 			$query->where('category_local_num', '=', $local);
 		})->when($key, function($query, $key){
 			$query->where(function($query)use($key){
@@ -60,24 +61,21 @@ class PostController extends Controller
 				->orWhere('post_content', 'LIKE', '%' . $key . '%')
 				->orWhere('post_detail_content', 'LIKE', '%' . $key . '%');
 			});
-		})->where('category_theme_num', '=', $theme)
-
-		
+		})
 		->when($animal_type_num, function($query, $animal_type_num) {
-			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-						->whereIn('animal_type_num', ['01', '02', '03', '04', '05'])
-						->whereIn('post_animal_types.animal_type_num', $animal_type_num);
-			// whereIn 은 where 의 or과 같음 01 or 02 or 03 ... 
-			// foreach($animal_type_num as $animal_type){
-			// 	$query->where('post_animal_types.animal_type_num', '=' ,$animal_type);
-			// }
+			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
-			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
-						->whereIn('facility_type_num', ['01', '02', '03', '04', '05'])
-						->whereIn('post_facility_types.facility_type_num', $facility_type_num);
+			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id');
 		})
-		->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
+		->where(function($query) use($animal_type_num, $facility_type_num){
+			$query->when($animal_type_num, function($query, $animal_type_num){
+				$query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+			})
+			->when($facility_type_num, function($query, $facility_type_num){
+				$query->orWhereIn('post_facility_types.facility_type_num', $facility_type_num);
+			});
+		})->orderBy('created_at', 'DESC')->withCount('postLikes')->paginate(8);
 
 		$responseData = [
 			'success' => true
