@@ -70,6 +70,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const emit = defineEmits();
+// 필터 선택시 값이 들어갈 배열칸 작성 
 const filters = reactive({
     animalType: []
     ,facilityType: []
@@ -90,6 +91,10 @@ const applyFilters = () => {
     store.commit('post/setFacilityType', filters.facilityType);
     store.dispatch('post/index', 'filter');
 }
+/* post.js에서 키워드따라 초기화 필터는 filter 그래서 액션메소드index때문에 dispatch작성
+store.commit은 mutations사용 setAnimalType,setFacilityType 를 사용해서
+선택한 값(export. 01,02)를 filters.animalType,filters.facilityType 배열에 담아줌
+이걸 필터적용에 사용 */
 
 const closeFilterModal = () => {
     emit('postFilterClose');

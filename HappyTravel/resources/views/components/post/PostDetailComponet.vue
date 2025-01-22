@@ -10,6 +10,15 @@
 	<h1 v-if="PostDetail" class="postdetail-title">{{ PostDetail.post_title }}</h1>
 	<p v-if="PostDetail" class="postdetail-local">{{ PostDetail.post_local_name }}</p>
 	<h3 v-if="PostDetail" class="postdetail-content">{{ PostDetail.post_content }}</h3>
+	<div class="postdetail-filter">
+		<p class="filter">#소형견</p>
+		<p class="filter">#중형견</p>
+		<p class="filter">#대형견</p>
+		<p class="filter">#애견수영장</p>
+		<p class="filter">#애견수영장</p>
+		<p class="filter">#애견수영장</p>
+		<p class="filter">#애견수영장</p>
+	</div>
 	<ul class="btn-postdetail-nav">
 		<li><a href="#" @click.prevent="scrollTo('section1')">사진보기</a></li>
 		<li><a href="#" @click.prevent="scrollTo('section2')">상세정보</a></li>
@@ -326,6 +335,20 @@ const closeModal = () => {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.postdetail-filter {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.filter {
+	background-color: #398fff;
+	color: #fff;
+	padding: 10px;
+	border-radius: 20px;
 }
 
 /* 좋아요, 조회수 영역 */
