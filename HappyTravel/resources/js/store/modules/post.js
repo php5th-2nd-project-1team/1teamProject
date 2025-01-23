@@ -56,6 +56,8 @@ export default {
 		// filter
 		,animalType : []
 		,facilityType : []
+		,postAnimal : []
+		,postFacility : []
 	})
 	,mutations: {
 		// post 부분
@@ -234,12 +236,19 @@ export default {
 		,setLikeList(state, lists){
 			state.likeList = lists;
 		}
-
+		// 포스트 필터
 		,setAnimalType(state, animalType) {
 			state.animalType = animalType;
 		}
 		,setFacilityType(state, facilityType) {
 			state.facilityType = facilityType;
+		}
+		// 포스트상세 필터출력
+		,setAnimalFilter(state, filter) {
+			state.postAnimal = filter;
+		}
+		,setFacilityFilter(state, filter) {
+			state.postFacility = filter;
 		}
 
 	}
@@ -369,6 +378,8 @@ export default {
 				context.commit('setPostDetail', response.data.PostDetail);	// data안에 PostDetail 안에 원하는 데이터가 있음
 				context.commit('setPostCommentList', response.data.PostComment.data);
 				context.commit('setIsClkedLike', response.data.PostClkLike);
+				context.commit('setAnimalFilter', response.data.AnimalType);
+				context.commit('setFacilityFilter', response.data.FacilityType);
 
 				// 지금 페이지랑 마지막 페이지가 같으면 setLastPageFlg true로 바꾸고 댓글더보기 버튼 없애기
 				if(response.data.PostComment.current_page === response.data.PostComment.last_page) {

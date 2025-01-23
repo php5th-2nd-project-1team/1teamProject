@@ -6,7 +6,7 @@
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
 				<!-- 신고버튼 -->
-				<!-- <button v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button> -->
+				<button v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button>
 				<!-- 삭제버튼 -->
 				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete"><img style="width: 25px;" src="/developImg/btn-delete.png" alt=""></button>
 			</div>
@@ -96,5 +96,6 @@ const deleteComment = (id, key) => {
 	border: 0;
 	outline: 0;
 	background-color: transparent;
+	cursor: pointer;
  }
 </style>

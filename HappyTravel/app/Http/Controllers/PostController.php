@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Models\AnimalType;
+use App\Models\FacilityType;
 use App\Models\Post;
 use App\Models\PostAnimalType;
 use App\Models\PostComments;
@@ -146,7 +148,21 @@ class PostController extends Controller
 						->groupBy('post_id')
 						->first();		// 하나만 가져오기 때문에 get() 이 아니라 first() 이다.
 		$PostClkLike = false; // 클릭 여부 담는 변수 추가
+		// 여기에 동물 타입, 펜션 정보 입력
+		$AnimalType = PostAnimalType::where('post_id', '=', $request->id)
+						->join('animal_types', 'animal_types.animal_type_num', '=', 'post_animal_types.animal_type_num')->get();
+		$FacilityType = PostFacilityType::where('post_id', '=', $request->id)
+						->join('facility_types', 'facility_types.facility_type_num', '=', 'post_facility_types.facility_type_num')->get();
 
+		// 필터 출력(중복때메 상단에 동물타입,시설타입 쪼갬)
+		// $PostFilter = Post::select('posts.post_id', 'animal_types.animal_type_name', 'facility_types.facility_type_name')
+		// 				->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')->whereNull('post_animal_types.deleted_at')
+		// 				->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at')
+		// 				->leftJoin('animal_types', 'post_animal_types.animal_type_num', '=', 'animal_types.animal_type_num')
+		// 				->leftJoin('facility_types', 'post_facility_types.facility_type_num', '=', 'facility_types.facility_type_num')
+		// 				->where('posts.post_id', '=', $request->id)
+		// 				->get();
+		
 		if (is_null($token)) {
 			Log::info('진짜 토큰 null임');
 		} elseif ($token === '') {
@@ -189,10 +205,32 @@ class PostController extends Controller
 			,'PostComment' => $PostComment->toArray()
 			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $request->id, "cnt" => 0]
 			,'PostClkLike' => $PostClkLike
+			,'AnimalType' => $AnimalType ->toArray()
+			,'FacilityType' => $FacilityType->toArray()
+			// ,'PostFilter' => $PostFilter
 		];
 
 		return response()->json($responseData, 200);
 	}
+
+	// 영광의 상처(필터 이름 출력)
+	// public function postFilter(Request $request) {
+	// 	$Post = Post::where('post_id', '=', $request->id)->first();
+	// 	$AnimalType = PostAnimalType::where('post_id', '=', $request->id)
+	// 					->join('animal_types', 'animal_types.animal_type_num', '=', 'post_animal_types.animal_type_num')->get();
+	// 	$FacilityType = PostFacilityType::where('post_id', '=', $request->id)
+	// 					->join('facility_types', 'facility_types.facility_type_num', '=', 'post_facility_types.facility_type_num')->get();
+
+	// 	$responseData = [
+	// 		'success' => true
+	// 		,'msg' => '포스트 필터 출력'
+	// 		,'Post' => $Post -> toArray()
+	// 		,'AnimalType' => $AnimalType ->toArray()
+	// 		,'FacilityType' => $FacilityType->toArray()
+	// 	];
+
+	// 	return response()->json($responseData, 200);
+	// }
 
 	// 실제로 댓글 페이지네이션시 PostComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
 	public function getComment(Request $request) {

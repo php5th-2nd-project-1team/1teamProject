@@ -87,6 +87,6 @@ Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.ty
  */
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
 Route::get('/posts/{id}', [PostController::class, 'showPost'])->name('showPost.post');
-// Route::get('/posts/filter', [PostController::class, 'postFilter'])->name('postFilter.post');
+Route::get('/posts/filter/{id}', [PostController::class, 'postFilter'])->name('showPost.post');
 
 

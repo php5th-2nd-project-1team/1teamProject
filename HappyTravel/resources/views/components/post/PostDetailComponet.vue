@@ -10,14 +10,14 @@
 	<h1 v-if="PostDetail" class="postdetail-title">{{ PostDetail.post_title }}</h1>
 	<p v-if="PostDetail" class="postdetail-local">{{ PostDetail.post_local_name }}</p>
 	<h3 v-if="PostDetail" class="postdetail-content">{{ PostDetail.post_content }}</h3>
-	<div class="postdetail-filter">
-		<p class="filter">#소형견</p>
-		<p class="filter">#중형견</p>
-		<p class="filter">#대형견</p>
+	<div class="postdetail-filter" >
+		<span class="filter" v-for="(filter, index) in PostFilter1" :key="index">#{{ filter.animal_type_name }}</span>
+		<span class="filter" v-for="(filter, index) in PostFilter2" :key="index">#{{ filter.facility_type_name }}</span>
+		<!-- <p class="filter">#대형견</p>
 		<p class="filter">#애견수영장</p>
 		<p class="filter">#애견수영장</p>
 		<p class="filter">#애견수영장</p>
-		<p class="filter">#애견수영장</p>
+		<p class="filter">#애견수영장</p> -->
 	</div>
 	<ul class="btn-postdetail-nav">
 		<li><a href="#" @click.prevent="scrollTo('section1')">사진보기</a></li>
@@ -199,6 +199,16 @@ const route = useRoute();
 const PostDetail = computed(() => store.state.post.postDetail);
 const isLoading = computed(() => store.state.post.isDetailLoading);
 const PostCommentCnt = computed(() => store.state.post.postCommentCnt);
+// -----------------------------------
+// 필터
+const PostFilter1 = computed(() => store.state.post.postAnimal);
+const PostFilter2 = computed(() => store.state.post.postFacility);
+
+// const uniquePostFilters = PostFilter.reduce((acc, current) => {
+// 	if(!acc.some(PostFilter => PostFilter.animal_type_name === current.animal_type_name)) {
+// 		acc.push(current);
+// 	} return acc;
+// }, []);
 
 //  ------------------------------------------
 // 라우트 변경 시 데이터 다시 호출 
@@ -314,7 +324,6 @@ const closeModal = () => {
 	isModalOpen.value = false;
 };
 
-
 </script>
 	
 <style scoped>
@@ -342,6 +351,7 @@ const closeModal = () => {
 	flex-direction: row;
 	gap: 10px;
 	margin-bottom: 10px;
+	max-width: 70%;
 }
 
 .filter {
@@ -439,10 +449,6 @@ const closeModal = () => {
 	border-bottom: 3px  solid#D9D9D9;
 	margin-bottom: 20px;
 }
-
-/* .postdetail-img-container {
-	display: flex;
-} */
 
 .w-full {
 	width: 60%;
