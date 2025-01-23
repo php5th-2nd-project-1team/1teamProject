@@ -61,14 +61,14 @@
 								<li @click="pushPosts('04')" class="dropdown-sub" style="cursor: pointer;">병원</li>
 							</ul>
 						</li>
-						<!-- <li>
+						<li @click="pushShops">
 							<a href="">상품</a>
-							<ul class="dropdown">
+							<!-- <ul class="dropdown">
 								<li class="dropdown-sub">클래스</li>
 								<li class="dropdown-sub">패키지</li>
 								<li class="dropdown-sub">굿즈</li>
-							</ul>
-						</li> -->
+							</ul> -->
+						</li>
 						<li @click="pushNoticeList"><a>커뮤니티</a></li>
 					</ul>
 				</div>
@@ -125,6 +125,12 @@ const pushPosts = function(post_num = null){
 	
 	router.push(`/posts`);
 }
+
+// shops 페이지 이동 시
+const pushShops = function(){
+	router.push('/shops');
+}
+
 
 // 헤더 커뮤니티 이동 처리
 const pushNoticeList = () => {
