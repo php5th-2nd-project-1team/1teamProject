@@ -245,100 +245,110 @@ export default {
 	}
 	,actions: {
 		index(context, payload){
-			// 키워드에 따라서 각자 다르게 초기화 시키기
+			// 초기화 타입에 따라 다른 초기화 실행
 			switch(payload){
-				case 'local':
+				case 'local': // 지역 검색 초기화
 					context.commit('setLocalInitialize');
 					break;
-				case 'filter':
+				case 'filter': // 필터 검색 초기화
 					context.commit('setFilterInitialize');
 					break;
-				case 'keyword':
+				case 'keyword': // 키워드 검색 초기화
 					context.commit('setKeywordInitialize');
 					break;
 				default:
 					break;
 			}
 
-			// 페이지네이션 관련 페이지 넘어버리는 예외 처리
+			// 현재 페이지가 총 페이지 수를 초과하면 중단
 			if(context.state.totalPage !==0 && context.state.currentPage >= context.state.totalPage){
 				return ;
 			}
 
-			// 로딩 시, 예외 처리
+			// 이미 로딩 중이면 중단
 			if(context.state.isLoading){
 				console.log('로딩중입니다.');
 				return;
 			}
 
-			// 로딩 시작
+			// 로딩 상태 활성화
 			context.commit('setIsLoading', true);
 
-			// url 설정
+			// 기본 URL 생성 (페이지 번호와 테마 ID 포함)
 			let url = `/api/posts?page=${context.getters['getNextPage']}&theme=${context.state.post_theme_id}`;
 
-			// url 설정 : local
+			// 지역 검색 파라미터 추가
 			if(context.state.localSearch !== ''){
 				url += `&local=${context.state.beforeLocal}`;
 			}
 
-			// url 설정 : search
+			// 검색어 파라미터 추가
 			if(context.state.beforeSearch !== ''){
 				url += `&search=${context.state.beforeSearch}`;
 			}
 
-			// url 설정 : filter(animal_type)
+			// 동물 타입 필터 파라미터 추가
 			if(context.state.animalType.length > 0){
 				url += `&animal_type_num[]=${context.state.animalType.join('&animal_type_num[]=')}`;
 			}
 
-			// url 설정 : filter(facility_type)
+			// 시설 타입 필터 파라미터 추가
 			if(context.state.facilityType.length > 0){
 				url += `&facility_type_num[]=${context.state.facilityType.join('&facility_type_num[]=')}`;
 			}
 
+			// API 요청 실행
 			axios.get(url)
 			.then( response => {
+				// 응답 데이터로 상태 업데이트
 				context.commit('setPostResultCnt', response.data.PostListCnt);
 				context.commit('setCurrentPage', response.data.PostList.current_page);
 				context.commit('setPostList', response.data.PostList.data);
 
+				// 첫 로드시에만 총 페이지 수 설정
 				if(context.state.totalPage === 0){
 					context.commit('setTotalPage', response.data.PostList.last_page);
 				}
 			}).catch (error => {
+				// 에러 처리
 				console.log(error);
 				setErrorRouter(error.response.data, '/');
 			}).finally(() => {
+				// 로딩 상태 비활성화
 				context.commit('setIsLoading', false);
 			});
 			
 		}
 		// index 페이지에 필요한 애들 가져오기
+		// 메인 페이지에 표시할 포스트 데이터를 가져오는 액션
 		,indexes(context, payload){
-			const url ='/api/posts/type';
-			const urlView = '/api/posts/type?type=view';
-			const urlLike = '/api/posts/type?type=like';
+			// API 엔드포인트 URL 정의
+			const url ='/api/posts/type';          // 최신순 데이터용 URL
+			const urlView = '/api/posts/type?type=view';  // 조회수순 데이터용 URL  
+			const urlLike = '/api/posts/type?type=like';  // 좋아요순 데이터용 URL
 
-			// 조회수 순 데이터 가져오기
+			// 조회수 기준 인기 게시물 데이터 요청
 			axios.get(urlView)
 			.then(response => {
+				// 조회수 기준 게시물 목록을 상태에 저장
 				context.commit('setViewList',response.data.PostList.data);
 			}).catch(error => {
 				console.log(error);
 			});
 
-			// 좋아요 순 데이터 가져오기
+			// 좋아요 기준 인기 게시물 데이터 요청
 			axios.get(urlLike)
 			.then(response => {
+				// 좋아요 기준 게시물 목록을 상태에 저장
 				context.commit('setLikeList',response.data.PostList.data);
 			}).catch( error => {
 				console.log(error);
 			});
 
-			// 최신 데이터 가져오기
+			// 최신 게시물 데이터 요청
 			axios.get(url)
 			.then(response => {
+				// 최신 게시물 목록을 상태에 저장
 				context.commit('setPostIndexList',response.data.PostList.data);
 			}).catch(error => {
 				console.log(error);
@@ -397,7 +407,6 @@ export default {
 		// 포스트 댓글 작성
 		,storePostComment(context, data) {
 			context.dispatch('auth/chkTokenAndContinueProcess', () => {
-				
 				const url = '/api/posts/' + data.post_id;
 				// const url = `/api/posts/${data.post_id}`;
 				if(context.state.controllerFlg) {

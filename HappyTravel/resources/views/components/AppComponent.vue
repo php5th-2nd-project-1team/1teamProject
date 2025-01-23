@@ -15,11 +15,13 @@
 import { useRoute } from 'vue-router';
 import FooterComponent from './utilities/FooterComponent.vue';
 import HeaderComponent from './utilities/HeaderComponent.vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
 
 const route = useRoute();
 
-const isAdminPage = ref(route.name);
+const isAdminPage = computed(() => {
+    return route.path.startsWith('/admin');
+});
 
 </script>
 <style>

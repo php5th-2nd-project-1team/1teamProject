@@ -11,7 +11,7 @@
 			</div>
 			<div class="admin">
 				<h2>관리자</h2>
-				<p>관리자 등록</p>
+				<p>관리자 생성</p>
 			</div>
 			<div class="post">
 				<h2>포스트</h2>
