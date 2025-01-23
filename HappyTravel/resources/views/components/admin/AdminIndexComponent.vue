@@ -89,6 +89,31 @@
 				</tr>
 			</tbody>
 		</table>
+		<!-- TODO 여기 반드시 새로 바꿔야 함 -->
+		<div class="index-report-title containers-row">
+			<h3>신고</h3>
+			<p>최신 작성 순 5개</p>
+			<p>해당 상세 페이지로</p>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>여긴</th>
+					<th>대충</th>
+					<th>뭔가로 채워야 함</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="i in 5" :key="i">
+					<td>1</td>
+					<td>부목아아아아</td>
+					<td>평양 직할시</td>
+					<td>99</td>
+					<td>2025-01-32</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </template>
 <script setup>

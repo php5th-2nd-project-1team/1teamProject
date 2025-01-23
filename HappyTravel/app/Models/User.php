@@ -34,6 +34,9 @@ class User extends Model
     {
         return $date ->format('Y-m-d H:i:s');       
     }
-    
+
+    public function communityBoards() {
+        return $this->hasMany(CommunityBoard::class , 'user_id');
+    }
 
 }

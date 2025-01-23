@@ -53,6 +53,12 @@ import SocialComponent from '../views/components/auth/SocialComponent.vue';
 import AdminFormComponent from '../views/components/admin/AdminFormComponent.vue';
 import AdminIndexComponent from '../views/components/admin/AdminIndexComponent.vue';
 import SmartEditorComponent from '../views/components/utilities/SmartEditorComponent.vue';
+import AdminUserComponent from '../views/components/admin/AdminUserComponent.vue';
+import AdminUserDetailComponent from '../views/components/admin/AdminUserDetailComponent.vue';
+import AdminListComponent from '../views/components/admin/AdminListComponent.vue';
+import AdminCreateComponent from '../views/components/admin/AdminCreateComponent.vue';
+import AdminPostsComponent from '../views/components/admin/AdminPostsComponent.vue';
+import AdminPostsForm from '../views/components/admin/AdminPostsForm.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -221,6 +227,34 @@ const routes=[
 			{
 				path : 'index'
 				,component: AdminIndexComponent
+			}
+			,{
+				path : 'users'
+				,component: AdminUserComponent
+			}
+			,{
+				path : 'users/:id'
+				,component: AdminUserDetailComponent
+			}
+			,{
+				path : 'lists'
+				,component: AdminListComponent
+			}
+			,{
+				path : 'lists/create'
+				,component: AdminCreateComponent
+			},{
+				path : 'posts'
+				,component: AdminPostsComponent
+			},{
+				path : 'posts/:id'
+				,component: AdminPostsForm
+			},{
+				path : 'posts/create'
+				,component: AdminPostsForm
+			},{
+				path : 'posts/edit/:id'
+				,component: AdminPostsForm
 			}
 		]
 	}
