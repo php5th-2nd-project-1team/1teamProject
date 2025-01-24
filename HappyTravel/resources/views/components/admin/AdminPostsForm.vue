@@ -1,50 +1,34 @@
 <template>
 	<div>
-		
+		<h1>게시글 상세</h1>
+		<div>
+			<label for="title">제목</label>
+			<input type="text" id="title">
+		</div>
+		<div>
+			<label for="local">지역</label>
+			<select name="local" id="local">
+				<option value="서울">서울</option>
+				<option value="경기">경기</option>
+				<option value="인천">인천</option>
+				<option value="부산">부산</option>
+				<option value="대구">대구</option>
+				<option value="대전">대전</option>
+			</select>
+		</div>
+		<div>
+			<label for="content">테마</label>
+			<select name="theme" id="theme" v-model="theme" @change="">
+				<option value="01">테마1</option>
+				<option value="02">테마2</option>
+				<option value="03">테마3</option>
+				<option value="04">테마4</option>
+			</select>
+		</div>
 	</div>
 </template>
 <script setup>
-import { computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
-
-// 함수들은 동일...
-// 수정 시 
-function create(){
-	console.log('create');
-}
-
-// 삽입 시
-function edit(id){
-	console.log('edit');
-}
-
-// 조회 시
-function show(id){
-	console.log('show');
-}
-
-const postData = computed(() => {
-	return data;
-});
-
-// 라우트 변경 감지
-watch(
-	() => route.path,
-	(path) => {
-		const id = route.params.id;
-		
-		if (path.includes('/admin/posts/create')) {
-			create();
-		} else if (path.includes('/admin/posts/edit/')) {
-			edit(id);
-		} else if (path.includes('/admin/posts/')) {
-			show(id);
-		}
-	},
-	{ immediate: true }
-);
 </script>
 <style scoped>
 	

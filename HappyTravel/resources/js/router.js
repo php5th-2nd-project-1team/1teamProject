@@ -59,6 +59,7 @@ import AdminCreateComponent from '../views/components/admin/AdminCreateComponent
 import AdminPostsComponent from '../views/components/admin/AdminPostsComponent.vue';
 import AdminPostsForm from '../views/components/admin/AdminPostsForm.vue';
 import TestComponent from '../views/components/TestComponent.vue';
+import AdminPostsDetailComponent from '../views/components/admin/AdminPostsDetailComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
