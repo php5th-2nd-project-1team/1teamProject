@@ -106,7 +106,7 @@ class TravelClassController extends Controller
 
     // IAMPORT 액세스 토큰 요청
     $apiKey = '5735356664718760'; // IAMPORT API Key
-    $apiSecret = 'YOUR_API_SECRET'; // IAMPORT API Secret
+    $apiSecret = 'VZfKdTXKxThjvNCYqU1xf2g3cU8PahU7ZVPkWKDhh0ERLDBOYiX3hQ8QrAJGrUmlAD1EBbOYCrI0Kwnt'; // IAMPORT API Secret
     $client = new Client();
     
      try {
