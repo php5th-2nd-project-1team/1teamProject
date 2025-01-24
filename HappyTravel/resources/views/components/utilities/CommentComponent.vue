@@ -6,7 +6,7 @@
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
 				<!-- 신고버튼 -->
-				<button v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button>
+				<button @click="openReportModal" v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button>
 				<!-- 삭제버튼 -->
 				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete"><img style="width: 25px;" src="/developImg/btn-delete.png" alt=""></button>
 			</div>
@@ -18,12 +18,14 @@
     </div>
 
 <button v-if="!isLastPage" @click="loadMoreComments" class="btn btn-bg-blue btn-more" type="button">댓글 더보기</button>
+<ReportComponent v-show="isOpenReportModal"  @postReportClose=closeReportModal />
 </template>
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import ReportComponent from './ReportComponent.vue';
 const store = useStore();
 const route = useRoute();
 
@@ -42,6 +44,16 @@ const loadMoreComments = () => {
 const deleteComment = (id, key) => {
 	store.dispatch('post/postCommentDelete', [id, key]);
 };
+// ------------------------------------------
+// 신고 모달
+const isOpenReportModal = ref(false);
+const openReportModal = () => {
+    isOpenReportModal.value = true;
+}
+
+const closeReportModal = () => {
+    isOpenReportModal.value = false;
+}
 
 </script>
 

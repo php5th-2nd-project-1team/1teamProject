@@ -197,6 +197,8 @@ export default {
 			state.postResultCnt = 0;
 			state.animalType = [];
 			state.facilityType = [];
+			state.postAnimal = [];
+			state.postFacility = [];
 		}
 		// post local 적용 시 초기화
 		,setLocalInitialize(state){

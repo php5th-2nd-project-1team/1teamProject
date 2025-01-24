@@ -13,11 +13,7 @@
 	<div class="postdetail-filter" >
 		<span class="filter" v-for="(filter, index) in PostFilter1" :key="index">#{{ filter.animal_type_name }}</span>
 		<span class="filter" v-for="(filter, index) in PostFilter2" :key="index">#{{ filter.facility_type_name }}</span>
-		<!-- <p class="filter">#대형견</p>
-		<p class="filter">#애견수영장</p>
-		<p class="filter">#애견수영장</p>
-		<p class="filter">#애견수영장</p>
-		<p class="filter">#애견수영장</p> -->
+
 	</div>
 	<ul class="btn-postdetail-nav">
 		<li><a href="#" @click.prevent="scrollTo('section1')">사진보기</a></li>
