@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('community_boards', function (Blueprint $table) {
-            $table->id('communinty_id');
+        Schema::create('community_likes', function (Blueprint $table) {
+
+            // 복합키 설정
             $table->unsignedBigInteger('user_id')->nullable(false);
-            $table->char('community_type',1)->nullable(false)->default(0);
-            $table->string('community_title',50)->nullable(false);
-            $table->longText('community_content')->nullable(false);
-            $table->bigInteger('community_view')->nullable(false)->default(0);       
+            $table->unsignedBigInteger('community_id')->nullable(false);
+
+            $table->char('community_likes_flg',1) ->nullable(false)->default('0');
+            
+            // 중복 좋아요 방지
+            $table->unique(['user_id,community_id']);
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_boards');
+        Schema::dropIfExists('community_likes');
     }
 };

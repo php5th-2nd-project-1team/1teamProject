@@ -79,7 +79,6 @@ Route::get('/community/notice', [NoticeController::class, 'index'])->name('index
 Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
 Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
 
-
 /**
  * 원상님 Route *
  * 

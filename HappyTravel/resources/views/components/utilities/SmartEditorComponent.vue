@@ -9,9 +9,13 @@
   
   <script setup>
   // Vue 3 Composition API에서 제공하는 ref와 onMounted를 사용
-  import { ref, onMounted, reactive } from 'vue';
+  import { ref, onMounted, reactive, defineProps } from 'vue';
   import { useStore } from "vuex";
   
+  const props = defineProps({
+    dispatch : String
+  });
+
   const oEditors = ref([]);  // 스마트에디터 객체를 저장할 변수
 
   const store = useStore();
@@ -41,7 +45,8 @@
       EditorValue.content = editorContent;
 
       // Vuex에 저장
-      store.dispatch("editor/NoticeBoardStore", EditorValue);
+      store.dispatch(props.dispatch , EditorValue);
+      // console.log(props.dispatch);
   };
 
   </script>

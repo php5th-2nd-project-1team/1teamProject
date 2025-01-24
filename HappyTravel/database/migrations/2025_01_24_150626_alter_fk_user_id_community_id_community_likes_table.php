@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+       Schema::table('community_likes', function(Blueprint $table){
+
+            // 외래키 설정
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('community_id')->references('community_id')->on('community_likes');
+
+            // 복합키 설정
+            $table->primary(['user_id', 'community_id']);
+
+       });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('community_likes', function(Blueprint $table){
+            $table->dropForeign(['user_id']);
+            $table->dropForeing(['commmunity_id']);
+        });
+    }
+};

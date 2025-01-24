@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('community_boards', function (Blueprint $table) {
-            $table->id('communinty_id');
+        Schema::create('community_comments', function (Blueprint $table) {
+            $table->id('community_comment_id');
+            $table->unsignedBigInteger('community_id')->nullable(false);
             $table->unsignedBigInteger('user_id')->nullable(false);
-            $table->char('community_type',1)->nullable(false)->default(0);
-            $table->string('community_title',50)->nullable(false);
-            $table->longText('community_content')->nullable(false);
-            $table->bigInteger('community_view')->nullable(false)->default(0);       
+            $table->string('comment_content',300)->nullable(false);
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_boards');
+        Schema::dropIfExists('community_comments');
     }
 };
