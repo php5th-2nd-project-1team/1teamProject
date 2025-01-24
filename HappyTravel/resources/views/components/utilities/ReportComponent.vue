@@ -8,25 +8,25 @@
         </div>
         <div class="report-container">
             <div class="report-box">
-                <div>
-                    <input type="checkbox" id="" value="01">
-                    <label for="">욕설/비속어 포함</label>
+                <div class="report-content">
+                    <input type="checkbox" id="01" value="01">
+                    <label for="01">욕설/비속어 포함</label>
                 </div>
-                <div>
-                    <input type="checkbox" id="" value="02">
-                    <label for="">갈등 조장 및 허위사실 유포 등</label>
+                <div class="report-content">
+                    <input type="checkbox" id="02" value="02">
+                    <label for="02">갈등 조장 및 허위사실 유포 등</label>
                 </div>
-                <div>
-                    <input type="checkbox" id="" value="03">
-                    <label for="">폭력적 또는 혐오스러운 컨텐츠</label>
+                <div class="report-content">
+                    <input type="checkbox" id="03" value="03">
+                    <label for="03">폭력적 또는 혐오스러운 컨텐츠</label>
                 </div>
-                <div>
-                    <input type="checkbox" id="" value="04">
-                    <label for="">도배 및 광고글</label>
+                <div class="report-content">
+                    <input type="checkbox" id="04" value="04">
+                    <label for="04">도배 및 광고글</label>
                 </div>
-                <div>
-                    <input type="checkbox" id="" value="05">
-                    <label for="">기타</label>
+                <div class="report-content">
+                    <input type="checkbox" id="05" value="05">
+                    <label for="05">기타</label>
                 </div>
 
             </div>
@@ -152,6 +152,10 @@ input {
 
 .header-container {
     display: flex;
+}
+
+.report-content {
+    margin-bottom: 10px;
 }
 
 .report-text {
