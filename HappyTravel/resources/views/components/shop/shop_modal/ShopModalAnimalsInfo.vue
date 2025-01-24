@@ -31,27 +31,21 @@
 </template>
 <script setup>
 import { reactive } from 'vue';
-	const sample =reactive({
-		animalType : '소형견'
-		,animalPrecautions : ''
-	})
+import { useStore } from 'vuex';
+	const store = useStore();
 
-	const animalInfos = reactive([{
-		animalType : '소형견'
-		,animalPrecautions : ''
-	}]);
+	// animalInfos는 Vuex의 상태에서 가져옵니다.
+	const animalInfos = store.state.shop.animalInfos;
 
-	function addAnimalInfo(){
-		animalInfos.push(sample);
-	}
+	// 동물 정보 추가
+	const addAnimalInfo = () => {
+	store.dispatch('shop/addAnimalInfo');
+	};
 
-	function discountAnimalInfo(){
-		if(animalInfos.length === 1){
-			alert('최소 한개는 있어야 합니다.');
-			return;
-		}
-		animalInfos.pop();
-	}
+	// 동물 정보 제거
+	const discountAnimalInfo = () => {
+	store.dispatch('shop/discountAnimalInfo');
+};
 
 </script>
 <style scoped>

@@ -22,6 +22,7 @@
         "vue-template-compiler": "^2.7.16"
     },
     "dependencies": {
+        "@portone/browser-sdk": "^0.0.11",
         "swiper": "^11.1.15",
         "vue-router": "^4.5.0",
         "vue3-kakao-maps": "^2.3.10",

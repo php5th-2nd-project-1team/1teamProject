@@ -1,20 +1,35 @@
 <template>
 	<div class="shop-card-area">
-		<div class="shop-card" v-for="i in 10" :key="i" @click="router.push('/shops/1')">
-			<div class="shop-card-img" style="background-image: url('/developImg/about-three1.png');"></div>
-			<h2 class="shop-card-title">카드 제목</h2>
-			<div class="shop-card-info">
-				<p>제주 스타벅스</p>
-				<p>2021.10.10</p>
+		<div class="shop-card" v-for="i in shopBoardList" :key="i" @click="router.push(`/shops/${i.class_id}`)">
+			<!-- router.push(`/shops/${i.class_id}`) -->
+			<div class="shop-card-img" 
+				:style="{ backgroundImage: `url(${i.class_title_img})` }">
 			</div>
-			<h3 class="shop-card-price">1,500,000원</h3>
+			<h2 class="shop-card-title">{{ i.class_title }}</h2>
+			<div class="shop-card-info">
+				<p>{{ i.location }}</p>
+				<p>{{ i.class_date }}</p>
+			</div>
+			<h3 class="shop-card-price">{{ i.class_price.toLocaleString('ko-KR') }}원</h3>
 		</div>
 	</div>
+	<button v-if="!lastPageFlg" class="more-button" @click="$store.dispact('shop/shopBoardList', $store.state.shop.currentSave)">더 보기</button>
 </template>
 <script setup>
+	import { computed } from 'vue';
 	import { useRouter } from 'vue-router';
+	import { useStore } from 'vuex';
 
 	const router = useRouter();
+
+	const store = useStore();
+
+    const shopBoardList = computed(() => store.state.shop.shopBoardList);
+
+	const lastPageFlg = computed(() => store.state.shop.lastPageFlg);
+
+	console.log(lastPageFlg.value);
+	
 </script>
 <style scoped>
 	.shop-card-area{
@@ -50,5 +65,16 @@
 		justify-content: flex-start;
 		align-items: flex-end;
 		gap : 1rem;
+	}
+	.more-button {
+		background-color: #2986FF; /* 핵심 컬러 */
+		color: white; /* 텍스트 색상 */
+		border: none; /* 테두리 제거 */
+		padding: 12px 30px; /* 버튼 크기 조정 */
+		font-size: 16px;
+		font-weight: bold;
+		border-radius: 25px; /* 둥근 모서리 */
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
 	}
 </style>

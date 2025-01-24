@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         // $hardLoginFlg = $request->hardLoginFlg ? $request->hardLoginFlg : false;
 
-        Log::debug('로그인 파라미터', $request->all());
+        // Log::debug('로그인 파라미터', $request->all());
 
         // 탈토된 유저 체크
         if(is_null($userInfo)) {
@@ -76,7 +76,7 @@ class AuthController extends Controller
 
         $userInfo = User::where('account', $request->account)->first();
 
-        Log::debug('로그인 파라미터', $request->all());
+        // Log::debug('로그인 파라미터', $request->all());
 
         if(!(Hash::check($request->password, $userInfo->password))) {
             throw new AuthenticationException('비밀번호 체크 오류');
@@ -180,7 +180,7 @@ class AuthController extends Controller
     }
 
     public function redirectToProvider($provider) {
-        Log::debug($provider);
+        // Log::debug($provider);
         // return Socialite::driver($provider)->redirect();
 
         $redirectUrl = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();

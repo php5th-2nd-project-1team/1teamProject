@@ -4,10 +4,10 @@
 			<div></div>
 			<div class="shop-btn">
 				<button @click="getPrevDate()"><</button>
-				<span>{{ activeDate.year }}년 {{ activeDate.month }}월</span>
+				<span>{{ activeDate.year }}년 {{ activeDate.month }}월 {{ selectedDate }}일</span>
 				<button @click="getNextDate()">></button>
 			</div>
-			<button @click="setActiveDate(currentYear, currentMonth)">초기화</button>
+			<button @click="setResetDate()">초기화</button>
 		</div>
 		<div class="shop-calander-date">
 			<button class="shop-calander-prev"><</button>
@@ -21,18 +21,22 @@
 				<SwiperSlide v-for="i in activeDate.day"
 						:key="`${activeDate.year}-${activeDate.month}-${i.day}`" 
 						@click="onClickDay(i.day)"
-						:class="['day', { selected: i.day === selectedDate }]">
-					<div class="swiper-slide holiday" v-if="i.weekday%7 === 0">
+						:class="{
+							holiday: i.weekday % 7 === 0,
+							weekend: i.weekday % 7 === 6,
+							// today: i.day === selectedDate
+							}">
+					<!-- <div class="swiper-slide" v-if="i.weekday%7 === 0">
 						<p>{{ week(i.weekday) }}</p>
 						<p>{{i.day}}</p>
 					</div>
-					<div class="swiper-slide weekend" v-else-if="i.weekday%7 === 6">
+					<div class="swiper-slide" v-else-if="i.weekday%7 === 6">
 						<p>{{ week(i.weekday) }}</p>
 						<p>{{i.day}}</p>
-					</div>
-					<div class="swiper-slide" v-else>
+					</div> -->
+					<div class="swiper-slide">
 						<p>{{ week(i.weekday) }}</p>
-						<p>{{i.day}}</p>
+						<p :class="{today: i.day === selectedDate}">{{i.day}}</p>
 					</div>
 				</SwiperSlide>
 			</Swiper>
@@ -45,8 +49,11 @@
 	import { onBeforeMount, reactive, ref } from 'vue';
 	import { Navigation } from 'swiper/modules';
 	import 'swiper/swiper-bundle.css';
+	import { useStore } from 'vuex';
 	// swiper 네비게이션
 	const modules = [Navigation];
+
+	const store = useStore();
 
 	// 선언 부분
 	const swiperKey = ref(null);
@@ -63,7 +70,11 @@
 
 	const currentMonth = new Date().getMonth() + 1;
 	const currentYear = new Date().getFullYear();
-	const currentDay = new Date().getDate();
+
+	const date = new Date();
+
+	const month = String(date.getMonth() + 1).padStart(2, '0'); // 월에 0을 붙임
+  	const currentDay = String(date.getDate()).padStart(2, '0'); // 일에 0을 붙임
 
 	const selectedDate = ref(currentDay);
 
@@ -71,6 +82,13 @@
 	function selectDate(day) {
   		selectedDate.value = day;
 	};
+
+	function setResetDate() {
+		setActiveDate(currentYear, currentMonth);
+		const currentReset =currentYear + '-' + month + '-' + currentDay;
+		store.commit('shop/setCurrentPage', 0); // 페이지 초기화
+		store.dispatch('shop/shopBoardList', currentReset);
+	}
 	
 	console.log(currentDay);
 
@@ -92,7 +110,7 @@
 
 		// 총 월 계산
 		const targetDate = new Date(year, month, 0);
-		const totalDays = targetDate.getDate();
+		const totalDays = targetDate.getDate(); 
 
 		activeDate.year = targetDate.getFullYear();
 		activeDate.month = targetDate.getMonth() + 1;
@@ -115,7 +133,6 @@
 
 		swiperKey.value ++;
 		selectDate(currentDay);
-		console.log(selectedDate.value);
 	}
 
 	// 이동 가능 여부
@@ -130,18 +147,29 @@
 	function getNextDate(){
 		if(isMoveable(activeDate.month + 1)){
 			setActiveDate(activeDate.year, activeDate.month + 1);
+			selectDate(1);
+			const currentNextDate = `${activeDate.year}-${activeDate.month}-${selectedDate.value}`;
+			store.commit('shop/setCurrentPage', 0); // 페이지 초기화
+			store.dispatch('shop/shopBoardList', currentNextDate);
 		}
 	}
 
 	function getPrevDate(){
 		if(isMoveable(activeDate.month - 1)){
 			setActiveDate(activeDate.year, activeDate.month - 1);
+			selectDate(1);
+			const currentPrevDate = `${activeDate.year}-${activeDate.month}-${selectedDate.value}`;
+			store.commit('shop/setCurrentPage', 0); // 페이지 초기화
+			store.dispatch('shop/shopBoardList', currentPrevDate);
 		}
 	}
 
 	// 클릭하면 클릭한 년, 월, 일 출력
 	function onClickDay(day){
-		console.log(`${activeDate.year}년 ${activeDate.month}월 ${day}일`)
+		const currentDay = `${activeDate.year}-${activeDate.month}-${day}`;
+		selectDate(day);
+		store.commit('shop/setCurrentPage', 0); // 페이지 초기화
+		store.dispatch('shop/shopBoardList', currentDay);
 	}
 
 	function week(num){
@@ -151,6 +179,9 @@
 
 	onBeforeMount(() => {
 		setActiveDate(currentYear, currentMonth);
+		const current = currentYear + '-' + month + '-' + currentDay;
+		console.log(current);
+		store.dispatch('shop/shopBoardList', current);
 	});
 </script>
 <style scoped>
@@ -230,7 +261,7 @@
 	.weekend{
 		color: #00f;
 	}
-	/* .day {
-		background-color: #007bff !important;
-	} */
+	.today {
+		font-size: 30px;
+	}
 </style>

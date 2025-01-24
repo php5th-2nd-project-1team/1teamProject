@@ -4,8 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TravelClassController;
 use App\Http\Controllers\UserController;
-use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +44,10 @@ Route::middleware('my.auth')->group(function() {
 
     // 포스트 좋아요 클릭
     Route::post('/posts/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+
+    // iamport 결제 시스템
+    Route::post('/payment/request', [TravelClassController::class, 'requestPayment']);
+    Route::post('/payment/confirm', [TravelClassController::class, 'confirmPayment']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -64,6 +68,8 @@ Route::post('/verify-code', [EmailVerificationController::class, 'verifyCode'])-
 Route::get('/auth/{provider}', [AuthController::class, 'redirectToProvider']); // 소셜 로그인 페이지로 리다이렉트
 Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']); // 콜백 처리
 Route::post('/auth/social/Info', [AuthController::class, 'socialInfo']); // 소셜 로그인 후 데이터 받아오는 처리
+Route::get('/shops', [TravelClassController::class, 'shopsBoardList']);
+Route::get('/shops/{id}', [TravelClassController::class, 'shopsBoardDetail']);
 
 
 /**

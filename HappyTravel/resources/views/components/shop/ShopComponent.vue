@@ -1,4 +1,5 @@
 <template>
+    <LoadingComponent v-if="LoadingFlg" />
     <div class="shop-container">
         <h1>예약</h1>
         <ShopCalanderComponent/>
@@ -7,8 +8,16 @@
 </template>
 
 <script setup>
+    import LoadingComponent from '../utilities/LoadingComponent.vue';
     import ShopCalanderComponent from './shop_board/ShopCalanderComponent.vue';
-import ShopCardAreaComponent from './shop_board/ShopCardAreaComponent.vue';
+    import ShopCardAreaComponent from './shop_board/ShopCardAreaComponent.vue';
+    import { computed } from 'vue';
+    import { useStore } from 'vuex';
+
+    const store = useStore();
+
+    
+	const LoadingFlg = computed(() => store.state.shop.LoadingFlg);
 </script>
 
 <style scoped>

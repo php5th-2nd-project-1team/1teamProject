@@ -5,11 +5,11 @@
 		</div>
 		<div class="clientinfo-name clientinfo">
 			<p>예약자 성함</p>
-			<input type="text" name="name" id="name" value="김룹뿡" readonly>
+			<input type="text" name="name" id="name" :value=$store.state.auth.userInfo.name readonly>
 		</div>
 		<div class="clientinfo-phone clientinfo">
 			<p>연락 가능한 연락처</p>
-			<input type="text" name="phone" id="phone" value="010-1234-5678" readonly>
+			<input type="text" name="phone" id="phone" :value=$store.state.auth.userInfo.phone_number readonly>
 		</div>
 		<div class="clientinfo-count clientinfo">
 			<p>참여 인원 수</p>
@@ -21,24 +21,26 @@
 		</div>
 		<div class="clientinfo-price clientinfo">
 			<p>결제 금액</p>
-			<p>100,000원</p>
+			<p>{{ $store.state.shop.shopBoardDetail.class_price }}</p>
 		</div>
 	</div>
 </template>
 <script setup>
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 
-	const peopleCount = ref(1);
+	const store = useStore();
+
+	const peopleCount = computed(() => store.state.shop.peopleCount);
+
 
 	function addPeopleCount(){
-		peopleCount.value += 1;
+		store.commit('shop/setPeopleCountUp');
 	}
 
 	function subPeopleCount(){
-		if(peopleCount.value > 1){
-			peopleCount.value -= 1;
-		}
+			store.commit('shop/setPeopleCountDown');
 	}
 
 </script>
