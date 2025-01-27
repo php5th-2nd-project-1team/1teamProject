@@ -1,6 +1,6 @@
 <template>
 	<div class="admin-posts-detail-container">
-		<h1>포스트 상세</h1>
+		<h1>포스트 수정</h1>
 		<div>
 			<p>해당 포스트 사이트로 이동 : <span>여기에 url 입력</span></p>
 		</div>
@@ -10,30 +10,30 @@
 		</div>
 		<div>
 			<p>입장 가능한 동물 종류</p>
-			<input type="checkbox" id="small_dog" value="소형견" disabled>
+			<input type="checkbox" id="small_dog" value="소형견">
 			<label for="small_dog">소형견</label>
-			<input type="checkbox" id="medium_dog" value="중형견" disabled checked>
+			<input type="checkbox" id="medium_dog" value="중형견">
 			<label for="medium_dog">중형견</label>
-			<input type="checkbox" id="large_dog" value="대형견" disabled>
+			<input type="checkbox" id="large_dog" value="대형견">
 			<label for="large_dog">대형견</label>
-			<input type="checkbox" id="cat" value="고양이" disabled>
+			<input type="checkbox" id="cat" value="고양이">
 			<label for="cat">고양이</label>
-			<input type="checkbox" id="bird" value="조류" disabled>
+			<input type="checkbox" id="bird" value="조류">
 			<label for="bird">조류</label>
 		</div>
 		<div>
 			<p>시설 기능</p>
-			<input type="checkbox" id="pet_menu" value="펫메뉴" disabled>
+			<input type="checkbox" id="pet_menu" value="펫메뉴">
 			<label for="pet_menu">펫메뉴</label>
-			<input type="checkbox" id="pet_cafe" value="펫카페" disabled checked>
+			<input type="checkbox" id="pet_cafe" value="펫카페">
 			<label for="pet_cafe">펫카페</label>
-			<input type="checkbox" id="pet_hotel" value="펫호텔" disabled>
+			<input type="checkbox" id="pet_hotel" value="펫호텔">
 			<label for="pet_hotel">펫호텔</label>
-			<input type="checkbox" id="pet_fitness" value="펫피트니스" disabled checked>
+			<input type="checkbox" id="pet_fitness" value="펫피트니스">
 			<label for="pet_fitness">펫피트니스</label>
-			<input type="checkbox" id="pet_beauty" value="펫미용" disabled>
+			<input type="checkbox" id="pet_beauty" value="펫미용">
 			<label for="pet_beauty">펫미용</label>
-			<input type="checkbox" id="pet_catholic" value="펫카톨릭" disabled checked>
+			<input type="checkbox" id="pet_catholic" value="펫카톨릭">
 			<label for="pet_catholic">펫카톨릭</label>
 		</div>
 		<div>
@@ -137,7 +137,7 @@
 	function onChangePicture(e){
 		image.value = URL.createObjectURL(e.target.files[0]);
 
-		console.log(image.value);
+		console.log(image);
 	}
 </script>
 <style scoped>

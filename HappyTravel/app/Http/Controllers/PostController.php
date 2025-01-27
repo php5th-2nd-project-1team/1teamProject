@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\AnimalType;
 use App\Models\FacilityType;
@@ -11,8 +12,10 @@ use App\Models\PostComments;
 use App\Models\PostDetail;
 use App\Models\PostFacilityType;
 use App\Models\PostLike;
+use Exception;
 use UserToken;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -364,4 +367,75 @@ class PostController extends Controller
 	// 	return response()->json($responseData, 200);
 	// }
 
+	// 포스트 작성(관리자만)
+	public function storePost(PostRequest $request){
+		
+		// TODO : 관리자 로그인 로직 추가 후 주석 해제
+		// if(!Auth::check()){
+		// 	return response()->json([
+		// 		'success' => false
+		// 		,'msg' => '현재 관리자 로그인이 아님'
+		// 	], 400);
+		// }
+
+		DB::beginTransaction();
+
+		try{
+			$inputData = new Post();
+				// TODO : 관리자 로그인 로직 추가 후 주석 해제
+				// $inputData->manager_id = Auth::user()->manager_id;
+				$inputData->manager_id = 1;
+				$inputData->category_local_num = $request->category_local_num;
+				$inputData->category_theme_num = $request->category_theme_num;
+				$inputData->post_title = $request->post_title;
+				$inputData->post_local_name = $request->post_local_name;
+				$inputData->post_content = $request->post_content;
+				$inputData->post_detail_content = $request->post_detail_content;
+				$inputData->post_img = '/'.$request->file('post_img')->store('img');
+				$inputData->post_subimg1 = '/'.$request->file('post_subimg1')->store('img');
+				$inputData->post_subimg2 = '/'.$request->file('post_subimg2')->store('img');
+				$inputData->post_subimg3 = '/'.$request->file('post_subimg3')->store('img');
+				$inputData->post_lat = $request->post_lat;
+				$inputData->post_lon = $request->post_lon;
+				$inputData->post_detail_num = $request->post_detail_num;
+				$inputData->post_detail_addr = $request->post_detail_addr;
+				$inputData->post_detail_time = $request->post_detail_time;
+				$inputData->post_detail_site = $request->post_detail_site;
+				$inputData->post_detail_price = $request->post_detail_price;
+				$inputData->post_detail_parking = $request->post_detail_parking;
+			$inputData->save();
+		
+			foreach($request->animal_type_num as $animal_type_num){
+				$inputAnimalType = new PostAnimalType();
+				$inputAnimalType->post_id = $inputData->post_id;
+				$inputAnimalType->animal_type_num = $animal_type_num;
+				$inputAnimalType->save();
+			}
+
+			foreach($request->facility_type_num as $facility_type_num){
+				$inputFacilityType = new PostFacilityType();
+				$inputFacilityType->post_id = $inputData->post_id;
+				$inputFacilityType->facility_type_num = $facility_type_num;
+				$inputFacilityType->save();
+			}
+
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return response()->json([
+				'success' => false
+				,'msg' => '포스트 작성 실패'
+				,'error' => $e->getMessage()
+			], 400);
+		}
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 작성 성공'
+			,'post_id' => $inputData->post_id
+		];
+		return response()->json($responseData, 200);
+	}
 }
+
+

@@ -21,7 +21,7 @@
 	import ShopModalClientInfo from './shop_modal/ShopModalClientInfo.vue';
 	import ShopModalRule from './shop_modal/ShopModalRule.vue';
 	import { useStore } from 'vuex';
-	import PortOne from '@portone/browser-sdk/v2';
+	// import PortOne from '@portone/browser-sdk/v2';
 	import { useRouter } from 'vue-router';
 	
 	const store = useStore();

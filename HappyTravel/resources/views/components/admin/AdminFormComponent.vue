@@ -19,6 +19,7 @@
 			</div>
 			<div class="issue">
 				<h2>문의사항</h2>
+				<p>문의사항 작성</p>
 			</div>
 			<div class="notice">
 				<h2>공지사항</h2>
@@ -32,14 +33,21 @@
 				<h2>사이트 설정</h2>
 			</div>
 			<div class="account">
-				<h2>로그인</h2>
+				<h2>{{ loginFlg ? '로그아웃' : '로그인' }}</h2>
+			</div>
+			<div class="account-setting" v-if="loginFlg">
+				<h2>계정 설정</h2>
 			</div>
 		</div>	
 		<router-view></router-view>
 	</div>
 </template>
 <script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
+	const store = useStore();
+	const loginFlg = computed(()=>store.state.admin.adminLoginFlg);
 </script>
 <style scoped>
 	.admin-container{

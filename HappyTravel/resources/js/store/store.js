@@ -5,6 +5,7 @@ import notice from './modules/notice';
 import auth from './modules/auth';
 import shop from './modules/shop';
 import editor from './modules/editor';
+import admin from './modules/admin';
 
 export default createStore({
 	modules:{
@@ -14,5 +15,6 @@ export default createStore({
 		auth,
 		shop,
 		editor,
+		admin,
 	},
 });

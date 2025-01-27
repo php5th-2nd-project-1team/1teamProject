@@ -116,4 +116,18 @@ class UserController extends Controller
 
         return response()->json($responseData, 200);
     }
+
+    // 유저 전체 리스트 조회
+    public function users(Request $request){
+
+        $users = User::paginate(10);
+
+        $responseData = [
+            'success' => true,
+            'msg' => '유저 전체 리스트 조회 성공',
+            'users' => $users->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
 }

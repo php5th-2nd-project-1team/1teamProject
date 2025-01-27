@@ -58,8 +58,15 @@ import AdminListComponent from '../views/components/admin/AdminListComponent.vue
 import AdminCreateComponent from '../views/components/admin/AdminCreateComponent.vue';
 import AdminPostsComponent from '../views/components/admin/AdminPostsComponent.vue';
 import AdminPostsForm from '../views/components/admin/AdminPostsForm.vue';
-import TestComponent from '../views/components/TestComponent.vue';
+// import TestComponent from '../views/components/TestComponent.vue';
 import AdminPostsDetailComponent from '../views/components/admin/AdminPostsDetailComponent.vue';
+import AdminPostCreateComponent from '../views/components/admin/AdminPostCreateComponent.vue';
+import AdminPostEditComponent from '../views/components/admin/AdminPostEditComponent.vue';
+import AdminNoticeComponent from '../views/components/admin/AdminNoticeComponent.vue';
+import AdminNoticeDetailComponent from '../views/components/admin/AdminNoticeDetailComponent.vue';
+import AdminNoticeCreateComponent from '../views/components/admin/AdminNoticeCreateComponent.vue';
+import AdminNoticeEditComponent from '../views/components/admin/AdminNoticeEditComponent.vue';
+import AdminLoginComponent from '../views/components/admin/AdminLoginComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -80,6 +87,23 @@ const chkAuth = (to, from, next) => {
 	}
 }
 
+const chkAdmin = (to, from, next) => { 
+	const store = useStore();
+	const adminLoginFlg = store.state.admin.adminLoginFlg;
+
+	// TODO 관리자 페이지 로그인 시 못들어가는 페이지 좀 더 조사하여 추가할 것
+	const noAdminPassFlg = to.path('/admin/login');
+
+	if(!adminLoginFlg && noAdminPassFlg){
+		next('/admin/login');
+	}
+	else if(adminLoginFlg && noAdminPassFlg){
+		next('/admin/index');
+	}else{
+		next();
+	}
+}
+
 
 const routes=[
 	// path : '경로이름'
@@ -92,10 +116,10 @@ const routes=[
 		path: '/social/info',
 		component: SocialComponent,
 	},
-	{
-		path: '/notice/store',
-		component: TestComponent
-	},
+	// {
+	// 	path: '/notice/store',
+	// 	component: TestComponent
+	// },
 	{
 		path: '/index',
 		component : IndexComponet,
@@ -225,37 +249,75 @@ const routes=[
 		path:'/admin'
 		,component: AdminFormComponent
 		,children:[
+			// 관리자 메인 페이지
 			{
 				path : 'index'
 				,component: AdminIndexComponent
 			}
+			// 유저 관리 페이지
 			,{
 				path : 'users'
 				,component: AdminUserComponent
 			}
+			// 유저 상세 페이지
 			,{
 				path : 'users/:id'
 				,component: AdminUserDetailComponent
 			}
+			// 관리자 관리 페이지
 			,{
 				path : 'lists'
 				,component: AdminListComponent
 			}
+			// 관리자 등록 페이지
 			,{
 				path : 'lists/create'
 				,component: AdminCreateComponent
-			},{
+			},
+			// 포스트 관리 페이지
+			{
 				path : 'posts'
 				,component: AdminPostsComponent
-			},{
+			},
+			// 포스트 상세 페이지
+			{
 				path : 'posts/:id'
-				,component: AdminPostsForm
-			},{
+				,component: AdminPostsDetailComponent
+			},
+			// 포스트 생성 페이지
+			{
 				path : 'posts/create'
-				,component: AdminPostsForm
-			},{
+				,component: AdminPostCreateComponent
+			},
+			// 포스트 수정 페이지
+			{
 				path : 'posts/edit/:id'
-				,component: AdminPostsForm
+				,component: AdminPostEditComponent
+			},
+			// 공지사항 목록 페이지
+			{
+				path : 'notices'
+				,component: AdminNoticeComponent
+			}
+			// 공지사항 상세 페이지
+			,{
+				path : 'notices/:id'
+				,component: AdminNoticeDetailComponent
+			}
+			// 공지사항 작성 페이지
+			,{
+				path : 'notices/create'
+				,component: AdminNoticeCreateComponent
+			}
+			// 공지사항 수정 페이지
+			,{
+				path : 'notices/edit/:id'
+				,component: AdminNoticeEditComponent
+			}
+			// 관리자 로그인 페이지
+			,{
+				path : 'login'
+				,component: AdminLoginComponent
 			}
 		]
 	}

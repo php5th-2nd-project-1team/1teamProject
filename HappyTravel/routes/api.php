@@ -54,6 +54,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// 관리자 인증 후 호출 가능한 그룹
+// TODO 관리자 인증 관련 미들웨어 추가 필요
+Route::group([],function(){
+    Route::get('/users', [UserController::class, 'users'])->name('user.users');
+    Route::post('/posts', [PostController::class, 'storePost'])->name('post.store');
+});
 
 /**
  * 상기님 Route *
