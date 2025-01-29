@@ -21,8 +21,9 @@ return new class extends Migration
 
             $table->char('community_likes_flg',1) ->nullable(false)->default('0');
             
-            // 중복 좋아요 방지
-            $table->unique(['user_id,community_id']);
+            // // 중복 좋아요 방지 // TODO : unique 속성 주는 것은 컬럼 추가할 때 같이 추가하거나, 별도로 migration 파일을 만들어서 줘야 함. 
+            // 안그러면 키가 없다고 오류 뜸
+            // $table->unique(['user_id, community_id']);
 
             $table->timestamps();
             $table->softDeletes();

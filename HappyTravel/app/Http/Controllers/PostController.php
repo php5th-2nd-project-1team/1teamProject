@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -57,10 +58,12 @@ class PostController extends Controller
 			});
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
-			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')->whereNull('post_animal_types.deleted_at');
+			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
+					->where('using', '=', '1')->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
-			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at');
+			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
+					->where('using', '=', '1')->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
@@ -163,7 +166,7 @@ class PostController extends Controller
 		// 				->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at')
 		// 				->leftJoin('animal_types', 'post_animal_types.animal_type_num', '=', 'animal_types.animal_type_num')
 		// 				->leftJoin('facility_types', 'post_facility_types.facility_type_num', '=', 'facility_types.facility_type_num')
-		// 				->where('posts.post_id', '=', $request->id)
+		// 				->where('posts.post_id', '=', $id)
 		// 				->get();
 		
 		if (is_null($token)) {
@@ -206,7 +209,7 @@ class PostController extends Controller
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
 			,'PostComment' => $PostComment->toArray()
-			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $request->id, "cnt" => 0]
+			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $id, "cnt" => 0]
 			,'PostClkLike' => $PostClkLike
 			,'AnimalType' => $AnimalType ->toArray()
 			,'FacilityType' => $FacilityType->toArray()
@@ -218,10 +221,10 @@ class PostController extends Controller
 
 	// 영광의 상처(필터 이름 출력)
 	// public function postFilter(Request $request) {
-	// 	$Post = Post::where('post_id', '=', $request->id)->first();
-	// 	$AnimalType = PostAnimalType::where('post_id', '=', $request->id)
+	// 	$Post = Post::where('post_id', '=', $id)->first();
+	// 	$AnimalType = PostAnimalType::where('post_id', '=', $id)
 	// 					->join('animal_types', 'animal_types.animal_type_num', '=', 'post_animal_types.animal_type_num')->get();
-	// 	$FacilityType = PostFacilityType::where('post_id', '=', $request->id)
+	// 	$FacilityType = PostFacilityType::where('post_id', '=', $id)
 	// 					->join('facility_types', 'facility_types.facility_type_num', '=', 'post_facility_types.facility_type_num')->get();
 
 	// 	$responseData = [
@@ -300,7 +303,7 @@ class PostController extends Controller
 	// 	$comment->save();
 	// 	$comment->delete();
 
-	// 	$PostComment = PostComments::with('user')->where('post_id', '=', $request->id)
+	// 	$PostComment = PostComments::with('user')->where('post_id', '=', $id)
 	// 					->whereNull('deleted_at')
 	// 					->orderBy('created_at', 'DESC')
 	// 					->paginate(5);
@@ -426,7 +429,7 @@ class PostController extends Controller
 				'success' => false
 				,'msg' => '포스트 작성 실패'
 				,'error' => $e->getMessage()
-			], 400);
+			], 500);
 		}
 
 		$responseData = [
@@ -434,6 +437,153 @@ class PostController extends Controller
 			,'msg' => '포스트 작성 성공'
 			,'post_id' => $inputData->post_id
 		];
+		return response()->json($responseData, 200);
+	}
+
+	// 포스트 수정
+	public function updatePost(PostRequest $request, $id){
+				
+		// TODO : 관리자 로그인 로직 추가 후 주석 해제
+		// if(!Auth::check()){
+		// 	return response()->json([
+		// 		'success' => false
+		// 		,'msg' => '현재 관리자 로그인이 아님'
+		// 	], 400);
+		// }
+
+		DB::beginTransaction();
+
+		try{
+			$inputData = Post::find($id);
+				// TODO : 관리자 로그인 로직 추가 후 주석 해제
+				// $inputData->manager_id = Auth::user()->manager_id;
+
+				// 전체 수정 부분
+				$inputData->manager_id = 1;
+				$inputData->category_local_num = $request->category_local_num;
+				$inputData->category_theme_num = $request->category_theme_num;
+				$inputData->post_title = $request->post_title;
+				$inputData->post_local_name = $request->post_local_name;
+				$inputData->post_content = $request->post_content;
+				$inputData->post_detail_content = $request->post_detail_content;
+				$inputData->post_lat = $request->post_lat;
+				$inputData->post_lon = $request->post_lon;
+				$inputData->post_detail_num = $request->post_detail_num;
+				$inputData->post_detail_addr = $request->post_detail_addr;
+				$inputData->post_detail_time = $request->post_detail_time;
+				$inputData->post_detail_site = $request->post_detail_site;
+				$inputData->post_detail_price = $request->post_detail_price;
+				$inputData->post_detail_parking = $request->post_detail_parking;
+
+				// 이미지 수정 부분
+				// 이미지 수정 위해 파일 업로드 시 기존 이미지 삭제 및 새 이미지로 교체
+				// 왜 이렇게 해야 하는가 : 보안상 기존 파일을 input:file에 넣어줄 수 없음
+				if($request->file('post_img')){
+					if(Storage::exists($inputData->post_img)){
+						Storage::delete($inputData->post_img);
+					}
+					$inputData->post_img = '/'.$request->file('post_img')->store('img');
+				}
+				if($request->file('post_subimg1')){
+					if(Storage::exists($inputData->post_subimg1)){
+						Storage::delete($inputData->post_subimg1);
+					}
+					$inputData->post_img = '/'.$request->file('post_subimg1')->store('img');
+				}
+				if($request->file('post_subimg2')){
+					if(Storage::exists($inputData->post_subimg2)){
+						Storage::delete($inputData->post_subimg2);
+					}
+					$inputData->post_img = '/'.$request->file('post_subimg2')->store('img');
+				}
+				if($request->file('post_subimg3')){
+					if(Storage::exists($inputData->post_subimg3)){
+						Storage::delete($inputData->post_subimg3);
+					}
+					$inputData->post_img = '/'.$request->file('post_subimg3')->store('img');
+				}
+			$inputData->save();
+		
+			PostAnimalType::where('post_id', '=', $id)->update([
+				'using' => '0'
+			]);
+			PostFacilityType::where('post_id', '=', $id)->update([
+				'using' => '0'
+			]);
+
+			foreach($request->animal_type_num as $animal_type_num){
+				PostAnimalType::updateOrCreate(
+				[
+					'post_id' => $inputData->post_id, 
+					'animal_type_num' => $animal_type_num
+				], 
+				[
+					'using' => '1'
+				]);
+			}
+
+			foreach($request->facility_type_num as $facility_type_num){
+				PostFacilityType::updateOrCreate(
+				[
+					'post_id' => $inputData->post_id, 
+					'facility_type_num' => $facility_type_num
+				], 
+				[
+					'using' => '1'
+				]);
+			}
+
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return response()->json([
+				'success' => false
+				,'msg' => '포스트 작성 실패'
+				,'error' => $e->getMessage()
+			], 500);
+		}
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 수정 성공'
+			,'post_id' => $inputData->post_id
+		];
+		return response()->json($responseData, 200);
+	}
+
+	public function deletePost(Request $request, $id){
+		try{
+			DB::beginTransaction();
+
+			$post = Post::find($id);
+			$postAnimalType = PostAnimalType::where('post_id', '=', $id)->get();
+			$postFacilityType = PostFacilityType::where('post_id', '=', $id)->get();
+
+			
+			$post->delete();
+
+			foreach($postAnimalType as $animalType){
+				$animalType->delete();
+			}
+			foreach($postFacilityType as $facilityType){
+				$facilityType->delete();
+			}
+
+			DB::commit();
+		} catch(Exception $e) {
+			DB::rollBack();
+			return response()->json([
+				'success' => false
+				,'msg' => '포스트 삭제 실패'
+				,'error' => $e->getMessage()
+			], 500);
+		}
+
+		$responseData = [
+			'success' => true
+			,'msg' => '포스트 삭제 성공'
+		];
+
 		return response()->json($responseData, 200);
 	}
 }
