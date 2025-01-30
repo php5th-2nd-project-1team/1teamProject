@@ -86,10 +86,12 @@ class PostController extends Controller
 			});
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
-			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')->whereNull('post_animal_types.deleted_at');
+			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
+					->where('using', '=', '1')->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
-			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')->whereNull('post_facility_types.deleted_at');
+			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
+					->where('using', '=', '1')->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
@@ -378,7 +380,7 @@ class PostController extends Controller
 		// 	return response()->json([
 		// 		'success' => false
 		// 		,'msg' => '현재 관리자 로그인이 아님'
-		// 	], 400);
+		// 	], 401);
 		// }
 
 		DB::beginTransaction();
@@ -387,6 +389,8 @@ class PostController extends Controller
 			$inputData = new Post();
 				// TODO : 관리자 로그인 로직 추가 후 주석 해제
 				// $inputData->manager_id = Auth::user()->manager_id;
+
+				// TODO : 관리자 로그인 로직 추가 후 $inputData->manager_id = 1; 부분 삭제
 				$inputData->manager_id = 1;
 				$inputData->category_local_num = $request->category_local_num;
 				$inputData->category_theme_num = $request->category_theme_num;
@@ -448,7 +452,7 @@ class PostController extends Controller
 		// 	return response()->json([
 		// 		'success' => false
 		// 		,'msg' => '현재 관리자 로그인이 아님'
-		// 	], 400);
+		// 	], 401);
 		// }
 
 		DB::beginTransaction();
@@ -459,6 +463,7 @@ class PostController extends Controller
 				// $inputData->manager_id = Auth::user()->manager_id;
 
 				// 전체 수정 부분
+				// TODO : 관리자 로그인 로직 추가 후 $inputData->manager_id = 1; 부분 삭제
 				$inputData->manager_id = 1;
 				$inputData->category_local_num = $request->category_local_num;
 				$inputData->category_theme_num = $request->category_theme_num;
