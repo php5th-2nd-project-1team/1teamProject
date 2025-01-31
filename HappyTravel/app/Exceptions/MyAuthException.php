@@ -22,6 +22,10 @@ class MyAuthException extends Exception
             ,'E25' => ['status' => 402, 'msg' => '이미 있는 아이디입니다.']
             ,'E26' => ['status' => 403, 'msg' => 'RefreshToken 만료']
             ,'E27' => ['status' => 403, 'msg' => '이전과 동일한 비밀번호']
+
+            // 매니저 영역
+            ,'E30' => ['status' => 401, 'msg' => '계정을 다시 확인 바랍니다.']
+            ,'E31' => ['status' => 401, 'msg' => '로그인 상태가 아닙니다.']
         ];
     }
 }

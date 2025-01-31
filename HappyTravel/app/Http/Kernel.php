@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 커스텀 미들웨어
         'my.auth' => \App\Http\Middleware\MyAuth::class,
+        'my.manager.auth' => \App\Http\Middleware\MyManagerAuth::class,
     ];
 }

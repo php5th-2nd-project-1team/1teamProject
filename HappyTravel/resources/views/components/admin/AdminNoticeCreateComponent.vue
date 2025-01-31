@@ -2,10 +2,6 @@
 	<div class="admin-notice-detail-container">
 		<h1>공지사항 작성</h1>
 		<div>
-			<label for="id">id : </label>
-			<input type="text" id="id" >
-		</div>
-		<div>
 			<label for="important">중요</label>
 			<input type="checkbox" id="important" name="important" value="true">
 		</div>
@@ -17,7 +13,7 @@
 			<label for="content">내용</label>
 			<br>
 			<!-- TODO 나중에 스마트에디터로 변경할 것 -->
-			<textarea id="content" name="content" cols="30" rows="10"></textarea>
+			<SmartEditorComponent />
 		</div>
 		<div class="admin-notice-create-button-group">
 			<button>작성</button>
@@ -27,7 +23,7 @@
 	</div>
 </template>
 <script setup>
-
+	import SmartEditorComponent from '../utilities/SmartEditorComponent.vue';
 </script>
 <style scoped>
 	.admin-notice-detail-container{
