@@ -59,18 +59,22 @@ class PostController extends Controller
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
 			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-					->where('post_animal_types.using', '=', '1')->whereNull('post_animal_types.deleted_at');
+					->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
 			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
-					->where('post_facility_types.using', '=', '1')->whereNull('post_facility_types.deleted_at');
+					->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
-				$query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+				$query->where(function($query)use($animal_type_num){
+					$query->whereIn('post_animal_types.animal_type_num', $animal_type_num)->where('post_animal_types.using', '=', '1');
+				});
 			})
 			->when($facility_type_num, function($query, $facility_type_num){
-				$query->orWhereIn('post_facility_types.facility_type_num', $facility_type_num);
+				$query->orWhere(function($query)use($facility_type_num){
+					$query->whereIn('post_facility_types.facility_type_num', $facility_type_num)->where('post_facility_types.using', '=', '1');
+				});
 			});
 		})->orderBy('posts.created_at', 'DESC')->withCount('postLikes')->paginate(8);
 
@@ -95,10 +99,14 @@ class PostController extends Controller
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
-				$query->whereIn('post_animal_types.animal_type_num', $animal_type_num);
+				$query->where(function($query)use($animal_type_num){
+					$query->whereIn('post_animal_types.animal_type_num', $animal_type_num)->where('post_animal_types.using', '=', '1');
+				});
 			})
 			->when($facility_type_num, function($query, $facility_type_num){
-				$query->orWhereIn('post_facility_types.facility_type_num', $facility_type_num);
+				$query->orWhere(function($query)use($facility_type_num){
+					$query->whereIn('post_facility_types.facility_type_num', $facility_type_num)->where('post_facility_types.using', '=', '1');
+				});
 			});
 		})->first();
 
