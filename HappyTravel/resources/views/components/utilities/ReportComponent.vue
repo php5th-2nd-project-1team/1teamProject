@@ -4,33 +4,33 @@
     <div class="modal-content">
         <div class="header-container">
             <img class="report-icon" src="/developImg/report_icon.png" alt="">
-            <h3 class="title">클릭하여 신고이유를 선택해 주세요.</h3>
+            <h3 class="title">클릭하여 신고사유를 선택해 주세요.</h3>
         </div>
         <div class="report-container">
             <div class="report-box">
                 <div class="report-content">
-                    <input type="checkbox" id="01" value="01">
+                    <input type="radio" id="01" value="01" name="report">
                     <label for="01">욕설/비속어 포함</label>
                 </div>
                 <div class="report-content">
-                    <input type="checkbox" id="02" value="02">
-                    <label for="02">갈등 조장 및 허위사실 유포 등</label>
+                    <input type="radio" id="02" value="02" name="report">
+                    <label for="02">갈등 조장 및 허위사실 유포</label>
                 </div>
                 <div class="report-content">
-                    <input type="checkbox" id="03" value="03">
+                    <input type="radio" id="03" value="03" name="report">
                     <label for="03">폭력적 또는 혐오스러운 컨텐츠</label>
                 </div>
                 <div class="report-content">
-                    <input type="checkbox" id="04" value="04">
+                    <input type="radio" id="04" value="04" name="report">
                     <label for="04">도배 및 광고글</label>
                 </div>
                 <div class="report-content">
-                    <input type="checkbox" id="05" value="05">
+                    <input type="radio" id="05" value="05" name="report">
                     <label for="05">기타</label>
                 </div>
 
             </div>
-            <textarea class="report-text" name="" minlength="1" maxlength="200">기타 추가할 내용을 적어주세요.</textarea>
+            <textarea v-model="text" class="report-text" minlength="1" maxlength="200" cols="100" placeholder="기타 추가할 내용을 적어주세요."></textarea>
         </div>
         <div class="btn-filter">
             <button class="btn btn-header btn-bg-red" @click="applyFilters">신고</button>
@@ -40,11 +40,13 @@
 </div>
 </template>
 <script setup>
+import { ref } from 'vue';
+const text = ref("");
 const emit = defineEmits();
 const closeReportModal = () => {
     emit('postReportClose');
+    text.value = "";
 }
-
 
 </script>
 <style scoped>
@@ -160,5 +162,9 @@ input {
 
 .report-text {
     border: 1px solid#b3b3b3;
+    height: 90px;
+    margin-bottom: 20px;
+    resize: none;
+    padding: 5px;
 }
 </style>
