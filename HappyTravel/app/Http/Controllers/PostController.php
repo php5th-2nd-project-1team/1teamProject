@@ -171,13 +171,13 @@ class PostController extends Controller
 		// 				->where('posts.post_id', '=', $id)
 		// 				->get();
 		
-		if (is_null($token)) {
-			Log::info('진짜 토큰 null임');
-		} elseif ($token === '') {
-			Log::info('빈 문자열임');
-		} else {
-			Log::info('값을 가지고 있음: ', ['token' => $token]);
-		}
+		// if (is_null($token)) {
+		// 	Log::info('진짜 토큰 null임');
+		// } elseif ($token === '') {
+		// 	Log::info('빈 문자열임');
+		// } else {
+		// 	Log::info('값을 가지고 있음: ', ['token' => $token]);
+		// }
 
 		// Log::debug(is_null($token));
 
@@ -211,7 +211,7 @@ class PostController extends Controller
 			,'msg' => '포스트 상세 출력'
 			,'PostDetail' => $PostDetail->toArray() 
 			,'PostComment' => $PostComment->toArray()
-			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $id, "cnt" => 0]
+			,'PostCommentCnt' => $PostCommentCnt !== null ? $PostCommentCnt->toArray() : ["post_id" => $request->id, "cnt" => 0]
 			,'PostClkLike' => $PostClkLike
 			,'AnimalType' => $AnimalType ->toArray()
 			,'FacilityType' => $FacilityType->toArray()
