@@ -59,11 +59,11 @@ class PostController extends Controller
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
 			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-					->where('using', '=', '1')->whereNull('post_animal_types.deleted_at');
+					->where('post_animal_types.using', '=', '1')->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
 			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
-					->where('using', '=', '1')->whereNull('post_facility_types.deleted_at');
+					->where('post_facility_types.using', '=', '1')->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
@@ -87,11 +87,11 @@ class PostController extends Controller
 		})
 		->when($animal_type_num, function($query, $animal_type_num) {
 			$query->leftJoin('post_animal_types', 'posts.post_id', '=', 'post_animal_types.post_id')
-					->where('using', '=', '1')->whereNull('post_animal_types.deleted_at');
+					->where('post_animal_types.using', '=', '1')->whereNull('post_animal_types.deleted_at');
 		})
 		->when($facility_type_num, function($query, $facility_type_num) {
 			$query->leftJoin('post_facility_types', 'posts.post_id', '=', 'post_facility_types.post_id')
-					->where('using', '=', '1')->whereNull('post_facility_types.deleted_at');
+					->where('post_facility_types.using', '=', '1')->whereNull('post_facility_types.deleted_at');
 		})
 		->where(function($query) use($animal_type_num, $facility_type_num){
 			$query->when($animal_type_num, function($query, $animal_type_num){
