@@ -33,8 +33,6 @@
 			<label for="pet_fitness">펫피트니스</label>
 			<input type="checkbox" id="pet_beauty" value="펫미용" disabled>
 			<label for="pet_beauty">펫미용</label>
-			<input type="checkbox" id="pet_catholic" value="펫카톨릭" disabled checked>
-			<label for="pet_catholic">펫카톨릭</label>
 		</div>
 		<div>
 			<label for="local">지역 : </label>
