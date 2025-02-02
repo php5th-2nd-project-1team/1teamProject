@@ -51,13 +51,12 @@
         <h1 class="users-title">유저 관리</h1>
     </div>
 </div>
-
 <div class="users-container">
     <div class="users-table-section">
         <div class="table-responsive">
             {{-- Bootstrap의 table-striped는 테이블 행들 번갈아가면서 다른 배경색 넣어주는거임 --}}
             {{-- 테이블 읽기 쉽게 만들어주고 행 구분하기 편하게 해줌 --}}
-            {{-- 보통 짝수 행은 연한 회색, 홀수 행은 흰색으로 나옴 --}}
+            {{-- 보통 짝수 행은 연한 회색, 홀수 행은 흰색으로 나옴 --}}   
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -71,38 +70,60 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 1; $i <= 10; $i++)
-                    <tr class="clickable-row" data-href="/manager/users/{{ $i }}">
-                        <td>{{ $i }}</td>
-                        <td>user{{ $i }}</td>
-                        <td>홍길동{{ $i }}</td>
-                        <td>길동이{{ $i }}</td>
-                        <td>{{ $i % 2 == 0 ? '여성' : '남성' }}</td>
-                        <td>010-1234-{{ sprintf('%04d', $i) }}</td>
-                        <td>user{{ $i }}@example.com</td>
+                    @foreach ($users as $user)
+                    <tr class="clickable-row" data-href="/manager/users/{{ $user->user_id }}?page={{ $users->currentPage() }}">
+                        <td>{{ $user->user_id }}</td>
+                        <td>{{ $user->account }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->nickname }}</td>
+                        <td>{{ $user->gender === '0' ? '남성' : '여성' }}</td>
+                        <td>{{ $user->phone_number }}</td>
+                        <td>{{ $user->email }}</td>
                     </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
-
         <nav aria-label="Page navigation">
             <ul class="pagination">
+                @if(!$users->onFirstPage())
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="First">
+                    <a class="page-link" href="{{$users->url(1)}}" aria-label="First">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item active"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
+                @endif
+                @php
+                    $currentPage = $users->currentPage();
+                    $lastPage = $users->lastPage();
+                    
+                    // 시작 페이지와 끝 페이지 계산
+
+                    // max() 함수는 주어진 두 값 중 더 큰 값을 반환할 것
+                    // 현재 페이지에서 2를 뺀 값과 1 중에서 큰 값을 선택하여 시작 페이지가 1보다 작아지지 않도록 함
+                    $startPage = max($currentPage - 2, 1);
+                    
+                    // min() 함수는 주어진 두 값 중 더 작은 값을 반환할 것
+                    // 시작 페이지에 4를 더한 값과 마지막 페이지 중에서 작은 값을 선택하여 끝 페이지가 마지막 페이지를 넘지 않도록 함
+                    $endPage = min($startPage + 4, $lastPage);
+                    
+                    // 시작 페이지 재조정 (끝 페이지가 마지막 페이지보다 작을 경우)
+                    if ($endPage - $startPage < 4) {
+                        $startPage = max($endPage - 4, 1);
+                    }
+                @endphp
+                @for ($i = $startPage; $i <= $endPage; $i++)
+                    <li class="page-item {{ $i === $currentPage ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+                @if(!$users->onLastPage())
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Last">
+                    <a class="page-link" href="{{$users->url($users->lastPage())}}" aria-label="Last">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
     </div>

@@ -25,11 +25,11 @@ class Post extends Model
     }
 
     public function categoryLocal(){
-        return $this->belongsTo(CategoryLocal::class, 'category_local_num');
+        return $this->belongsTo(CategoryLocal::class, 'category_local_num')->select('category_local_name');
     }
 
     public function categoryTheme(){
-        return $this->belongsTo(CategoryTheme::class, 'category_theme_num');
+        return $this->belongsTo(CategoryTheme::class, 'category_theme_num')->select('category_theme_name');
     }
 
     public function postLikes(){

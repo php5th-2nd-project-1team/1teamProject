@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\Managers\ManagerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,10 +27,7 @@ Route::prefix('/manager')->group(function(){
     Route::fallback(function(){
         return view('manager.layout.fallback');
     }); 
-
-    // get 요청 부분
     // index (메인페이지 부분) 출력
-    Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
 
     // TODO 나중에 컨트롤러를 통해 view를 출력할 것
     // 로그인 페이지 출력
@@ -38,71 +35,58 @@ Route::prefix('/manager')->group(function(){
         return view('manager.layout.login');
     })->name('manager.login');
 
-    Route::get('/index', function(){
-        return view('manager.layout.index');
-    })->name('manager.index');
+    Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
-    Route::get('/users', function(){
-        return view('manager.layout.users.users');
-    })->name('user.users');
+    Route::get('/managers', function(){
+        return view('manager.layout.managers.managers');
+    })->name('manager.managers');
 
-    Route::get('/users/{id}', function(){
-        return view('manager.layout.users.usersDetail');
-    })->name('user.users.detail');
-
-    Route::get('/posts', function(){
-        return view('manager.layout.posts.posts');
-    })->name('post.posts');
-
-    Route::get('/posts/create', function(){
-        return view('manager.layout.posts.postsCreate');
-    })->name('post.posts.create');
-
-    Route::get('/posts/{id}', function(){
-        return view('manager.layout.posts.postsDetail');
-    })->name('post.posts.detail');
-
-    Route::get('/posts/update/{id}', function(){
-        return view('manager.layout.posts.postsUpdate');
-    })->name('post.posts.update');
-
-    Route::get('/notices', function(){
-        return view('manager.layout.notice.notices');
-    })->name('notice.notices');
-
-    Route::get('/notices/create', function(){
-        return view('manager.layout.notice.noticesCreate');
-    })->name('notice.notices.create');
-
-    Route::get('/notices/{id}', function(){ 
-        return view('manager.layout.notice.noticesDetail');
-    })->name('notice.notices.detail');
-
-    Route::get('/notices/update/{id}', function(){  
-        return view('manager.layout.notice.noticesUpdate');
-    })->name('notice.notices.update');
+    Route::get('/managers/create', function(){
+        return view('manager.layout.managers.managerCreate');
+    })->name('manager.managers.create');
 
     Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
 
-
-
-
-
     Route::middleware('my.manager.auth')->group(function(){
 
-        // Route::get('/index', function(){
-        //     return view('manager.layout.index');
-        // })->name('manager.index');
-
-        // 유저 관련
-
-        // 포스트 관련
-        Route::post('/posts', [PostController::class, 'storePost'])->name('post.store');
-        Route::post('/posts/{id}', [PostController::class, 'updatePost'])->name('post.update');
-        Route::post('/posts/delete/{id}', [PostController::class, 'deletePost'])->name('post.delete');
-
-        // 관리자 계정 관련
+        // 로그아웃 처리
         Route::post('/logout', [ManagerController::class, 'logout'])->name('manager.logout');
+
+        // 메인 페이지 
+        Route::get('/', [ManagerController::class, 'index'])->name('manager.index');
+
+        // 유저 영역 =========================================================================
+        // 유저 목록 조회
+        Route::get('/users', [ManagerController::class, 'users'])->name('user.users');
+        // 유저 상세 정보 조회
+        Route::get('/users/{id}', [ManagerController::class, 'usersDetail'])->name('user.users.detail');
+
+        // 포스트 관련 =========================================================================
+        Route::get('/posts', [ManagerController::class, 'posts'])->name('post.posts'); // 포스트 목록 조회
+        
+        // 포스트 생성 처리
+        Route::get('/posts/create', [ManagerController::class, 'postCreate'])->name('post.posts.create'); // 포스트 작성 폼 출력
+        Route::post('/posts', [ManagerController::class, 'postStore'])->name('post.store');
+        
+        Route::get('/posts/{id}', [ManagerController::class, 'postsDetail'])->name('post.posts.detail'); // 포스트 상세 조회
+        
+        // 포스트 수정 처리 
+        Route::get('/posts/edit/{id}', [ManagerController::class, 'postEdit'])->name('post.posts.edit'); // 포스트 수정 폼 출력
+        Route::post('/posts/{id}', [ManagerController::class, 'updatePost'])->name('post.update');
+
+        // 포스트 삭제 처리 
+        Route::post('/posts/destroy/{id}', [ManagerController::class, 'postDestroy'])->name('post.destroy');
+
+        // 관리자 로그아웃 처리
+        Route::post('/logout', [ManagerController::class, 'logout'])->name('manager.logout');
+
+        // 공지사항 관련 ======================================================================
+        Route::get('/notices', [ManagerController::class, 'noticeIndex'])->name('notice.index'); // 공지사항 목록
+        Route::get('/notices/create', [ManagerController::class, 'noticeCreate'])->name('notice.create'); // 공지사항 작성
+        Route::get('/notices/{id}', [ManagerController::class, 'noticeDetail'])->name('notice.detail'); // 공지사항 상세
+        Route::post('/notices', [ManagerController::class, 'noticeStore'])->name('notice.store');
+        Route::get('/notices/edit/{id}', [ManagerController::class, 'noticeEdit'])->name('notice.edit'); // 공지사항 수정 
+        Route::post('/notices/{id}', [ManagerController::class, 'noticeUpdate'])->name('notice.update'); // 공지사항 수정 
     });
 });

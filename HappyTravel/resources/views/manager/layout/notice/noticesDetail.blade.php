@@ -81,6 +81,20 @@
         color: white;
         text-decoration: none;
     }
+    .notice-link {
+        display: inline-block;
+        color: #3498db;
+        text-decoration: none;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+    .notice-link:hover {
+        text-decoration: underline;
+        color: #2980b9;
+    }
+    .notice-link i {
+        margin-right: 8px;
+    }
 </style>
 @endsection
 
@@ -93,25 +107,30 @@
 
 <div class="notice-detail-container">
     <div class="notice-detail-section">
-        <h2>{{ '제목임' }}</h2>
+        <a href="/community/notice/{{ $notice->notice_id }}" target="_blank" class="notice-link">
+            <i class="fas fa-external-link-alt"></i>
+            사용자 페이지에서 보기
+        </a>
+
+        <h2>{{ $notice->notice_title }}</h2>
         
         <div class="notice-info">
             <div class="notice-info-item">
                 <i class="fas fa-hashtag"></i>
-                <span>id. 1</span>
+                <span>id. {{ $notice->notice_id }}</span>
             </div>
             <div class="notice-info-item">
                 <i class="fas fa-user"></i>
-                <span>관리자</span>
+                <span>{{ $notice->managers->m_nickname }}</span>
             </div>
             <div class="notice-info-item">
                 <i class="fas fa-calendar"></i>
-                <span>2024-02-20</span>
+                <span>{{ $notice->created_at }}</span>
             </div>
         </div>
 
         <div class="notice-content">
-            {!! '내용임' !!}
+            {!! $notice->notice_content !!}
         </div>
 
         <div class="action-buttons">
@@ -123,7 +142,7 @@
                 <i class="fas fa-trash-alt"></i>
                 삭제
             </button>
-            <a href="/manager/notices" class="btn btn-secondary">
+            <a href="/manager/notices?page={{ $page }}" class="btn btn-secondary">
                 <i class="fas fa-list"></i>
                 목록
             </a>
@@ -136,7 +155,7 @@
 <script>
     function handleEdit() {
         if(confirm('공지사항을 수정하시겠습니까?')) {
-            window.location.href = '/manager/notices/1/edit';
+            window.location.href = '/manager/notices/edit/{{ $notice->notice_id }}';
         }
     }
     

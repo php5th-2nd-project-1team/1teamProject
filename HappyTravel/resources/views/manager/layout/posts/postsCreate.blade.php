@@ -93,6 +93,12 @@
     }
     textarea.form-control {
         min-height: 150px;
+        resize: none;
+    }
+
+    /* 상세 내용은 더 큰 높이로 설정 */
+    textarea.form-control.detail-content {
+        min-height: 300px;
     }
 </style>
 @endsection
@@ -104,189 +110,176 @@
     </div>
 </div>
 
-<div class="post-detail-container">
-    <div class="post-detail-section">
-        <div class="text-content-group">
-            <div class="form-label">포스트 제목</div>
-            <input type="text" class="form-control" placeholder="제목을 입력하세요">
-        </div>
+<form action="/manager/posts" method="POST" enctype="multipart/form-data" onsubmit="submitPost()">
+    @csrf
+    <div class="post-detail-container">
+        <div class="post-detail-section">
+            <div class="text-content-group">
+                <div class="form-label">포스트 제목</div>
+                <input type="text" name="post_title" class="form-control" placeholder="제목을 입력하세요" required>
+            </div>
 
-        <div class="form-group">
-            <div class="form-label">포스트 개시 상태</div>
-            <select class="status-select">
-                <option>개시 중</option>
-                <option>개시 중단</option>
-                <option>수정 중</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <div class="form-label">포스트 개시 상태</div>
+                <select class="status-select" disabled>
+                    <option>개시 중</option>
+                    <option>개시 중단</option>
+                    <option>수정 중</option>
+                </select>
+            </div>
 
-        <div class="section-title">입장 가능한 동물 종류</div>
-        <div class="checkbox-group">
-            <label class="checkbox-item">
-                <input type="checkbox" name="animal_types[]" value="small_dog"> 소형견
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="animal_types[]" value="medium_dog"> 중형견
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="animal_types[]" value="large_dog"> 대형견
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="animal_types[]" value="cat"> 고양이
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="animal_types[]" value="bird"> 조류
-            </label>
-        </div>
+            <div class="section-title">입장 가능한 동물 종류</div>
+            <div class="checkbox-group">
+                @foreach($animalTypes as $animal)
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="animal_type_num[]" value="{{ $animal->animal_type_num }}"> {{ $animal->animal_type_name }}
+                    </label>
+                @endforeach
+            </div>
 
-        <div class="section-title">시설 기능</div>
-        <div class="checkbox-group">
-            <label class="checkbox-item">
-                <input type="checkbox" name="facilities[]" value="pet_menu"> 펫메뉴
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="facilities[]" value="pet_cafe"> 펫카페
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="facilities[]" value="pet_hotel"> 펫호텔
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="facilities[]" value="pet_fitness"> 펫피트니스
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" name="facilities[]" value="pet_beauty"> 펫미용
-            </label>
-        </div>
+            <div class="section-title">시설 기능</div>
+            <div class="checkbox-group">
+                @foreach($facilityTypes as $facility)
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="facility_type_num[]" value="{{ $facility->facility_type_num }}"> {{ $facility->facility_type_name }}
+                    </label>
+                @endforeach
+            </div>
 
-        <div class="form-group">
-            <div class="form-label">테마</div>
-            <select class="theme-select">
-                <option value="cafe">카페</option>
-                <option value="accommodation">숙소</option>
-                <option value="hospital">병원</option>
-                <option value="tourist">여행지</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <div class="form-label">지역</div>
+                <select class="theme-select" name="category_local_num">
+                    @foreach($categoryLocals as $local)
+                        <option value="{{ $local->category_local_num }}">{{ $local->category_local_name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="form-group">
-            <div class="form-label">지역</div>
-            <select class="theme-select" name="region">
-                <option value="seoul">서울</option>
-                <option value="gyeonggi">경기</option>
-                <option value="gyeongbuk">경북</option>
-                <option value="gyeongnam">경남</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <div class="form-label">테마</div>
+                <select class="theme-select" name="category_theme_num">
+                    @foreach($categoryThemes as $theme)
+                        <option value="{{ $theme->category_theme_num }}">{{ $theme->category_theme_name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="text-content-group">
-            <div class="form-label">지역 상세</div>
-            <input type="text" class="form-control" placeholder="지역 상세 정보를 입력하세요">
-        </div>
+            <div class="text-content-group">
+                <div class="form-label">지역 상세</div>
+                <input type="text" name="post_local_name" class="form-control" placeholder="지역 상세 정보를 입력하세요">
+            </div>
 
-        <div class="text-content-group">
-            <div class="form-label">내용 요약</div>
-            <textarea class="form-control" placeholder="내용 요약을 입력하세요"></textarea>
-        </div>
+            <div class="text-content-group">
+                <div class="form-label">내용 요약</div>
+                <textarea name="post_content" name="post_content" class="form-control" placeholder="내용 요약을 입력하세요" required></textarea>
+            </div>
 
-        <div class="text-content-group">
-            <div class="form-label">내용</div>
-            <textarea class="form-control" placeholder="상세 내용을 입력하세요"></textarea>
-        </div>
+            <div class="text-content-group">
+                <div class="form-label">내용</div>
+                <textarea name="post_detail_content" name="post_detail_content" class="form-control detail-content" placeholder="상세 내용을 입력하세요" required></textarea>
+            </div>
 
-        <div class="image-section">
-            <div class="form-label">대표 이미지</div>
-            <input type="file" class="form-control" name="main_image" accept="image/*">
-            <img id="mainImagePreview" class="image-preview" style="display: none;">
-        </div>
+            <div class="image-section">
+                <div class="form-label">대표 이미지</div>
+                <input type="file" class="form-control" name="post_img" accept="image/*" required>
+                <img id="mainImagePreview" class="image-preview" style="display: none;">
+            </div>
 
-        <div class="image-section">
-            <div class="form-label">상세 이미지 1</div>
-            <input type="file" class="form-control" name="detail_image_1" accept="image/*">
-            <img id="detailImagePreview1" class="image-preview" style="display: none;">
-        </div>
+            <div class="image-section">
+                <div class="form-label">상세 이미지 1</div>
+                <input type="file" class="form-control" name="post_subimg1" accept="image/*" required>
+                <img id="detailImagePreview1" class="image-preview" style="display: none;">
+            </div>
 
-        <div class="image-section">
-            <div class="form-label">상세 이미지 2</div>
-            <input type="file" class="form-control" name="detail_image_2" accept="image/*">
-            <img id="detailImagePreview2" class="image-preview" style="display: none;">
-        </div>
+            <div class="image-section">
+                <div class="form-label">상세 이미지 2</div>
+                <input type="file" class="form-control" name="post_subimg2" accept="image/*" required>
+                <img id="detailImagePreview2" class="image-preview" style="display: none;">
+            </div>
 
-        <div class="image-section">
-            <div class="form-label">상세 이미지 3</div>
-            <input type="file" class="form-control" name="detail_image_3" accept="image/*">
-            <img id="detailImagePreview3" class="image-preview" style="display: none;">
-        </div>
+            <div class="image-section">
+                <div class="form-label">상세 이미지 3</div>
+                <input type="file" class="form-control" name="post_subimg3" accept="image/*" required>
+                <img id="detailImagePreview3" class="image-preview" style="display: none;">
+            </div>
 
-        <div class="section-title">상세 정보</div>
-        <div class="detail-info">
-            <button type="button" class="address-search-btn" onclick="openAddressModal()">
-                <i class="fas fa-search"></i> 주소 검색
-            </button>
-            
-            <div class="detail-row">
-                <div class="detail-label">주소</div>
-                <div class="detail-value">
-                    <input type="text" class="form-control" id="address" placeholder="주소">
-                    <div class="coordinates">
-                        <input type="text" class="form-control" id="latitude" placeholder="위도">
-                        <input type="text" class="form-control" id="longitude" placeholder="경도">
+            <div class="section-title">상세 정보</div>
+            <div class="detail-info">
+                <button type="button" class="address-search-btn" onclick="openAddressModal()">
+                    <i class="fas fa-search"></i> 주소 검색
+                </button>
+                
+                <div class="detail-row">
+                    <div class="detail-label">주소</div>
+                    <div class="detail-value">
+                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" required>
+                        <div class="coordinates">
+                            <div class="coordinate-group">
+                                <div class="coordinate-label">위도</div>
+                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" required>
+                            </div>
+                            <div class="coordinate-group">
+                                <div class="coordinate-label">경도</div>
+                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">전화번호</div>
+                    <div class="detail-value">
+                        <input type="text" name="post_detail_num" class="form-control" placeholder="전화번호를 입력하세요" >
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">홈페이지</div>
+                    <div class="detail-value">
+                        <input type="url" name="post_detail_site" class="form-control" placeholder="홈페이지 URL을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">이용시간</div>
+                    <div class="detail-value">
+                        <input type="text" name="post_detail_time" class="form-control" placeholder="이용시간을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">요금</div>
+                    <div class="detail-value">
+                        <input type="text" name="post_detail_price" class="form-control" placeholder="요금을 입력하세요">
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">주차가능여부</div>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="post_detail_parking" value="0" required> 가능
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="post_detail_parking" value="1" required> 불가능
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <div class="detail-row">
-                <div class="detail-label">전화번호</div>
-                <div class="detail-value">
-                    <input type="tel" class="form-control" placeholder="전화번호를 입력하세요">
-                </div>
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    포스트 저장
+                </button>
+                <button type="button" class="btn btn-danger" onclick="history.back()">
+                    <i class="fas fa-times"></i>
+                    취소
+                </button>
             </div>
-
-            <div class="detail-row">
-                <div class="detail-label">홈페이지</div>
-                <div class="detail-value">
-                    <input type="url" class="form-control" placeholder="홈페이지 URL을 입력하세요">
-                </div>
-            </div>
-
-            <div class="detail-row">
-                <div class="detail-label">이용시간</div>
-                <div class="detail-value">
-                    <input type="text" class="form-control" placeholder="이용시간을 입력하세요">
-                </div>
-            </div>
-
-            <div class="detail-row">
-                <div class="detail-label">요금</div>
-                <div class="detail-value">
-                    <input type="text" class="form-control" placeholder="요금을 입력하세요">
-                </div>
-            </div>
-
-            <div class="detail-row">
-                <div class="detail-label">주차가능여부</div>
-                <div class="radio-group">
-                    <label class="radio-item">
-                        <input type="radio" name="parking" value="available"> 가능
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="parking" value="unavailable"> 불가능
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i>
-                포스트 저장
-            </button>
-            <button type="button" class="btn btn-danger" onclick="history.back()">
-                <i class="fas fa-times"></i>
-                취소
-            </button>
         </div>
     </div>
-</div>
+</form>
 
 <!-- 주소 검색 모달 -->
 <div id="addressModal" class="modal">
@@ -315,30 +308,58 @@
     function closeAddressModal() {
         document.getElementById('addressModal').style.display = 'none';
     }
+
+    function submitPost(e){
+        e.preventDefault();
+
+        if(confirm('포스트를 저장하시겠습니까?')){
+            e.target.submit();
+        }
+
+        return false;
+    }
     
     function searchAddress() {
         const searchInput = document.getElementById('searchInput').value;
+
         const resultsContainer = document.getElementById('searchResults');
         
         // 예시 데이터 - 실제로는 API 호출 필요
-        const mockResults = [
-            '서울특별시 강남구 테헤란로 123',
-            '서울특별시 강남구 역삼동 456',
-            '서울특별시 서초구 서초동 789'
-        ];
-        
-        resultsContainer.innerHTML = mockResults.map(address => `
-            <div class="search-result-item" onclick="selectAddress('${address}')">
-                ${address}
-            </div>
-        `).join('');
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'KakaoAK 7c1eb7d4363ccb73a7c0e9eabb46fc72'
+            }
+        }
+
+        const url = 'https://dapi.kakao.com/v2/local/search/keyword.json?query=' + searchInput;
+
+        axios.get(url, config)
+        .then(response => {
+            const mockResults = response.data.documents.map(argument => ({
+                name: argument.place_name,
+                address: argument.address_name,
+                lat: argument.y,
+                lon: argument.x
+            }));
+
+            resultsContainer.innerHTML = mockResults.map(result => `
+                <div class="search-result-item" onclick="selectAddress('${result.address}', ${result.lat}, ${result.lon})">
+                    <div style="font-weight: bold; color: #2c3e50; margin-bottom: 4px;">${result.name}</div>
+                    <div style="color: #666; font-size: 0.9em;">${result.address}</div>
+                </div>
+            `).join('');
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }
     
-    function selectAddress(address) {
+    function selectAddress(address, lat, lon) {
         document.getElementById('address').value = address;
-        // 예시 좌표값
-        document.getElementById('latitude').value = '37.12345';
-        document.getElementById('longitude').value = '127.12345';
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lon;
         closeAddressModal();
     }
     
@@ -364,16 +385,16 @@
     }
 
     // 이미지 입력 필드에 변경 이벤트 리스너 추가
-    document.querySelector('input[name="main_image"]').addEventListener('change', function() {
+    document.querySelector('input[name="post_img"]').addEventListener('change', function() {
         handleImagePreview(this, 'mainImagePreview');
     });
-    document.querySelector('input[name="detail_image_1"]').addEventListener('change', function() {
+    document.querySelector('input[name="post_subimg1"]').addEventListener('change', function() {
         handleImagePreview(this, 'detailImagePreview1');
     });
-    document.querySelector('input[name="detail_image_2"]').addEventListener('change', function() {
+    document.querySelector('input[name="post_subimg2"]').addEventListener('change', function() {
         handleImagePreview(this, 'detailImagePreview2');
     });
-    document.querySelector('input[name="detail_image_3"]').addEventListener('change', function() {
+    document.querySelector('input[name="post_subimg3"]').addEventListener('change', function() {
         handleImagePreview(this, 'detailImagePreview3');
     });
 </script>

@@ -10,6 +10,8 @@ class CategoryLocal extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'category_locals';
+
     protected $primaryKey = 'category_local_id';
 
     protected $fillable = [

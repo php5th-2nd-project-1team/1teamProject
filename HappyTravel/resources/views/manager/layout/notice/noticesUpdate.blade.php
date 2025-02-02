@@ -82,6 +82,37 @@
         color: white;
         text-decoration: none;
     }
+    .title-container {
+        margin-bottom: 25px;
+    }
+    .title-input-group {
+        position: relative;
+    }
+    .title-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .important-check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    .important-check input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    .important-check label {
+        color: #e74c3c;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0;
+    }
+    .form-control {
+        flex: 1;
+    }
 </style>
 @endsection
 
@@ -94,17 +125,30 @@
 
 <div class="notice-create-container">
     <div class="notice-create-section">
-        <form id="noticeForm" onsubmit="return handleSubmit(event)">
+        <form id="noticeForm" action="/manager/notices/{{ $notice->notice_id }}" method="post" onsubmit="return handleSubmit(event)">
+            @csrf
             <div class="form-group">
-                <label class="form-label">제목</label>
-                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" required value="{{ '기존 제목' }}">
+                <div class="title-container">
+                    <div class="title-input-group">
+                        <label class="form-label">제목</label>
+
+                        <div class="title-checkbox-wrapper">
+                            <input type="text" class="form-control" name="notice_title" placeholder="제목을 입력하세요" required value="{{ $notice->notice_title }}">
+                            <div class="important-check">
+                                <input type="checkbox" id="notice_tag" name="notice_tag" value="0" {{ $notice->notice_tag === '1' ? 'checked' : '' }}>
+                                <label for="notice_tag">중요</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
                 <label class="form-label">내용</label>
                 <div id="smartEditor" class="editor-container">
                     <script type="text/javascript" src="/smarteditor3/js/HuskyEZCreator.js"></script>
-                    <textarea id="editor">{{ '기존 내용' }}</textarea>
+                    <textarea id="editor"></textarea>
                     <script type="text/javascript">
                     var oEditors = [];
                     nhn.husky.EZCreator.createInIFrame({
@@ -114,10 +158,11 @@
                         fCreator: "createSEditor2",
                         fOnAppLoad: function() {
                             // 에디터가 로드된 후 기존 내용 설정
-                            oEditors.getById["editor"].exec("SET_IR", ['{{ '기존 내용' }}']);
+                            oEditors.getById["editor"].exec("SET_IR", ['{!! $notice->notice_content !!}']);
                         }
                     });
                     </script>
+
                 </div>
             </div>
 
@@ -134,7 +179,13 @@
         </form>
     </div>
 </div>
+@if($errors->any())
+    <script>
+        alert('{{ $errors->first() }}');
+    </script>
+@endif
 @endsection
+
 
 @section('scripts')
 <script>
@@ -143,9 +194,11 @@
         
         if(confirm('공지사항을 수정하시겠습니까?')) {
             // 에디터 내용 가져오기
-            var content = getContent();
-            console.log('수정된 내용:', content);
-            // document.getElementById('noticeForm').submit();
+            const content = document.querySelector('#editor');
+            content.value = getContent();
+            content.name = 'notice_content';
+
+            document.getElementById('noticeForm').submit();
         }
         
         return false;

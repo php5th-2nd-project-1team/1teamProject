@@ -10,6 +10,8 @@ class CategoryTheme extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'category_themes';
+
     protected $primaryKey = 'category_theme_id';
 
     protected $fillable = [

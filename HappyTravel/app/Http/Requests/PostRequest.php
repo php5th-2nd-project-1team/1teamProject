@@ -33,15 +33,15 @@ class PostRequest extends FormRequest
             'post_content' => ['required', 'string', 'max:200'],
             'post_detail_content' => ['required', 'string'],
             'post_img' => ['required', 'image'],
-            'post_sub_img1' => ['required','image'],
-            'post_sub_img2' => ['required','image'],
-            'post_sub_img3' => ['required','image'],
+            'post_subimg1' => ['required','image'],
+            'post_subimg2' => ['required','image'],
+            'post_subimg3' => ['required','image'],
             'post_lat' => ['required'],
             'post_lon' => ['required'],
-            'post_detail_num' => ['required', 'string', 'max:13'],
+            'post_detail_num' => ['max:13'],
             'post_detail_addr' => ['required', 'string', 'max:500'],
             'post_detail_time' => ['required', 'string', 'max:50'],			
-            'post_detail_site' => ['required', 'string', 'max:500'],
+            'post_detail_site' => ['max:500'],
             'post_detail_price' => ['required', 'string', 'max:50'],
             'post_detail_parking' => ['required', 'string', 'max:1'],
             'animal_type_num' => ['required', 'array'],
@@ -50,9 +50,9 @@ class PostRequest extends FormRequest
 
         if($this->routeIs('post.update')) {
             $validatorList['post_img'] = ['image'];
-            $validatorList['post_sub_img1'] = ['image'];
-            $validatorList['post_sub_img2'] = ['image'];
-            $validatorList['post_sub_img3'] = ['image'];
+            $validatorList['post_subimg1'] = ['image'];
+            $validatorList['post_subimg2'] = ['image'];
+            $validatorList['post_subimg3'] = ['image'];
         }
 
         return $validatorList;

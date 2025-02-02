@@ -1,6 +1,6 @@
 <div class="sidebar">
 	<div class="logo">
-		<img src="{{ asset('images/logo.png') }}" alt="로고">
+		<img src="/developImg/petbreeze_logo.png" alt="로고">
 	</div>
 	
 	<div class="nav flex-column">
@@ -39,11 +39,51 @@
 			<i class="fas fa-cogs"></i> 사이트 설정
 		</a>
 
+		@guest('manager')
 		<a href="#" class="menu-header">
 			<i class="fas fa-sign-in-alt"></i> 로그인
 		</a>
-		@auth
-			<a href="#" class="nav-link submenu">계정 설정</a>
+		@endguest
+		@auth('manager')
+		<form method="POST" class="menu-header" action="/manager/logout" id="logoutForm" onclick="onClickLogout()">
+			@csrf
+			<i class="fas fa-sign-in-alt"></i> 로그아웃
+		</form>
+		<a href="#" class="nav-link submenu">계정 설정</a>
 		@endauth
 	</div>
 </div>
+<script>
+	const onClickLogout = () => {
+		const form = document.querySelector('#logoutForm');
+		form.submit();
+	}
+</script>
+<style>
+    .menu-header, .nav-link {
+        transition: all 0.2s ease;
+        position: relative;
+        padding-left: 15px;
+    }
+
+    .menu-header:hover, .nav-link:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+
+    .menu-header:hover i, .nav-link:hover i {
+        color: #3498db;
+    }
+
+    /* 현재 활성화된 메뉴 스타일 */
+    .menu-header.active, .nav-link.active {
+        background-color: rgba(52, 152, 219, 0.15);
+        border-right: 3px solid #3498db;
+        color: #3498db;
+    }
+
+    /* submenu 스타일 조정 */
+    .submenu {
+        padding-left: 30px;
+    }
+</style>

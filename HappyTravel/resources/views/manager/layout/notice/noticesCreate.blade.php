@@ -82,6 +82,37 @@
         color: white;
         text-decoration: none;
     }
+    .title-container {
+        margin-bottom: 25px;
+    }
+    .title-input-group {
+        position: relative;
+    }
+    .title-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .important-check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    .important-check input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    .important-check label {
+        color: #e74c3c;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0;
+    }
+    .form-control {
+        flex: 1;
+    }
 </style>
 @endsection
 
@@ -94,10 +125,21 @@
 
 <div class="notice-create-container">
     <div class="notice-create-section">
-        <form id="noticeForm" onsubmit="return handleSubmit(event)">
+        <form id="noticeForm" method="POST" action="/manager/notices" onsubmit="return handleSubmit(event)">
+            @csrf
             <div class="form-group">
-                <label class="form-label">제목</label>
-                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요" required>
+                <div class="title-container">
+                    <div class="title-input-group">
+                        <label class="form-label">제목</label>
+                        <div class="title-checkbox-wrapper">
+                            <input type="text" class="form-control" name="notice_title" placeholder="제목을 입력하세요" required>
+                            <div class="important-check">
+                                <input type="checkbox" id="notice_tag" name="notice_tag" value="1">
+                                <label for="notice_tag">중요</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -139,10 +181,14 @@
         
         // TODO: 에디터 내용 가져오기 및 폼 제출 처리
         if(confirm('공지사항을 등록하시겠습니까?')) {
-            console.log('폼 제출 처리가 진행됩니다.');
-            // document.getElementById('noticeForm').submit();
+            const content = document.querySelector('#editor');
+            content.value = getContent();
+            content.name = 'notice_content';
+
+            document.getElementById('noticeForm').submit();
         }
         
+
         return false;
     }
 
@@ -152,5 +198,12 @@
 
 		return document.getElementById("editor").value;
 	}
+
+    @if($errors->any())
+        <script>
+            alert('{{ $errors->first() }}');
+        </script>
+    @endif
 </script>
+
 @endsection

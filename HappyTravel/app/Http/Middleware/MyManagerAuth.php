@@ -20,7 +20,7 @@ class MyManagerAuth
     public function handle(Request $request, Closure $next)
     {
         if(!Auth::guard('manager')->check()){
-            throw new MyAuthException('E31');
+            return redirect()->route('manager.login');
         }
 
         return $next($request);

@@ -126,43 +126,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 1; $i <= 10; $i++)
-                    <tr class="clickable-row" data-href="/manager/posts/{{ $i }}">
-                        <td>{{ $i }}</td>
-                        <td>맛있는 식당 {{ $i }}</td>
-                        <td>{{ ['서울', '부산', '대구', '인천', '광주'][$i % 5] }}</td>
-                        <td class="content-preview">이 식당은 정말 맛있습니다. 특히 김치찌개가 일품입니다...</td>
-                        <td><i class="fas fa-eye stats-icon"></i>{{ $i * 123 }}</td>
-                        <td><i class="fas fa-heart stats-icon"></i>{{ $i * 45 }}</td>
+                    @foreach ($posts as $post)
+                    <tr class="clickable-row" data-href="/manager/posts/{{ $post->post_id }}?page={{ $posts->currentPage() }}">
+                        <td>{{ $post->post_id }}</td>
+                        <td>{{ $post->post_title }}</td>
+                        <td>{{ $post->post_local_name }}</td>
+                        <td class="content-preview">{{ $post->post_content }}</td>
+                        <td><i class="fas fa-eye stats-icon"></i>{{ $post->post_view }}</td>
+                        <td><i class="fas fa-heart stats-icon"></i>{{ $post->post_likes_count }}</td>
                         <td>
-                            <span class="status-badge {{ ['status-active', 'status-pending', 'status-inactive'][$i % 3] }}">
+                            {{-- <span class="status-badge {{ ['status-active', 'status-pending', 'status-inactive'][$i % 3] }}">
                                 {{ ['활성', '대기', '비활성'][$i % 3] }}
+                            </span> --}}
+                            <span class="status-badge status-active">
+                                활성
                             </span>
                         </td>
                     </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
         <div class="pagination-container">
-            <nav aria-label="Page navigation" class="w-100">
+            <nav aria-label="Page navigation">
                 <ul class="pagination">
+                    @if(!$posts->onFirstPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="First">
+                        <a class="page-link" href="{{$posts->url(1)}}" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link" href="#">7</a></li>
+                    @endif
+                    @php
+                        $currentPage = $posts->currentPage();
+                        $lastPage = $posts->lastPage();
+                        
+                        // 시작 페이지와 끝 페이지 계산
+                        $startPage = max($currentPage - 2, 1);
+                        $endPage = min($startPage + 4, $lastPage);
+                        
+                        // 시작 페이지 재조정
+                        if ($endPage - $startPage < 4) {
+                            $startPage = max($endPage - 4, 1);
+                        }
+                    @endphp
+                    @for ($i = $startPage; $i <= $endPage; $i++)
+                        <li class="page-item {{ $i === $currentPage ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $posts->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    @if(!$posts->onLastPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Last">
+                        <a class="page-link" href="{{$posts->url($posts->lastPage())}}" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
             <a href="/manager/posts/create" class="create-button">

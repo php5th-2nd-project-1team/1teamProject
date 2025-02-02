@@ -61,10 +61,6 @@
     }
     .info-group {
         margin-bottom: 25px;
-        transition: all 0.3s ease;
-    }
-    .info-group:hover {
-        transform: translateX(5px);
     }
     .info-label {
         font-weight: 600;
@@ -78,11 +74,6 @@
         color: #495057;
         font-size: 1.1rem;
         padding: 8px 0;
-        border-bottom: 2px solid transparent;
-        transition: all 0.3s ease;
-    }
-    .info-group:hover .info-value {
-        border-bottom-color: #3498db;
     }
     .address-group {
         margin-left: 20px;
@@ -111,8 +102,7 @@
         font-size: 1.1rem;
     }
     .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        opacity: 0.9;
     }
     .user-stats {
         display: flex;
@@ -153,15 +143,15 @@
     <div class="user-detail-section">
         <div class="user-stats">
             <div class="stat-card">
-                <div class="stat-value">42</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">게시글</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">128</div>
+                <div class="stat-value">{{$commentCount}}</div>
                 <div class="stat-label">댓글</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">2024.01.15</div>
+                <div class="stat-value">{{$user->created_at}}</div>
                 <div class="stat-label">가입일</div>
             </div>
         </div>
@@ -169,35 +159,35 @@
         <div class="user-profile-section">
             <div class="profile-image-container">
                 <div class="info-label">프로필 사진</div>
-                <img src="https://via.placeholder.com/200" alt="프로필 사진" class="profile-image">
+                <img src="{{$user->profile}}" alt="프로필 사진" class="profile-image">
             </div>
             
             <div class="profile-info">
                 <div class="info-group">
                     <div class="info-label">유저 번호</div>
-                    <div class="info-value">1</div>
+                    <div class="info-value">{{$user->user_id}}</div>
                 </div>
 
                 <div class="info-group">
                     <div class="info-label">계정</div>
-                    <div class="info-value">user123</div>
+                    <div class="info-value">{{$user->account}}</div>
                 </div>
 
                 <div class="info-group">
                     <div class="info-label">이름</div>
-                    <div class="info-value">홍길동</div>
+                    <div class="info-value">{{$user->name}}</div>
                 </div>
             </div>
         </div>
 
         <div class="info-group">
             <div class="info-label">닉네임</div>
-            <div class="info-value">길동이</div>
+            <div class="info-value">{{$user->nickname}}</div>
         </div>
 
         <div class="info-group">
             <div class="info-label">성별</div>
-            <div class="info-value">남성</div>
+            <div class="info-value">{{$user->gender === '0' ? '남성' : '여성'}}</div>
         </div>
 
         <div class="info-group">
@@ -205,27 +195,27 @@
             <div class="address-group">
                 <div class="info-group">
                     <div class="info-label">주소</div>
-                    <div class="info-value">서울특별시 강남구 테헤란로</div>
+                    <div class="info-value">{{$user->address}}</div>
                 </div>
                 <div class="info-group">
                     <div class="info-label">상세주소</div>
-                    <div class="info-value">123번길 45, 67동 89호</div>
+                    <div class="info-value">{{$user->detail_address}}</div>
                 </div>
                 <div class="info-group">
                     <div class="info-label">우편번호</div>
-                    <div class="info-value">06234</div>
+                    <div class="info-value">{{$user->post_code}}</div>
                 </div>
             </div>
         </div>
 
         <div class="info-group">
             <div class="info-label">전화번호</div>
-            <div class="info-value">010-1234-5678</div>
+            <div class="info-value">{{$user->phone_number}}</div>
         </div>
 
         <div class="info-group">
             <div class="info-label">이메일</div>
-            <div class="info-value">hong@example.com</div>
+            <div class="info-value">{{$user->email}}</div>
         </div>
 
         <div class="action-buttons">
@@ -245,6 +235,10 @@
                 <i class="fas fa-key"></i>
                 비밀번호 초기화
             </button>
+            <a href="/manager/users?page={{ $page }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                목록으로
+            </a>
         </div>
     </div>
 </div>
