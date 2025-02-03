@@ -69,7 +69,16 @@
 								<li class="dropdown-sub">굿즈</li>
 							</ul> -->
 						</li>
-						<li @click="pushNoticeList"><a>커뮤니티</a></li>
+						<li>
+							<a>커뮤니티
+							</a> 
+							<ul class="dropdown" >
+								<li @click="pushCommunity('01')" class="dropdown-sub" style="cursor: pointer;">공지사항</li>
+								<li @click="pushCommunity('02')" class="dropdown-sub" style="cursor: pointer;">자유게시판</li>
+								<li @click="pushCommunity('03')" class="dropdown-sub" style="cursor: pointer;">자랑게시판</li>
+								<li @click="pushCommunity('04')" class="dropdown-sub" style="cursor: pointer;">문의게시판</li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 
@@ -139,7 +148,18 @@ const pushNoticeList = () => {
 	router.push('/community/notice'); // 이동
 }
 
-
+// 커뮤니티 페이지로 이동시
+const pushCommunity = (e) => { 
+	if(e === '01') {
+		pushNoticeList();
+	}else if(e === '02') {
+		router.push('/community/free');
+	}else if(e === '03') {
+		router.push('/community/photo');
+	}else if(e === '04') {
+		router.push('/community/photo');
+	}	
+}
 
 </script>
 <style>

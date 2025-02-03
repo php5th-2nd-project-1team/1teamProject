@@ -14,15 +14,15 @@ return new class extends Migration
     public function up()
     {
        Schema::table('community_likes', function(Blueprint $table){
+            // 복합키 설정
+            $table->primary(['user_id', 'community_id']);
 
             // 외래키 설정
             $table->foreign('user_id')->references('user_id')->on('users');
 
             // TODO : 외래키 설정 확인 바람. community_likes 자기 자신을 fk로 설정하려고 함.
-            $table->foreign('community_id')->references('community_id')->on('community_likes');
+            $table->foreign('community_id')->references('community_id')->on('community_boards');
 
-            // 복합키 설정
-            $table->primary(['user_id', 'community_id']);
 
        });
     }
@@ -36,7 +36,7 @@ return new class extends Migration
     {
         Schema::table('community_likes', function(Blueprint $table){
             $table->dropForeign(['user_id']);
-            $table->dropForeing(['commmunity_id']);
+            $table->dropForeing(['community_id']);
         });
     }
 };

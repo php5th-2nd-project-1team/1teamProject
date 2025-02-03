@@ -22,41 +22,66 @@
                 </button>
             </div>
         </div>
-        <div class="free-container">
-            <div class="free-header">
-                <div class="free-item">No.</div>
-                <div class="free-item">제목</div>
-                <div class="free-item">글쓴이</div>
-                <div class="free-item">작성날자</div>
-                <div class="free-item">조회수</div>
+            <div class="free-container">
+                <div class="free-header">
+                    <div class="free-item">No.</div>
+                    <div class="free-item">제목</div>
+                    <div class="free-item">글쓴이</div>
+                    <div class="free-item">작성날자</div>
+                    <div class="free-item">조회수</div>
+                </div>
+                <div class="free-row">
+                    <div class="free-item">999.</div>
+                    <div class="free-item">나나나나노노노노노(121)</div>
+                    <div class="free-item">둘리</div>
+                    <div class="free-item">2025-01-22 09:01:52</div>
+                    <div class="free-item">15</div>
+                </div>            
             </div>
-            <div class="free-row">
-                <div class="free-item">999.</div>
-                <div class="free-item">나나나나노노노노노(121)</div>
-                <div class="free-item">둘리</div>
-                <div class="free-item">2025-01-22 09:01:52</div>
-                <div class="free-item">15</div>
-            </div>            
+        <div class="pagination">
+            <div v-for="item in links" :key="item.label" @click="scrollToTop()">
+                <button class="paginate-btn" @click="$store.dispatch('board/boardList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                <span class="paginate-btn-prev" v-if="item.label === backBtn"> {{ '이전' }}</span>
+                <span class="paginate-btn-next" v-else-if="item.label === nextBtn">{{ '다음' }}</span>
+                <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
+                <span  v-else>{{ item.label }}</span>
+                </button>
+            </div>
+        <button  @click="router.push('/free/store')">글쓰기</button>
         </div>
-        <div>
-            <button>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-            </button>
-        </div>
-
-        <button>글쓰기</button>
-    </div>
+    </div>    
 
 </template>
     
 <script setup>
-    import {ref} from 'vue';
-
+    import {computed, onBeforeMount, ref} from 'vue';
+    import { useStore } from 'vuex';
+    
     // 드롭다운에서 선택된 값 저장할 변수
     const selectOpiton = ref('all');
+
+    const store = useStore();
+
+    const boardList = computed(()=>store.state.board.boardList);
+
+    onBeforeMount(()=> { 
+        store.dispatch('board/freeBoardList', 0);
+    });
+
+    const links = computed(()=> store.state.board.links);
+
+    const backBtn = "&laquo; Previous";
+    const nextBtn = "Next &raquo;";
+
+    const currentPage = computed(()=> store.state.board.currentPage);
+    const limitPage = 2;
+
+    const getPageOnUrl =(url) => {
+        if(!url) {
+            return;
+        }
+        return url.split('page=')[1];
+    }
     
 </script>
 

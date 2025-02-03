@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('community_boards', function (Blueprint $table) {
-            $table->id('communinty_id');
+            $table->id('community_id');
             $table->unsignedBigInteger('user_id')->nullable(false);
             $table->char('community_type',1)->nullable(false)->default(0);
             $table->string('community_title',50)->nullable(false);

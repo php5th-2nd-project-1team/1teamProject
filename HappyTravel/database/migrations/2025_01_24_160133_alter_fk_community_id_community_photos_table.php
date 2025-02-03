@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('community_photos', function(Blueprint $table){
-            $table->foreign('user_id')->references('user_id')->on('community_photos');
+            $table->foreign('community_id')->references('community_id')->on('community_boards');
         });
     }
 
