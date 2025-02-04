@@ -7,7 +7,9 @@
 		<a href="#" class="menu-header">
 			<i class="fas fa-users"></i> 유저
 		</a>
-		<a href="#" class="nav-link submenu">신고</a>
+		<span class="nav-link submenu disabled">신고</span>
+		<a href="/manager/reports/comments" class="nav-link sub-submenu">- 댓글 신고</a>
+		<a href="#" class="nav-link sub-submenu">- 게시글 신고</a>
 		<a href="#" class="nav-link submenu">징계</a>
 
 		<a href="#" class="menu-header">
@@ -85,5 +87,28 @@
     /* submenu 스타일 조정 */
     .submenu {
         padding-left: 30px;
+    }
+
+    /* disabled 메뉴 스타일 */
+    .submenu.disabled {
+        cursor: default;
+        pointer-events: none;
+        color: inherit;  /* 부모 요소의 색상을 상속 */
+    }
+
+    .submenu.disabled:hover {
+        background-color: transparent;
+        color: inherit;  /* 부모 요소의 색상을 상속 */
+    }
+    
+    /* sub-submenu 스타일 추가 */
+    .sub-submenu {
+        padding-left: 45px;
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    .sub-submenu:hover {
+        color: #3498db;
     }
 </style>
