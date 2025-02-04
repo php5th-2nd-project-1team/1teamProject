@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('report_processes', function(Blueprint $table){
-            $table->foreign('report_id')->references('report_id')->on('report_processes');
+            $table->foreign('report_id')->references('report_id')->on('reports');
         });
     }
 

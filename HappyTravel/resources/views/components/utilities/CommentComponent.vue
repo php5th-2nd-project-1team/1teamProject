@@ -6,7 +6,8 @@
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
 				<!-- 신고버튼 -->
-				<button @click="openReportModal" v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button>
+				<!-- 신고버튼 클릭시 comment_id를 파라미터로 보내줄거임 -->
+				<button @click="openReportModal(item.post_comment_id)" v-if="item.user.user_id !== $store.state.auth.userInfo.user_id" class="btn-comment-report" type="button"><img src="/developImg/btn_reply_report.png" alt=""></button>
 				<!-- 삭제버튼 -->
 				<button v-if="item.user.user_id === $store.state.auth.userInfo.user_id" @click="deleteComment(item.post_comment_id, key)" class="btn-comment-delete"><img style="width: 25px;" src="/developImg/btn-delete.png" alt=""></button>
 			</div>
