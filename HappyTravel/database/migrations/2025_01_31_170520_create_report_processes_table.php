@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id('report_process_id');
             $table->unsignedBigInteger('report_id');
             $table->unsignedBigInteger('manager_id');
-            $table->char('report_result', 2)->nullable(false)->default('01')->comment('01=>처리전, 01=>처리중, 01=>처리완료');
-            $table->timestamp('ban_at')->nullable();
+            $table->char('report_result', 2)->nullable(false)->comment('01=>혐의없음, 02=>정지, 03=>영구정지');
+            $table->string('report_reason', 200)->nullable(false);
+            $table->dateTime('ban_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

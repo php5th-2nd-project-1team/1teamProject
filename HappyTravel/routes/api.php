@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TravelClassController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -49,6 +50,9 @@ Route::middleware('my.auth')->group(function() {
     // iamport 결제 시스템
     Route::post('/payment/request', [TravelClassController::class, 'requestPayment']);
     Route::post('/payment/confirm', [TravelClassController::class, 'confirmPayment']);
+
+    //  신고작성 => 인증 들어가야함
+    Route::post('/reports', [ReportController::class, 'report'])->name('report.post');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -111,5 +115,6 @@ Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.ty
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
 Route::get('/posts/{id}', [PostController::class, 'showPost'])->name('showPost.post');
 Route::get('/posts/filter/{id}', [PostController::class, 'postFilter'])->name('showPost.post');
+
 
 

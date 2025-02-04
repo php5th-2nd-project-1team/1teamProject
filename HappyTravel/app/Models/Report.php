@@ -12,11 +12,16 @@ class Report extends Model
 
     protected $primaryKey = 'report_id';
 
-    protected $guarded = [
-        'report_id',
+    protected $fillable = [
+        'user_id',
+        'report_category',
+        'report_board_id',
+        'report_code',
+        'report_status',
+        'report_text',
     ];
 
-    protected function serialize(\DateTimeInterface $date) {
+    protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
 

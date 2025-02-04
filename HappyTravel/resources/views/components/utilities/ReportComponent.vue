@@ -33,7 +33,7 @@
             <textarea v-model="text" class="report-text" minlength="1" maxlength="200" cols="100" placeholder="기타 추가할 내용을 적어주세요."></textarea>
         </div>
         <div class="btn-filter">
-            <button class="btn btn-header btn-bg-red" @click="applyFilters">신고</button>
+            <button class="btn btn-header btn-bg-red" @click="applyReport">신고</button>
             <button @click="closeReportModal"  class="btn btn-header btn-bg-gray">닫기</button>
         </div>
     </div>
@@ -47,6 +47,10 @@ const closeReportModal = () => {
     emit('postReportClose');
     text.value = "";
 }
+
+const applyReport = () => {
+    
+};
 
 </script>
 <style scoped>
