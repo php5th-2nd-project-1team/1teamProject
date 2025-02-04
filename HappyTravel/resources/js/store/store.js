@@ -6,7 +6,7 @@ import auth from './modules/auth';
 import shop from './modules/shop';
 import editor from './modules/editor';
 import admin from './modules/admin';
-
+import boards from './modules/boards';
 export default createStore({
 	modules:{
 		post,
@@ -16,5 +16,6 @@ export default createStore({
 		shop,
 		editor,
 		admin,
+		boards,
 	},
 });

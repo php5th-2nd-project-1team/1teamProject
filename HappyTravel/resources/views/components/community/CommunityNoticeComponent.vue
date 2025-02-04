@@ -43,8 +43,7 @@
         </button>
       </div>
     </div>
-   
-    <button @click="router.push('/notice/store')">글쓰기</button>
+  
 
    
 </template>

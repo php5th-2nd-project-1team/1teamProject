@@ -1,4 +1,5 @@
 <template>
+    <LoadingComponent v-if="LoadingFlg" />
     <div class="free-title-bg">
         <h1>자유게시판</h1>
     </div>
@@ -6,18 +7,18 @@
     <div>
         <div class="serach-wrap">
             <!-- 왼쪽 섹션 -->
-            <select class="select-box"v-model="selectOpiton">
+            <select class="select-box" v-model="search.type">
                 <option value="all">전체</option>
                 <option value="content">내용</option>
                 <option value="title">제목</option>
                 <option value="user">글쓴이</option>
-                <option value="titleContent">제목+내용</option>
+                <option value="title_content">제목+내용</option>
             </select>
             
             <!-- 오른쪽 섹션 -->
             <div class="right-section">
-                <input type="text" placeholder="검색어를 입력해주세요." maxlength="20">
-                <button class="search-button cursor-pointer">검색
+                <input type="text" placeholder="검색어를 입력해주세요." maxlength="20" v-model="keyWord">
+                <button class="search-button cursor-pointer" @click="serachPageReset">검색
                     <img src="/developImg/search_icon.png" alt="검색">
                 </button>
             </div>
@@ -30,59 +31,97 @@
                     <div class="free-item">작성날자</div>
                     <div class="free-item">조회수</div>
                 </div>
-                <div class="free-row">
-                    <div class="free-item">999.</div>
-                    <div class="free-item">나나나나노노노노노(121)</div>
-                    <div class="free-item">둘리</div>
-                    <div class="free-item">2025-01-22 09:01:52</div>
-                    <div class="free-item">15</div>
+                <div v-for="item in boardList" :key="item" class="free-row">
+                    <div class="free-item">{{ item.community_id }}</div>
+                    <div class="free-item">{{ item.community_title }}</div>
+                    <div class="free-item">{{ item.users?.nickname }}</div>
+                    <div class="free-item">{{ item.created_at }}</div>
+                    <div class="free-item">{{ item.community_view }}</div>
                 </div>            
+                <div></div>
+                <div></div>
+                <div></div> 
+                <div></div> 
+                <div class="board-wrtn">
+                    <button  @click="router.push('/free/store')"><img class="free-pencil"src="/developImg/pencil.png"><span>글쓰기</span></button>
+                </div>
             </div>
         <div class="pagination">
             <div v-for="item in links" :key="item.label" @click="scrollToTop()">
-                <button class="paginate-btn" @click="$store.dispatch('board/boardList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                <button class="paginate-btn" @click="$store.dispatch('boards/freeBoardList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
                 <span class="paginate-btn-prev" v-if="item.label === backBtn"> {{ '이전' }}</span>
                 <span class="paginate-btn-next" v-else-if="item.label === nextBtn">{{ '다음' }}</span>
                 <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
                 <span  v-else>{{ item.label }}</span>
                 </button>
             </div>
-        <button  @click="router.push('/free/store')">글쓰기</button>
         </div>
     </div>    
 
 </template>
     
 <script setup>
-    import {computed, onBeforeMount, ref} from 'vue';
+    import LoadingComponent from '../utilities/LoadingComponent.vue';
+    import {computed, onBeforeMount, reactive, ref} from 'vue';
+    import { useRouter } from 'vue-router';
     import { useStore } from 'vuex';
     
     // 드롭다운에서 선택된 값 저장할 변수
-    const selectOpiton = ref('all');
+
+    const keyWord = ref('');
+    const search = reactive({
+        type: 'all',
+        keyword: '',
+        page: 0
+    });
+    
+    const serachPageReset = () => {
+        search.page = 0;
+        search.keyword = keyWord.value;
+        store.dispatch('boards/freeBoardList', search);
+    }
 
     const store = useStore();
 
-    const boardList = computed(()=>store.state.board.boardList);
+    const boardList = computed(()=>store.state.boards.boardList);
+
+    const LoadingFlg = computed(() => store.state.boards.LoadingFlg);
+
+    const router = useRouter();
 
     onBeforeMount(()=> { 
-        store.dispatch('board/freeBoardList', 0);
+        store.dispatch('boards/freeBoardList', 0);
     });
 
-    const links = computed(()=> store.state.board.links);
+    const links = computed(()=> store.state.boards.links);
 
     const backBtn = "&laquo; Previous";
     const nextBtn = "Next &raquo;";
 
-    const currentPage = computed(()=> store.state.board.currentPage);
+    const currentPage = computed(()=> store.state.boards.currentPage);
+
     const limitPage = 2;
 
-    const getPageOnUrl =(url) => {
+    const getPageOnUrl = (url) => {
         if(!url) {
             return;
         }
-        return url.split('page=')[1];
+
+        const newSearch = {
+            type: search.type,
+            keyword: search.keyword,
+            page: url.split('page=')[1]
+        }
+
+        console.log(newSearch);
+
+        return newSearch;
     }
     
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
 </script>
 
 <style scoped>
@@ -174,4 +213,95 @@
     .cursor-pointer {
         cursor: pointer;
     }
+
+    /* 페이지 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      margin-top: 70px;
+    }
+
+    /* 페이지버튼 */
+    .paginate-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      background-color: #fff;
+    }   
+    /* 현재 페이지 버튼 스타일 */
+    .main-Btn {
+      background-color: #2986FF;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width:100%;
+      height:100%;
+    }
+    /* 현재 페이지 호버시 색상변경 */
+    .main-Btn:hover {
+      background-color: #1A5BB8; 
+    }
+    /* 이전, 다음 버튼 스타일 */
+    .paginate-btn-prev,
+    .paginate-btn-next {
+      background-color: #2986FF; /* 배경색 */
+      color: #fff; /* 글자 색 */
+      font-size: 16px; /* 글자 크기 */
+      font-weight: bold; /* 글자 두껍게 */
+      display: flex;
+      align-items: center; /* 세로 가운데 정렬 */
+      justify-content: center; /* 가로 가운데 정렬 */
+      width: 50px; /* 버튼 크기 */
+      height: 50px; /* 버튼 크기 */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* 이전, 다음 버튼 호버 시 색상 변경 */
+    .paginate-btn-prev:hover,
+    .paginate-btn-next:hover {
+      background-color: #1A5BB8; 
+    }
+
+    /* 게시글 작성 */
+    .board-wrtn {
+        display: flex;
+        justify-content: right;
+        margin-top: 20px;
+    }  
+    .board-wrtn button {
+      background-color: #2986FF;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      width: 80%;
+    }
+    .board-wrtn button span {
+        /* width: 30px;
+        height: 30px; */
+        /* margin-right: 5px; */
+        padding-top: 5px;
+    }
+    .free-pencil  {
+        width: 20px;
+        height: 18px;
+        margin-right: 10px;
+    }
+
 </style>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommunityBoardController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NoticeController;
@@ -83,6 +84,8 @@ Route::get('/shops/{id}', [TravelClassController::class, 'shopsBoardDetail']);
 Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
 Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
 Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
+Route::get('/community/free', [CommunityBoardController::class, 'index'])->name('index.free');
+
 
 /**
  * 원상님 Route *
