@@ -11,6 +11,7 @@ class Report extends Model
     use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'report_id';
+    public $timestamps = true;
 
     protected $fillable = [
         'user_id',
@@ -19,6 +20,8 @@ class Report extends Model
         'report_code',
         'report_status',
         'report_text',
+        'created_at',
+        'updated_at',
     ];
 
     protected function serializeDate(\DateTimeInterface $date) {

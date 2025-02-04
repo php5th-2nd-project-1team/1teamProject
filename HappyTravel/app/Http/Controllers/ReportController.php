@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReportRequest;
+use App\Models\Report;
 use UserToken;
 use Illuminate\Support\Facades\DB;
 
@@ -67,7 +68,8 @@ class ReportController extends Controller
         $data['report_text'] = $request->report_text;
         $data['user_id'] = UserToken::getInPayload($token, 'idt');
 
-        DB::table('reports')->insert($data);
+        // DB::table('reports')->insert($data);   insert 는 timestamp생성x
+        Report::create($data);
 
         $responseData = [
             'success' => true
