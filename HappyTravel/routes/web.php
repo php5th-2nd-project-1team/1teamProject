@@ -37,14 +37,6 @@ Route::prefix('/manager')->group(function(){
 
 	Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
-	Route::get('/managers', function(){
-		return view('manager.layout.managers.managers');
-	})->name('manager.managers');
-
-	Route::get('/managers/create', function(){
-		return view('manager.layout.managers.managerCreate');
-	})->name('manager.managers.create');
-
 	Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
 	// 댓글 신고관리
@@ -68,8 +60,6 @@ Route::prefix('/manager')->group(function(){
 	})->name('reports.pages.detail');
 
 	Route::middleware('my.manager.auth')->group(function(){
-
-
 		// 로그아웃 처리
 		Route::post('/logout', [ManagerController::class, 'logout'])->name('manager.logout');
 
@@ -105,8 +95,14 @@ Route::prefix('/manager')->group(function(){
 		Route::get('/notices', [ManagerController::class, 'noticeIndex'])->name('notice.index'); // 공지사항 목록
 		Route::get('/notices/create', [ManagerController::class, 'noticeCreate'])->name('notice.create'); // 공지사항 작성
 		Route::get('/notices/{id}', [ManagerController::class, 'noticeDetail'])->name('notice.detail'); // 공지사항 상세
-		Route::post('/notices', [ManagerController::class, 'noticeStore'])->name('notice.store');
+		Route::post('/notices', [ManagerController::class, 'noticeStore'])->name('notice.store');		// 공지사항 작성
 		Route::get('/notices/edit/{id}', [ManagerController::class, 'noticeEdit'])->name('notice.edit'); // 공지사항 수정 
-		Route::post('/notices/{id}', [ManagerController::class, 'noticeUpdate'])->name('notice.update'); // 공지사항 수정 
+		Route::post('/notices/{id}', [ManagerController::class, 'noticeUpdate'])->name('notice.update'); // 공지사항 수정
+		Route::post('/notices/destroy/{id}', [ManagerController::class, 'noticeDestroy'])->name('notice.destroy'); // 공지사항 삭제
+
+		// 관리자 관련 ================================================================
+		Route::get('/managers', [ManagerController::class, 'managerIndex'])->name('manager.index'); // 관리자 목록
+		Route::get('/managers/create', [ManagerController::class, 'managerCreate'])->name('manager.create'); // 관리자 작성
+		Route::post('/managers', [ManagerController::class, 'managerStore'])->name('manager.store'); // 관리자 작성
 	});
 });

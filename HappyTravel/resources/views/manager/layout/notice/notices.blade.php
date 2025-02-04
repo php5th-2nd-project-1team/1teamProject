@@ -99,9 +99,9 @@
                         <td>{{ $notice->created_at }}</td>
                         <td>
                             @if($notice->notice_tag === '0')
-                                <span class="text-danger">중요</span>
+                                <span class="text-danger">일반</span>
                             @else
-                                <span class="text-muted">일반</span>
+                                <span class="text-muted">중요</span>
                             @endif
                         </td>
                     </tr>

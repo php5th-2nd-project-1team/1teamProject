@@ -106,50 +106,62 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 1; $i <= 10; $i++)
-                    <tr class="clickable-row" data-href="/manager/managers/{{ $i }}">
-                        <td>{{ $i }}</td>
-                        <td>admin{{ $i }}@example.com</td>
-                        <td>관리자{{ $i }}</td>
+                    @foreach($managers as $manager)
+                    <tr class="clickable-row" data-href="/manager/managers/{{-- $manager->manager_id --}}#">
+                        <td>{{ $manager->manager_id }}</td>
+                        <td>{{ $manager->m_account }}</td>
+                        <td>{{ $manager->m_nickname }}</td>
                         <td>
-                            @if($i % 3 == 0)
-                                <span class="grade-admin">최고관리자</span>
-                            @else
-                                <span class="grade-manager">일반관리자</span>
-                            @endif
+                            <span class="grade-admin">최고관리자</span>
+                            {{-- <span class="grade-manager">일반관리자</span> --}}
                         </td>
-                        <td>2024-02-{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ mb_substr($manager->created_at, 0, 10) }}</td>
                         <td>
-                            @if($i % 4 != 0)
-                                <span class="status-badge status-active">활성</span>
-                            @else
-                                <span class="status-badge status-inactive">비활성</span>
-                            @endif
+                            <span class="status-badge status-active">활성</span>
+                            {{-- <span class="status-badge status-inactive">비활성</span> --}}
                         </td>
                     </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
         <div class="pagination-container">
+            
             <nav aria-label="Page navigation" class="w-100">
                 <ul class="pagination">
+                    @if(!$managers->onFirstPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="First">
+                        <a class="page-link" href="{{$managers->url(1)}}" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link" href="#">7</a></li>
+                    @endif
+                    @php
+                        $currentPage = $managers->currentPage();
+                        $lastPage = $managers->lastPage();
+                        
+                        // 시작 페이지와 끝 페이지 계산
+                        $startPage = max($currentPage - 2, 1);
+                        $endPage = min($startPage + 4, $lastPage);
+                        
+                        // 시작 페이지 재조정
+                        if ($endPage - $startPage < 4) {
+                            $startPage = max($endPage - 4, 1);
+                        }
+                    @endphp
+                    @for ($i = $startPage; $i <= $endPage; $i++)
+                        <li class="page-item {{ $i === $currentPage ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $managers->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    @if(!$managers->onLastPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Last">
+                        <a class="page-link" href="{{$managers->url($managers->lastPage())}}" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
             <a href="/manager/managers/create" class="create-button">

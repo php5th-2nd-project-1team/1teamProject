@@ -17,7 +17,7 @@ class Manager extends Authenticatable
         'm_account',
         'm_password',
         'm_nickname',
-        'refresh_token',    
+        'refresh_token',
     ];
 
     protected $hidden = [

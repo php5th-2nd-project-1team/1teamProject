@@ -105,6 +105,7 @@
     </div>
 </div>
 
+
 <div class="notice-detail-container">
     <div class="notice-detail-section">
         <a href="/community/notice/{{ $notice->notice_id }}" target="_blank" class="notice-link">
@@ -138,10 +139,13 @@
                 <i class="fas fa-edit"></i>
                 수정
             </button>
-            <button type="button" class="btn btn-danger" onclick="handleDelete()">
-                <i class="fas fa-trash-alt"></i>
-                삭제
-            </button>
+            <form action="/manager/notices/destroy/{{ $notice->notice_id }}" method="POST" id="deleteForm">
+                @csrf
+                <button type="button" class="btn btn-danger" onclick="handleDelete()">
+                    <i class="fas fa-trash-alt"></i>
+                    삭제
+                </button>
+            </form>
             <a href="/manager/notices?page={{ $page }}" class="btn btn-secondary">
                 <i class="fas fa-list"></i>
                 목록
@@ -149,6 +153,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
@@ -161,9 +166,10 @@
     
     function handleDelete() {
         if(confirm('정말로 이 공지사항을 삭제하시겠습니까?')) {
-            // TODO: 삭제 처리
-            console.log('삭제 처리가 진행됩니다.');
+            const form = document.querySelector('#deleteForm');
+            form.submit();
         }
+        return false;
     }
 </script>
 @endsection

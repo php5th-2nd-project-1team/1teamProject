@@ -397,7 +397,7 @@ class ManagerController extends Controller
 	// 포스트 영역 종료
 	// 공지사항 영역 
 	// 공지사항 리스트
-	public function noticeIndex(Request $request)
+	public function noticeIndex()
 	{
 		$notices = Notice::with('managers')
 						->orderBy('created_at', 'desc')
@@ -509,5 +509,75 @@ class ManagerController extends Controller
 		}
 
 		return redirect()->route('notice.detail', ['id' => $notice->notice_id]);
+	}
+
+	// 공지사항 삭제
+	public function noticeDestroy($id){
+		try{
+			DB::beginTransaction();
+			$notice = Notice::find($id);
+			$notice->delete();
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return redirect()->
+			route('notice.detail', ['id' => $id])->
+			withErrors(['message' => '공지사항 삭제 실패. 잠시 후 시도바람']);
+
+			Log::error($e->getMessage());
+		}
+
+		return redirect()->route('notice.index');
+	}
+	// 공지사항 영역 끝 ===============================
+
+	// 매니저 영역 시작 ================================
+	// 매니저 출력
+	public function managerIndex(){
+		$managers = Manager::paginate(10);
+		$page = request()->query('page', 1);
+
+		if($page < 1){
+			return redirect()->route('manager.managers', ['page' => 1]);
+		}
+
+		if($page > $managers->lastPage()){
+			return redirect()->route('manager.managers', ['page' => $managers->lastPage()]);
+		}
+
+		return view('manager.layout.managers.managers', [
+			'managers' => $managers,
+			'page' => $page
+		]);
+	}
+
+	// 매니저 작성
+	public function managerCreate(){
+		return view('manager.layout.managers.managerCreate');
+	}
+
+	public function managerStore(Request $request){
+		try{
+			Log::debug('삽입 시작 1' );
+			foreach($request->managers as $manager){
+				
+			}
+			// DB::beginTransaction();
+			// foreach($request->managers as $manager){
+			// 	$manager = new Manager();
+			// 		$manager->m_account = $manager['m_account'];
+			// 		$manager->m_password = Hash::make($manager['m_password']);
+			// 		$manager->m_nickname = $manager['m_nickname'];
+			// 	$manager->save();
+			// 	Log::debug('삽입 성공 2' );
+			// }
+			// DB::commit();
+			Log::debug('삽입 성공');
+		}catch(Exception $e){
+			DB::rollBack();
+			return redirect()->route('manager.store')->withErrors(['message' => '관리자 작성 실패. 잠시 후 시도바람']);
+			Log::error($e->getMessage());
+		}
+		return redirect()->route('manager.index');
 	}
 }
