@@ -5,6 +5,7 @@ use App\Http\Controllers\CommunityBoardController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TravelClassController;
@@ -76,6 +77,9 @@ Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderC
 Route::post('/auth/social/Info', [AuthController::class, 'socialInfo']); // 소셜 로그인 후 데이터 받아오는 처리
 Route::get('/shops', [TravelClassController::class, 'shopsBoardList']);
 Route::get('/shops/{id}', [TravelClassController::class, 'shopsBoardDetail']);
+Route::post('/password-reset/request', [PasswordResetController::class, 'sendResetPasswordEmail'])->name('user.sendResetPasswordEmail'); // 비밀번호 찾기 요청
+Route::get('/password-reset/verify', [PasswordResetController::class, 'verifyToken'])->name('user.token'); // 토큰 검증
+Route::post('/password-reset/reset', [PasswordResetController::class, 'resetPassword'])->name('user.passwordReset'); // 비밀번호 변경
 
 
 /**

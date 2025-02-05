@@ -55,11 +55,29 @@ class UserRequest extends FormRequest
             unset($rules['account']);
             unset($rules['password']);
             $rules['email'] = ['required', 'email', 'unique:users,email'];
-        }else if($this->routeIs('user.verifyCode')) {
+        }else if($this->routeIs('user.sendResetPasswordEmail')) {
             unset($rules['account']);
             unset($rules['password']);
-            $rules['email'] = ['required', 'email', 'unique:users,email'];
-            $rules['code'] = ['required', 'numeric'];
+            $rules['email'] = ['required', 'email', 'exists:users,email'];
+            $rules['name'] = ['required', 'between:1,20', 'regex:/^[가-힣]+$/u'];
+        }else if($this->routeIs('user.resetPassword')) {
+            unset($rules['account']);
+            unset($rules['password']);
+            
+            $rules['email'] = ['required', 'email', 'exists:users,email']; // 존재하는 이메일인지 확인
+        
+        }else if($this->routeIs('user.passwordReset')) { 
+            unset($rules['account']);
+            unset($rules['password']);
+        
+            $rules['email'] = ['required', 'email', 'exists:users,email']; 
+            $rules['token'] = ['required']; 
+        }else if($this->routeIs('user.token')) {
+            unset($rules['account']);
+            unset($rules['password']);
+
+            $rules['email'] = ['required', 'email', 'exists:users,email']; 
+            $rules['token'] = ['required']; 
         }
 
 

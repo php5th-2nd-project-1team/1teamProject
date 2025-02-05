@@ -62,14 +62,15 @@
 			pg: 'kakaopay', // 테스트 PG사
 			pay_method: 'card',
 			merchant_uid, // 주문 ID
-			name: store.state.shop.shopBoardDetail.class_title,
+			name: store.state.shop.shopBoardDetail.class_title, 
 			amount, // 결제 금액
 			buyer_name: store.state.auth.userInfo.name,
 			buyer_tel: store.state.auth.userInfo.phone_number,
 		}, async (rsp) => {
 			if (rsp.success) {  // rsp.success로 변경
 				// 3. 결제 승인 요청
-				await store.dispatch('shop/confirmPayment', {imp_uid: rsp.imp_uid});
+				// await store.dispatch('shop/confirmPayment', {imp_uid: rsp.imp_uid});
+				await store.dispatch('shop/confirmPayment', rsp.imp_uid);
 				paymentStatus.value = 'SUCCESS';
 				alert('결제가 성공적으로 처리되었습니다.');
 				if (confirm("마이페이지로 이동하시겠습니까?")) {

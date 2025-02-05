@@ -97,24 +97,24 @@ class TravelClassController extends Controller
     $impUid = $request->input('imp_uid');
     
     // 로그로 impUid 출력 (배열이 아닌 값은 그대로 출력)
-    Log::info('U_Id 결과:', ['impUid' => $impUid]);
+    Log::info('U_Id 결과 : '.$impUid);
 
     // impUid가 배열이라면 첫 번째 값만 사용
-    if (is_array($impUid)) {
-        $impUid = implode($impUid); // 배열을 문자열로 변환
-    }
+    // if (is_array($impUid)) {
+    //     $impUid = implode($impUid); // 배열을 문자열로 변환
+    // }
 
     // IAMPORT 액세스 토큰 요청
-    $apiKey = '5735356664718760'; // IAMPORT API Key
-    $apiSecret = 'VZfKdTXKxThjvNCYqU1xf2g3cU8PahU7ZVPkWKDhh0ERLDBOYiX3hQ8QrAJGrUmlAD1EBbOYCrI0Kwnt'; // IAMPORT API Secret
+    // $apiKey = '5735356664718760'; // IAMPORT API Key
+    // $apiSecret = 'uQIvQNj8qk6HGJ4pYuXmOGtnH23g1C7tdSchZpCtMbbSPLcD95hDWCnuWpMMBpnGkJMcy55KgqyviMyt'; // IAMPORT API Secret
     $client = new Client();
     
      try {
             // 토큰 요청
             $responseToken = $client->post('https://api.iamport.kr/users/getToken', [
                 'json' => [
-                    'imp_key' => $apiKey,
-                    'imp_secret' => $apiSecret
+                    'imp_key' => env('IAMPORT_API_KEY'),
+                    'imp_secret' => env('IAMPORT_SECRET_KEY')
                 ]
             ]);
             

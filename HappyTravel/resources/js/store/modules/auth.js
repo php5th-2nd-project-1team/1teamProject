@@ -13,9 +13,13 @@ export default {
 
         userIdChkFlg: false,
 
-        userEmailChkFlg: false,
+        userEmailChkFlg: false, 
 
         userVerificationCodeFlg: false,
+
+        loadingFlg: false,
+
+        tokenValid: false,
 
 	})
 	,mutations: {
@@ -35,6 +39,15 @@ export default {
         },
         setUserVerificationCodeFlg(state, flg) {
             state.userVerificationCodeFlg = flg;
+        },
+        setLoadingFlg(state, flg) {
+            state.loadingFlg = flg;
+        },
+        setResetMessage(state, message) {
+            state.resetMessage = message;
+        },
+        setTokenValid(state, isValid) {
+            state.tokenValid = isValid;
         }
 
 	}   
@@ -52,7 +65,7 @@ export default {
                     context.commit('setAuthFlg', true);
                     context.commit('setUserInfo', response.data.data);
     
-                    router.go(-1);
+                    router.replace('/');
                 })
                 .catch(error => {
                     console.error(error.response.data); // 오류 메시지 확인
@@ -344,8 +357,66 @@ export default {
                     alert('알 수 없는 오류');
                }
            });
-       }
+       },
+
+       requestPasswordReset(context, passwordReset ) {
+        context.commit('setLoadingFlg', true);
+
+        const url = '/api/password-reset/request';
+
+        const formData = new FormData();
+    
+        formData.append('email', passwordReset.email);
+        formData.append('name', passwordReset.name);
+
+        return axios.post(url, formData)
+            .then(response => {
+                context.commit('setResetMessage', '비밀번호 변경 이메일이 발송되었습니다.');
+                context.commit('setLoadingFlg', false);
+            })
+            .catch(error => {
+                console.error(error.response.data); // 오류 메시지 확인
+                let errorMsg = error.response?.data?.message || "이메일을 확인하세요.";
+                context.commit('setResetMessage', errorMsg);
+        });
+    },
+    verifyResetToken(context, payload) {
         
+        context.commit('setLoadingFlg', true);
+
+        const url = `/api/password-reset/verify?token=${payload.token}&email=${payload.email}`;
+
+        return axios.get(url)
+            .then(response => {
+                context.commit('setTokenValid', true);
+
+                context.commit('setLoadingFlg', false);
+            })
+            .catch(error => {
+                console.error(error.response.data);
+                context.commit('setTokenValid', false);
+                
+                alert(error.response.data.message);
+                route.push('/login');
+            });
+        
+        },
+
+    resetPassword(context, payload) {
+        const url = "/api/password-reset/reset";
+
+        return axios.post(url, payload)
+            .then(response => {
+                context.commit('setResetMessage', "비밀번호가 변경되었습니다.");
+                context.commit('setTokenValid', false);
+                router.push("/login");
+            })
+            .catch(error => {
+                console.error(error.response.data);
+                let errorMsg = error.response?.data?.message || "비밀번호 변경에 실패했습니다.";
+                context.commit('setResetMessage', errorMsg);
+            });
+        },
     }
 	,getters: {
 		

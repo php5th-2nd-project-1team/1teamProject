@@ -19,9 +19,10 @@
                     <img src="/developImg/google.png" />구글 로그인</button>
             </div>
         </div>
-        <div class="login-password-regist">
-
-        </div>
+    </div>
+    <div class="login-password-regist">
+        <router-link to="/password-reset/reques">아이디 찾기</router-link>
+        <router-link to="/reset-password">비밀번호 찾기</router-link>
     </div>
 </template>
 
@@ -207,5 +208,18 @@ const store = useStore();
         width: 40px; /* 이미지 크기 */
         height: 40px;
         margin-right: 10px; /* 이미지와 텍스트 간격 */
+    }
+
+    .login-password-regist {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        gap: 100px;
+    }
+
+    a {
+        
+        text-decoration: none;
     }
 </style>

@@ -5,6 +5,9 @@ import IndexComponet from '../views/components/index/IndexComponet.vue';
 // ----------------------------------------------------------------------
 import LoginComponet from '../views/components/auth/LoginComponet.vue';
 import LogoutComponet from '../views/components/auth/LogoutComponet.vue';
+import PasswordChangeComponent from '../views/components/auth/PasswordChangeComponent.vue';
+import PasswordRecoverComponent from '../views/components/auth/PasswordRecoverComponent.vue';
+
 // ----------------------------------------------------------------------
 
 // user
@@ -147,6 +150,16 @@ const routes=[
 	{
 		path:'/user/withdraw',  // 회원 탈퇴
 		component: UserWithdrawComponet,
+		beforeEnter: chkAuth,
+	},	 
+	{
+		path:'/reset-password',  // 비밀번호 찾기 페이지
+		component: PasswordRecoverComponent,
+		beforeEnter: chkAuth, 
+	},	 
+	{
+		path:'/password-reset',  // 비밀번호 변경 페이지
+		component: PasswordChangeComponent,
 		beforeEnter: chkAuth,
 	},	 
 	{
