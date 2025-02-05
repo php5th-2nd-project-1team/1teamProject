@@ -7,6 +7,7 @@ import shop from './modules/shop';
 import editor from './modules/editor';
 import admin from './modules/admin';
 import boards from './modules/boards';
+import report from './modules/report';
 export default createStore({
 	modules:{
 		post,
@@ -17,5 +18,6 @@ export default createStore({
 		editor,
 		admin,
 		boards,
+		report,
 	},
 });

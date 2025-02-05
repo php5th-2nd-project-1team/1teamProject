@@ -60,16 +60,25 @@ class ReportController extends Controller
         // ]);
 		$token = $request->bearerToken();
 
-        $data = array();
-        $data['report_category'] = $request->report_category;
-        $data['report_board_id'] = $request->report_board_id;
-        $data['report_code'] = $request->report_code;
-        $data['report_status'] = $request->report_status;
-        $data['report_text'] = $request->report_text;
-        $data['user_id'] = UserToken::getInPayload($token, 'idt');
+        try {
+            DB::beginTransaction();
+            $data = [];
+            $data['report_category'] = $request->report_category;
+            $data['report_board_id'] = $request->report_board_id;
+            $data['report_code'] = $request->report_code;
+            // default 로 migrate에서 설정해놔서 report_status를 데이터로 전달할 필요없다.
+            // $data['report_status'] = $request->report_status;
+            $data['report_text'] = $request->report_text;
+            $data['user_id'] = UserToken::getInPayload($token, 'idt');
+            
+            Report::create($data);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
 
         // DB::table('reports')->insert($data);   insert 는 timestamp생성x
-        Report::create($data);
 
         $responseData = [
             'success' => true
@@ -77,6 +86,7 @@ class ReportController extends Controller
             // ,'insertReport' => $insertReport->toArray()
             ,'data' => $data
         ];
+        
         return response()->json($responseData, 200);
     }
 }

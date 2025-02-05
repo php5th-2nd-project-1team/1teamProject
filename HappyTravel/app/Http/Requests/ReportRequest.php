@@ -20,12 +20,12 @@ class ReportRequest extends FormRequest
             'report_category' => ['required'],
             'report_board_id' => ['required'],
             'report_code' => ['required'],
-            'report_status' => ['string'],
-            'report_text' => ['string', 'max:200'],
+            // 'report_status' => ['string'],     // 같이 삭제
+            'report_text' => ['max:200'],
         ];
-        $this->merge([
-            'report_status' => $this->input('report_status','01'),
-        ]);
+        // $this->merge([
+        //     'report_status' => $this->input('report_status','01'),
+        // ]);
         return $validatorList;
     }
     public function failedValidation(Validator $validator) {

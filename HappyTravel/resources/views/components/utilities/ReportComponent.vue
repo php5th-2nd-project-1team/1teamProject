@@ -9,28 +9,28 @@
         <div class="report-container">
             <div class="report-box">
                 <div class="report-content">
-                    <input type="radio" id="01" value="01" name="report">
+                    <input type="radio" id="01" value="01" name="report" v-model="reportData.report_code">
                     <label for="01">욕설/비속어 포함</label>
                 </div>
                 <div class="report-content">
-                    <input type="radio" id="02" value="02" name="report">
+                    <input type="radio" id="02" value="02" name="report" v-model="reportData.report_code">
                     <label for="02">갈등 조장 및 허위사실 유포</label>
                 </div>
                 <div class="report-content">
-                    <input type="radio" id="03" value="03" name="report">
+                    <input type="radio" id="03" value="03" name="report" v-model="reportData.report_code">
                     <label for="03">폭력적 또는 혐오스러운 컨텐츠</label>
                 </div>
                 <div class="report-content">
-                    <input type="radio" id="04" value="04" name="report">
+                    <input type="radio" id="04" value="04" name="report" v-model="reportData.report_code">
                     <label for="04">도배 및 광고글</label>
                 </div>
                 <div class="report-content">
-                    <input type="radio" id="05" value="05" name="report">
+                    <input type="radio" id="05" value="05" name="report" v-model="reportData.report_code">
                     <label for="05">기타</label>
                 </div>
 
             </div>
-            <textarea v-model="text" class="report-text" minlength="1" maxlength="200" cols="100" placeholder="기타 추가할 내용을 적어주세요."></textarea>
+            <textarea v-model="reportData.report_text" class="report-text" minlength="1" maxlength="200" cols="100" placeholder="기타 추가할 내용을 적어주세요."></textarea>
         </div>
         <div class="btn-filter">
             <button class="btn btn-header btn-bg-red" @click="applyReport">신고</button>
@@ -40,16 +40,42 @@
 </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-const text = ref("");
+import { reactive } from 'vue';
+import { useStore } from 'vuex';
+// import store from '../../../js/store/store';
+import { defineProps } from 'vue';
+// comment_id 프롭스
+const props = defineProps({
+    'commentId' : Number,
+});
+
+const store = useStore();
 const emit = defineEmits();
+const reportData = reactive({
+    report_category: '01'
+    ,report_board_id: 0
+    ,report_code: ''
+    ,report_text: ''
+});
+
 const closeReportModal = () => {
     emit('postReportClose');
-    text.value = "";
-}
+    reportData.report_text = '';
+    reportData.report_code = '';
+};
 
-const applyReport = () => {
-    
+const applyReport = () => { 
+    try {
+        // reactive안에서 실시간 데이터변환이 되지 않음 신고버튼누를시 commentId를 가져옴
+        reportData.report_board_id = props.commentId;
+        store.dispatch('report/reportComment', reportData);
+        console.log(reportData.report_category);
+        console.log(reportData.report_board_id);
+        console.log(reportData.report_code);
+        console.log(reportData.report_text);
+    } catch (error) {
+        console.error("Error in handleClick:", error);
+    }
 };
 
 </script>

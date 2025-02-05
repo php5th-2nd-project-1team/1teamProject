@@ -19,16 +19,18 @@
     </div>
 
 <button v-if="!isLastPage" @click="loadMoreComments" class="btn btn-bg-blue btn-more" type="button">댓글 더보기</button>
-<ReportComponent v-show="isOpenReportModal"  @postReportClose=closeReportModal />
+<ReportComponent :commentId = "commentId" v-show="isOpenReportModal"  @postReportClose=closeReportModal />
 </template>
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ReportComponent from './ReportComponent.vue';
 const store = useStore();
 const route = useRoute();
+
+const commentId = ref(0);
 
 // 댓글 리스트 (댓글 정보 가져온다~)
 const PostComment = computed(() => store.state.post.postCommentList);
@@ -48,7 +50,8 @@ const deleteComment = (id, key) => {
 // ------------------------------------------
 // 신고 모달
 const isOpenReportModal = ref(false);
-const openReportModal = () => {
+const openReportModal = (comment_id) => {
+	commentId.value = comment_id;
     isOpenReportModal.value = true;
 }
 
