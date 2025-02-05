@@ -89,7 +89,7 @@ Route::get('/community/notice', [NoticeController::class, 'index'])->name('index
 Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
 Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
 Route::get('/community/free', [CommunityBoardController::class, 'index'])->name('index.free');
-
+Route::post('/community/store', [CommunityBoardController::class, 'store'])->name('store.free');
 
 /**
  * 원상님 Route *

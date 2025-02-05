@@ -60,4 +60,20 @@ class CommunityBoardController extends Controller
         $communityBoardDetail = CommunityBoard::with('users')->find($id);
 
     }
-}
+    
+    // 게시물 작성    
+    public function store(Request $request) {
+        $request->validate([
+          'title' => 'required|string|max:50',
+          'content' => 'required|string',
+          'board_type' => 'required|integer',
+        ]);
+        $post = CommunityBoard::create([
+          'title' => $request->title,
+          'content' => $request->content,
+          'board_type' => $request->board_type,
+      ]);
+
+      return response()->json(['message' => '게시글이 등록되었습니다.', 'post' => $post], 200);
+    } 
+ }

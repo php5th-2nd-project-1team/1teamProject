@@ -70,6 +70,7 @@ import AdminNoticeDetailComponent from '../views/components/admin/AdminNoticeDet
 import AdminNoticeCreateComponent from '../views/components/admin/AdminNoticeCreateComponent.vue';
 import AdminNoticeEditComponent from '../views/components/admin/AdminNoticeEditComponent.vue';
 import AdminLoginComponent from '../views/components/admin/AdminLoginComponent.vue';
+import CommunityFreeStoreComponent from '../views/components/community/CommunityFreeStoreComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -235,6 +236,11 @@ const routes=[
 			{
 				path:'free',  // 자유
 				component: CommunityFreeComponet,
+			},
+			{
+				path: '/community/store',
+				name: 'FreeStore',
+				component: CommunityFreeStoreComponent,
 			},
 		]
 	},

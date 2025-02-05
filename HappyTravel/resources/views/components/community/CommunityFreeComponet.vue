@@ -43,7 +43,11 @@
                 <div></div> 
                 <div></div> 
                 <div class="board-wrtn">
-                    <button  @click="router.push('/free/store')"><img class="free-pencil"src="/developImg/pencil.png"><span>글쓰기</span></button>
+                    <!-- <button  @click="router.push('/free/store')"><img class="free-pencil"src="/developImg/pencil.png"><span>글쓰기</span></button> -->
+                    <button  @click="handleWriteButtonClick">
+                        <img class="free-pencil"src="/developImg/pencil.png">
+                        <span>글쓰기</span>
+                    </button>
                 </div>
             </div>
         <div class="pagination">
@@ -68,6 +72,7 @@
     
     // 드롭다운에서 선택된 값 저장할 변수
 
+    // 검색 
     const keyWord = ref('');
     const search = reactive({
         type: 'all',
@@ -80,7 +85,7 @@
         search.keyword = keyWord.value;
         store.dispatch('boards/freeBoardList', search);
     }
-
+    
     const store = useStore();
 
     const boardList = computed(()=>store.state.boards.boardList);
@@ -121,6 +126,18 @@
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    // 글쓰기 버튼 함수핸들러 
+    const handleWriteButtonClick = () => { 
+        const userInfo = localStorage.getItem('userInfo');
+
+        if (userInfo) {
+            router.push('/community/store');
+        } else {
+            alert('로그인이 필요합니다');
+            router.push('/login');
+        }
+    }
 
 </script>
 
