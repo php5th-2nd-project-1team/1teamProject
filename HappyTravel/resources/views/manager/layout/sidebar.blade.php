@@ -1,6 +1,6 @@
 <div class="sidebar">
 	<div class="logo">
-		<img src="/developImg/petbreeze_logo.png" alt="로고">
+		<a href="/manager"><img src="/developImg/petbreeze_logo.png" alt="로고"></a>
 	</div>
 	
 	<div class="nav flex-column">

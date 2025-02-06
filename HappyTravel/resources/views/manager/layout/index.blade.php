@@ -228,7 +228,7 @@
 	<div class="table-section">
 		<div class="table-header">
 			<div class="table-title-section">
-				<h3>신고</h3>
+				<h3>댓글 신고</h3>
 				<p class="table-description">최신 작성 순 5개</p>
 			</div>
 			<a href="#" class="detail-link">해당 상세 페이지로 →</a>

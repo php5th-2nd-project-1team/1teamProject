@@ -292,12 +292,12 @@
 				@else
 				<div class="form-group" id="suspendDays">
 					<label class="form-label">정지 기간 (일)</label>
-					<input type="number" class="form-input" min="1" max="365" disabled value="{{ $report_result->ban_at }}">
+					<input type="text" class="form-input" min="1" max="365" disabled value="{{ $report_result->ban_at ?? '' }}">
 				</div>
 
 				<div class="form-group" id="suspendReason">
 					<label class="form-label">정지 사유</label>
-					<textarea class="form-textarea" placeholder="정지 사유를 입력하세요" disabled>{{ $report_result->report_reason }}</textarea>
+					<textarea class="form-textarea" placeholder="정지 사유를 입력하세요" disabled>{{ $report_result->report_reason ?? '' }}</textarea>
 				</div>
 				@endif
 

@@ -121,7 +121,7 @@ class ManagerController extends Controller
 	public function posts(){
 		$posts = Post::
 			orderBy('created_at', 'desc')->
-			withCount('postLikes')->
+			withCount('postLikes')->withTrashed()->
 			paginate(10);
 
 		$page = request()->query('page', 1);
@@ -146,7 +146,7 @@ class ManagerController extends Controller
 					join('managers', 'posts.manager_id', '=', 'managers.manager_id')->
 					join('category_locals', 'posts.category_local_num', '=', 'category_locals.category_local_num')->
 					join('category_themes', 'posts.category_theme_num', '=', 'category_themes.category_theme_num')->
-					find($id);
+					withTrashed()->find($id);
 
 		$postAnimalTypes = PostAnimalType::where('post_id', $id)->where('using', '1')->get();
 		$postFacilities = PostFacilityType::where('post_id', $id)->where('using', '1')->get();
@@ -597,7 +597,7 @@ class ManagerController extends Controller
 			,'05' => '기타'
 		];
 
-		$reports = Report::with('user')->whereIn('report_category', [1, 3])->paginate(10);
+		$reports = Report::with('user')->whereIn('report_category', [1, 3])->orderBy('created_at', 'DESC')->paginate(10);
 
 		Log::debug($reports);
 
@@ -638,7 +638,7 @@ class ManagerController extends Controller
 		$url = null;
 		switch($report->report_category){
 			case '01':
-				$reported_content = PostComments::with('user')->find($report->report_board_id);
+				$reported_content = PostComments::with('user')->withTrashed()->find($report->report_board_id);
 				$comment_category = '포스트';
 				$url = '/posts/01/'.$reported_content->post_id;
 				break;
@@ -649,7 +649,7 @@ class ManagerController extends Controller
 				break;
 		}
 
-		$report_result = ReportProcess::where('report_id', '=', $id)->first();
+		$report_result = ReportProcess::where('report_id', '=', $id)->withTrashed()->first();
 
 		return view('manager.layout.report_comments.reportCommentsDetail', [
 			'report' => $report,
@@ -686,11 +686,22 @@ class ManagerController extends Controller
 					else if($request->report_result === '03'){
 						$report_process->ban_at = '9999-12-31 23:59:59';
 					}
-				$report_process->save();
+			$report_process->save();
 
-				$report = Report::find($id);
+			$report = Report::find($id);
 				$report->report_status = '02';
-				$report->save();
+			$report->save();
+			
+			// 징계 대상이면 댓글 자동 삭제
+			if($request->report_result === '02' || $request->report_result === '03'){
+				if($report->report_category === '01'){					
+					//PostComments::where('post_comment_id', '=', $report->report_board_id)->delete();
+				}
+				else if($report->report_category === '03'){
+					// TODO : 커뮤니티 댓글 삭제
+				}
+			}
+
 			DB::commit();
 		}catch(Exception $e){
 			DB::rollBack();
