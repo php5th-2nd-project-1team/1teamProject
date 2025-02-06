@@ -21,15 +21,20 @@
 				<p>{{ shopBoardDetail.class_price }}원</p>
 				<!-- <p>{{ formattedPrice }}원</p> -->
 			</div>
-			<div class="shopDetail-info-btn">
-				<button @click="openModal()">구매하기</button>
+			<div class="shopDetail-info-btn-container">
+				<div class="shopDetail-info-btn">
+					<button class="purchase-btn" @click="openModal()">구매하기</button>
+					<button class="zzim-img" @click="isClickedZzim = !isClickedZzim">
+						<img :src="isClickedZzim ? '/developImg/like_yes.png' : '/developImg/like_no.png'" alt="찜하기" />
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 	<ShopPaymentModalComponent v-if="isModalOpen" />
 </template>
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import ShopPaymentModalComponent from '../ShopPaymentModalComponent.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -59,6 +64,8 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
 
 		store.commit('shop/setIsModalOpen', true);
 	}
+
+	const isClickedZzim = ref(false);
 
 	// const formattedPrice = computed(() => {
   	// 	const price = shopBoardDetail.value?.class_price ?? 0; // 값이 없으면 0으로 처리
@@ -109,9 +116,12 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
 	.shopDetail-info-btn{
 		display: flex;
 		justify-content: center;
+
+		gap : 1rem;
+
 		width: 100%;
 	}
-	.shopDetail-info-btn button{
+	.purchase-btn{
 		width: 60%;
 		height: 50px;
 		background-color: #2986FF;
@@ -124,11 +134,32 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
 		cursor: pointer;
 	}
 
-	.shopDetail-info-btn button:hover{
+	.purchase-btn:hover{
 		background-color: white;
 
 		color : black;
 
 		transition : all 0.1s;
+	}
+
+	.zzim-img{
+		width: 50px;
+		height: 50px;
+
+		display: flex;
+
+		justify-content: center;
+		align-items: center;
+
+		cursor: pointer;
+
+		background-color: transparent;
+
+		border: none;
+	}
+
+	.zzim-img img{
+		width: 100%;
+		height: 100%;
 	}
 </style>

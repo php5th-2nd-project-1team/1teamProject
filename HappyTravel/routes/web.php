@@ -39,16 +39,6 @@ Route::prefix('/manager')->group(function(){
 
 	Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
-	// 댓글 신고관리
-	Route::get('/reports/comments', function(){
-		return view('manager.layout.report_comments.reportComments');
-	})->name('reports.comments');
-
-	// 댓글 신고 상세
-	Route::get('/reports/comments/{id}', function(){
-		return view('manager.layout.report_comments.reportCommentsDetail');
-	})->name('reports.comments.detail');
-
 	// 페이지 신고관리
 	Route::get('/reports/pages', function(){
 		return view('manager.layout.report_pages.reportPage');
@@ -104,5 +94,12 @@ Route::prefix('/manager')->group(function(){
 		Route::get('/managers', [ManagerController::class, 'managerIndex'])->name('manager.index'); // 관리자 목록
 		Route::get('/managers/create', [ManagerController::class, 'managerCreate'])->name('manager.create'); // 관리자 작성
 		Route::post('/managers', [ManagerController::class, 'managerStore'])->name('manager.store'); // 관리자 작성
+
+		// 댓글 신고관리
+		Route::get('/reports/comments', [ManagerController::class, 'reportCommentIndex'])->name('reports.comments');
+		// 댓글 신고 상세
+		Route::get('/reports/comments/{id}', [ManagerController::class, 'reportCommentDetail'])->name('reports.comments.detail');
+		// 댓글 징계 처리
+		Route::post('/reports/comments/{id}', [ManagerController::class, 'reportCommentPunishment'])->name('reports.comments.punishment');
 	});
 });

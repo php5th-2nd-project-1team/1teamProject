@@ -26,4 +26,7 @@ class Report extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

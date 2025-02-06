@@ -74,35 +74,30 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>피신고자</th>
+                        <th>신고자</th>
                         <th>신고사유</th>
                         <th>내용</th>
                         <th>처리 여부</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clickable-row">
-                        <td>1</td>
-                        <td>사용자1</td>
-                        <td>부적절한 내용</td>
+                    @foreach($reports as $report)
+                    <tr class="clickable-row" data-href="/manager/reports/comments/{{ $report->report_id }}">
+                        <td>{{ $report->report_id }}</td>
+                        <td>{{ $report->user->name }}</td>
+                        <td>{{ $category[$report->report_code]}}</td>
                         <td class="content-cell">
-                            이것은 신고된 댓글의 내용입니다...
+                            {{ $report->report_text }}
                         </td>
                         <td>
-                            <span class="status-badge status-pending">처리 대기</span>
+                            @if($report->report_status === '01')
+                                <span class="status-badge status-pending">처리 대기</span>
+                            @else
+                                <span class="status-badge status-completed">처리 완료</span>
+                            @endif
                         </td>
                     </tr>
-                    <tr class="clickable-row">
-                        <td>2</td>
-                        <td>사용자2</td>
-                        <td>스팸</td>
-                        <td class="content-cell">
-                            광고성 댓글 내용입니다...
-                        </td>
-                        <td>
-                            <span class="status-badge status-completed">처리 완료</span>
-                        </td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -110,19 +105,38 @@
         <div class="pagination-container">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
+                    @if(!$reports->onFirstPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="First">
+                        <a class="page-link" href="{{$reports->url(1)}}" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    @endif
+                    @php
+                        $currentPage = $reports->currentPage();
+                        $lastPage = $reports->lastPage();
+                        
+                        // 시작 페이지와 끝 페이지 계산
+                        $startPage = max($currentPage - 2, 1);
+                        $endPage = min($startPage + 4, $lastPage);
+                        
+                        // 시작 페이지 재조정
+                        if ($endPage - $startPage < 4) {
+                            $startPage = max($endPage - 4, 1);
+                        }
+                    @endphp
+                    @for ($i = $startPage; $i <= $endPage; $i++)
+                        <li class="page-item {{ $i === $currentPage ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $reports->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    @if(!$reports->onLastPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Last">
+                        <a class="page-link" href="{{$reports->url($reports->lastPage())}}" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
         </div>
@@ -136,8 +150,7 @@
         const rows = document.querySelectorAll('.clickable-row');
         rows.forEach(row => {
             row.addEventListener('click', function() {
-                // 클릭 이벤트 처리
-                console.log('Row clicked');
+                window.location.href = this.dataset.href;
             });
         });
     });

@@ -14,6 +14,8 @@ use App\Models\Post;
 use App\Models\PostAnimalType;
 use App\Models\PostComments;
 use App\Models\PostFacilityType;
+use App\Models\Report;
+use App\Models\ReportProcess;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -558,26 +560,144 @@ class ManagerController extends Controller
 
 	public function managerStore(Request $request){
 		try{
-			Log::debug('삽입 시작 1' );
-			foreach($request->managers as $manager){
-				
+			DB::beginTransaction();
+
+			foreach($request->managers as $m_manager){
+				$manager = new Manager();
+					$manager->m_account = $m_manager['m_account'];
+					$manager->m_password = Hash::make($m_manager['m_password']);
+					$manager->m_nickname = $m_manager['m_nickname'];
+				$manager->save();
 			}
-			// DB::beginTransaction();
-			// foreach($request->managers as $manager){
-			// 	$manager = new Manager();
-			// 		$manager->m_account = $manager['m_account'];
-			// 		$manager->m_password = Hash::make($manager['m_password']);
-			// 		$manager->m_nickname = $manager['m_nickname'];
-			// 	$manager->save();
-			// 	Log::debug('삽입 성공 2' );
-			// }
-			// DB::commit();
-			Log::debug('삽입 성공');
+
+			DB::commit();
 		}catch(Exception $e){
 			DB::rollBack();
 			return redirect()->route('manager.store')->withErrors(['message' => '관리자 작성 실패. 잠시 후 시도바람']);
 			Log::error($e->getMessage());
 		}
 		return redirect()->route('manager.index');
+	}
+
+	// 매니저 영역 종료 =================================================
+
+	// 신고 영역 시작
+	// 신고 댓글 리스트 출력 
+	public function reportCommentIndex(){
+		// 01 : 포스트 댓글 -> 이거 가져오셈
+		// 03 : 커뮤니티 댓글 -> 이거 가져오셈
+
+		// 02 : 커뮤니티 글
+
+		$category = [
+			'01' => '욕설/비속어 포함'
+			,'02' => '갈등 조장 및 허위사실 유포'
+			,'03' => '폭력적이고 혐오스러운 콘텐츠'
+			,'04' => '도배 및 광고글'
+			,'05' => '기타'
+		];
+
+		$reports = Report::with('user')->whereIn('report_category', [1, 3])->paginate(10);
+
+		Log::debug($reports);
+
+		$page = request()->query('page', 1);
+
+		if($page < 1){
+			return redirect()->route('report.comments', ['page' => 1]);
+		}
+		else if($page > $reports->lastPage()){
+			return redirect()->route('report.comments', ['page' => $reports->lastPage()]);
+		}
+
+		return view('manager.layout.report_comments.reportComments', [
+			'reports' => $reports,
+			'page' => $page,
+			'category' => $category
+		]);
+	}
+
+	// 댓글 신고 상세 리스트 출력 
+	public function reportCommentDetail($id){
+		$report_category = [
+			'01' => '욕설/비속어 포함'
+			,'02' => '갈등 조장 및 허위사실 유포'
+			,'03' => '폭력적이고 혐오스러운 콘텐츠'
+			,'04' => '도배 및 광고글'
+			,'05' => '기타'
+		];
+
+		$report = Report::with('user')->find($id);
+
+		if($report === null){
+			return redirect()->route('reports.comments');
+		}
+
+		$reported_content = null;
+		$comment_category = null;
+		$url = null;
+		switch($report->report_category){
+			case '01':
+				$reported_content = PostComments::with('user')->find($report->report_board_id);
+				$comment_category = '포스트';
+				$url = '/posts/01/'.$reported_content->post_id;
+				break;
+			case '03':
+				// TODO : 커뮤니티 댓글 상세 출력
+				$comment_category = '커뮤니티';
+				// TODO : 커뮤니티 댓글 url 출력
+				break;
+		}
+
+		$report_result = ReportProcess::where('report_id', '=', $id)->first();
+
+		return view('manager.layout.report_comments.reportCommentsDetail', [
+			'report' => $report,
+			'reported_content' => $reported_content,
+			'url' => $url,
+			'report_category' => $report_category,
+			'page' => request()->query('page', 1),
+			'comment_category' => $comment_category,
+			'report_result' => $report_result
+		]);
+	}
+
+	public function reportCommentPunishment(Request $request, $id){
+		Log::debug($request->report_result);
+		$validator = Validator::make($request->only('report_reason'), [
+			'report_reason' => ['required', 'max:200']
+		]);
+
+		if($validator->fails()){
+			return redirect()->route('reports.comments.detail', ['id' => $id])->withErrors($validator)->withInput();
+		}
+
+		try{
+			DB::beginTransaction();
+
+			$report_process = new ReportProcess();
+				$report_process->report_id = $id;
+				$report_process->manager_id = Auth::guard('manager')->user()->manager_id;
+				$report_process->report_result = $request->report_result;
+				$report_process->report_reason = $request->report_reason;
+					if($request->report_result === '02'){
+						$report_process->ban_at = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').('+'.$request->ban_at.' days')));
+					}
+					else if($request->report_result === '03'){
+						$report_process->ban_at = '9999-12-31 23:59:59';
+					}
+				$report_process->save();
+
+				$report = Report::find($id);
+				$report->report_status = '02';
+				$report->save();
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return redirect()->route('reports.comments.detail', ['id' => $id])->withErrors($e->getMessage());
+			Log::error($e->getMessage());
+		}
+
+		return redirect()->route('reports.comments.detail', ['page' => request()->query('page', 1), 'id' => $id]);
 	}
 }
