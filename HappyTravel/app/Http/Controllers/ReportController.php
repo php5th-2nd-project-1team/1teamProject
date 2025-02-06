@@ -59,7 +59,12 @@ class ReportController extends Controller
         //     'user_id' => auth()->id(),
         // ]);
 		$token = $request->bearerToken();
-
+        // 쿠키에 신고쿠키있을시 저장x
+        if(isset($_COOKIE['reports'.$request->report_category.$request->report_board_id])){
+            return response()->json([
+                'msg' => '24시간이내 중복 신고처리'
+            ], 422);
+        };
         try {
             DB::beginTransaction();
             $data = [];
@@ -71,8 +76,12 @@ class ReportController extends Controller
             $data['report_text'] = $request->report_text;
             $data['user_id'] = UserToken::getInPayload($token, 'idt');
             
-            Report::create($data);
-            DB::commit();
+            // 중복신고 방지(24시간이내 한번만 처리)
+            if(!isset($_COOKIE['reports'.$request->report_category.$request->report_board_id])) {
+                Report::create($data);
+                DB::commit();
+                setcookie('reports'.$request->report_category.$request->report_board_id, true, time() + 60 * 60 * 24);
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

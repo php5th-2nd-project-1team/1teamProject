@@ -204,7 +204,7 @@ class PostController extends Controller
 			}
 		}
 
-		// 쿠키에 
+		// 조회수 쿠키없으면 쿠키에 저장
 		if(!isset($_COOKIE['views'.$request->id])){
 			DB::beginTransaction();
 			// 조회수 추가
