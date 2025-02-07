@@ -16,6 +16,7 @@ use App\Models\PostComments;
 use App\Models\PostFacilityType;
 use App\Models\Report;
 use App\Models\ReportProcess;
+use App\Models\TravelClass;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -680,12 +681,12 @@ class ManagerController extends Controller
 				$report_process->manager_id = Auth::guard('manager')->user()->manager_id;
 				$report_process->report_result = $request->report_result;
 				$report_process->report_reason = $request->report_reason;
-					if($request->report_result === '02'){
-						$report_process->ban_at = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').('+'.$request->ban_at.' days')));
-					}
-					else if($request->report_result === '03'){
-						$report_process->ban_at = '9999-12-31 23:59:59';
-					}
+				if($request->report_result === '02'){
+					$report_process->ban_at = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').('+'.$request->ban_at.' days')));
+				}
+				else if($request->report_result === '03'){
+					$report_process->ban_at = '9999-12-31 23:59:59';
+				}
 			$report_process->save();
 
 			$report = Report::find($id);
@@ -710,5 +711,73 @@ class ManagerController extends Controller
 		}
 
 		return redirect()->route('reports.comments.detail', ['page' => request()->query('page', 1), 'id' => $id]);
+	}
+
+	// 신고 영역 끝 ================================================
+
+	// 상점 영역 시작 ==============================================
+
+	// 상품 리스트 조회
+	public function storeIndex(){
+		$shops = TravelClass::orderBy('created_at', 'DESC')->paginate(10);
+
+		$page = request()->query('page', 1);
+
+		if($page < 1){
+			return redirect()->route('shops.index', ['page' => 1]);
+		}
+		else if($page > $shops->lastPage()){
+			return redirect()->route('shops.index', ['page' => $shops->lastPage()]);
+		}
+
+		return view('manager.layout.shops.shops')->
+			with('shops', $shops)->
+			with('page', $page);
+	}
+
+	// 상품 상세 조회
+	public function storeCreate(){
+		return view('manager.layout.shops.shopsCreate');
+	}
+
+	// 상품 등록
+	public function storeStore(Request $request){
+		$validator = Validator::make($request->only(
+			'class_title', 'class_title_img', 'class_content', 'class_price', 'location', 'class_date', 'class_date_time'),
+			[
+				'class_title' => ['required', 'string', 'max:20'],
+				'class_title_img' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
+				'class_content' => ['required'],
+				'class_price' => ['required', 'min:3', 'max:255'],
+				'location' => ['required', 'string', 'max:255'],
+				'class_date' => ['required', 'after_or_equal:today'],
+				'class_date_time' => ['required']
+			]
+		);
+
+		if($validator->fails()){
+			return redirect()->route('stores.create')->withErrors($validator)->withInput();
+		}
+
+		try{
+			DB::beginTransaction();
+				$travelClass = new TravelClass();
+					$travelClass->class_title = $request->class_title;
+					$travelClass->user_id = 53; // TODO :임시 값임
+					$travelClass->class_title_img = '/'.$request->file('class_title_img')->store('img');
+					$travelClass->class_content = $request->class_content;
+					$travelClass->class_price = $request->class_price;
+					$travelClass->location = $request->location;
+					$travelClass->class_date = $request->class_date.' '.$request->class_date_time;
+				$travelClass->save();
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return redirect()->route('stores.create')->withErrors($e->getMessage());
+			Log::error($e->getMessage());
+		}
+
+		// return redirect()->route('stops.detail', ['id' => $travelClass->class_id]);
+		return redirect()->route('shops.index', ['page' => request()->query('page', 1) ?? '']);
 	}
 }

@@ -106,18 +106,17 @@ Route::prefix('/manager')->group(function(){
 		// 쇼핑 목록 조회
 		Route::get('/shops', function(){
 			return view('manager.layout.shops.shops');
-		})->name('shops');
+		})->name('shops.index');
 
-		// 쇼핑 등록
-		Route::get('/shops/create', function(){
-			return view('manager.layout.shops.shopsCreate');
-		})->name('shops.create');
+		// 상점 아이템 등록 창
+		Route::get('/shops/create', [ManagerController::class, 'storeCreate'])->name('stores.create');
+
+		Route::post('/shops', [ManagerController::class, 'storeStore'])->name('stores.store');
 
 		// 쇼핑 상세 조회
 		Route::get('/shops/{id}', function(){
 			return view('manager.layout.shops.shopsDetail');
 		})->name('shops.detail');
-
 
 	});
 });
