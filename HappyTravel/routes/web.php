@@ -101,5 +101,23 @@ Route::prefix('/manager')->group(function(){
 		Route::get('/reports/comments/{id}', [ManagerController::class, 'reportCommentDetail'])->name('reports.comments.detail');
 		// 댓글 징계 처리
 		Route::post('/reports/comments/{id}', [ManagerController::class, 'reportCommentPunishment'])->name('reports.comments.punishment');
+
+		// 쇼핑 관련 ===================================================================
+		// 쇼핑 목록 조회
+		Route::get('/shops', function(){
+			return view('manager.layout.shops.shops');
+		})->name('shops');
+
+		// 쇼핑 등록
+		Route::get('/shops/create', function(){
+			return view('manager.layout.shops.shopsCreate');
+		})->name('shops.create');
+
+		// 쇼핑 상세 조회
+		Route::get('/shops/{id}', function(){
+			return view('manager.layout.shops.shopsDetail');
+		})->name('shops.detail');
+
+
 	});
 });

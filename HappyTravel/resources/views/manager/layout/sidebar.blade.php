@@ -32,10 +32,10 @@
 		</a>
 		<a href="/manager/inquiries/create" class="nav-link submenu">문의사항 작성</a>
 
-		<a href="/manager/products" class="menu-header">
-			<i class="fas fa-shopping-cart"></i> 상품
+		<a href="/manager/shops" class="menu-header">
+			<i class="fas fa-shopping-cart"></i> 쇼핑
 		</a>
-		<a href="/manager/products/create" class="nav-link submenu">상품 등록</a>
+		<a href="/manager/shops/create" class="nav-link submenu">클래스 등록</a>
 
 		<a href="/manager/settings" class="menu-header">
 			<i class="fas fa-cogs"></i> 사이트 설정

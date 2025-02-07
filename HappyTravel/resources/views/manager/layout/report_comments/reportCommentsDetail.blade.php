@@ -99,6 +99,9 @@
 		border: 1px solid #ced4da;
 		margin-bottom: 15px;
 	}
+	.form-select.ban-days {
+		width: 150px;
+	}
 	.form-input {
 		width: 100px;
 		padding: 8px;
@@ -281,8 +284,14 @@
 
 				@if($report->report_status === '01')
 				<div class="form-group" id="suspendDays">
-					<label class="form-label">정지 기간 (일)</label>
-					<input type="number" name="ban_at" class="form-input" min="1" max="365" disabled>
+					<label class="form-label">정지 기간</label>
+					<select class="form-select ban-days" name="ban_at" disabled>
+						<option value="1">1일</option>
+						<option value="3">3일</option>
+						<option value="7">7일</option>
+						<option value="30">30일</option>
+						<option value="90">90일</option>
+					</select>
 				</div>
 
 				<div class="form-group" id="suspendReason">
@@ -291,8 +300,8 @@
 				</div>
 				@else
 				<div class="form-group" id="suspendDays">
-					<label class="form-label">정지 기간 (일)</label>
-					<input type="text" class="form-input" min="1" max="365" disabled value="{{ $report_result->ban_at ?? '' }}">
+					<label class="form-label">정지 기간</label>
+					<input type="text" class="form-input" disabled value="{{ $report_result->ban_at ?? '' }}">
 				</div>
 
 				<div class="form-group" id="suspendReason">
@@ -326,15 +335,14 @@
 <script>
 	function togglePunishmentFields() {
 		const punishmentType = document.getElementById('punishmentType').value;
-		const suspendDaysInput = document.querySelector('#suspendDays input');
+		const suspendDaysSelect = document.querySelector('#suspendDays select');
 		const suspendReasonTextarea = document.querySelector('#suspendReason textarea');
 		
 		if (punishmentType === '01' || punishmentType === '03') {
-			suspendDaysInput.value = '';
-			suspendDaysInput.disabled = true;
-
+			suspendDaysSelect.value = '1';
+			suspendDaysSelect.disabled = true;
 		} else {
-			suspendDaysInput.disabled = false;
+			suspendDaysSelect.disabled = false;
 		}
 	}
 	function punishmentProcess(){

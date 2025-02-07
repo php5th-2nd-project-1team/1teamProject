@@ -180,7 +180,7 @@
         event.preventDefault();
         
         // TODO: 에디터 내용 가져오기 및 폼 제출 처리
-        if(confirm('공지사항을 등록하시겠습니까?')) {
+        if(confirm('공지사항을 등록하시겠습니까? \n 주의 : 해당 게시글은 수정이 불가능하며, 필요 시 삭제 후 수정을 해야 합니다.')) {
             const content = document.querySelector('#editor');
             content.value = getContent();
             content.name = 'notice_content';

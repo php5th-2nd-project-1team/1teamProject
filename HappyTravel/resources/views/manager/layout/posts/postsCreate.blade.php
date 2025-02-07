@@ -100,6 +100,13 @@
     textarea.form-control.detail-content {
         min-height: 300px;
     }
+
+    /* 필수 입력 표시 스타일 추가 */
+    .required::after {
+        content: "*";
+        color: #e74c3c;
+        margin-left: 4px;
+    }
 </style>
 @endsection
 
@@ -115,7 +122,7 @@
     <div class="post-detail-container">
         <div class="post-detail-section">
             <div class="text-content-group">
-                <div class="form-label">포스트 제목</div>
+                <div class="form-label required">포스트 제목</div>
                 <input type="text" name="post_title" class="form-control" placeholder="제목을 입력하세요" required>
             </div>
 
@@ -128,7 +135,7 @@
                 </select>
             </div>
 
-            <div class="section-title">입장 가능한 동물 종류</div>
+            <div class="section-title required">입장 가능한 동물 종류</div>
             <div class="checkbox-group">
                 @foreach($animalTypes as $animal)
                     <label class="checkbox-item">
@@ -147,8 +154,8 @@
             </div>
 
             <div class="form-group">
-                <div class="form-label">지역</div>
-                <select class="theme-select" name="category_local_num">
+                <div class="form-label required">지역</div>
+                <select class="theme-select" name="category_local_num" required>
                     @foreach($categoryLocals as $local)
                         <option value="{{ $local->category_local_num }}">{{ $local->category_local_name }}</option>
                     @endforeach
@@ -156,8 +163,8 @@
             </div>
 
             <div class="form-group">
-                <div class="form-label">테마</div>
-                <select class="theme-select" name="category_theme_num">
+                <div class="form-label required">테마</div>
+                <select class="theme-select" name="category_theme_num" required>
                     @foreach($categoryThemes as $theme)
                         <option value="{{ $theme->category_theme_num }}">{{ $theme->category_theme_name }}</option>
                     @endforeach
@@ -165,40 +172,40 @@
             </div>
 
             <div class="text-content-group">
-                <div class="form-label">지역 상세</div>
-                <input type="text" name="post_local_name" class="form-control" placeholder="지역 상세 정보를 입력하세요">
+                <div class="form-label required">지역 상세</div>
+                <input type="text" name="post_local_name" class="form-control" placeholder="지역 상세 정보를 입력하세요" required>
             </div>
 
             <div class="text-content-group">
-                <div class="form-label">내용 요약</div>
-                <textarea name="post_content" name="post_content" class="form-control" placeholder="내용 요약을 입력하세요" required></textarea>
+                <div class="form-label required">내용 요약</div>
+                <textarea name="post_content" class="form-control" placeholder="내용 요약을 입력하세요" required></textarea>
             </div>
 
             <div class="text-content-group">
-                <div class="form-label">내용</div>
-                <textarea name="post_detail_content" name="post_detail_content" class="form-control detail-content" placeholder="상세 내용을 입력하세요" required></textarea>
+                <div class="form-label required">내용</div>
+                <textarea name="post_detail_content" class="form-control detail-content" placeholder="상세 내용을 입력하세요" required></textarea>
             </div>
 
             <div class="image-section">
-                <div class="form-label">대표 이미지</div>
+                <div class="form-label required">대표 이미지</div>
                 <input type="file" class="form-control" name="post_img" accept="image/*" required>
                 <img id="mainImagePreview" class="image-preview" style="display: none;">
             </div>
 
             <div class="image-section">
-                <div class="form-label">상세 이미지 1</div>
+                <div class="form-label required">상세 이미지 1</div>
                 <input type="file" class="form-control" name="post_subimg1" accept="image/*" required>
                 <img id="detailImagePreview1" class="image-preview" style="display: none;">
             </div>
 
             <div class="image-section">
-                <div class="form-label">상세 이미지 2</div>
+                <div class="form-label required">상세 이미지 2</div>
                 <input type="file" class="form-control" name="post_subimg2" accept="image/*" required>
                 <img id="detailImagePreview2" class="image-preview" style="display: none;">
             </div>
 
             <div class="image-section">
-                <div class="form-label">상세 이미지 3</div>
+                <div class="form-label required">상세 이미지 3</div>
                 <input type="file" class="form-control" name="post_subimg3" accept="image/*" required>
                 <img id="detailImagePreview3" class="image-preview" style="display: none;">
             </div>
@@ -210,17 +217,17 @@
                 </button>
                 
                 <div class="detail-row">
-                    <div class="detail-label">주소</div>
+                    <div class="detail-label required">주소</div>
                     <div class="detail-value">
-                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" required>
+                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" required disabled>
                         <div class="coordinates">
                             <div class="coordinate-group">
-                                <div class="coordinate-label">위도</div>
-                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" required>
+                                <div class="coordinate-label required">위도</div>
+                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" required disabled>
                             </div>
                             <div class="coordinate-group">
-                                <div class="coordinate-label">경도</div>
-                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" required>
+                                <div class="coordinate-label required">경도</div>
+                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" required disabled>
                             </div>
                         </div>
                     </div>
@@ -241,21 +248,21 @@
                 </div>
 
                 <div class="detail-row">
-                    <div class="detail-label">이용시간</div>
+                    <div class="detail-label required">이용시간</div>
                     <div class="detail-value">
-                        <input type="text" name="post_detail_time" class="form-control" placeholder="이용시간을 입력하세요">
+                        <input type="text" name="post_detail_time" class="form-control" placeholder="이용시간을 입력하세요" required>
                     </div>
                 </div>
 
                 <div class="detail-row">
-                    <div class="detail-label">요금</div>
+                    <div class="detail-label required">요금</div>
                     <div class="detail-value">
-                        <input type="text" name="post_detail_price" class="form-control" placeholder="요금을 입력하세요">
+                        <input type="text" name="post_detail_price" class="form-control" placeholder="요금을 입력하세요" required>
                     </div>
                 </div>
 
                 <div class="detail-row">
-                    <div class="detail-label">주차가능여부</div>
+                    <div class="detail-label required">주차가능여부</div>
                     <div class="radio-group">
                         <label class="radio-item">
                             <input type="radio" name="post_detail_parking" value="0" required> 가능
