@@ -57,23 +57,47 @@ class CommunityBoardController extends Controller
 
     // 특정 게시물 조회
     public function show($id) {
-        $communityBoardDetail = CommunityBoard::with('users')->find($id);
+      $communityBoardDetail = CommunityBoard::with('users')->find($id);
+  
+      $responseData = [
+        'success' => true
+        ,'msg' => '공지사항 상세리스트 정보가 맞습니다.'
+        ,'communityBoardDetail' =>$communityBoardDetail->toArray(),
+      ];
 
-    }
+      return response()->json($responseData, 200);
+  }
     
     // 게시물 작성    
     public function store(Request $request) {
-        $request->validate([
-          'title' => 'required|string|max:50',
-          'content' => 'required|string',
-          'board_type' => 'required|integer',
-        ]);
-        $post = CommunityBoard::create([
-          'title' => $request->title,
-          'content' => $request->content,
-          'board_type' => $request->board_type,
-      ]);
+        // $request->validate([
+        //   'title' => 'required|string|max:50',
+        //   'content' => 'required|string',
+        //   'board_type' => 'required|integer',
+        // ]);
 
-      return response()->json(['message' => '게시글이 등록되었습니다.', 'post' => $post], 200);
+      $insertData = $request->only('user_id');
+      $insertData['community_type'] = $request->community_type;
+      $insertData['community_title'] = $request->title;
+      $insertData['community_content'] = $request->content;
+
+      
+      $community = CommunityBoard::create($insertData);
+
+      $responseData = [
+        'success' => true,
+        'showBoard' => $community->toArray(),
+        'msg' => '성공'
+      ];
+
+
+        // $post = CommunityBoard::create([
+        //   'title' => $request->title,
+        //   'content' => $request->content,
+        //   'community_type' => $request->community_type,
+        //   'user_id' => $request->user_id
+      // ]);
+
+      return response()->json($responseData ,200);
     } 
  }

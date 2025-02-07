@@ -55,6 +55,9 @@ Route::middleware('my.auth')->group(function() {
 
     //  신고작성 => 인증 들어가야함
     Route::post('/reports', [ReportController::class, 'report'])->name('report.post');
+
+    
+    Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -88,8 +91,8 @@ Route::post('/password-reset/reset', [PasswordResetController::class, 'resetPass
 Route::get('/community/notice', [NoticeController::class, 'index'])->name('index.notice');
 Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('show.notice');
 Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
+Route::get('/community/free/{id}', [CommunityBoardController::class , 'show'])->name('show.free');
 Route::get('/community/free', [CommunityBoardController::class, 'index'])->name('index.free');
-Route::post('/community/store', [CommunityBoardController::class, 'store'])->name('store.free');
 
 /**
  * 원상님 Route *

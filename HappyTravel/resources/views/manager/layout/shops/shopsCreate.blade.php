@@ -114,12 +114,12 @@
             @csrf
             <div class="form-group">
                 <label class="form-label">클래스 이름</label>
-                <input type="text" name="class_name" class="form-input" required>
+                <input type="text" name="class_title" class="form-input" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label">대표 이미지</label>
-                <input type="file" name="class_image" class="form-input" accept="image/*" required>
+                <input type="file" name="class_title_img" class="form-input" accept="image/*" required>
                 <img id="imagePreview" class="image-preview" style="display: none;">
             </div>
 
@@ -130,7 +130,7 @@
 
             <div class="form-group">
                 <label class="form-label">클래스 위치</label>
-                <input type="text" name="class_location" class="form-input" required>
+                <input type="text" name="location" class="form-input" required>
             </div>
 
             <div class="form-group">
@@ -144,7 +144,7 @@
                 <div class="time-inputs">
                     <div>
                         <div class="input-label">시작 시간</div>
-                        <input type="time" name="class_time_start" class="form-input time-input" required>
+                        <input type="time" name="class_date_time" class="form-input time-input" required>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
             <div class="form-group">
                 <label class="form-label">클래스 내용</label>
 				<script type="text/javascript" src="/smarteditor3/js/HuskyEZCreator.js" charset="utf-8"></script>
-                <textarea id="editor"></textarea>
+                <textarea id="editor" name="class_content"></textarea>
 				<script type="text/javascript">
 					var oEditors = [];
 					nhn.husky.EZCreator.createInIFrame({
@@ -163,9 +163,8 @@
 					});
 				</script>
             </div>
-
             <div class="action-buttons">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" onclick="submitForm()">
                     <i class="fas fa-save"></i>
                     등록하기
                 </button>
@@ -177,6 +176,11 @@
         </form>
     </div>
 </div>
+<script>
+    @if($errors->any())
+        alert('{{ $errors->first() }}');
+    @endif
+</script>
 @endsection
 
 @section('scripts')
@@ -196,11 +200,18 @@
         }
     });
 
-    // 폼 제출 시 에디터 내용을 textarea에 반영
-    document.querySelector('form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);
-        this.submit();
-    });
+    // 폼 제출하기
+    function submitForm(){
+        if(confirm('정말 등록하시겠습니까? \n 등록 후 수정은 불가능합니다.')){
+            oEditors.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
+            document.querySelector('#editor').value = getContent();
+            document.querySelector('form').submit();
+        }
+    }
+
+    function getContent(){
+		oEditors.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
+		return document.getElementById("editor").value;
+	}
 </script>
 @endsection
