@@ -12,7 +12,7 @@ class CommunityBoard extends Model
     
     use HasFactory, SoftDeletes; // 소프트 삭제 적용
 
-    protected $primaryKey = 'communinty_id'; // 기본키 설정
+    protected $primaryKey = 'community_id'; // 기본키 설정
 
     protected $fillable = [
         'user_id',

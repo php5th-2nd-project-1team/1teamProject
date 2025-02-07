@@ -33,7 +33,7 @@
                 </div>
                 <div v-for="item in boardList" :key="item" class="free-row">
                     <div class="free-item">{{ item.community_id }}</div>
-                    <div class="free-item">{{ item.community_title }}</div>
+                    <div @click="redirectDetaile(item.community_id)"class="free-item">{{ item.community_title }}</div>
                     <div class="free-item">{{ item.users?.nickname }}</div>
                     <div class="free-item">{{ item.created_at }}</div>
                     <div class="free-item">{{ item.community_view }}</div>
@@ -139,6 +139,11 @@
         }
     }
 
+    const redirectDetaile = (id) => {
+        scrollToTop();
+        router.push('/community/free/' + id);
+    };
+
 </script>
 
 <style scoped>
@@ -179,6 +184,7 @@
         /* 너무 긴 텍스트를 잘라내고 '...' 추가 */
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
     }
 
     .free-row .free-item {
