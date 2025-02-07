@@ -40,6 +40,7 @@ const isLastPage = computed(() => store.state.post.lastPageFlg);
 // 댓글 페이지네이션
 const loadMoreComments = () => {
 	store.dispatch('post/postCommentPagination', route.params.id);
+	console.log(route.params);
 };
 
 // ------------------------------------------

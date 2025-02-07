@@ -8,7 +8,7 @@
 .index-postbox-title{
 	display: flex;
 	gap : 10px;
-	padding : 0 100px;
+	padding : 0 50px;
 	
 	align-items: center;
 }
@@ -27,7 +27,7 @@
 	justify-content: space-between;
 	width: 100%;
 
-	padding : 0 100px;
+	padding : 0 50px;
 	margin : 20px 0;
 }
 
@@ -38,6 +38,13 @@
 
 .index-category-category p{
 	font-size: 1.25rem;
+	color: #939393;
+	cursor: pointer;
+}
+
+.index-category-category p:hover{
+	font-size: 1.25rem;
+	color: #000;
 }
 
 .index-controller{
@@ -86,6 +93,7 @@
 	width: 90%;
 	height: 90%;
 	padding : 10px 25px;
+	cursor: pointer;
 }
 
 .index-card:hover {
@@ -110,8 +118,21 @@
 
 .index-card-img{
 	border-radius: 50px;
-	padding-top: 100%;
-	background-color: black;
+	/* padding-top: 100%; */
+	margin-top: 10px;
+	/* background-color: black; */
+}
+
+.index-card-img-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.index-card-img img {
+	width: 100%;
+	height: 50%;
+	border-radius: 50px;
 }
 
 .index-card-hoverShowing{

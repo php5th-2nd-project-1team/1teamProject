@@ -3,8 +3,12 @@
 		<IndexPostComponent :cardData="store.state.post.postIndexList"/>
 		<IndexCommentBoxComponent/>
 		<IndexMediaboxComponent/>
-		<IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/>
-		<IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/>
+		<!-- <IndexPostListComponent :type="'view'" :cardData="store.state.post.viewList"/> -->
+		<!-- <IndexPostListComponent :type="'like'" :cardData="store.state.post.likeList"/> -->
+		<IndexPostboxComponent />
+		<IndexStoreboxComponent />
+		<IndexCommunityComponent />
+		
 	</div>
 	<div @click="onClickTopBtn" :class="isActiveTopBtn" ></div>
 </template>
@@ -16,6 +20,10 @@ import IndexCommentBoxComponent from './index_module/IndexCommentBoxComponent.vu
 import IndexMediaboxComponent from './index_module/IndexMediaboxComponent.vue';
 import IndexPostListComponent from './index_newModule/IndexPostListComponent.vue';
 import IndexPostComponent from './index_newModule/IndexPostComponent.vue';
+
+import IndexPostboxComponent from './index_module/IndexPostboxComponent.vue';
+import IndexStoreboxComponent from './index_module/IndexStoreboxComponent.vue';
+import IndexCommunityComponent from './index_module/IndexCommunityComponent.vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
