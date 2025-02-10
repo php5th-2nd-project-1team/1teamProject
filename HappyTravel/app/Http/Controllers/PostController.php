@@ -383,6 +383,21 @@ class PostController extends Controller
 	// 	];
 	// 	return response()->json($responseData, 200);
 	// }
+	public function indexPost(Request $request) {
+		$IndexPost = Post::select('posts.post_id','posts.post_title', 'posts.post_img', 'posts.post_local_name', 'posts.category_theme_num', 'category_themes.category_theme_name')
+							->join('category_themes', 'posts.category_theme_num', '=', 'category_themes.category_theme_num')
+							->where('posts.category_theme_num', $request->category_theme_num)
+							->orderBy('posts.created_at', 'DESC')
+							->limit(4)
+							->get();
+		$responseData = [
+			'success' => true
+			,'msg' => '인덱스 포스트 출력'
+			,'IndexPost' => $IndexPost->toArray()
+		];
+
+		return response()->json($responseData, 200);
+	}
 }
 
 

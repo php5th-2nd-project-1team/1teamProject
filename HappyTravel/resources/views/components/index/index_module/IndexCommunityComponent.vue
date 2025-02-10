@@ -10,10 +10,8 @@
 		</div>
 		<div class="index-cardzone">
 			<div class="index-card" v-for="value in 4" :key="value">
-				<div class="index-card-img">
-					<div class="index-card-img-content">
-						<img src="/developImg/shop_detail1.png" alt="">
-					</div>
+				<div class="community-card-content">
+					<img class="community-card-img" src="/developImg/about-three2.png" alt="">
 				</div>
 
 			</div>
@@ -24,5 +22,15 @@
 
 </script>
 <style scoped>
-	
+	.community-card-content {
+		width: 100%;
+		height: 100%;
+	}
+
+	.community-card-img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50px;
+		padding: 15px 0;
+	}
 </style>

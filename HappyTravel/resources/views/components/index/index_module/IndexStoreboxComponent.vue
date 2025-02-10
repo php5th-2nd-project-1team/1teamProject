@@ -5,12 +5,12 @@
 			<p>#원하시는 상품을 찾아보세요</p>
 		</div>
 		<div class="index-category">
-			<div class="index-category-category">
+			<!-- <div class="index-category-category">
 				<p>굿즈</p>
 				<p>클래스</p>
 				<p>패키지</p>
-			</div>
-			<div class="index-controller">
+			</div> -->
+			<!-- <div class="index-controller">
 				<div class="postList-inner">
 					<button :class="`${props.type}-prev`" style="cursor: pointer;"><</button>
 					<button :class="`${props.type}-next`" style="cursor: pointer;">></button>
@@ -23,10 +23,10 @@
 				>
 					<swiper-slide v-for="value in props.cardData"><PostCardComponent :cardData="value"/></swiper-slide>
 				</swiper>
-			</div>
+			</div> -->
 		</div>
 		<div class="index-cardzone">
-			<div class="index-shop-card" v-for="value in 3" :key="value">
+			<div class="index-shop-card" v-for="(item, key) in indexCommunity" :key="value">
 				<div class="index-shop-card-img">
 					<p class="index-shop-card-img-option">sale</p>
 					<p class="index-shop-card-img-option">new</p>

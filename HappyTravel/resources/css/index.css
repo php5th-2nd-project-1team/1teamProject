@@ -7,6 +7,7 @@
 
 .index-postbox-title{
 	display: flex;
+	justify-content: space-between;
 	gap : 10px;
 	padding : 0 50px;
 	
@@ -24,26 +25,26 @@
 
 .index-category{
 	display: flex;
-	justify-content: space-between;
+	gap: 50px;
 	width: 100%;
-
 	padding : 0 50px;
-	margin : 20px 0;
+	margin : 10px 0;
 }
 
 .index-category-category{
 	display: flex;
-	gap : 45px;
+	justify-content: flex-start;
+	/* gap : 50px; */
 }
 
 .index-category-category p{
-	font-size: 1.25rem;
+	font-size: 1.3rem;
 	color: #939393;
 	cursor: pointer;
 }
 
 .index-category-category p:hover{
-	font-size: 1.25rem;
+	font-size: 1.3rem;
 	color: #000;
 }
 

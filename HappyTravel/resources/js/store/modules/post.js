@@ -23,8 +23,9 @@ let controller = null;
 export default {
 	namespaced: true,
 	state: () =>({
+		indexPost : []
 		// post 부분
-		post_theme_id : 0
+		,post_theme_id : 0
 		,post_theme_title : '숙소'
 		,postCommentList : []
 		,postComment : ''
@@ -60,9 +61,12 @@ export default {
 		,postFacility : []
 	})
 	,mutations: {
+		setIndexPostList(state, data){
+			state.indexPost = data;
+		}
 		// post 부분
 
-		setPostThemeId(state, id){
+		,setPostThemeId(state, id){
 			state.post_theme_id = id;
 		}
 		,setPostThemeTitle(state){
@@ -256,6 +260,7 @@ export default {
 	}
 	,actions: {
 		index(context, payload){
+<<<<<<< Updated upstream
 			// 초기화 타입에 따라 다른 초기화 실행
 			switch(payload){
 				case 'local': // 지역 검색 초기화
@@ -269,6 +274,16 @@ export default {
 					break;
 				default:
 					break;
+=======
+			if(payload === true || 
+				context.state.animalType !== payload.animalType || 
+				context.state.facilityType !== payload.facilityType){	
+				context.commit('setInitialize');
+			}
+			// 필터 전체 해제시 초기화
+			if(payload.animalType === null && payload.facilityType === null){
+				context.commit('setInitialize');
+>>>>>>> Stashed changes
 			}
 
 			// 현재 페이지가 총 페이지 수를 초과하면 중단
@@ -282,11 +297,50 @@ export default {
 				return;
 			}
 
+<<<<<<< Updated upstream
 			// 로딩 상태 활성화
 			context.commit('setIsLoading', true);
 
 			// 기본 URL 생성 (페이지 번호와 테마 ID 포함)
 			let url = `/api/posts?page=${context.getters['getNextPage']}&theme=${context.state.post_theme_id}`;
+=======
+			if(context.state.beforeLocal !== ''){
+				if(context.state.beforeSearch !== ''){
+					context.dispatch('search', context.state.beforeSearch);
+				}
+				else{
+					context.dispatch('localSearch', context.state.beforeLocal);
+				}
+			} else {
+				context.commit('setIsLoading', true);
+				let url;
+				if(payload?.animalType?.length > 0 || payload?.facilityType?.length > 0) {
+					url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`
+							+(payload.animalType?.length > 0 
+								? `&animal_type_num[]=${payload.animalType.join('&animal_type_num[]=')}` 
+								: '')
+							+ (payload.facilityType?.length > 0 
+								? `&facility_type_num[]=${payload.facilityType.join('&facility_type_num[]=')}` 
+								: '');
+				} else {
+					url = `/api/posts?theme=${context.state.post_theme_id}&page=${context.getters['getNextPage']}`;
+				}
+				axios.get(url)
+				.then( response => {
+					// context.commit('setPostResultCnt', response.data.PostList.total);
+					// context.commit('setPostList', response.data.PostList.data);
+					const beforePost = response.data.PostList.data;
+					const afterPost = [...new Map(beforePost.map(item => [item.post_id, item])).values()];
+					if(payload?.animalType?.length > 0 || payload?.facilityType?.length > 0) {
+						context.commit('setPostResultCnt', afterPost.length);
+					} else {
+						context.commit('setPostResultCnt', response.data.PostList.total);
+					}
+					context.commit('setPostList', beforePost);
+					context.commit('setCurrentPage', response.data.PostList.current_page);
+					console.log(response.data.PostList.data);
+					console.log(afterPost.length);
+>>>>>>> Stashed changes
 
 			// 지역 검색 파라미터 추가
 			if(context.state.localSearch !== ''){
@@ -556,6 +610,25 @@ export default {
 					context.commit('setControllerFlg', true);
 				});
 			}, {root: true});
+		}
+
+		,indexPost(context, CategoryThemeNum) {
+			const url = 'api/index';
+			const config = {
+				params: {
+					category_theme_num: CategoryThemeNum
+				}
+			};
+			axios.get(url, config)
+			.then( response => {
+				// 응답 데이터로 상태 업데이트
+				context.commit('setIndexPostList', response.data.IndexPost);
+				// console.log(response.data.IndexPost);
+			}).catch (error => {
+				// 에러 처리
+				console.log(error);
+			});
+			
 		}
 
 

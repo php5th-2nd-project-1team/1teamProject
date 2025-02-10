@@ -130,6 +130,7 @@ Route::get('/account-email/request', [AccountResetController::class, 'checkAccou
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
 Route::get('/posts/{id}', [PostController::class, 'showPost'])->name('showPost.post');
 Route::get('/posts/filter/{id}', [PostController::class, 'postFilter'])->name('showPost.post');
+Route::get('/index', [PostController::class, 'indexPost'])->name('indexPost.post');
 
 
 
