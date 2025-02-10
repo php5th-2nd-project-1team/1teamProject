@@ -58,6 +58,11 @@ Route::middleware('my.auth')->group(function() {
 
     
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
+    
+    // 자유 댓글 작성(id가 community_id)
+    Route::post('/community/free/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');
+    // 자유 댓글 삭제(id가 cmmunity_comment_id)
+    Route::post('/community/free/{id}',[CommunityBoardController::class, 'deleteFreeCommnet'])->name('destroy.freeComment');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

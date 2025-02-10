@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\CommunityBoard;
+use App\Models\CommunityComment;
+use Illuminate\Support\Facades\DB;
+use UserToken;
 use Illuminate\Http\Request;
 
 class CommunityBoardController extends Controller
@@ -56,13 +60,30 @@ class CommunityBoardController extends Controller
   
 
     // 특정 게시물 조회
-    public function show($id) {
+    public function show(Request $request ,$id) {
+
+      $token = $request->bearerToken();
+
+      $token = $token === 'null' ? null : $token;
+
+      $CommunityComment = null;
+
       $communityBoardDetail = CommunityBoard::with('users')->find($id);
-  
+
+      $CommunityComment = CommunityComment::with('users')->where('community_id', '=',$request->id)->orderBy('created_at', 'DESC')->paginate(5);
+
+      $CommuntiyCommentCnt =CommunityComment::select('community_id',CommunityComment::raw('COUNT(comment_content) cnt'))
+                          ->where('community_id','=',$request->id)
+                          ->groupBy('community_id')
+                          ->first();
+      
+
       $responseData = [
         'success' => true
-        ,'msg' => '공지사항 상세리스트 정보가 맞습니다.'
-        ,'communityBoardDetail' =>$communityBoardDetail->toArray(),
+        ,'msg' => '자유게시판 상세리스트 정보가 맞습니다.'
+        ,'communityBoardDetail' =>$communityBoardDetail->toArray()
+        ,'CommunityComment' =>$CommunityComment->toArray()
+        ,'CommuntiyCommentCnt'=>$CommuntiyCommentCnt !== null ? $CommuntiyCommentCnt->toArray() : ["community_id" =>$request->id, "cnt" =>0]
       ];
 
       return response()->json($responseData, 200);
@@ -100,4 +121,56 @@ class CommunityBoardController extends Controller
 
       return response()->json($responseData ,200);
     } 
+
+    // 실제로 댓글 페이지네이션시 CommunityComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
+    public function getComment(Request $request) {
+      $CommunityComment = null;
+      $CommunityComment = CommunityComment::with('users')->where('community_id', '=', $request->id)->whereNull('deleted_at')->orderBy('created_at', 'DESC')->paginate(5);
+
+      $responseData =[
+         'success' =>true
+         ,'msg' => '커뮤니티  코멘트 출력'
+         ,'CommunityComment' => $CommunityComment->toArray()
+      ];
+
+      return response()->json($responseData, 200);
+    }
+
+    // 커뮤니티 댓글 작성
+    public function storeFreeComment(StoreCommentRequest $request, $id) {
+      // 로컬스토리지에 토큰이 없을시 작성안됨 조건도 넣기
+      $token = $request->bearerToken();
+
+      if(!$token) {
+          return response()->json([
+              'success' => false
+              ,'mssg' =>'로그인한 유저만 댓글을 작성할 수 있습니다.'
+          ], 400);
+      }
+      // 유효성 체크
+      $insertData =$request->only('comment_content');
+      $insertData['user_id'] = UserToken::getInPayload($token, 'idt');
+      $insertData['community_id'] =$id;
+      
+          //insert
+          $storeFreeComment = CommunityComment::create($insertData);
+
+          $storeFreeComment->load('users');
+
+          $responseData = [
+            'success' => true
+            ,'msg' => '커뮤니티 댓글 작성 성공'
+            ,'storeFreeComment' => $storeFreeComment->toArray()
+          ];
+
+          return response()->json($responseData, 200);
+    } 
+    // 커뮤니티 자유게시판 댓글 삭제
+    public function deleteFreeComment($id) {
+      DB::beginTransaction();
+      CommunityComment::destroy($id);
+      DB::commit();
+    }
+
+
  }
