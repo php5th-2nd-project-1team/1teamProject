@@ -101,44 +101,57 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clickable-row" data-href="/manager/shops/1">
-                        <td>1</td>
-                        <td>강아지와 함께하는 베이킹 클래스</td>
-                        <td>50,000원</td>
-                        <td>서울 강남구</td>
+                    @foreach($shops as $shop)
+                    <tr class="clickable-row" data-href="/manager/shops/{{$shop->class_id}}">
+                        <td>{{$shop->class_id}}</td>
+                        <td>{{$shop->class_title}}</td>
+                        <td>{{number_format($shop->class_price)}}원</td>
+                        <td>{{$shop->location}}</td>
                         <td>
                             <span class="status-badge status-active">진행중</span>
                         </td>
                     </tr>
-                    <tr class="clickable-row" data-href="/manager/shops/2">
-                        <td>2</td>
-                        <td>반려동물 수제간식 만들기</td>
-                        <td>35,000원</td>
-                        <td>서울 마포구</td>
-                        <td>
-                            <span class="status-badge status-inactive">종료</span>
-                        </td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
+
         </div>
 
         <div class="pagination-container">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
+                    @if(!$shops->onFirstPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="First">
+                        <a class="page-link" href="{{$shops->url(1)}}" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    @endif
+                    @php
+                        $currentPage = $shops->currentPage();
+                        $lastPage = $shops->lastPage();
+                        
+                        // 시작 페이지와 끝 페이지 계산
+                        $startPage = max($currentPage - 2, 1);
+                        $endPage = min($startPage + 4, $lastPage);
+                        
+                        // 시작 페이지 재조정
+                        if ($endPage - $startPage < 4) {
+                            $startPage = max($endPage - 4, 1);
+                        }
+                    @endphp
+                    @for ($i = $startPage; $i <= $endPage; $i++)
+                        <li class="page-item {{ $i === $currentPage ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $shops->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    @if(!$shops->onLastPage())
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Last">
+                        <a class="page-link" href="{{$shops->url($shops->lastPage())}}" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
             <a href="/manager/shops/create" class="create-btn">

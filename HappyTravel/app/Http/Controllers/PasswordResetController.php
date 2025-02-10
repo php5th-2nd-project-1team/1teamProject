@@ -14,30 +14,30 @@ use Illuminate\Support\Facades\Mail;
 class PasswordResetController extends Controller
 {
     public function sendResetPasswordEmail(UserRequest $request)
-{
-    // 기존 요청 삭제 (중복 방지)
-    PasswordReset::where('email', $request->email)->delete();
+    {
+        // 기존 요청 삭제 (중복 방지)
+        PasswordReset::where('email', $request->email)->delete();
 
-    // 새 토큰 생성 및 저장
-    $token = Str::random(64);
-    PasswordReset::create([
-        'email' => $request->email,
-        'token' => Hash::make($token),
-        'created_at' => now(),
-        'expires_at' => now()->addMinutes(30),
-    ]);
+        // 새 토큰 생성 및 저장
+        $token = Str::random(64);
+        PasswordReset::create([
+            'email' => $request->email,
+            'token' => Hash::make($token),
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(30),
+        ]);
 
-    // 유저 정보 가져오기
-    $user = User::where('email', $request->email)->first();
-    $resetUrl = url('/password-reset?token=' . $token . '&email=' . urlencode($request->email));
+        // 유저 정보 가져오기
+        $user = User::where('email', $request->email)->first();
+        $resetUrl = url('/password-reset?token=' . $token . '&email=' . urlencode($request->email));
 
-    // Blade 템플릿 사용한 메일 전송
-    Mail::to($request->email)->send(new ResetPasswordMail($user->name, $resetUrl));
+        // Blade 템플릿 사용한 메일 전송
+        Mail::to($request->email)->send(new ResetPasswordMail($user->name, $resetUrl));
 
-    return response()->json(['message' => '비밀번호 변경 이메일이 발송되었습니다.']);
-}
+        return response()->json(['message' => '비밀번호 변경 이메일이 발송되었습니다.']);
+    }
 
-public function verifyToken(UserRequest $request)
+    public function verifyToken(UserRequest $request)
     {
         $resetRequest = PasswordReset::where('email', $request->email)->first();
 
@@ -57,7 +57,7 @@ public function verifyToken(UserRequest $request)
         // 2️⃣ 비밀번호 재설정 요청 조회
         $resetRequest = PasswordReset::where('email', $request->email)->first();
     
-         // 4️⃣ 유저 조회 및 비밀번호 변경
+        // 4️⃣ 유저 조회 및 비밀번호 변경
         $user = User::where('email', $request->email)->first();
         
         if (!$user) {

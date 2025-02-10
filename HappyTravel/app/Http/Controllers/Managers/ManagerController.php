@@ -30,8 +30,27 @@ use Illuminate\Support\Facades\Validator;
 
 class ManagerController extends Controller 
 {
-	// 계정 영역
-	// 로그인 처리
+
+	public $reportCategory = [
+		'01' => '욕설/비속어 포함'
+		,'02' => '갈등 조장 및 허위사실 유포'
+		,'03' => '폭력적이고 혐오스러운 콘텐츠'
+		,'04' => '도배 및 광고글'
+		,'05' => '기타'
+	];
+
+	public $reportPlace = [
+		'01' => '포스트 댓글'
+		,'02' => '커뮤니티'
+		,'03' => '커뮤티니 댓글'
+	];
+
+	/**
+	 * 관리자 로그인 처리
+	 * 
+	 * @param Request $request 로그인 폼 데이터 (계정, 비밀번호)
+	 * @return 성공 시 관리자 대시보드로 이동, 실패 시 로그인 페이지로 이동
+	 */
 	public function login(Request $request){
 
 		$validator = Validator::make($request->only('m_account', 'm_password'), [
@@ -54,7 +73,12 @@ class ManagerController extends Controller
 		return redirect()->route('manager.index');
 	}
 
-	// 로그아웃 처리
+	/**
+	 * 관리자 로그아웃 처리
+	 * 세션 무효화 및 토큰 재생성
+	 * 
+	 * @return 로그인 페이지로 리다이렉트
+	 */
 	public function logout(){
 		Auth::guard('manager')->logout();
 		Session::invalidate();
@@ -65,6 +89,12 @@ class ManagerController extends Controller
 	// 계정 영역 끝
 
 	// 인덱스 영역
+	/**
+	 * 관리자 대시보드 메인 페이지
+	 * 최근 사용자, 게시물, 신고 내역 등을 표시
+	 * 
+	 * @return 대시보드 메인 뷰와 함께 최근 데이터들을 전달
+	 */
 	public function index(){
 
 		$users = User::orderBy('created_at', 'desc')->limit(5)->get();
@@ -88,23 +118,41 @@ class ManagerController extends Controller
 					->limit(5)
 					->get();
 
-		// TODO 문의, 신고 준비되면 추가
+		// TODO 문의 준비되면 추가
+
+		$reports = Report::where('report_status', '=', '01')->orderBy('created_at', 'desc')->limit(5)->get();
 
 		return view('manager.layout.index')
 		->with(
 			['users' => $users
-			,'posts' => $posts]
+			,'posts' => $posts
+			,'reports' => $reports
+			,'reportCategory' => $this->reportCategory
+			,'reportPlace' => $this->reportPlace]
 		);
 	}
 
+
 	// 메인페이지 영역 끝
 	// 유저 영역
+	/**
+	 * 사용자 목록 조회
+	 * 페이지네이션 적용 (10개씩)
+	 * 
+	 * @return 사용자 목록 뷰와 페이지네이션된 사용자 데이터
+	 */
 	public function users(){
 		$users = User::orderBy('created_at', 'desc')->paginate(10);
 		return view('manager.layout.users.users')->with('users', $users);
 	}
 
-	// 유저 상세 정보
+	/**
+	 * 사용자 상세 정보 조회
+	 * 사용자의 상세 정보와 댓글 수 등을 표시
+	 * 
+	 * @param int $id 사용자 ID
+	 * @return 사용자 상세 정보 뷰와 관련 데이터
+	 */
 	public function usersDetail($id){
 		$user = User::find($id);
 		$commentCount = PostComments::where('user_id', $id)->count();
@@ -119,6 +167,13 @@ class ManagerController extends Controller
 	// 유저 영역 끝
 	// 포스트 영역
 	// 포스트 목록 조회
+	/**
+	 * 게시물 목록 조회
+	 * 좋아요 수 포함, 삭제된 게시물도 표시
+	 * 페이지네이션 적용 (10개씩)
+	 * 
+	 * @return 게시물 목록 뷰와 페이지네이션된 게시물 데이터
+	 */
 	public function posts(){
 		$posts = Post::
 			orderBy('created_at', 'desc')->
@@ -141,7 +196,13 @@ class ManagerController extends Controller
 
 	}
 
-	// 포스트 상세 조회
+	/**
+	 * 게시물 상세 조회
+	 * 게시물 정보, 작성자, 카테고리, 동물 유형, 시설 정보 등을 포함
+	 * 
+	 * @param int $id 게시물 ID
+	 * @return 게시물 상세 뷰와 관련 데이터
+	 */
 	public function postsDetail($id){
 		$post = Post::select('posts.*', 'managers.m_nickname as m_nickname', 'category_locals.category_local_name as category_local_name', 'category_themes.category_theme_name as category_theme_name')->
 					join('managers', 'posts.manager_id', '=', 'managers.manager_id')->
@@ -170,7 +231,12 @@ class ManagerController extends Controller
 				->with('page', $page);  // 페이지 정보 전달
 	}
 
-	// 포스트 작성 (get)
+	/**
+	 * 게시물 작성 폼
+	 * 카테고리, 동물 유형, 시설 유형 등의 선택 옵션 제공
+	 * 
+	 * @return 게시물 작성 폼 뷰와 필요한 선택 옵션 데이터
+	 */
 	public function postCreate(){
 
 		$categoryLocals = CategoryLocal::get();
@@ -185,7 +251,14 @@ class ManagerController extends Controller
 				->with('facilityTypes', $facilityTypes);
 	}
 
-	// 포스트 작성 (post)
+	/**
+	 * 게시물 저장 처리
+	 * 이미지 업로드 및 관련 데이터 저장
+	 * 트랜잭션 처리
+	 * 
+	 * @param PostRequest $request 유효성 검증된 게시물 데이터
+	 * @return 성공 시 게시물 상세 페이지로 이동, 실패 시 에러 응답
+	 */
 	public function postStore(PostRequest $request){
 		
 		DB::beginTransaction();
@@ -242,7 +315,13 @@ class ManagerController extends Controller
 		return redirect()->route('post.posts.detail', ['id' => $inputData->post_id]);
 	}
 
-	// 포스트 수정(get)
+	/**
+	 * 게시물 수정 폼
+	 * 기존 게시물 정보를 폼에 표시
+	 * 
+	 * @param int $id 게시물 ID
+	 * @return 게시물 수정 폼 뷰와 기존 데이터
+	 */
 	public function postEdit($id){
 		$post = Post::select('posts.*', 'managers.m_nickname as m_nickname', 'category_locals.category_local_name as category_local_name', 'category_themes.category_theme_name as category_theme_name')->
 			join('managers', 'posts.manager_id', '=', 'managers.manager_id')->
@@ -267,8 +346,15 @@ class ManagerController extends Controller
 				->with('facilityTypes', $facilityTypes);
 	}
 
-	// 포스트 수정(post)
-	// 포스트 수정
+	/**
+	 * 게시물 수정 처리
+	 * 이미지 업데이트 시 기존 이미지 삭제
+	 * 트랜잭션 처리
+	 * 
+	 * @param PostRequest $request 유효성 검증된 수정 데이터
+	 * @param int $id 게시물 ID
+	 * @return 성공 시 게시물 상세 페이지로 이동, 실패 시 에러 응답
+	 */
 	public function updatePost(PostRequest $request, $id){
 
 		DB::beginTransaction();
@@ -365,7 +451,14 @@ class ManagerController extends Controller
 		return redirect()->route('post.posts.detail', ['id' => $inputData->post_id]);
 	}
 
-	// 포스트 삭제
+	/**
+	 * 게시물 삭제 처리
+	 * 관련된 동물 유형, 시설 정보도 함께 삭제
+	 * 트랜잭션 처리
+	 * 
+	 * @param int $id 게시물 ID
+	 * @return 성공 시 게시물 목록으로 이동, 실패 시 에러 응답
+	 */
 	public function postDestroy($id){
 		try{
 			DB::beginTransaction();
@@ -400,6 +493,12 @@ class ManagerController extends Controller
 	// 포스트 영역 종료
 	// 공지사항 영역 
 	// 공지사항 리스트
+	/**
+	 * 공지사항 목록 조회
+	 * 페이지네이션 적용 (10개씩)
+	 * 
+	 * @return 공지사항 목록 뷰와 페이지네이션된 공지사항 데이터
+	 */
 	public function noticeIndex()
 	{
 		$notices = Notice::with('managers')
@@ -584,20 +683,18 @@ class ManagerController extends Controller
 
 	// 신고 영역 시작
 	// 신고 댓글 리스트 출력 
+	/**
+	 * 신고 댓글 목록 조회
+	 * 포스트 댓글과 커뮤니티 댓글 신고 내역 표시
+	 * 페이지네이션 적용 (10개씩)
+	 * 
+	 * @return 신고 댓글 목록 뷰와 페이지네이션된 신고 데이터
+	 */
 	public function reportCommentIndex(){
 		// 01 : 포스트 댓글 -> 이거 가져오셈
 		// 03 : 커뮤니티 댓글 -> 이거 가져오셈
 
 		// 02 : 커뮤니티 글
-
-		$category = [
-			'01' => '욕설/비속어 포함'
-			,'02' => '갈등 조장 및 허위사실 유포'
-			,'03' => '폭력적이고 혐오스러운 콘텐츠'
-			,'04' => '도배 및 광고글'
-			,'05' => '기타'
-		];
-
 		$reports = Report::with('user')->whereIn('report_category', [1, 3])->orderBy('created_at', 'DESC')->paginate(10);
 
 		Log::debug($reports);
@@ -614,20 +711,12 @@ class ManagerController extends Controller
 		return view('manager.layout.report_comments.reportComments', [
 			'reports' => $reports,
 			'page' => $page,
-			'category' => $category
+			'category' => $this->reportCategory
 		]);
 	}
 
 	// 댓글 신고 상세 리스트 출력 
 	public function reportCommentDetail($id){
-		$report_category = [
-			'01' => '욕설/비속어 포함'
-			,'02' => '갈등 조장 및 허위사실 유포'
-			,'03' => '폭력적이고 혐오스러운 콘텐츠'
-			,'04' => '도배 및 광고글'
-			,'05' => '기타'
-		];
-
 		$report = Report::with('user')->find($id);
 
 		if($report === null){
@@ -656,13 +745,24 @@ class ManagerController extends Controller
 			'report' => $report,
 			'reported_content' => $reported_content,
 			'url' => $url,
-			'report_category' => $report_category,
+			'report_category' => $this->reportCategory,
 			'page' => request()->query('page', 1),
 			'comment_category' => $comment_category,
 			'report_result' => $report_result
+
 		]);
 	}
 
+	/**
+	 * 신고 처리 결과 저장
+	 * 신고 상태 업데이트 및 처리 결과 기록
+	 * 징계 시 해당 댓글 자동 삭제
+	 * 트랜잭션 처리
+	 * 
+	 * @param Request $request 처리 결과 데이터
+	 * @param int $id 신고 ID
+	 * @return 성공 시 신고 상세 페이지로 이동, 실패 시 에러 메시지와 함께 되돌아감
+	 */
 	public function reportCommentPunishment(Request $request, $id){
 		Log::debug($request->report_result);
 		$validator = Validator::make($request->only('report_reason'), [
@@ -736,11 +836,33 @@ class ManagerController extends Controller
 	}
 
 	// 상품 상세 조회
+	public function storeDetail($id){
+		$travelClass = TravelClass::find($id);
+		if($travelClass === null){
+			return redirect()->route('shops.index');
+		}
+
+		$url = '/shops/'.$travelClass->class_id;
+
+		return view('manager.layout.shops.shopsDetail', [
+			'travelClass' => $travelClass,
+			'url' => $url
+		]);
+	}
+
+	// 상품 등록창
 	public function storeCreate(){
 		return view('manager.layout.shops.shopsCreate');
 	}
 
-	// 상품 등록
+	/**
+	 * 여행 클래스(상품) 등록 처리
+	 * 이미지 업로드 및 클래스 정보 저장
+	 * 트랜잭션 처리
+	 * 
+	 * @param Request $request 클래스 등록 데이터
+	 * @return 성공 시 상품 목록으로 이동, 실패 시 등록 폼으로 되돌아감
+	 */
 	public function storeStore(Request $request){
 		$validator = Validator::make($request->only(
 			'class_title', 'class_title_img', 'class_content', 'class_price', 'location', 'class_date', 'class_date_time'),

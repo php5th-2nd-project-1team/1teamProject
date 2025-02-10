@@ -245,21 +245,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="clickable-row" data-href="/manager/reports/1">
-						<td>1</td>
-						<td>user123</td>
-						<td>부적절한 내용</td>
-						<td>게시글</td>
+					@foreach($reports as $report)
+					<tr class="clickable-row" data-href="/manager/reports/{{ $report->report_id }}">
+						<td>{{ $report->report_id }}</td>
+						<td>{{ $report->user_id }}</td>
+						<td>{{ $reportCategory[$report->report_code] }}</td>
+						<td>{{ $reportPlace[$report->report_category] }}</td>
 						<td>처리중</td>
 					</tr>
-					<tr class="clickable-row" data-href="/manager/reports/2">
-						<td>2</td>
-						<td>kim456</td>
-						<td>스팸</td>
-						<td>댓글</td>
-						<td>완료</td>
-					</tr>
-					<!-- 추가 더미 데이터 -->
+					@endforeach
 				</tbody>
 			</table>
 		</div>

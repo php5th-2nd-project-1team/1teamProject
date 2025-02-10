@@ -107,47 +107,52 @@
     <div class="shop-detail-section">
         <div class="info-group">
             <div class="info-row">
+                <div class="info-label">해당 페이지로</div>
+                <div class="info-value">
+                    <a href="{{ $url }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                        <i class="fas fa-external-link-alt mr-1"></i>
+                        새 탭에서 열기
+                    </a>
+                </div>
+            </div>
+            <div class="info-row">
                 <div class="info-label">클래스 ID</div>
-                <div class="info-value">1</div>
+                <div class="info-value">{{ $travelClass->class_id }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">클래스 이름</div>
-                <div class="info-value">강아지와 함께하는 베이킹 클래스</div>
+                <div class="info-value">{{ $travelClass->class_title }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">대표 이미지</div>
                 <div class="info-value">
-                    <img src="/path/to/image.jpg" alt="클래스 이미지" class="class-image">
+                    <img src="{{ $travelClass->class_title_img }}" alt="클래스 이미지" class="class-image">
                 </div>
             </div>
             <div class="info-row">
                 <div class="info-label">클래스 가격</div>
-                <div class="info-value">50,000원</div>
+                <div class="info-value">{{ $travelClass->class_price }}원</div>
             </div>
             <div class="info-row">
                 <div class="info-label">클래스 위치</div>
-                <div class="info-value">서울특별시 강남구 테헤란로 123</div>
+                <div class="info-value">{{ $travelClass->location }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">시행 시간</div>
-                <div class="info-value">매주 토요일 14:00 ~ 16:00</div>
+                <div class="info-value">{{ $travelClass->class_date }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">클래스 내용</div>
                 <div class="info-value">
                     <div class="class-content">
-                        {!! $class_content ?? '<p>강아지와 함께 즐기는 베이킹 클래스입니다.<br>
-                        반려견과 함께 건강한 간식을 만들어보세요.</p>' !!}
+                            {!! $travelClass->class_content ?? '<p>강아지와 함께 즐기는 베이킹 클래스입니다.<br>
+                            반려견과 함께 건강한 간식을 만들어보세요.</p>' !!}
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="action-buttons">
-            <a href="/manager/shops/edit/1" class="btn btn-primary">
-                <i class="fas fa-edit"></i>
-                클래스 수정
-            </a>
             <form action="/manager/shops/destroy/1" method="POST" style="display: inline;" onsubmit="return confirm('정말로 이 클래스를 삭제하시겠습니까?');">
                 @csrf
                 <button type="submit" class="btn btn-danger">
@@ -155,6 +160,10 @@
                     클래스 삭제
                 </button>
             </form>
+            <a href="{{ $url }}" class="btn btn-primary" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                페이지로 이동
+            </a>
             <a href="/manager/shops" class="btn btn-secondary">
                 <i class="fas fa-list"></i>
                 목록으로

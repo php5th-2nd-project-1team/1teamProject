@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="login-password-regist">
-        <router-link to="/password-reset/reques">아이디 찾기</router-link>
+        <router-link to="/account-recover">아이디 찾기</router-link>
         <router-link to="/reset-password">비밀번호 찾기</router-link>
     </div>
 </template>

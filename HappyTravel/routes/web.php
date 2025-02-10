@@ -37,8 +37,6 @@ Route::prefix('/manager')->group(function(){
 
 	Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
 
-	Route::post('/login', [ManagerController::class, 'login'])->name('manager.login');
-
 	// 페이지 신고관리
 	Route::get('/reports/pages', function(){
 		return view('manager.layout.report_pages.reportPage');
@@ -104,9 +102,7 @@ Route::prefix('/manager')->group(function(){
 
 		// 쇼핑 관련 ===================================================================
 		// 쇼핑 목록 조회
-		Route::get('/shops', function(){
-			return view('manager.layout.shops.shops');
-		})->name('shops.index');
+		Route::get('/shops', [ManagerController::class, 'storeIndex'])->name('shops.index');
 
 		// 상점 아이템 등록 창
 		Route::get('/shops/create', [ManagerController::class, 'storeCreate'])->name('stores.create');
@@ -114,9 +110,7 @@ Route::prefix('/manager')->group(function(){
 		Route::post('/shops', [ManagerController::class, 'storeStore'])->name('stores.store');
 
 		// 쇼핑 상세 조회
-		Route::get('/shops/{id}', function(){
-			return view('manager.layout.shops.shopsDetail');
-		})->name('shops.detail');
+		Route::get('/shops/{id}', [ManagerController::class, 'storeDetail'])->name('shops.detail');
 
 	});
 });

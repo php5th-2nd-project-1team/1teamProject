@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountResetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunityBoardController;
 use App\Http\Controllers\EmailVerificationController;
@@ -84,7 +85,6 @@ Route::post('/password-reset/request', [PasswordResetController::class, 'sendRes
 Route::get('/password-reset/verify', [PasswordResetController::class, 'verifyToken'])->name('user.token'); // 토큰 검증
 Route::post('/password-reset/reset', [PasswordResetController::class, 'resetPassword'])->name('user.passwordReset'); // 비밀번호 변경
 
-
 /**
  * 한결님 Route *
  */
@@ -100,6 +100,8 @@ Route::get('/community/free', [CommunityBoardController::class, 'index'])->name(
  */
 
 Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.type');
+Route::post('/account-email/request', [AccountResetController::class, 'sendResetAccountEmail'])->name('user.sendResetAccountEmail'); // 아이디 찾기 요청
+Route::get('/account-email/request', [AccountResetController::class, 'checkAccountEmail'])->name('user.checkAccountEmail'); // 아이디 찾기 확인
 // Route::post('/manager/login', [ManagerController::class, 'login'])->name('manager.login');
 // 관리자 인증 후 호출 가능한 그룹
 // TODO 관리자 인증 관련 미들웨어 추가 필요
@@ -116,8 +118,6 @@ Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.ty
 //     // 관리자 계정 관련
 //     Route::post('/manager/logout', [ManagerController::class, 'logout'])->name('manager.logout');
 // });
-
-
 
 /**
  * 민주님 Route *
