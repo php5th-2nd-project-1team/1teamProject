@@ -17,12 +17,12 @@
             <hr>
             <br><br><br>
         <div class="button-wrap">
-            <button class="button-left">목록</button>
-            <button class="buton-right">글쓰기</button>
+            <button  @click="goBack" class="button-left">목록</button>
+            <button class="button-right">수정</button>            
         </div>
-        
+        <router-link to="/community/free"></router-link>        
 
-        <div class="commnets">
+        <!-- <div class="commnets">
             <h3>댓글: 5</h3>
             <button>댓글 더보기</button>
 
@@ -42,18 +42,84 @@
             
             <button>등록</button>
             
-        </div>
+        </div>         -->
+
+        <div class="freedetail-comment-title">
+		<h3>펫브리즈 톡 <span>{{ FreeCommentCnt.cnt }}</span></h3>
+	</div>
+	<div class="freeetail-comment-form-box">
+		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
+		<textarea @click="checkToken" v-model="commentData.free_comment" :placeholder="placeholder" name="comment" minlength="1" maxlength="200"></textarea>
+		<button @click="storeComment" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
+	</div>
+	<!-- 댓글 리스트 -->
+	<CommentComponent />
     </div>
 </template>
 <script setup>
 
-import { computed, onBeforeMount } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onBeforeMount , reactive ,ref} from 'vue';
+import { useRoute ,useRouter} from 'vue-router';
 import { useStore } from 'vuex';
+// 댓글 컴포넌트
+import CommentComponent from '../utilities/CommentComponent.vue';
 
 const store = useStore();
 
 const route = useRoute();
+
+const router = useRouter();
+
+const goBack = () => {
+      router.go(-1); // 이전 페이지로 이동
+      scrollToTop(); // 최상단으로 스크롤
+    };
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+
+    const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
+// ------------------------------------------
+// 댓글 작성
+const commentData = reactive({
+	free_comment : ''
+	,community_id : route.params.id
+});
+
+const storeComment = () => {
+	if(commentData.free_comment === '') {
+		// board.js 에 422 에러문구 처리해서 주석
+		// alert('댓글을 작성 해주세요.');
+	}
+	store.dispatch('boards/storeFreetComment', commentData);
+	commentData.free_comment = '';	// 댓글작성후 댓글창에 댓글내용 초기화
+};
+
+   
+// ------------------------------------------
+// 댓글작성시 로그인 확인
+// const hasToken = ref(localStorage.getItem('accessToken'));
+const checkToken = () => {
+	if(!localStorage.getItem('accessToken')) {
+		alert('로그인 후 댓글을 작성 해주세요.');
+		router.replace('/login');
+		// hasToken.value = false;
+	}
+};
+
+// 댓글 placeholder 로그인, 비로그인시 코멘트
+const placeholder = ref('');
+const updatePlaceholder = () => {
+	if(!localStorage.getItem('accessToken')) {
+		placeholder.value='로그인 후 댓글을 남겨주세요.';
+	} else {
+		placeholder.value='';
+	}
+};
+updatePlaceholder();
+window.addEventListener('storage', updatePlaceholder);	// storage가 비어질시 실시간 동기화  
 
 onBeforeMount(() => store.dispatch('boards/freeBoardDetail', route.params.id));
 
@@ -80,5 +146,37 @@ const freeDetail = computed(() => store.state.boards.freeDetail);
     }
     hr {
         color: #EFEFEF;
+    }
+    .button-wrap {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .button-left  {
+        background-color: #2986FF;
+        color: #fff;
+        font-size: 1rem;
+        width:10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        cursor: pointer;
+        border: none;
+    }
+    .button-right {
+        background-color: #2986FF;
+        color: #fff;
+        font-size: 1rem;
+        width:10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        cursor: pointer;
+        border: none;
+    }
+    .commnets {
+        margin-top: 50px;
     }
 </style>

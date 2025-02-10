@@ -1,4 +1,4 @@
-
+import axios from '../../axios';
 import router from "../../router";
 
 export default {
@@ -9,8 +9,15 @@ export default {
 		,links: []
 		,currentPage: localStorage.getItem('freeCurrentPage') ? localStorage.getItem('freeCurrentPage') : 1	
 		,freeDetail : {}
-	})
-	,mutations: {
+		,freeCommentList : []
+		,freeComment : ''
+		,commentCurrentPage : 1
+		,commentPage : 0
+		,freeCommentCnt : 0
+		,controllerFlg : true
+        ,lastPageFlg : false
+	}),
+    mutations: {
 		setBoardList(state, boardList) {
 			state.boardList = boardList;
 		},
@@ -29,11 +36,50 @@ export default {
 		},
 		setFreeDetail(state, freeDetail ) {
 			state.freeDetail = freeDetail;
-		}
-     
+		},
 
-	}
-	,actions: {
+
+		// 댓글관련
+		setCommentCurrentPage(state, page) {
+			state.commentCurrentPage = page;
+		},
+		// 자유 댓글 리스트
+		setFreeCommentList(state, lists) {
+			state.freeCommentList = state.freeCommentList.concat(lists);
+		},
+		// 자유 댓글 작성 최상위로 이동
+		setFreeCommentListUnshift(state, comment) {
+			state.freeCommentList.unshift(comment);
+		},
+		// 자유 댓글 페이지네이션
+		setCommentPage(state, page) {
+			state.commentPage = page;
+		},
+		// // 자유 댓글 갯수
+		setFreeCommentCnt(state, count) {
+			state.freeCommentCnt = count;
+		},
+		// 댓글갯수 +1
+		addFreeCommentCnt(state) {
+            state.freeCommentCnt += 1;
+        },
+		// 댓글 삭제(댓글의 key값을 받아서 삭제)
+		deleteComment(state, key) {
+			state.freeCommentList.splice(key, 1);  // splice로 key값받아서 1개 삭제
+		},
+		// 댓글갯수 -1
+		subFreeCommentCnt(state) {
+            state.freeCommentCnt -= 1;
+        },
+		// // 디바운싱
+		setControllerFlg(state, flg) {
+			state.controllerFlg = flg;
+		},
+        setIsLoading(state, flg){
+			state.isLoading = flg;
+		}
+    },
+	actions: {
 		freeBoardList(context, search) {
 			context.commit('setLoadingFlg', true);
 
@@ -46,12 +92,18 @@ export default {
                 context.commit('setLoadingFlg', false);
                 context.commit('setLinks', response.data.communityBoard.links);
                 context.commit('setCurrentPage', response.data.communityBoard.current_page);
+                // 로딩 상태 활성화
+			    context.commit('setIsLoading', true);
 				
 				console.log(context.state.currentPage);
             })
             .catch(error=> {
                 console.error(error);
             })
+            .finally(() => {
+				// 로딩 상태 비활성화
+				context.commit('setIsLoading', false);
+			});
         },
 		freeBoardDetail(context, id) {
 			context.commit('setLoadingFlg', true);
@@ -103,9 +155,128 @@ export default {
                 console.error(error);
             })
 		}
-  
+
+        
+
+        // 자유 댓글 작성
+	,storeFreetComment(context, data) {
+		context.dispatch('auth/chkTokenAndContinueProcess', () => {
+			const url = '/api/community/free/' + data.community_id;
+			// const url = `/api/free/${data.community_id}`;
+			if(context.state.controllerFlg) {
+				context.commit('setControllerFlg', false);
+			}
+
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+
+			const useData = {
+				free_comment: data.free_comment,
+			};
+			// json으로 파싱
+			const param = JSON.stringify(useData);
+
+            
+
+			axios.post(url, param, config)
+			.then(response => {
+				context.commit('setFreeCommentListUnshift', response.data.storeFreetComment);
+				context.commit('addFreeCommentCnt');		// 펫브리즈고 댓글갯수 +
+				// alert('댓글을 작성하였습니다.');
+				
+				// console.log(response.data.freeComment);
+			})
+			.catch(error => {
+				console.log(error);
+				if(error.response.status === 422) {
+					alert('내용을 입력 해 주세요.');
+				}
+				// console.error('댓글 작성 실패');
+				// console.error(error); // 서버의 에러 메시지 출력
+			})
+			.finally(() => {
+				context.commit('setControllerFlg', true);
+                	// 로딩 상태 비활성화
+				context.commit('setIsLoading', false);
+
+			});
+		}, {root: true});
 	}
-	,getters: {
+	// 자유 댓글 페이지네이션(작업중)
+	,freeCommentPagination(context, id) {
+		// lastPageFlg 가 true일때는 밑에 처리를 하지 않는다.
+		if(context.state.lastPageFlg === true){
+			return;
+		}
+
+		context.commit('setIsLoading', true);
+		if(context.state.controllFlg && !context.state.lastPageFlg) {
+			context.commit('setControllerFlg', false);
+		}
+		const url = '/api/free/' + id + '?page=' + context.getters['getCommentNextPage'];	// 페이지네이션 꼭?page 로 적어야함
+		axios.get(url)
+		.then(response => {
+			// console.log('댓글 추가 요청', response.data.PostComment);
+			context.commit('setFreeCommentList', response.data.FreeComment.data);
+			context.commit('setCommentCurrentPage', response.data.FreeComment.current_page);
 			
+			if(response.data.FreeComment.current_page >= response.data.FreeComment.last_page) {
+				// console.log('마지막 페이지 도달 : ', response.data.PostComment.current_page, response.data.PostComment.last_page)
+				context.commit('setLastPageFlg', true);
+			}
+		})
+		.catch(error => {
+			console.error(error);
+		})
+		.finally(() => {
+			context.commit('setIsLoading', false);
+			context.commit('setControllerFlg', true);
+		});
 	}
+
+	// 자유 댓글 삭제
+	,freeCommentDelete(context, id) {
+		context.dispatch('auth/chkTokenAndContinueProcess', () => {
+			if(!confirm('댓글을 삭제하시겠습니까?')) {
+				return;
+			}
+			if(context.state.controllerFlg) {
+				context.commit('setControllerFlg', false);
+			}
+			const url = '/api/free/' + id[0];
+			const config = {
+				headers: {
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+				}
+			}
+
+			axios.delete(url, config)
+			.then(response => {
+				alert('댓글이 삭제되었습니다.');
+				// context.commit('deleteComment', id[1]);		// 프론트쪽 id배열의 1번을 삭제한다.
+				// context.commit('subPostCommentCnt');		// 펫브리즈고 댓글갯수 -
+
+				location.reload(true); 						// 새로고침
+			})
+			.catch(error => {
+				console.error(error);
+			})
+			.finally(() => {
+				context.commit('setControllerFlg', true);
+			});
+		}, {root: true});
+	}
+  
 }
+	,getters: {
+		getCommentNextPage(state) {
+			return state.commentCurrentPage + 1;
+		}
+	}
+
+}
+
+
