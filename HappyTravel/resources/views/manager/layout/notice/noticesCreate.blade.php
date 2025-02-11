@@ -180,7 +180,7 @@
         event.preventDefault();
         
         // TODO: 에디터 내용 가져오기 및 폼 제출 처리
-        if(confirm('공지사항을 등록하시겠습니까? ')) {
+        if(confirm('공지사항을 등록하시겠습니까?')) {
             const content = document.querySelector('#editor');
             content.value = getContent();
             content.name = 'notice_content';

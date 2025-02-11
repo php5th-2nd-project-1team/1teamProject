@@ -9,7 +9,7 @@ class InquiryController extends Controller
 {
 	public function getInquiryList()
 	{
-		$inquiryList = Inquiry::paginate(10)->onEachSide(2);
+		$inquiryList = Inquiry::orderBy('inquiry_id', 'desc')->paginate(10);
 
 		$responseData = [
 			'message' => '문의게시글 목록 조회 성공'

@@ -39,7 +39,7 @@ export default {
 	}
 	,actions: {
 		// 문의 게시글 목록 가져오기
-		getInquiryList(context) {
+		getInquiryList(context, page) {
 			// 만약 마지막 페이지 이상이면 문의 메인 페이지로 이동
 			if(context.state.currentPage > context.state.totalPage && context.state.totalPage !== 0) {
 				router.push('/inquiry');
@@ -59,14 +59,14 @@ export default {
 
 			// 로딩 중 표시
 			context.commit('setIsLoading', true);
-			const url = '/api/inquiry?page=' + context.state.currentPage;	
+			const url = '/api/inquiry?page=' + page;	
 
 			// 문의 게시글 목록 가져오기
 			axios.get(url)
 			.then(response => {
 				context.commit('setInquiryList', response.data.data.data);
+				context.commit('setTotalPage', response.data.data.last_page);
 				context.commit('setCurrentPage', response.data.data.current_page);
-				context.commit('setTotalPage', response.data.data.total_page);
 				context.commit('setLabel', response.data.data.links);
 				console.log(response.data);
 			}).catch(error => {

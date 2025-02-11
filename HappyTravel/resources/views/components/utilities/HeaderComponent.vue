@@ -162,6 +162,37 @@ const pushCommunity = (e) => {
 }
 
 </script>
-<style>
-	
+<style scoped>
+	.header-nav ul li {
+		position: relative;
+	}
+
+	.dropdown {
+		display: none;
+		position: absolute;
+		/* nav 아래에 정확하게 위치하도록 조정 */
+		top: calc(100% - 1px);  /* 1px 정도 겹치게 하여 틈이 생기지 않도록 함 */
+		left: 0;
+		background-color: #fff;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+		padding: 10px 0;
+		min-width: 150px;
+		/* 투명한 영역을 위쪽에만 추가 */
+		padding-top: 10px;
+		margin-top: 0;
+		/* z-index 추가하여 다른 요소들 위에 표시 */
+		z-index: 1000;
+	}
+
+	.header-nav ul li:hover > .dropdown {
+		display: block;
+	}
+
+	.dropdown-sub {
+		padding: 5px 15px;
+	}
+
+	.dropdown-sub:hover {
+		background-color: #f5f5f5;
+	}
 </style>
