@@ -15,6 +15,8 @@ export default {
 			{ animalType: '소형견', animalPrecautions: '' },
 		  ],
 		peopleCount: 1,
+
+		indexShop: [],
 		
 	})
 	,mutations: {
@@ -60,6 +62,10 @@ export default {
 		},
 		UPDATE_ANIMAL_INFO(state, { index, animalInfo }) {
 		state.animalInfos[index] = animalInfo;
+		},
+
+		setIndexShopList(state, data) {
+			state.indexShop = data;
 		},
 	}
 	,actions: {
@@ -153,6 +159,25 @@ export default {
 
 			}
 		  },
+
+		// 인덱스 상품 전체 출력
+		indexShop(context) {
+			const url = 'api/index/shop';
+			// const config = {
+			// 	params: {
+			// 		category_theme_num: CategoryThemeNum
+			// 	}
+			// };
+			axios.get(url)
+			.then( response => {
+				// 응답 데이터로 상태 업데이트
+				context.commit('setIndexShopList', response.data.IndexShop);
+				// console.log(response.data.IndexShop);
+			}).catch (error => {
+				// 에러 처리
+				console.log(error);
+			});
+		}
 	}
 	,getters: {
 		getNextPage(state){

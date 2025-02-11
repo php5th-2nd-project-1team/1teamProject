@@ -26,13 +26,17 @@
 			</div> -->
 		</div>
 		<div class="index-cardzone">
-			<div class="index-shop-card" v-for="(item, key) in indexCommunity" :key="value">
+			<div class="index-shop-card" v-for="(item, key) in $store.state.shop.indexShop" :key="key">
 				<div class="index-shop-card-img">
-					<p class="index-shop-card-img-option">sale</p>
-					<p class="index-shop-card-img-option">new</p>
+					<img :src="item.class_title_img" @click="redirectDetail(item.class_id)">
+					<!-- <div class="index-card-img" :src="item.class_title_img"></div> -->
+					 <div class="badges">
+						 <p class="badges-sale">sale</p>
+						 <p class="badges-new">new</p>
+					 </div>
 				</div>
-				<p class="index-card-product-name">상품이름</p>
-				<p class="abc" data-descr="100,000원">200,000원</p>
+				<p class="index-card-product-name">{{ item.class_title }}</p>
+				<p class="abc" data-descr="100,000원">{{ Number(item.class_price).toLocaleString('ko-KR') }}원</p>
 				<div class="index-card-btnArea">
 				</div>
 			</div>
@@ -40,21 +44,34 @@
 	</div>
 </template>
 <script setup>
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation } from 'swiper/modules';
-import { defineProps } from 'vue';
-
-import 'swiper/css';
-import 'swiper/css/bundle';
-
-import PostCardComponent from '../../post/component/PostCardComponent.vue';
-
-const props = defineProps({
-	type : String
-	,cardData : Array
+import { onMounted } from 'vue';
+import { useStore } from 'vuex';
+import router from '../../../../js/router';
+const store = useStore();
+onMounted(() => {
+	store.dispatch('shop/indexShop');
 });
 
-const modules = [Navigation];
+// shop 상세페이지로 이동
+const redirectDetail = (class_id) => {
+	router.push(`/shops/${class_id}`);
+};
+
+// import { Swiper, SwiperSlide } from 'swiper/vue';
+// import { Navigation } from 'swiper/modules';
+// import { defineProps } from 'vue';
+// import 'swiper/css';
+// import 'swiper/css/bundle';
+
+// import PostCardComponent from '../../post/component/PostCardComponent.vue';
+
+// const props = defineProps({
+// 	type : String
+// 	,cardData : Array
+// });
+
+// const modules = [Navigation];
+
 
 </script>
 <style scoped>
@@ -87,28 +104,51 @@ const modules = [Navigation];
 	}
 
 	.index-shop-card-img{
-		display: flex;
+		position: relative;
+		display: inline-block;
+		border-radius: 30px;
+		overflow: hidden;
+		margin-bottom: 10px;
+
+		opacity: 1;
+		transition: .2s ease-in-out;
+	}
+
+	.index-shop-card-img:hover {
+		opacity: .8;
+	}
+
+	.index-shop-card-img img {
 		width: 100%;
-		padding-bottom: 40%;
-		border-radius: 50px;
+		height: 400px;
+	}
 
-		justify-content: flex-end;
+	.badges {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		display: flex;
+		gap: 5px;
+	}
 
-		background-color: rgb(73, 63, 54);
+	.badges-sale {
+		background-color: red;
+	}
 
-		margin-bottom: 20px;
+	.badges-new {
+		background-color: orange;
 	}
 
 	.index-shop-card-img p{
 		color: white;
-		background-color: orange;
+		/* background-color: orange; */
 
 		border-radius: 100%;
 
 		width: 3rem;
 		height: 3rem;
 
-		margin : 15px 10px;
+		margin : 15px 5px;
 		padding: 20px;
 
 		display: flex;

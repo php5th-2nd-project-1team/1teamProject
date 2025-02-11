@@ -118,7 +118,12 @@ Route::get('/inquiry', [InquiryController::class, 'getInquiryList'])->name('inqu
 Route::get('/posts', [PostController::class, 'index'])->name('index.post');
 Route::get('/posts/{id}', [PostController::class, 'showPost'])->name('showPost.post');
 Route::get('/posts/filter/{id}', [PostController::class, 'postFilter'])->name('showPost.post');
+
+// 인덱스 포스트 출력
 Route::get('/index', [PostController::class, 'indexPost'])->name('indexPost.post');
+// 인덱스 상품 출력
+Route::get('/index/shop', [TravelClassController::class, 'indexShop'])->name('indexShop.shop');
+
 
 
 

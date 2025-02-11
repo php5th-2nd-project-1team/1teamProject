@@ -161,4 +161,20 @@ class TravelClassController extends Controller
             ]);
         }
     }
+    // 인덱스 상품 전체 출력
+    public function indexShop(Request $request) {
+        $IndexShop = TravelClass::select('*')
+                    ->whereNull('travel_classes.deleted_at')
+                    ->orderBy('travel_classes.created_at', 'DESC')
+                    ->limit(3)
+                    ->get();
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '인덱스 상품 출력'
+            ,'IndexShop' => $IndexShop->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+    }
 }
