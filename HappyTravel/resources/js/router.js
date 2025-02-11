@@ -57,6 +57,7 @@ import SocialComponent from '../views/components/auth/SocialComponent.vue';
 import CommunityFreeStoreComponent from '../views/components/community/CommunityFreeStoreComponent.vue';
 import AccountRecoverComponent from '../views/components/auth/AccountRecoverComponent.vue';
 import AccountRecoverResultComponent from '../views/components/auth/AccountRecoverResultComponent.vue';
+import InquiryComponent from '../views/components/inquiry/InquiryComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -244,6 +245,11 @@ const routes=[
 				component: CommunityFreeDetailComponent,
 			}
 		]
+	},
+	{
+		path: '/inquiry',
+		component: InquiryComponent,
+		beforeEnter: chkAuth,
 	},
 	{	
 		path: '/shops',           // 샵 (상품)

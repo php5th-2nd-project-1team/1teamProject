@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountResetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunityBoardController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PasswordResetController;
@@ -107,22 +108,9 @@ Route::get('/community/free', [CommunityBoardController::class, 'index'])->name(
 Route::get('/posts/type', [PostController::class, 'populerPost'])->name('post.type');
 Route::post('/account-email/request', [AccountResetController::class, 'sendResetAccountEmail'])->name('user.sendResetAccountEmail'); // 아이디 찾기 요청
 Route::get('/account-email/request', [AccountResetController::class, 'checkAccountEmail'])->name('user.checkAccountEmail'); // 아이디 찾기 확인
-// Route::post('/manager/login', [ManagerController::class, 'login'])->name('manager.login');
-// 관리자 인증 후 호출 가능한 그룹
-// TODO 관리자 인증 관련 미들웨어 추가 필요
 
-// Route::middleware('my.manager.auth')->group(function(){
-//     // 유저 관련
-//     Route::get('/users', [UserController::class, 'users'])->name('user.users');
-
-//     // 포스트 관련
-//     Route::post('/posts', [PostController::class, 'storePost'])->name('post.store');
-//     Route::post('/posts/{id}', [PostController::class, 'updatePost'])->name('post.update');
-//     Route::post('/posts/delete/{id}', [PostController::class, 'deletePost'])->name('post.delete');
-
-//     // 관리자 계정 관련
-//     Route::post('/manager/logout', [ManagerController::class, 'logout'])->name('manager.logout');
-// });
+// 문의게시글 조회
+Route::get('/inquiry', [InquiryController::class, 'getInquiryList'])->name('inquiry.list');
 
 /**
  * 민주님 Route *
