@@ -65,6 +65,10 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/community/free/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');
     // 자유 댓글 삭제(id가 cmmunity_comment_id)
     Route::post('/community/free/{id}',[CommunityBoardController::class, 'deleteFreeCommnet'])->name('destroy.freeComment');
+
+
+    // 문의게시글 작성
+    Route::post('/inquiry', [InquiryController::class, 'createInquiry'])->name('inquiry.create');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -111,7 +115,7 @@ Route::get('/account-email/request', [AccountResetController::class, 'checkAccou
 
 // 문의게시글 조회
 Route::get('/inquiry', [InquiryController::class, 'getInquiryList'])->name('inquiry.list');
-
+Route::get('/inquiry/{id}', [InquiryController::class, 'getInquiryDetail'])->name('inquiry.detail');
 /**
  * 민주님 Route *
  */

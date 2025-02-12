@@ -13,16 +13,14 @@ use UserEncrypt;
 class UserToken {
 
     /**
-     * 
-     *  토큰 발급 
+     * 토큰 발급 
      *  
-     *  @param App/Models/User $user
+     * @param App/Models/User $user
      * 유저 모델로 유저 전체 데이터 획득
      * 
      * @return Array[$accessToken, $refreshToken]
      * return 토큰 발급 !
      */
-    
     public function createTokens(User $user) {
         $accessToken = $this->createToken($user, env('TOKEN_EXP_ACCESS'));
         $refreshToken = $this->createToken($user, env('TOKEN_EXP_REFRESH'), false);
@@ -37,10 +35,8 @@ class UserToken {
      * @param $refreshToken
      * 
      * @return bool true
-     * 
      */
-
-     public function updateRefreshToken(User $userInfo, $refreshToken) {
+    public function updateRefreshToken(User $userInfo, $refreshToken) {
         // 유저 모델에 리프레쉬 토큰 변경
         $userInfo->refresh_token = $refreshToken;
         
@@ -50,16 +46,16 @@ class UserToken {
         }
 
         return true;
-     }
+    }
 
-     /**
-      * 토큰 유효성 체크
-      *
-      * @param string $token = bearerToken
-      * 
-      * @return bool true
-      */
-      public function chkToken(string|null $token) {
+    /**
+     * 토큰 유효성 체크
+     *
+     * @param string $token = bearerToken
+     * 
+     * @return bool true
+     */
+    public function chkToken(string|null $token) {
         // 토큰 존재 유무 체크
         // 토큰이 없는 경우, 유효시간이 지난 토큰, 위조된 토큰 등 경우가 많다.
         if(empty($token)) {
@@ -90,41 +86,30 @@ class UserToken {
 
         Log::debug('***************************** chkToken end *******************************');
         return true;
-}
+    }
 
-      /**
-       * 페이로드에서 해당하는 키의 값을 반혼
-       * 페이로드에는 사용자에 데이터가 담아있기 때문에 바꿔놨던 문자열을 다시 돌리는 작업을 진행한다.
-       * 
-       * @param string $token
-       * @param string $key
-       * 
-       * @return 페이로드에서 추출한 값
-       */
+    /**
+     * 페이로드에서 해당하는 키의 값을 반혼
+     * 페이로드에는 사용자에 데이터가 담아있기 때문에 바꿔놨던 문자열을 다시 돌리는 작업을 진행한다.
+     * 
+     * @param string $token
+     * @param string $key
+     * 
+     * @return 페이로드에서 추출한 값
+     */
+    public function getInPayload(string $token, string $key) {
+        // 토큰 분리
+        list($header, $payload, $signature) = $this->explodeToken($token);
 
-       public function getInPayload(string $token, string $key) {
-            // 토큰 분리
-            list($header, $payload, $signature) = $this->explodeToken($token);
+        $decodePayload = json_decode(UserEncrypt::base64UrlDecode($payload));
 
-            $decodePayload = json_decode(UserEncrypt::base64UrlDecode($payload));
+        // 페이로드에 해당 키의 데이터가 있는지 확인
+        if(empty($decodePayload) || !isset($decodePayload->$key)) {
+            throw new MyAuthException('E23');
+        }
 
-            // 페이로드에 해당 키의 데이터가 있는지 확인
-            if(empty($decodePayload) || !isset($decodePayload->$key)) {
-                throw new MyAuthException('E23');
-            }
-
-            return $decodePayload->$key;
-       }
-
-
-
-
-
-
-
-
-
-
+        return $decodePayload->$key;
+    }
 
     //    -----------------------------------------------------------------------------------------------------------------------
     //    private
@@ -138,7 +123,6 @@ class UserToken {
      * @param bool $accessFlg = true
      * 
      * @return string JWT   
-     * 
      */
     private function createToken(User $user, int $ttl, bool $accessFlg = true) {
         $header = $this->createHeader();
@@ -153,7 +137,6 @@ class UserToken {
      * 
      * @return string base64UrlEncode
      */
-
     private function createHeader() {
         $header = [
             // env 파일에 저장한 TOKEN_ALG 저장
@@ -174,8 +157,7 @@ class UserToken {
      * 
      * @return string base64Payload
      */
-
-     private function createPayload(User $user, int $ttl, bool $accessFlg = true) {
+    private function createPayload(User $user, int $ttl, bool $accessFlg = true) {
         // 현재 시간 습득 (페이로드 유효 시간 설정하기 위해)
         $now = time();
 
@@ -193,22 +175,19 @@ class UserToken {
         }
 
         return UserEncrypt::base64UrlEncode(json_encode($payload));
-     }
+    }
 
-     /**
-      * JWT 시그니처 작성
-      *
-      * @param string $header base64UrlEncode()
-      * @param string $payloade base64UrlEncode()
-      *
-      * @return string base64Signature
-      */
-
-      private function createSignature(string $header, string $payload) {
-            return UserEncrypt::hashWithSalt(env('TOKEN_ALG'), $header.env('TOKEN_SECRET_KEY').$payload, UserEncrypt::makeSalt(env('TOKEN_SALT_LENGTH')));
-      }
-
-
+    /**
+     * JWT 시그니처 작성
+     *
+     * @param string $header base64UrlEncode()
+     * @param string $payloade base64UrlEncode()
+     *
+     * @return string base64Signature
+     */
+    private function createSignature(string $header, string $payload) {
+        return UserEncrypt::hashWithSalt(env('TOKEN_ALG'), $header.env('TOKEN_SECRET_KEY').$payload, UserEncrypt::makeSalt(env('TOKEN_SALT_LENGTH')));
+    }
 
     /**
      * 토큰 분리
@@ -217,7 +196,6 @@ class UserToken {
      * @param string $token
      * 
      * @return array $header, $payload, $signature
-     * 
      */
     private function explodeToken(string $token) {
         $arrToken = explode('.', $token);
@@ -228,5 +206,5 @@ class UserToken {
         }
 
         return $arrToken;
-      }
+    }
 }

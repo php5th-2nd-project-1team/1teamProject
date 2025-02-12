@@ -58,6 +58,8 @@ import CommunityFreeStoreComponent from '../views/components/community/Community
 import AccountRecoverComponent from '../views/components/auth/AccountRecoverComponent.vue';
 import AccountRecoverResultComponent from '../views/components/auth/AccountRecoverResultComponent.vue';
 import InquiryComponent from '../views/components/inquiry/InquiryComponent.vue';
+import InquiryDetailComponent from '../views/components/inquiry/InquiryDetailComponent.vue';
+import InquiryCreateComponent from '../views/components/inquiry/InquiryCreateComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -246,9 +248,22 @@ const routes=[
 			}
 		]
 	},
+	// 문의사항 보드
 	{
 		path: '/inquiry',
 		component: InquiryComponent,
+		beforeEnter: chkAuth,
+	},
+	// 문의사항 상세
+	{
+		path: '/inquiry/:id',
+		component: InquiryDetailComponent,
+		beforeEnter: chkAuth,
+	},
+	// 문의사항 작성
+	{
+		path: '/inquiry/create',
+		component: InquiryCreateComponent,
 		beforeEnter: chkAuth,
 	},
 	{	

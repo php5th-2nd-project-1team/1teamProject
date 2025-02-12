@@ -13,10 +13,10 @@
 		</div>
 		<div v-for="item in inquiryList" :key="item" class="free-row">
 			<div class="free-item">{{ item.inquiry_id }}</div>
-			<div @click="redirectDetaile(item.inquiry_id)"class="free-item">{{ item.inquiry_title }}</div>
+			<div @click="redirectDetail(item.inquiry_id)"class="free-item">{{ item.inquiry_title }}</div>
 			<div class="free-item">{{ item.users_id }}</div>
 			<div class="free-item">{{ item.created_at }}</div>
-			<div class="free-item" :style="{color: item.inquiry_secret === 1 ? 'red' : 'blue'}">{{ item.inquiry_secret === 1 ? '잠김' : '풀림' }}</div>
+			<div class="free-item" :style="{color: item.inquiry_secret === 1 ? 'red' : 'blue'}">{{ item.inquiry_secret === 1 ? '비밀글' : '일반' }}</div>
 		</div>            
 		<div></div>
 		<div></div>
@@ -24,7 +24,7 @@
 		<div></div> 
 		<div class="board-wrtn">
 			<!-- <button  @click="router.push('/free/store')"><img class="free-pencil"src="/developImg/pencil.png"><span>글쓰기</span></button> -->
-			<button  @click="redirectCreatePage" style="cursor: pointer;">
+			<button  @click="redirectCreatePage" style="cursor: pointer;" v-if="isAuth">
 				<img class="free-pencil"src="/developImg/pencil.png">
 				<span>글쓰기</span>
 			</button>
@@ -55,14 +55,24 @@
 import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import LoadingComponent from '../utilities/LoadingComponent.vue';
+import { useRouter } from 'vue-router';
 
 	const store = useStore();
-	const inquiryList = computed(() => store.state.inquiry.inquiryList);
-	const isLoading = computed(() => store.state.inquiry.isLoading);
-	const currentPage = computed(() => store.state.inquiry.currentPage);
-	const totalPage = computed(() => store.state.inquiry.totalPage);
-	const label = computed(() => store.state.inquiry.label);
-	const paginateCount = 5;
+	const inquiryList = computed(() => store.state.inquiry.inquiryList); // 문의 게시글 목록
+	const isLoading = computed(() => store.state.inquiry.isLoading); // 로딩 여부
+	const currentPage = computed(() => store.state.inquiry.currentPage); // 현재 페이지
+	const totalPage = computed(() => store.state.inquiry.totalPage); // 총 페이지 수
+	const label = computed(() => store.state.inquiry.label); // 페이지 번호
+	const paginateCount = 5; // 페이지 번호 개수
+
+	const router = useRouter();
+
+	const isAuth = computed(() => store.state.auth.authFlg); // 로그인 여부
+
+	const redirectDetail = (id) =>{
+		router.push(`/inquiry/${id}`);
+	}
+
 	onBeforeMount(()=>{
 		store.dispatch('inquiry/getInquiryList');
 	});
@@ -73,9 +83,7 @@ import LoadingComponent from '../utilities/LoadingComponent.vue';
 	}
 
 	const redirectCreatePage = () =>{
-		console.log(
-			'작성 페이지로 이동'
-		)
+		router.push('/inquiry/create');
 	}
 </script>
 
