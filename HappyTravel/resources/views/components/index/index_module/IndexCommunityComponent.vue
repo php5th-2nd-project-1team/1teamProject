@@ -3,15 +3,15 @@
 		<div class="index-postbox-title">
 			<h3>커뮤니티 반려동물 자랑</h3>
 			<p>#귀여운 댕댕이의 멋진 모습을 자랑해주세요</p>
-			<div class="index-controller">
+			<!-- <div class="index-controller">
 				<button><</button>
 				<button>></button>
-			</div>
+			</div> -->
 		</div>
 		<div class="index-cardzone">
-			<div class="index-card" v-for="value in 4" :key="value">
-				<div class="community-card-content">
-					<img class="community-card-img" src="/developImg/about-three2.png" alt="">
+			<div class="index-card" v-for="(item, key) in $store.state.boards.indexCommunity" :key="key">
+				<div class="community-card-content" @click="redirectDetail(item.community_id)">
+					<img class="community-card-img" :src="item.community_photo_url">
 				</div>
 
 			</div>
@@ -19,6 +19,17 @@
 	</div>
 </template>
 <script setup>
+import { useStore } from 'vuex';
+import { onMounted } from 'vue';
+import router from '../../../../js/router';
+const store = useStore();
+onMounted(() => {
+	store.dispatch('boards/indexCommunity');
+});
+
+const redirectDetail = (community_id) => {
+	router.push(`/community/free/${community_id}`);
+}
 
 </script>
 <style scoped>

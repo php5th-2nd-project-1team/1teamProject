@@ -128,6 +128,8 @@ Route::get('/index', [PostController::class, 'indexPost'])->name('indexPost.post
 // 인덱스 상품 출력
 Route::get('/index/shop', [TravelClassController::class, 'indexShop'])->name('indexShop.shop');
 
+Route::get('/index/community', [CommunityBoardController::class, 'indexCommunity'])->name('indexCommunity.community');
+
 
 
 

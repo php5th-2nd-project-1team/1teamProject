@@ -118,14 +118,21 @@ const pushAbout = function(){
 	router.push('/about');
 }
 
+const isFirstClick = ref(true);
+
+
 // posts 페이지 이동 시
 const pushPosts = function(post_num = null){
 	if(post_num !== null){
 		store.commit('post/setInitialize');
 		store.commit('post/setPostThemeId', post_num);
 		store.commit('post/setPostThemeTitle');
-
-		store.dispatch('post/index', true);
+		
+		if(!isFirstClick.value) {
+			store.dispatch('post/index', true);
+		}else {
+			isFirstClick.value = false;
+		}
 
 		router.push(`/posts/${post_num}`);
 

@@ -173,4 +173,23 @@ class CommunityBoardController extends Controller
     }
 
 
+    public function indexCommunity() {
+      $indexCommunity = CommunityBoard::select('community_photos.community_photo_url', 'community_photos.community_id', 'community_boards.community_title', 'users.nickname')
+                                    ->join('community_photos', 'community_photos.community_id', '=', 'community_boards.community_id')
+                                    ->join('users', 'community_boards.user_id', '=', 'users.user_id')
+                                    ->whereNull('community_boards.deleted_at')
+                                    ->orderBy('community_boards.created_at', 'desc')
+                                    ->limit(4)
+                                    ->get();
+                                    // $test = CommunityBoard::with('users')->get();
+
+                                    $responseData = [
+                                      'success' => true
+                                      ,'msg' => '인덱스 커뮤니티 리스트 획득 성공'
+                                      ,'indexCommunity' => $indexCommunity->toArray()
+                                      // ,'test' => $test->toArray()
+                                    ];
+                          
+                                    return response()->json($responseData, 200);
+    }
  }

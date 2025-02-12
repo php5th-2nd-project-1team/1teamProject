@@ -16,6 +16,8 @@ export default {
 		,freeCommentCnt : 0
 		,controllerFlg : true
         ,lastPageFlg : false
+
+		,indexCommunity : []
 	}),
     mutations: {
 		setBoardList(state, boardList) {
@@ -77,6 +79,9 @@ export default {
 		},
         setIsLoading(state, flg){
 			state.isLoading = flg;
+		},
+		setIndexCommunityList(state, data) {
+			state.indexCommunity = data;
 		}
     },
 	actions: {
@@ -268,6 +273,24 @@ export default {
 				context.commit('setControllerFlg', true);
 			});
 		}, {root: true});
+	}
+
+	// 인덱스 커뮤니티 출력
+	,indexCommunity(context ) {
+		const url = 'api/index/community';
+		// const config = {
+		// 	params: {
+		// 		category_theme_num: CategoryThemeNum
+		// 	}
+		// };
+		axios.get(url)
+		.then( response => {
+			// 응답 데이터로 상태 업데이트
+			context.commit('setIndexCommunityList', response.data.indexCommunity);
+		}).catch (error => {
+			// 에러 처리
+			console.log(error);
+		});
 	}
   
 }

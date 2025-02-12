@@ -9,7 +9,7 @@
         <div class="report-container">
             <div class="report-box">
                 <div class="report-content">
-                    <input type="radio" id="01" value="01" name="report" v-model="reportData.report_code">
+                    <input type="radio" id="01" value="01" name="report" v-model="reportData.report_code" checked>
                     <label for="01">욕설/비속어 포함</label>
                 </div>
                 <div class="report-content">
