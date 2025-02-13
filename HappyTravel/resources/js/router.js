@@ -250,19 +250,19 @@ const routes=[
 	},
 	// 문의사항 보드
 	{
-		path: '/inquiry',
+		path: '/inquiries',
 		component: InquiryComponent,
 		beforeEnter: chkAuth,
 	},
 	// 문의사항 상세
 	{
-		path: '/inquiry/:id',
+		path: '/inquiries/:id',
 		component: InquiryDetailComponent,
 		beforeEnter: chkAuth,
 	},
 	// 문의사항 작성
 	{
-		path: '/inquiry/create',
+		path: '/inquiries/create',
 		component: InquiryCreateComponent,
 		beforeEnter: chkAuth,
 	},

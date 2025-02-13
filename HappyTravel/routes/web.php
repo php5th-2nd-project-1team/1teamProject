@@ -47,6 +47,17 @@ Route::prefix('/manager')->group(function(){
 		return view('manager.layout.report_pages.reportPageDetail');
 	})->name('reports.pages.detail');
 
+
+	// 문의 관련
+	Route::get('/inquiries', function(){
+		return view('manager.layout.inquiries.inquiries');
+	})->name('inquiries');
+
+	// 문의 상세
+	Route::get('/inquiries/{id}', function(){
+		return view('manager.layout.inquiries.inquiriesDetail');
+	})->name('inquiries.detail');
+
 	Route::middleware('my.manager.auth')->group(function(){
 		// 로그아웃 처리
 		Route::post('/logout', [ManagerController::class, 'logout'])->name('manager.logout');

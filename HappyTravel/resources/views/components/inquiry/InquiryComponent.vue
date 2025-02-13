@@ -70,7 +70,7 @@ import { useRouter } from 'vue-router';
 	const isAuth = computed(() => store.state.auth.authFlg); // 로그인 여부
 
 	const redirectDetail = (id) =>{
-		router.push(`/inquiry/${id}`);
+		router.push(`/inquiries/${id}`);
 	}
 
 	onBeforeMount(()=>{
@@ -83,7 +83,7 @@ import { useRouter } from 'vue-router';
 	}
 
 	const redirectCreatePage = () =>{
-		router.push('/inquiry/create');
+		router.push('/inquiries/create');
 	}
 </script>
 
