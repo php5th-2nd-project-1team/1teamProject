@@ -68,11 +68,11 @@ const applyReport = () => {
     try {
         // reactive안에서 실시간 데이터변환이 되지 않음 신고버튼누를시 commentId를 가져옴
         reportData.report_board_id = props.commentId;
-        store.dispatch('report/reportComment', reportData);
         reportData.report_text = '';
         reportData.report_code = '';
-        console.log(reportData.report_category);
-        console.log(reportData.report_board_id);
+        store.dispatch('report/reportComment', reportData);
+        // console.log(reportData.report_category);
+        // console.log(reportData.report_board_id);
         console.log(reportData.report_code);
         console.log(reportData.report_text);
     } catch (error) {

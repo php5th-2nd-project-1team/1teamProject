@@ -28,19 +28,19 @@ export default {
 				// const param = JSON.stringify(data);
 				// console.log(data, param);
 
-				// 신고 쿠키확인
-				function getCookie(name) {
-					const cookies = document.cookie.split(';');
-					for(let i = 0; i < cookies.length; i++) {
-						let cookie = cookies[i].trim();
-						if(cookie.startsWith(name + '=')) {
-							return cookie.substring(name.length + 1);
-						}
-					}
-					return null;
-				}
-				const username = getCookie('reports013');
-				console.log(username);
+				// // 신고 쿠키확인
+				// function getCookie(name) {
+				// 	const cookies = document.cookie.split(';');
+				// 	for(let i = 0; i < cookies.length; i++) {
+				// 		let cookie = cookies[i].trim();
+				// 		if(cookie.startsWith(name + '=')) {
+				// 			return cookie.substring(name.length + 1);
+				// 		}
+				// 	}
+				// 	return null;
+				// }
+				// const username = getCookie('reports013');
+				// console.log(username);
 				
 				axios.post(url, data, config)
 				.then(response => {
@@ -49,7 +49,6 @@ export default {
 				.catch(error => {
 					// error.response로 원인 체크
 					console.log(error.response);
-					console.log(typeof response);
 					if(error.response.status === 422) {
 						alert('이미 신고처리 되었습니다.');
 					};					

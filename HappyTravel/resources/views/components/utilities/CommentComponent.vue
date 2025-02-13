@@ -105,7 +105,7 @@ const closeReportModal = () => {
 	cursor: pointer;
 	border: none;
 	background-color: transparent;
-	margin: 0 5px;
+	/* margin: 0 5px; */
 	width: 30px;
  }
 
@@ -114,5 +114,6 @@ const closeReportModal = () => {
 	outline: 0;
 	background-color: transparent;
 	cursor: pointer;
+	margin: 0 5px;
  }
 </style>

@@ -6,6 +6,7 @@ use App\Http\Requests\ReportRequest;
 use App\Models\Report;
 use UserToken;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -75,6 +76,8 @@ class ReportController extends Controller
             // $data['report_status'] = $request->report_status;
             $data['report_text'] = $request->report_text;
             $data['user_id'] = UserToken::getInPayload($token, 'idt');
+
+            // Log::info('신고 요청 데이터:', $request->all());
             
             // 중복신고 방지(24시간이내 한번만 처리)
             if(!isset($_COOKIE['reports'.$request->report_category.$request->report_board_id])) {
@@ -85,6 +88,8 @@ class ReportController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
+            Log::error('신고 저장 오류: ' . $th->getMessage());
+            return response()->json(['message' => '신고 저장 실패'], 500);
         }
 
         // DB::table('reports')->insert($data);   insert 는 timestamp생성x

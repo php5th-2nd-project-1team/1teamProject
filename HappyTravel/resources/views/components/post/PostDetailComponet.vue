@@ -3,7 +3,7 @@
 <div class="btn-postdetail-pagenav">
 	<router-link to="/index"><span>홈</span></router-link>
 	<span> > </span>
-	<router-link to="/posts"><span>펫브리즈 고</span></router-link>
+	<router-link to="/posts/01"><span>펫브리즈 고</span></router-link>
 </div>
 	
 <div class="postdetail-container">
