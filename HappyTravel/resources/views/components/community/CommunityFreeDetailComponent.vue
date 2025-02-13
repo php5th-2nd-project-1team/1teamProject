@@ -44,16 +44,16 @@
             
         </div>         -->
 
+            <!-- 댓글 리스트 -->
+            <CommentComponent />
         <div class="freedetail-comment-title">
 		<h3>펫브리즈 톡 <span>{{ FreeCommentCnt.cnt }}</span></h3>
 	</div>
-	<div class="freeetail-comment-form-box">
-		<!-- <textarea v-model="comment.post_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
+	<div class="freedetail-comment-form-box">
+		<!-- <textarea v-model="comment.free_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
 		<textarea @click="checkToken" v-model="commentData.free_comment" :placeholder="placeholder" name="comment" minlength="1" maxlength="200"></textarea>
-		<button @click="storeComment" class="btn-postdetail-comment btn-bg-blue" type="button">등록</button>
+		<button @click="storeComment" class="btn-freedetail-comment btn-bg-blue" type="button">등록</button>
 	</div>
-	<!-- 댓글 리스트 -->
-	<CommentComponent />
     </div>
 </template>
 <script setup>
@@ -80,21 +80,21 @@ const scrollToTop = () => {
     };
 
 
-    const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
+const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
 // ------------------------------------------
 // 댓글 작성
 const commentData = reactive({
-	free_comment : ''
+	comment_content : ''
 	,community_id : route.params.id
 });
 
 const storeComment = () => {
-	if(commentData.free_comment === '') {
+	if(commentData.comment_content === '') {
 		// board.js 에 422 에러문구 처리해서 주석
 		// alert('댓글을 작성 해주세요.');
 	}
 	store.dispatch('boards/storeFreetComment', commentData);
-	commentData.free_comment = '';	// 댓글작성후 댓글창에 댓글내용 초기화
+	commentData.comment_content = '';	// 댓글작성후 댓글창에 댓글내용 초기화
 };
 
    
@@ -115,7 +115,7 @@ const updatePlaceholder = () => {
 	if(!localStorage.getItem('accessToken')) {
 		placeholder.value='로그인 후 댓글을 남겨주세요.';
 	} else {
-		placeholder.value='';
+		placeholder.value='반려동물과 함께한 추억을 작성 해 주세요.';
 	}
 };
 updatePlaceholder();
@@ -175,8 +175,43 @@ const freeDetail = computed(() => store.state.boards.freeDetail);
         padding: 4px;
         cursor: pointer;
         border: none;
+    }    
+    .freedetail-comment-title {
+	/* display: inline-block; */
+	font-size: 30px;
+	margin-bottom: 20px;
     }
-    .commnets {
-        margin-top: 50px;
+
+    .freedetail-comment-title span {
+        color: #2986FF;
     }
+
+    .freedetail-comment-form-box {
+        width: 100%;
+        padding: 20px;
+        display: grid;
+        background-color: #CDECFF;
+        
+
+    }
+
+    .freedetail-comment-form-box > textarea {
+        border: none;
+        resize: none;
+        width: 100%;
+        height: 10em;
+        font-size: 15px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn-freedetail-comment {
+        width: 100px;
+        padding: 10px;
+        font-size: 20px;
+        border: none;
+        cursor: pointer;
+        justify-self: flex-end;
+    }
+
 </style>
