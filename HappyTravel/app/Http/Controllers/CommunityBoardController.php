@@ -166,10 +166,16 @@ class CommunityBoardController extends Controller
           return response()->json($responseData, 200);
     } 
     // 커뮤니티 자유게시판 댓글 삭제
-    public function deleteFreeComment($id) {
+    public function deleteFreeComment( $id) {
       DB::beginTransaction();
       CommunityComment::destroy($id);
       DB::commit();
+
+      $responseData = [
+        'success' =>true
+        ,'msg' => '커뮤니 코멘트 삭제'
+      ];
+      return response()->json($responseData, 200);
     }
 
 
