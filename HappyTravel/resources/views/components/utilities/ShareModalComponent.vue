@@ -31,8 +31,10 @@
 </template>
 
 <script setup>
+import config from '../../../js/config';
+
 if(!Kakao.isInitialized()) {
-    Kakao.init('88b9686891fe93d8f46cf1e55fa7f3ba');
+    Kakao.init(config.KAKAO_JAVASCRIPT_KEY);
 }
 
 const kakaoShare = () => {

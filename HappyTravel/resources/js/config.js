@@ -1,0 +1,3 @@
+export default {
+	KAKAO_JAVASCRIPT_KEY: '10a1ec89a7023c69ea7e386833073e11',
+}

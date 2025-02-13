@@ -5,8 +5,9 @@ import router from './router';
 import AppComponent from '../views/components/AppComponent.vue';
 import store from './store/store'
 import { useKakao } from 'vue3-kakao-maps';
+import config from './config';
 
-useKakao('d0956fc225a54a34d5f36bcd17914798');
+useKakao(config.KAKAO_JAVASCRIPT_KEY);
 createApp({
 	components:{
 		AppComponent
