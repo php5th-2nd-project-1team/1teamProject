@@ -69,6 +69,8 @@ Route::middleware('my.auth')->group(function() {
 
     // 문의게시글 작성
     Route::post('/inquiry', [InquiryController::class, 'createInquiry'])->name('inquiry.create');
+    // 문의게시글 삭제
+    Route::post('/inquiry/destroy/{id}', [InquiryController::class, 'deleteInquiry'])->name('inquiry.delete');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

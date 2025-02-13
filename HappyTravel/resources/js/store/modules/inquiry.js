@@ -77,7 +77,6 @@ export default {
 				context.commit('setTotalPage', response.data.data.last_page);
 				context.commit('setCurrentPage', response.data.data.current_page);
 				context.commit('setLabel', response.data.data.links);
-				console.log(response.data);
 			}).catch(error => {
 				console.error(error);
 			}).finally(() => {
@@ -129,11 +128,51 @@ export default {
 				alert('문의게시글 작성 성공');
 				router.push('/inquiry/' + response.data.id);
 			}).catch(error => {
-				console.error(error);
+				if(error.response.status === 422){
+					alert('문의게시글 작성 실패 \n' + error.response.data.data.join('\n'));
+				}
 			}).finally(() => {
 				// 로딩 중 표시 해제
 				context.commit('setIsLoading', false);
 			});
+		},
+
+		// 문의 게시글 삭제
+		deleteInquiry(context, payload) {
+			context.dispatch('auth/chkTokenAndContinueProcess', () => {
+				// 만약 로딩 중이면 리턴
+				if(context.state.isLoading){
+					return;
+				}
+
+				// 로딩 중 표시
+				context.commit('setIsLoading', true);
+				const url = '/api/inquiry/destroy/' + payload;
+
+				const config = {
+					headers : {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+					}
+				}
+
+				axios.post(url, {}, config)
+				.then(response => {
+					alert('문의게시글 삭제 성공');
+					router.push('/inquiries');
+				}).catch(error => {
+					console.error(error);
+					if(error.response.data.msg === '답변이 달린 문의게시글은 삭제할 수 없습니다.'){
+						alert('이미 답변이 달려 삭제할 수 없습니다.');
+						window.location.reload();
+					}
+					else{
+						alert('문의게시글 삭제 실패 \n 나중에 다시 시도해주세요.');
+					}
+				}).finally(() => {
+					// 로딩 중 표시 해제
+					context.commit('setIsLoading', false);
+				});
+			}, {root: true});			
 		}
 	}
 	,getters: {

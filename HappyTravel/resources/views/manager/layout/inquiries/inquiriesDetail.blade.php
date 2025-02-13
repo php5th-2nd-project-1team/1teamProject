@@ -119,7 +119,7 @@
 
 <div class="inquiry-detail-container">
     <div class="inquiry-detail-section">
-        <a href="/inquiries" class="inquiry-link">
+        <a href="{{ $url }}" class="inquiry-link" target="_blank">
             <i class="fas fa-external-link-alt"></i>
             문의게시판으로 이동
         </a>
@@ -127,24 +127,24 @@
         <div class="info-group">
             <div class="info-row">
                 <div class="info-label">글 제목</div>
-                <div class="info-value">결제 관련 문의드립니다.</div>
+                <div class="info-value">{{ $inquiry->inquiry_title }}</div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">작성일자</div>
-                <div class="info-value">2024-01-15</div>
+                <div class="info-value">{{ $inquiry->created_at }}</div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">유저 이름</div>
-                <div class="info-value">user123</div>
+                <div class="info-value">{{ $inquiry->users->name }}</div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">문의 내용</div>
                 <div class="info-value">
                     <div class="content-area">
-                        {!! $inquiry_content ?? '클래스 결제 중 오류가 발생했습니다.<br>확인 부탁드립니다.' !!}
+                        {!! $inquiry->inquiry_content !!}
                     </div>
                 </div>
             </div>
@@ -152,22 +152,26 @@
 
         <div class="answer-section">
             <h2 class="answer-title">답변 작성</h2>
-            <form action="/manager/inquiries/answer/1" method="POST">
+            <form action="/manager/inquiries/response/{{ $inquiry->inquiry_id }}" method="POST">
                 @csrf
+                <input type="hidden" name="page" value="{{ $page }}">
                 <script type="text/javascript" src="/smarteditor3/js/HuskyEZCreator.js" charset="utf-8"></script>
-                <textarea id="editor" name="answer_content"></textarea>
+                <textarea id="editor" name="inquiry_response"></textarea>
                 <script type="text/javascript">
                     var oEditors = [];
                     nhn.husky.EZCreator.createInIFrame({
                         oAppRef: oEditors,
                         elPlaceHolder: "editor",
                         sSkinURI: "/smarteditor3/SmartEditor2Skin.html",
-                        fCreator: "createSEditor2"
+                        fCreator: "createSEditor2",
+                        fOnAppLoad: function() {
+                            oEditors.getById["editor"].exec("SET_IR", ['{!! $inquiry->inquiry_response !!}']);
+                        }
                     });
                 </script>
 
                 <div class="action-buttons">
-                    <button type="submit" class="btn btn-primary" onclick="submitForm()">
+                    <button class="btn btn-primary" onclick="submitForm()">
                         <i class="fas fa-paper-plane"></i>
                         답변 작성
                     </button>
@@ -185,8 +189,15 @@
 @section('scripts')
 <script>
     function submitForm() {
-        oEditors.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
-        return true;
+        if(confirm('답변을 작성 또는 수정 하시겠습니까?')){
+            oEditors.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
+
+            document.querySelector('form').submit();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 </script>
 @endsection

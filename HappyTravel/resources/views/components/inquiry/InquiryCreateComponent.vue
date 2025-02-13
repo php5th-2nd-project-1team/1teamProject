@@ -54,9 +54,9 @@ import { useStore } from 'vuex';
 		// 스마트에디터에서 내용 추출
 		inquiryData.inquiry_content = document.getElementById('editor').value;
 
-		// store.dispatch('inquiry/createInquiry', inquiryData);
+		store.dispatch('inquiry/createInquiry', inquiryData);
 		
-		console.log(inquiryData.inquiry_secret);
+		// console.log(inquiryData.inquiry_secret);
 	}
 
 	// 취소

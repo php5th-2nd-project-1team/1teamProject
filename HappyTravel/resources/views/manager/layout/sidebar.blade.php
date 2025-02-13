@@ -30,7 +30,6 @@
 		<a href="/manager/inquiries" class="menu-header">
 			<i class="fas fa-question-circle"></i> 문의사항
 		</a>
-		<a href="/manager/inquiries/create" class="nav-link submenu">문의사항 작성</a>
 
 		<a href="/manager/shops" class="menu-header">
 			<i class="fas fa-shopping-cart"></i> 쇼핑

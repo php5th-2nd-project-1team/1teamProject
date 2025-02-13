@@ -164,7 +164,7 @@ const pushCommunity = (e) => {
 	}else if(e === '03') {
 		router.push('/community/photo');
 	}else if(e === '04') {
-		router.push('/inquiry');
+		router.push('/inquiries');
 	}	
 }
 

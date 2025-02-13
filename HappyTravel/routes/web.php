@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Managers\ManagerController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,17 +44,6 @@ Route::prefix('/manager')->group(function(){
 	Route::get('/reports/pages/{id}', function(){
 		return view('manager.layout.report_pages.reportPageDetail');
 	})->name('reports.pages.detail');
-
-
-	// 문의 관련
-	Route::get('/inquiries', function(){
-		return view('manager.layout.inquiries.inquiries');
-	})->name('inquiries');
-
-	// 문의 상세
-	Route::get('/inquiries/{id}', function(){
-		return view('manager.layout.inquiries.inquiriesDetail');
-	})->name('inquiries.detail');
 
 	Route::middleware('my.manager.auth')->group(function(){
 		// 로그아웃 처리
@@ -123,5 +110,14 @@ Route::prefix('/manager')->group(function(){
 		// 쇼핑 상세 조회
 		Route::get('/shops/{id}', [ManagerController::class, 'storeDetail'])->name('shops.detail');
 
+		// 문의 관련 =======================================================================
+		// 문의 목록 조회
+		Route::get('/inquiries', [ManagerController::class, 'inquiryIndex'])->name('inquiries');
+
+		// 문의 상세
+		Route::get('/inquiries/{id}', [ManagerController::class, 'inquiryDetail'])->name('inquiries.detail');
+
+		// 문의 답변 작성 및 수정
+		Route::post('/inquiries/response/{id}', [ManagerController::class, 'inquiryResponse'])->name('inquiries.response');
 	});
 });

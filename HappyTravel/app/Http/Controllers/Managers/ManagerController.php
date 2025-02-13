@@ -8,6 +8,7 @@ use App\Models\AnimalType;
 use App\Models\CategoryLocal;
 use App\Models\CategoryTheme;
 use App\Models\FacilityType;
+use App\Models\Inquiry;
 use App\Models\Manager;
 use App\Models\Notice;
 use App\Models\Post;
@@ -901,5 +902,66 @@ class ManagerController extends Controller
 
 		// return redirect()->route('stops.detail', ['id' => $travelClass->class_id]);
 		return redirect()->route('shops.index', ['page' => request()->query('page', 1) ?? '']);
+	}
+
+	// 상품 영역 종료 ===========================================
+	// 문의 영역 시작 ===========================================
+	// 문의 목록 조회
+	public function inquiryIndex(){
+		$inquiries = Inquiry::with('users')->orderBy('created_at', 'DESC')->orderBy('inquiry_id', 'DESC')->paginate(10);
+
+		$page = request()->query('page', 1);
+
+		if($page < 1){
+			return redirect()->route('inquiries.index', ['page' => 1]);
+		}
+		else if($page > $inquiries->lastPage()){	
+			return redirect()->route('inquiries.index', ['page' => $inquiries->lastPage()]);
+		}
+
+		return view('manager.layout.inquiries.inquiries', [
+			'inquiries' => $inquiries,
+			'page' => $page
+		]);
+	}
+
+	// 문의 상세 조회
+	public function inquiryDetail($id){
+		$inquiry = Inquiry::with('users')->find($id);
+		if($inquiry === null){
+			return redirect()->route('inquiries.index');
+		}
+
+		return view('manager.layout.inquiries.inquiriesDetail', [
+			'inquiry' => $inquiry
+			,'url' => '/inquiries/'.$inquiry->inquiry_id
+			,'page' => request()->query('page', 1)
+		]);
+	}
+
+	// 문의 답변 작성 및 수정
+	public function inquiryResponse(Request $request, $id){
+		$inquiry = Inquiry::find($id);
+		if($inquiry === null){
+			return redirect()->route('inquiries.index');
+		}
+
+		$response = trim($request->inquiry_response) === '<p>&nbsp;</p>' ? null : $request->inquiry_response;
+
+		try{
+			DB::beginTransaction();
+				$inquiry->inquiry_response = $response;
+				$inquiry->save();
+			DB::commit();
+		}catch(Exception $e){
+			DB::rollBack();
+			return redirect()->route('inquiries.detail', ['id' => $id])->withErrors($e->getMessage());
+			Log::error($e->getMessage());
+		}
+
+		return redirect()->route('inquiries.detail', [
+			'id' => $id
+			,'page' => $request->page
+		]);
 	}
 }

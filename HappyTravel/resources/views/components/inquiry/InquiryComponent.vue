@@ -14,7 +14,7 @@
 		<div v-for="item in inquiryList" :key="item" class="free-row">
 			<div class="free-item">{{ item.inquiry_id }}</div>
 			<div @click="redirectDetail(item.inquiry_id)"class="free-item">{{ item.inquiry_title }}</div>
-			<div class="free-item">{{ item.users_id }}</div>
+			<div class="free-item">{{ item.users.name }}</div>
 			<div class="free-item">{{ item.created_at }}</div>
 			<div class="free-item" :style="{color: item.inquiry_secret === 1 ? 'red' : 'blue'}">{{ item.inquiry_secret === 1 ? '비밀글' : '일반' }}</div>
 		</div>            

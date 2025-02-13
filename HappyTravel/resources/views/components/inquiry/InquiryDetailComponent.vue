@@ -37,13 +37,14 @@
 						(isAuth === false || userInfo.user_id !== inquiryDetail.users.user_id)"
 						style="text-align: center;">
 						비밀글입니다.</p>
-					<p v-else v-html="inquiryDetail.inquiry_content"></p>
+					<p v-else v-html="inquiryDetail.inquiry_response"></p>
 				</div>               
 			</div>
 			<div class="list_btn">
-				<router-link to="/inquiry"><button class="btn btn-bg-blue btn-header">목록</button></router-link>
-				<router-link ><button v-if="inquiryDetail.users.user_id === userInfo.user_id 
-				&& inquiryDetail.inquiry_response === null" 
+				<router-link to="/inquiries"><button class="btn btn-bg-blue btn-header">목록</button></router-link>
+				<router-link to="#" ><button v-if="inquiryDetail.users.user_id === userInfo.user_id 
+				&& inquiryDetail.inquiry_response === null
+				&& inquiryDetail.inquiry_response === null"
 				class="btn btn-bg-red btn-header" @click="deleteInquiry">삭제</button></router-link>
 			</div>
 		</div>
@@ -62,7 +63,7 @@ import { useRoute } from 'vue-router';
 
 	const inquiryDetail = computed(() => store.state.inquiry.inquiryDetail);
 
-	const LoadingFlg = computed(() => store.state.inquiry.LoadingFlg);
+	const LoadingFlg = computed(() => store.state.inquiry.isLoading);
 
 	const isAuth = computed(() => store.state.auth.authFlg);
 	const userInfo = computed(() => store.state.auth.userInfo);
@@ -73,8 +74,7 @@ import { useRoute } from 'vue-router';
 
 	const deleteInquiry = () => {
 		if(confirm('삭제하시겠습니까?')){
-			// store.dispatch('inquiry/deleteInquiry', route.params.id);
-			console.log('삭제');
+			store.dispatch('inquiry/deleteInquiry', route.params.id);
 		}
 	}
 </script>
