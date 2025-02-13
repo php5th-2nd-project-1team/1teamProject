@@ -59,11 +59,15 @@ class ReportController extends Controller
         //     'report_text' => $request->report_text,
         //     'user_id' => auth()->id(),
         // ]);
+
+        // Log::info('신고 요청 데이터:', $request->all());
+
 		$token = $request->bearerToken();
         // 쿠키에 신고쿠키있을시 저장x
-        if(isset($_COOKIE['reports'.$request->report_category.$request->report_board_id])){
+        if($request->cookie('reports'.$request->report_category.$request->report_board_id)){
             return response()->json([
-                'msg' => '24시간이내 중복 신고처리'
+                'success' => false
+                ,'msg' => '24시간이내 중복 신고처리'
             ], 422);
         };
         try {
@@ -76,20 +80,20 @@ class ReportController extends Controller
             // $data['report_status'] = $request->report_status;
             $data['report_text'] = $request->report_text;
             $data['user_id'] = UserToken::getInPayload($token, 'idt');
-
-            // Log::info('신고 요청 데이터:', $request->all());
             
+            Log::info('생성 데이터', $data);
             // 중복신고 방지(24시간이내 한번만 처리)
-            if(!isset($_COOKIE['reports'.$request->report_category.$request->report_board_id])) {
+            if(!$request->cookie('reports'.$request->report_category.$request->report_board_id)) {
+                // Log::info('커밋처리');
                 Report::create($data);
                 DB::commit();
-                setcookie('reports'.$request->report_category.$request->report_board_id, true, time() + 60 * 60 * 24);
+                setcookie('reports'.$request->report_category.$request->report_board_id, true, time() + 60 * 60 * 24, '', '', true, true);
             }
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
-            Log::error('신고 저장 오류: ' . $th->getMessage());
-            return response()->json(['message' => '신고 저장 실패'], 500);
+            // Log::error('신고 저장 오류: ' . $th->getMessage());
+            // return response()->json(['message' => '신고 저장 실패'], 500);
         }
 
         // DB::table('reports')->insert($data);   insert 는 timestamp생성x

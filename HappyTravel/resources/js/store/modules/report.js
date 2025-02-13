@@ -13,7 +13,7 @@ export default {
 	,actions: {
         reportComment(context, data) {
 			context.dispatch('auth/chkTokenAndContinueProcess', () => {
-				const url = '/api/reports/';
+				const url = '/api/reports';
 				if(context.state.controllerFlg) {
 					context.commit('post/setControllerFlg', false, {root: true});
 				}
@@ -44,6 +44,10 @@ export default {
 				
 				axios.post(url, data, config)
 				.then(response => {
+					console.log(response.data);
+					if(response.data.success == false) {
+						throw new Error("신고 예외 발생시킴");
+					}
 					alert('신고접수가 완료되었습니다.');
 				})
 				.catch(error => {
