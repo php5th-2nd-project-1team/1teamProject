@@ -6,8 +6,8 @@
             <div class="free-detail">
                 <span>{{ freeDetail.created_at }}</span>
                 <span>{{ freeDetail.users?.nickname }}</span>            
-                <span>{{ freeDetail.community_view }}</span>            
-                <span>댓글</span>   
+                <span>조회수:{{ freeDetail.community_view }}</span>            
+                <span>댓글:{{ FreeCommentCnt.cnt }} </span>   
             </div>
             <hr>
             <br><br><br>
@@ -20,110 +20,93 @@
             <button  @click="goBack" class="button-left">목록</button>
             <button class="button-right">수정</button>            
         </div>
-        <router-link to="/community/free"></router-link>        
+    
 
-        <!-- <div class="commnets">
-            <h3>댓글: 5</h3>
-            <button>댓글 더보기</button>
-
-            <div>
-                <span>프로필사진</span>
-                <span>닉네임</span>
-                <div>댓글내용</div>
-                <div>작성날짜</div>
-            </div>
-            <br>            
-            <div>
-                <span>프로필사진</span>
-                <span>닉네임</span>
-                <div>댓글내용</div>
-                <div>작성날짜</div>
-            </div>
-            
-            <button>등록</button>
-            
-        </div>         -->
 
             <!-- 댓글 리스트 -->
             <CommentComponent />
         <div class="freedetail-comment-title">
-		<h3>펫브리즈 톡 <span>{{ FreeCommentCnt.cnt }}</span></h3>
-	</div>
-	<div class="freedetail-comment-form-box">
-		<!-- <textarea v-model="comment.free_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
-		<textarea @click="checkToken" v-model="commentData.free_comment" :placeholder="placeholder" name="comment" minlength="1" maxlength="200"></textarea>
-		<button @click="storeComment" class="btn-freedetail-comment btn-bg-blue" type="button">등록</button>
-	</div>
+            <h3>펫브리즈 톡 <span>{{ FreeCommentCnt.cnt }}</span></h3>
+        </div>
+        <div class="freedetail-comment-form-box">
+            <!-- <textarea v-model="comment.free_comment"name="comment" id="comment" placeholder="로그인 후 댓글을 남겨주세요." cols onkeydown="commentresize(this);" minlength="1"></textarea> -->
+            <textarea @click="checkToken" v-model="commentData.comment_content" :placeholder="placeholder" name="comment" minlength="1" maxlength="200"></textarea>
+            <button @click="storeComment" class="btn-freedetail-comment btn-bg-blue" type="button">등록</button>
+        </div>
     </div>
 </template>
-<script setup>
+    <script setup>
 
-import { computed, onBeforeMount , reactive ,ref} from 'vue';
-import { useRoute ,useRouter} from 'vue-router';
-import { useStore } from 'vuex';
-// 댓글 컴포넌트
-import CommentComponent from '../utilities/CommentComponent.vue';
+    import { computed, onBeforeMount , reactive ,ref} from 'vue';
+    import { useRoute ,useRouter} from 'vue-router';
+    import { useStore } from 'vuex';
+    // 댓글 컴포넌트
+    import CommentComponent from '../utilities/CommentComponent.vue';
 
-const store = useStore();
+    const store = useStore();
 
-const route = useRoute();
+    const route = useRoute();
 
-const router = useRouter();
+    const router = useRouter();
 
-const goBack = () => {
-      router.go(-1); // 이전 페이지로 이동
-      scrollToTop(); // 최상단으로 스크롤
+    const goBack = () => {
+        router.go(-1); // 이전 페이지로 이동
+        scrollToTop(); // 최상단으로 스크롤
+        };
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+
+    const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
+    // ------------------------------------------
+    // 댓글 작성
+    const commentData = reactive({
+        comment_content : ''
+        ,community_id : route.params.id
+    });
+
+    const storeComment = () => {
+       console.log('현재 댓글 내용:', commentData.comment_content); // 댓글 내용 확인
+  if (commentData.comment_content === '') {
+    alert('댓글을 작성 해 주세요.');
+    return;
+  }
+
+    store.dispatch('boards/storeFreeComment', commentData);
+    commentData.comment_content = '';  
     };
 
-const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+
+    
+    // ------------------------------------------
+    // 댓글작성시 로그인 확인
+    // const hasToken = ref(localStorage.getItem('accessToken'));
+    const checkToken = () => {
+        if(!localStorage.getItem('accessToken')) {
+            alert('로그인 후 댓글을 작성 해주세요.');
+            router.replace('/login');
+            // hasToken.value = false;
+        }
     };
 
+    // 댓글 placeholder 로그인, 비로그인시 코멘트
+    const placeholder = ref('');
+    const updatePlaceholder = () => {
+        if(!localStorage.getItem('accessToken')) {
+            placeholder.value='로그인 후 댓글을 남겨주세요.';
+        } else {
+            placeholder.value='반려동물과 함께한 추억을 작성 해 주세요.';
+        }
+    };
+    updatePlaceholder();
+    window.addEventListener('storage', updatePlaceholder);	// storage가 비어질시 실시간 동기화  
 
-const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
-// ------------------------------------------
-// 댓글 작성
-const commentData = reactive({
-	comment_content : ''
-	,community_id : route.params.id
-});
+    onBeforeMount(() => store.dispatch('boards/freeBoardDetail', route.params.id));
 
-const storeComment = () => {
-	if(commentData.comment_content === '') {
-		// board.js 에 422 에러문구 처리해서 주석
-		// alert('댓글을 작성 해주세요.');
-	}
-	store.dispatch('boards/storeFreetComment', commentData);
-	commentData.comment_content = '';	// 댓글작성후 댓글창에 댓글내용 초기화
-};
-
-   
-// ------------------------------------------
-// 댓글작성시 로그인 확인
-// const hasToken = ref(localStorage.getItem('accessToken'));
-const checkToken = () => {
-	if(!localStorage.getItem('accessToken')) {
-		alert('로그인 후 댓글을 작성 해주세요.');
-		router.replace('/login');
-		// hasToken.value = false;
-	}
-};
-
-// 댓글 placeholder 로그인, 비로그인시 코멘트
-const placeholder = ref('');
-const updatePlaceholder = () => {
-	if(!localStorage.getItem('accessToken')) {
-		placeholder.value='로그인 후 댓글을 남겨주세요.';
-	} else {
-		placeholder.value='반려동물과 함께한 추억을 작성 해 주세요.';
-	}
-};
-updatePlaceholder();
-window.addEventListener('storage', updatePlaceholder);	// storage가 비어질시 실시간 동기화  
-
-onBeforeMount(() => store.dispatch('boards/freeBoardDetail', route.params.id));
-
-const freeDetail = computed(() => store.state.boards.freeDetail);
+    const freeDetail = computed(() => store.state.boards.freeDetail);
 </script>
 <style scoped>
     .cont {
@@ -212,6 +195,5 @@ const freeDetail = computed(() => store.state.boards.freeDetail);
         border: none;
         cursor: pointer;
         justify-self: flex-end;
-    }
-
+    }    
 </style>

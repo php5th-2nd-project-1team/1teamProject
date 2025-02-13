@@ -164,7 +164,14 @@ export default {
         
 
         // 자유 댓글 작성
-	,storeFreetComment(context, data) {
+		,storeFreeComment(context, data) {		
+		// console.log('storeFreeComment에 전달된 데이터:', data);  // 데이터 확인
+		// if (!data.comment_content || !data.community_id) {
+		// 	alert('필수 정보가 부족합니다.');
+		// 	return;
+		//   }
+
+
 		context.dispatch('auth/chkTokenAndContinueProcess', () => {
 			const url = '/api/community/free/' + data.community_id;
 			// const url = `/api/free/${data.community_id}`;
@@ -179,26 +186,35 @@ export default {
 			}
 
 			const useData = {
-				free_comment: data.free_comment,
+				comment_content: data.comment_content,
 			};
 			// json으로 파싱
 			const param = JSON.stringify(useData);
 
-            
-
+        
 			axios.post(url, param, config)
 			.then(response => {
 				context.commit('setFreeCommentListUnshift', response.data.storeFreetComment);
 				context.commit('addFreeCommentCnt');		// 펫브리즈고 댓글갯수 +
 				// alert('댓글을 작성하였습니다.');
-				
+				console.log('서버 응답:', response);  // 서버의 응답 내용 확인
+							
 				// console.log(response.data.freeComment);
 			})
 			.catch(error => {
 				console.log(error);
-				if(error.response.status === 422) {
-					alert('내용을 입력 해 주세요.');
-				}
+				if (error.response) {
+					console.log('서버 오류:', error.response);  // 서버에서 반환한 오류 정보 확인
+					if (error.response.status === 422) {
+					  alert('내용을 입력 해 주세요.');
+					} else {
+					  alert(`오류가 발생했습니다: ${error.response.status}`);
+					}
+				  } else {
+					alert('네트워크 오류가 발생했습니다.');
+				  }
+				 
+				
 				// console.error('댓글 작성 실패');
 				// console.error(error); // 서버의 에러 메시지 출력
 			})
