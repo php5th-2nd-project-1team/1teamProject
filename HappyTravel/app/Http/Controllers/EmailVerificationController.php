@@ -35,7 +35,7 @@ class EmailVerificationController extends Controller
     }
 
     // 인증번호 검증
-    public function verifyCode(UserRequest $request)
+    public function verifyCode(Request $request)
     {
         // DB에서 인증번호 조회
         $verification = EmailVerification::where('email', $request->email)

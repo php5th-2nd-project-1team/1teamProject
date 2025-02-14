@@ -40,13 +40,12 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 const store = useStore();
 const router = useRouter();
 
-const allUserInfo = store.state.auth.userInfo;
-
-
+const allUserInfo = computed(() => store.state.auth.userInfo);
 
 </script>
 <style scoped>

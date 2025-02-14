@@ -126,7 +126,7 @@ export default {
 			axios.post(url, payload, config)
 			.then(response => {
 				alert('문의게시글 작성 성공');
-				router.push('/inquiry/' + response.data.id);
+				router.push('/inquiries/' + response.data.id);
 			}).catch(error => {
 				if(error.response.status === 422){
 					alert('문의게시글 작성 실패 \n' + error.response.data.data.join('\n'));
