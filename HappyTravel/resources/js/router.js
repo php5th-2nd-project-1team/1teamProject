@@ -22,6 +22,7 @@ import MypagePuchadeComponent from '../views/components/user/MypagePurchadeCompo
 import MypageReservationComponet from '../views/components/user/MypageReservationComponet.vue';
 import UserPasswordCheckComponent from '../views/components/user/UserPasswordCheckComponent';
 import MypageAuthPasswordUpadateComponet from '../views/components/user/MypageAuthPasswordUpadateComponet.vue'
+import MypageWishlistComponent from '../views/components/user/MypageWishlistComponent.vue';
 // ----------------------------------------------------------------------
 
 // commuity
@@ -192,6 +193,14 @@ const routes=[
 				component: UserPasswordCheckComponent,
 				beforeEnter: chkAuth,
 			},
+			{
+				path:'reservation', // 마이페이지 예약 내역
+				component: MypageReservationComponet,
+			},
+			{
+				path:'wishlist', // 찜목록 내역
+				component: MypageWishlistComponent,
+			},		
 		]
 	},
 	{

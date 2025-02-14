@@ -8,6 +8,8 @@
             <ul class="page-ul">
                 <router-link to="/user/mypage"><li class="page-li">내 정보</li></router-link>
                 <br>
+                <router-link to="/user/wishlist"><li class="page-li">찜목록</li></router-link>
+                <br>
                 <router-link to="/user/passwordcheck?flg=2"><li class="page-li">비밀번호 변경</li></router-link>
             </ul>
         </div>

@@ -12,6 +12,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TravelClassController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,9 @@ Route::middleware('my.auth')->group(function() {
 
     //  신고작성 => 인증 들어가야함
     Route::post('/reports', [ReportController::class, 'report'])->name('report.post');
+
+    // 마이페이지 찜목록
+    Route::get('/user/wishlist', [WishlistController::class, 'postWishlist'])->name('wishlist.post');
 
     
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
