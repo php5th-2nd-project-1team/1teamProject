@@ -33,7 +33,7 @@ class CommunityComment extends Model
         return $this->belongsTo(CommunityBoard::class, 'community_id')->select('community_id');
     }
 
-    public function user(){
+    public function users(){
         return $this->belongsTo(User::class, 'user_id')->select('user_id', 'nickname', 'profile')->withTrashed();
     }
     

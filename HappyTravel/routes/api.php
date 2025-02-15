@@ -66,9 +66,9 @@ Route::middleware('my.auth')->group(function() {
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
     
     // 자유 댓글 작성(id가 community_id)
-    Route::post('/community/free/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');
-    // 자유 댓글 삭제(id가 cmmunity_comment_id)
-    Route::post('/community/free/{id}',[CommunityBoardController::class, 'deleteFreeComment'])->name('destroy.freeComment');
+    Route::post('/community/free/store/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');
+    // 자유 댓글 삭제(id가 community_comment_id)
+    Route::post('/community/free/destroy/{id}',[CommunityBoardController::class, 'deleteFreeComment'])->name('destroy.freeComment');
 
 
     // 문의게시글 작성
