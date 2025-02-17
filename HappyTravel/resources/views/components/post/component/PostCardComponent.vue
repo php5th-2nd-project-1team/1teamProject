@@ -2,7 +2,7 @@
 	<div class="post-content-card" @click="redirectDetail">
 		<img class="post-content-card-img" :src="props.cardData.post_img" alt="">
 		<h3>{{ props.cardData.post_title }}</h3>
-		<p>{{ props.cardData.post_local_name }}</p>
+		<p>{{ props.cardData?.post_local_name }}</p>
 		<div class="post-content-card-info">
 			<p>조회수 : {{ props.cardData.post_view }}</p>
 			<p>좋아요 : {{ props.cardData.post_likes_count }}</p>

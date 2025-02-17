@@ -162,7 +162,7 @@ const pushCommunity = (e) => {
 	}else if(e === '02') {
 		router.push('/community/free');
 	}else if(e === '03') {
-		router.push('/community/photo');
+		router.push('/community/showoff');
 	}else if(e === '04') {
 		router.push('/inquiries');
 	}	

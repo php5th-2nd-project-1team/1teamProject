@@ -3,9 +3,9 @@
 use App\Http\Controllers\AccountResetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunityBoardController;
+use App\Http\Controllers\CommunityShowoffController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\InquiryController;
-use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
@@ -114,6 +114,7 @@ Route::get('/community/notice/{id}', [NoticeController::class, 'show'])->name('s
 Route::post('/community/notice', [NoticeController::class, 'store'])->name('store.notice');
 Route::get('/community/free/{id}', [CommunityBoardController::class , 'show'])->name('show.free');
 Route::get('/community/free', [CommunityBoardController::class, 'index'])->name('index.free');
+Route::get('/community/showoff', [CommunityShowoffController::class, 'index'])->name('community.showoff.index');
 
 /**
  * 원상님 Route *

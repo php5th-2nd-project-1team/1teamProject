@@ -16,7 +16,8 @@ export default {
 		freeCommentCnt: 0,
 		controllerFlg: true,
 		lastPageFlg: false,
-		indexCommunity: []
+		indexCommunity: [],
+		showoffList: [],
 	}),
 	mutations: {
 		// 게시판 목록 설정
@@ -88,7 +89,15 @@ export default {
 		// 인덱스 커뮤니티 목록 설정
 		setIndexCommunityList(state, data) {
 			state.indexCommunity = data;
-		}
+		},
+		// 자랑 게시판 리스트
+		setShowoffList(state, data) {
+			state.showoffList = data;
+		},
+		// 자랑 게시판 다음페이지 추가
+		setConcatShowoffList(state, data) {
+			state.showoffList = state.showoffList.concat(data);
+		},
 	},
 	actions: {
 		// 게시판 목록 조회
@@ -289,6 +298,22 @@ export default {
 				.catch(error => {
 					console.log(error);
 				});
+		}
+		,CommunityShowoffPagination(context, page) {
+			const url = '/api/community/showoff?page=' + page;
+
+			axios.get(url)
+			.then(response => {
+				console.log(response.data);
+				if(page < 2) {
+					context.commit('setShowoffList', response.data.communityShowoff.data);
+				} else {
+					context.commit('setConcatShowoffList', response.data.communityShowoff.data);
+				}
+			})
+			.catch(error => {
+				console.error(error);
+			});
 		}
 	},
 	getters: {

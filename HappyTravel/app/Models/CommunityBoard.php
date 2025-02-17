@@ -31,7 +31,10 @@ class CommunityBoard extends Model
     }
 
     public function users() {
-        return $this->belongsTo(User::class, 'user_id')->select('user_id', 'nickname');
+        return $this->belongsTo(User::class, 'user_id')->select('user_id', 'nickname','profile');
+    }
+    public function communityPhotos() {
+        return $this->hasMany(CommunityPhoto::class,'community_id')->select('community_id','community_photo_id', 'community_photo_url')->orderBy('created_at');
     }
 
     protected $dates =['deleted_at']; //소프트 삭제를 위한 빌드
