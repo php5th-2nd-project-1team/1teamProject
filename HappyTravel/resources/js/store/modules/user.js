@@ -7,6 +7,8 @@ export default {
 	state: () => ({
         loadingFlg: false,
         modalFlg: false,
+
+        myPageWishlistPost: [],
 	})
 	,mutations: {
         setLoadingFlg(state, loadingFlg) {
@@ -15,6 +17,10 @@ export default {
         setModalFlg(state, modalFlg) {
             state.modalFlg = modalFlg;
         },
+
+        setMyPageWishlistPost(state, data) {
+            state.myPageWishlistPost = data
+        }
 	}
 	,actions: {
         // 유저 마이페이지 처리
@@ -232,6 +238,28 @@ export default {
                 });
             }, {root: true});
         },
+
+        // 찜목록
+        myPageWishlistPost(context) {
+            // context.dispatch('auth/chkTokenAndContinueProcess', () => {
+                const url = '/api/user/wishlist'
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
+                }
+                axios.get(url, config)
+                .then(response => {
+                    context.commit('setMyPageWishlistPost', response.data.postWishlist);
+                    console.log(response.data.postWishlist);
+                }).catch(error => {
+                    console.error(error.response.data);
+                })
+
+
+
+            // }, {root: true});
+        }
     }
 	,getters: {
 		

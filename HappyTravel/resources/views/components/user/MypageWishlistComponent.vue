@@ -9,50 +9,27 @@
             <div class="category">상품</div>
         </div>
         <div class="content-all">
-            <div class="content-card">
+            <div class="content-card" v-for="(item, key) in wishlistPost" :key="key">
                 <div class="img-container">
-                    <img class="img-like" src="/developImg/btn-delete1.png" alt="">
-                    <img class="content-img" src="/img/220-main.png" alt="">
+                    <img class="img-like" src="/developImg/like_yes.png" alt="">
+                    <img class="content-img" :src="item.post_img" alt="">
                 </div>
-                <h3 class="content-title">오창저수지</h3>
-                <p class="content-local">충청북도 청주시</p>
+                <h3 class="content-title">{{ item.post_title }}</h3>
+                <p class="content-local">{{ item.post_local_name }}</p>
             </div>
-            <div class="content-card">
-                <div class="img-container">
-                    <img class="img-like" src="/developImg/btn-delete1.png" alt="">
-                    <img class="content-img" src="/img/220-main.png" alt="">
-                </div>
-                <h3 class="content-title">오창저수지</h3>
-                <p class="content-local">충청북도 청주시</p>
+        </div>
+
+
+
+        <div class="pagination">
+            <div v-for="item in links" :key="item.label" @click="scrollToTop()">
+                <button class="paginate-btn" @click="$store.dispatch('boards/freeBoardList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+                <span class="paginate-btn-prev" v-if="item.label === backBtn"> {{ '이전' }}</span>
+                <span class="paginate-btn-next" v-else-if="item.label === nextBtn">{{ '다음' }}</span>
+                <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
+                <span  v-else>{{ item.label }}</span>
+                </button>
             </div>
-            <div class="content-card">
-                <div class="img-container">
-                    <img class="img-like" src="/developImg/btn-delete1.png" alt="">
-                    <img class="content-img" src="/img/220-main.png" alt="">
-                </div>
-                <h3 class="content-title">오창저수지</h3>
-                <p class="content-local">충청북도 청주시</p>
-            </div>
-            <div class="content-card">
-                <div class="img-container">
-                    <img class="img-like" src="/developImg/btn-delete1.png" alt="">
-                    <img class="content-img" src="/img/220-main.png" alt="">
-                </div>
-                <h3 class="content-title">오창저수지</h3>
-                <p class="content-local">충청북도 청주시</p>
-            </div>
-            <div class="content-card">
-                <div class="img-container">
-                    <img class="img-like" src="/developImg/btn-delete1.png" alt="">
-                    <img class="content-img" src="/img/220-main.png" alt="">
-                </div>
-                <h3 class="content-title">오창저수지</h3>
-                <p class="content-local">충청북도 청주시</p>
-            </div>
- 
-            <!-- <div class="content-card">
-                <PostCardComponent v-for="value in wishList" :cardData="value" />
-            </div> -->
         </div>
     </div>
 
@@ -65,16 +42,45 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 // import PostCardComponent from '../post/component/PostCardComponent.vue';
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted } from 'vue';
 
 const store = useStore();
 const router = useRouter();
 
-// const wishList = computed(() => store.state.post.postList);
+const wishlistPost = computed(() => store.state.user.myPageWishlistPost);
+onMounted(() => {
+    store.dispatch('user/myPageWishlistPost');
+})
 
-// onMounted(() => {
-//     store.dispatch('post/index', true);
-// })
+// 페이지네이션
+onBeforeMount(()=> { 
+        store.dispatch('boards/freeBoardList', 0);
+    });
+
+    const links = computed(()=> store.state.boards.links);
+
+    const backBtn = "&laquo; Previous";
+    const nextBtn = "Next &raquo;";
+
+    const currentPage = computed(()=> store.state.boards.currentPage);
+
+    const limitPage = 2;
+
+    const getPageOnUrl = (url) => {
+        if(!url) {
+            return;
+        }
+
+        const newSearch = {
+            type: search.type,
+            keyword: search.keyword,
+            page: url.split('page=')[1]
+        }
+
+        console.log(newSearch);
+
+        return newSearch;
+    }
 
 
 
@@ -238,4 +244,63 @@ label {
     width: 50px;
     height: 50px;
 }
+
+/* 페이지 */
+.pagination {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      margin-top: 70px;
+    }
+
+    /* 페이지버튼 */
+    .paginate-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      background-color: #fff;
+    }   
+    /* 현재 페이지 버튼 스타일 */
+    .main-Btn {
+      background-color: #2986FF;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width:100%;
+      height:100%;
+    }
+    /* 현재 페이지 호버시 색상변경 */
+    .main-Btn:hover {
+      background-color: #1A5BB8; 
+    }
+    /* 이전, 다음 버튼 스타일 */
+    .paginate-btn-prev,
+    .paginate-btn-next {
+      background-color: #2986FF; /* 배경색 */
+      color: #fff; /* 글자 색 */
+      font-size: 16px; /* 글자 크기 */
+      font-weight: bold; /* 글자 두껍게 */
+      display: flex;
+      align-items: center; /* 세로 가운데 정렬 */
+      justify-content: center; /* 가로 가운데 정렬 */
+      width: 50px; /* 버튼 크기 */
+      height: 50px; /* 버튼 크기 */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* 이전, 다음 버튼 호버 시 색상 변경 */
+    .paginate-btn-prev:hover,
+    .paginate-btn-next:hover {
+      background-color: #1A5BB8; 
+    }
 </style>

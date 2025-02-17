@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use UserToken;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller
@@ -16,14 +17,11 @@ class WishlistController extends Controller
 				,'msg' => '로그인한 유저만 볼 수 있습니다.'
 			], 400);
 		}
-		// 유효성 체크
-		$insertData = $request->only('post_comment');
-		// $insertData['user_id'] = UserToken::getInPayload($token, 'idt');
         
         $postWishlist = User::select('posts.post_title','posts.post_local_name','posts.post_img', 'users.nickname')
                         ->join('post_likes', 'post_likes.user_id', '=', 'users.user_id')
                         ->join('posts', 'posts.post_id', '=', 'post_likes.post_id')
-                        // ->where('post_likes.user_id', $token)
+                        ->where('post_likes.user_id', UserToken::getInPayload($token, 'idt'))
                         ->whereNull('posts.deleted_at')
                         ->orderBy('posts.created_at', 'DESC')
                         ->get();
