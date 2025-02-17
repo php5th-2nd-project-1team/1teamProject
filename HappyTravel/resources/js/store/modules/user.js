@@ -9,6 +9,10 @@ export default {
         modalFlg: false,
 
         myPageWishlistPost: [],
+        myPageWishlistProduct: [],
+
+        currentPage: 0,
+        totalPage : 0,
 	})
 	,mutations: {
         setLoadingFlg(state, loadingFlg) {
@@ -20,6 +24,15 @@ export default {
 
         setMyPageWishlistPost(state, data) {
             state.myPageWishlistPost = data
+        },
+        setMyPageWishlistProduct(state, data) {
+            state.myPageWishlistProduct = data
+        },
+        setCurrentPage(state, page) {
+            state.currentPage = page;
+        },
+        setTotalPage(state, page) {
+            state.totalPage = page;
         }
 	}
 	,actions: {
@@ -239,10 +252,10 @@ export default {
             }, {root: true});
         },
 
-        // 찜목록
+        // 찜목록(포스트)
         myPageWishlistPost(context) {
             // context.dispatch('auth/chkTokenAndContinueProcess', () => {
-                const url = '/api/user/wishlist'
+                const url = '/api/user/wishlist/post';
                 const config = {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -251,14 +264,39 @@ export default {
                 axios.get(url, config)
                 .then(response => {
                     context.commit('setMyPageWishlistPost', response.data.postWishlist);
-                    console.log(response.data.postWishlist);
+                    context.commit('setCurrentPage', response.data.postWishlist.current_page);
+                    if(context.state.totalPage === 0){
+                        context.commit('setTotalPage', response.data.postWishlist.last_page);
+                    }
                 }).catch(error => {
                     console.error(error.response.data);
+                }).finally(() => {
+                    // context.commit('setLoadingFlg', false);
                 })
 
-
-
             // }, {root: true});
+        },
+
+        // 찜목록(상품)
+        myPageWishlistProduct(context) {
+            const url = '/api/user/wishlist/product';
+            const config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                }
+            }
+            axios.get(url, config)
+                .then(response => {
+                    context.commit('setMyPageWishlistProduct', response.data.productWishlist);
+                    context.commit('setCurrentPage', response.data.productWishlist.current_page);
+                    if(context.state.totalPage === 0){
+                        context.commit('setTotalPage', response.data.productWishlist.last_page);
+                    }
+                }).catch(error => {
+                    console.error(error.response.data);
+                }).finally(() => {
+                    // context.commit('setLoadingFlg', false);
+                })
         }
     }
 	,getters: {

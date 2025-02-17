@@ -51,6 +51,9 @@ Route::middleware('my.auth')->group(function() {
 
     // 포스트 좋아요 클릭
     Route::post('/posts/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+    
+    // 클래스 좋아요 클릭
+    Route::post('/shops/like/{id}', [TravelClassController::class, 'classLike'])->name('class.like');
 
     // iamport 결제 시스템
     Route::post('/payment/request', [TravelClassController::class, 'requestPayment']);
@@ -59,8 +62,10 @@ Route::middleware('my.auth')->group(function() {
     //  신고작성 => 인증 들어가야함
     Route::post('/reports', [ReportController::class, 'report'])->name('report.post');
 
-    // 마이페이지 찜목록
-    Route::get('/user/wishlist', [WishlistController::class, 'postWishlist'])->name('wishlist.post');
+    // 마이페이지 찜목록(포스트)
+    Route::get('/user/wishlist/post', [WishlistController::class, 'postWishlist'])->name('wishlist.post');
+    // 마이페이지 찜목록(상품)
+    Route::get('/user/wishlist/product', [WishlistController::class, 'productWishlist'])->name('wishlist.product');
 
     
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');

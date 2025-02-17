@@ -5,32 +5,43 @@
     <hr>
     <div class="container">
         <div class="container-category">
-            <div class="category">포스트</div>
-            <div class="category">상품</div>
+            <p :class="{ 'selected': activeCategory === 'post' }" @click="activeCategory = 'post'">포스트</p>
+            <p :class="{ 'selected': activeCategory === 'product' }" @click="activeCategory = 'product'">상품</p>
         </div>
-        <div class="content-all">
+        <div class="content-all" v-if="activeCategory === 'post'">
             <div class="content-card" v-for="(item, key) in wishlistPost" :key="key">
                 <div class="img-container">
                     <img class="img-like" src="/developImg/like_yes.png" alt="">
-                    <img class="content-img" :src="item.post_img" alt="">
+                    <img class="content-img" @click="redirectPost(item.category_theme_num, item.post_id)" :src="item.post_img" alt="">
                 </div>
                 <h3 class="content-title">{{ item.post_title }}</h3>
                 <p class="content-local">{{ item.post_local_name }}</p>
             </div>
         </div>
+        
+        <div class="content-all" v-if="activeCategory === 'product'">
+            <div class="content-card" v-for="(item, key) in wishlistProduct" :key="key">
+                <div class="img-container">
+                    <img class="img-like" src="/developImg/like_yes.png" alt="">
+                    <img class="content-img" @click="redirectProduct(item.class_id)" :src="item.class_title_img" alt="">
+                </div>
+                <h3 class="content-title">{{ item.class_title }}</h3>
+                <p class="content-local">{{ Number(item.class_price).toLocaleString('ko-KR') }}원</p>
+            </div>
+        </div>
 
-
-
-        <div class="pagination">
-            <div v-for="item in links" :key="item.label" @click="scrollToTop()">
-                <button class="paginate-btn" @click="$store.dispatch('boards/freeBoardList', getPageOnUrl(item.url))" v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
+        <!-- <div class="pagination">
+            <div v-for="item in wishlistPost" :key="item.label" @click="scrollToTop()">
+                <button class="paginate-btn" @click="$store.dispatch('user/myPageWishlistPost', getPageOnUrl(item.url))"
+                v-if="(item.url !== null) && (isNaN(item.label) || (item.label >= (currentPage - limitPage) && item.label <= (currentPage + limitPage)))">
                 <span class="paginate-btn-prev" v-if="item.label === backBtn"> {{ '이전' }}</span>
                 <span class="paginate-btn-next" v-else-if="item.label === nextBtn">{{ '다음' }}</span>
                 <span class="main-Btn" v-else-if="String(currentPage) === item.label">{{ item.label }}</span>
                 <span  v-else>{{ item.label }}</span>
                 </button>
             </div>
-        </div>
+        </div> -->
+
     </div>
 
     <div class="button-container">
@@ -41,28 +52,40 @@
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-// import PostCardComponent from '../post/component/PostCardComponent.vue';
-import { computed, onBeforeMount, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 const store = useStore();
 const router = useRouter();
-
+// 데이터 출력
 const wishlistPost = computed(() => store.state.user.myPageWishlistPost);
+const wishlistProduct = computed(() => store.state.user.myPageWishlistProduct);
 onMounted(() => {
     store.dispatch('user/myPageWishlistPost');
+    store.dispatch('user/myPageWishlistProduct');
 })
 
-// 페이지네이션
-onBeforeMount(()=> { 
-        store.dispatch('boards/freeBoardList', 0);
-    });
+// 카테고리 기본 포스트로 설정
+const activeCategory = ref('post');
+// console.log(activeCategory.value);
 
-    const links = computed(()=> store.state.boards.links);
+// 해당 디테일로 이동
+const redirectPost = (category_theme_num, post_id) => {
+    router.push(`/posts/${category_theme_num}/${post_id}`);
+}
+const redirectProduct = (class_id) => {
+    router.push(`/shops/${class_id}`);
+}
+
+
+
+// 페이지네이션
+    const links = computed(()=> store.state.user.myPageWishlistPost);
+    console.log(store.state.user.myPageWishlistPost);
 
     const backBtn = "&laquo; Previous";
     const nextBtn = "Next &raquo;";
 
-    const currentPage = computed(()=> store.state.boards.currentPage);
+    const currentPage = computed(()=> store.state.user.currentPage);
 
     const limitPage = 2;
 
@@ -76,8 +99,6 @@ onBeforeMount(()=> {
             keyword: search.keyword,
             page: url.split('page=')[1]
         }
-
-        console.log(newSearch);
 
         return newSearch;
     }
@@ -123,19 +144,24 @@ onBeforeMount(()=> {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+
 .container-category {
     display: flex;
     justify-content: flex-start;
     gap: 30px;
 }
 
-.category {
+.container-category p {
     color: #BDBDBD;
     font-size: 30px;
     cursor: pointer;
 }
 
-.category:hover {
+.container-category p.selected {
+    color: #000 ;
+}
+
+.container-category p:hover {
     color: #000;
 }
 
@@ -233,6 +259,7 @@ label {
 
 .content-img {
     width: 100%;
+    height: 200px;
     border-radius: 10px;
 }
 

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductLike;
 use App\Models\Purchase;
 use App\Models\TravelClass;
+use UserToken;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TravelClassController extends Controller
@@ -161,6 +164,40 @@ class TravelClassController extends Controller
             ]);
         }
     }
+
+	/**
+	 * 클래스 좋아요 클릭 관련 여부
+	 * 
+	 */
+	public function classLike(Request $request, $id){
+		$token = $request->bearerToken();
+		$user_id = UserToken::getInPayload($token, 'idt');
+		$class_id = $id;
+		$class_likes_flg = $request->class_likes_flg;
+
+		DB::beginTransaction();
+
+		$like_flg = ProductLike::upsert([
+			['user_id' => $user_id, 'class_id' => $class_id, 'class_likes_flg' => $class_likes_flg]
+		], ['user_id', 'class_id' ,'class_likes_flg']
+		,['class_likes_flg']);
+
+		DB::commit();
+
+		$classLikeFlg = ProductLike::where('user_id', $user_id)
+								->where('class_id', $class_id)
+								->first();
+
+		$responseData = [
+			'success' => true
+			,'msg' => '클래스 좋아요 클릭 여부'
+			,'classLikeFlg' => $classLikeFlg->toArray()
+		];
+
+		return response()->json($responseData, 200);
+	}
+
+
     // 인덱스 상품 전체 출력
     public function indexShop(Request $request) {
         $IndexShop = TravelClass::select('*')

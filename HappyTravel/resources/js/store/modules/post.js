@@ -561,6 +561,7 @@ export default {
 				});
 			}, {root: true});
 		}
+		// 인덱스페이지 포스트부분 출력
 		,indexPost(context, CategoryThemeNum) {
 			const url = 'api/index';
 			const config = {
