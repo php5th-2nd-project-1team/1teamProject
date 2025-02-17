@@ -158,7 +158,7 @@
                         fCreator: "createSEditor2",
                         fOnAppLoad: function() {
                             // 에디터가 로드된 후 기존 내용 설정
-                            oEditors.getById["editor"].exec("SET_IR", ['{!! $notice->notice_content !!}']);
+                            oEditors.getById["editor"].exec("SET_IR", ['{!! json_encode($notice->notice_content) !!}']);
                         }
                     });
                     </script>
