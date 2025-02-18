@@ -24,8 +24,8 @@
 			<div class="shopDetail-info-btn-container">
 				<div class="shopDetail-info-btn">
 					<button class="purchase-btn" @click="openModal()">구매하기</button>
-					<button class="zzim-img" @click="isClickedZzim = !isClickedZzim">
-						<img :src="isClickedZzim ? '/developImg/like_yes.png' : '/developImg/like_no.png'" alt="찜하기" />
+					<button class="zzim-img" @click="onClkLikeBtn">
+						<img :src="isClickedZzim" :class="likeBtnClassName" alt="" />
 					</button>
 				</div>
 			</div>
@@ -34,11 +34,12 @@
 	<ShopPaymentModalComponent v-if="isModalOpen" />
 </template>
 <script setup>
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import ShopPaymentModalComponent from '../ShopPaymentModalComponent.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import LoadingComponent from '../../utilities/LoadingComponent.vue';
+import router from '../../../../js/router';
 
 	const route = useRoute();    // 현재 라우트 정보 가져오기
 
@@ -54,6 +55,7 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
 		const shopId = route.params.id; // URL에서 id 파라미터 가져오기
 		store.dispatch('shop/shopBoardDetail', shopId);
 	});
+	
 
 	const openModal = () => {
 		const userInfo = store.state.auth.userInfo;
@@ -71,6 +73,26 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
   	// 	const price = shopBoardDetail.value?.class_price ?? 0; // 값이 없으면 0으로 처리
   	// 	return price.toLocaleString('ko-KR');
 	// });
+
+	// 좋아요 찜 버튼
+	const isClked = computed(() => store.state.shop.isClkedLike);
+	const likeBtnClassName = computed(() => (isClked.value ? 'clk' : 'noClk'));
+
+	onMounted(()=>{
+		likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+	})
+	const onClkLikeBtn = () => {
+		if(!store.state.auth.authFlg) {
+			alert('로그인 후 이용가능합니다.');
+			router.push('/login');
+			return;
+		}
+		store.commit('shop/setIsLikeLoading', true);
+		store.dispatch('shop/classLike', route.params.id).catch(error => {
+        console.error("Error in classLike action:", error);
+    	});
+		likeBtnClassName.value = isClked.value ? 'clk' : 'noClk';
+	};
 
 </script>
 <style scoped>
@@ -161,5 +183,15 @@ import LoadingComponent from '../../utilities/LoadingComponent.vue';
 	.zzim-img img{
 		width: 100%;
 		height: 100%;
+	}
+	.noClk{
+	/* background-color: magenta; */
+	background-image: url('/developImg/like_no.png');
+	}
+
+	.clk{
+		/* background-color: #2986FF; */
+		background-image: url('/developImg/like_yes.png');
+		color: red;
 	}
 </style>

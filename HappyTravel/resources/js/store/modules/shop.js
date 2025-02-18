@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default {
 	namespaced: true,
 	state: () =>({
@@ -17,6 +19,8 @@ export default {
 		peopleCount: 1,
 
 		indexShop: [],
+		isLikeLoading: false,
+		isClkedLike : null,
 		
 	})
 	,mutations: {
@@ -66,6 +70,14 @@ export default {
 
 		setIndexShopList(state, data) {
 			state.indexShop = data;
+		},
+		// 좋아요 로딩 여부
+		setIsLikeLoading(state, flg) {
+			state.isLikeLoading = flg;
+		},
+		// 좋아요 여부 
+		setIsClkedLike(state, flg){
+			state.isClkedLike = flg;
 		},
 	}
 	,actions: {
@@ -159,6 +171,37 @@ export default {
 
 			}
 		  },
+
+		//   상품 좋아요 클릭여부
+		classLike(context, id) {
+			context.dispatch('auth/chkTokenAndContinueProcess', () => {
+				if(context.state.isLikeLoading) {
+					return;
+				}
+
+				context.commit('isLikeLoading', true);
+
+				const url = '/api/shops/like/' + id;
+				const data = JSON.stringify({
+					class_likes_flg: !context.state.isClkedLike
+				});
+
+				const config = {
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+					}
+				}
+
+				axios.post(url, data, config)
+				.then(response => {
+					context.commit('setIsClkedLike', response.data.like_flg.class_likes_flg === '1' ? true : false);
+				}).catch(error => {
+					console.log(error.response);
+				}).finally(() => {
+					context.commit('isLikeLoading', false);
+				});
+			}, {root: true});
+		},
 
 		// 인덱스 상품 전체 출력
 		indexShop(context) {
