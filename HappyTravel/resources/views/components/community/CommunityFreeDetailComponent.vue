@@ -18,7 +18,7 @@
 		<br><br><br>
 		<div class="button-wrap">
 			<button @click="goBack" class="button-left">목록</button>
-			<button class="button-right">수정</button>
+			<button @click="goUpdatePage"class="button-right">수정</button>
 		</div>
 
 		<!-- 댓글 리스트 -->
@@ -59,12 +59,14 @@
 
 	const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
 	const freeDetail = computed(() => store.state.boards.freeDetail);
+	
 
 	const goBack = () => {
 		router.go(-1); // 이전 페이지로 이동
 		scrollToTop(); // 최상단으로 스크롤
 	};
 
+	
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
@@ -103,6 +105,11 @@
 			placeholder.value = '반려동물과 함께한 추억을 작성 해 주세요.';
 		}
 	};
+
+	// 수정 페이지 이동 시 체크
+	const goUpdatePage = () => {
+		router.push(`/community/free/update/${route.params.id}`);
+	}
 
 	onMounted(() => {
 		updatePlaceholder();

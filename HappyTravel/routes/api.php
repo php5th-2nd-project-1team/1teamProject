@@ -69,6 +69,7 @@ Route::middleware('my.auth')->group(function() {
 
     
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
+    Route::put('/community/free/update/{id}', [CommunityBoardController::class , 'CommunityFreeUpdate'])->name('community.free.update');
     
     // 자유 댓글 작성(id가 community_id)
     Route::post('/community/free/store/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');

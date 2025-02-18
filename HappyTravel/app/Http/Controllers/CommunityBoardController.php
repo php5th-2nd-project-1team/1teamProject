@@ -94,6 +94,33 @@ class CommunityBoardController extends Controller
         return response()->json($responseData, 200);
     } 
 
+    // 게시글 수정
+    public function CommunityFreeUpdate(Request $request) {
+        $communityFree = CommunityBoard::find($request->community_id);
+
+
+        if (!$communityFree) {
+            return response()->json([
+                'success' => false,
+                'msg' => '게시글을 찾을 수 없습니다.'
+            ], 404);
+        }
+    
+        // $updateData =$request->only('community_title','community_content');
+        $communityFree->community_title =$request->community_title;
+        $communityFree->community_content =$request->community_content;
+
+        $result = $communityFree->save();
+
+        $responseData =[
+            'success'=>true,
+            'msg' =>'성공',
+            'communityFree' => $communityFree->toArray()
+        ];
+
+        return response()->json($responseData,200);
+    
+    }
     // 실제로 댓글 페이지네이션시 CommunityComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
     public function getComment(Request $request) {
         $CommunityComment = null;
@@ -193,4 +220,6 @@ class CommunityBoardController extends Controller
                         
         return response()->json($responseData, 200);
     }
+
+ 
 }

@@ -38,6 +38,7 @@ import CommunityInsertComponet from '../views/components/community/CommunityInse
 import CommunityUpdateComponet from '../views/components/community/CommunityUpdateComponet.vue';
 import CommunityFreeComponet from '../views/components/community/CommunityFreeComponet.vue';
 import CommunityFreeDetailComponent from '../views/components/community/CommunityFreeDetailComponent.vue';
+import CommunityFreeUpdateComponent from '../views/components/community/CommunityFreeUpdateComponent.vue';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -255,6 +256,10 @@ const routes=[
 				path: '/community/free/:id',
 				name : 'FreeDetail',
 				component: CommunityFreeDetailComponent,
+			},
+			{	
+				path : '/community/free/update/:id',
+				component: CommunityFreeUpdateComponent,
 			},
 			{
 				path:'/community/showoff',

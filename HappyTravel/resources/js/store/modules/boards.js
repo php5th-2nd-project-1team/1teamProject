@@ -170,6 +170,27 @@ export default {
 					console.error(error);
 				});
 		},
+		// 게시글 수정
+		freeBoardUpdate(context, communityFree) {
+			const url ='/api/community/free/update/' +id;
+
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			};
+
+			const formData = new FormData();
+			formData.append('community_title',communityFree.community_title);
+			formData.append('community_content',communityFree.community_content);
+			
+			
+			axios.post(url,formData, config)
+			.then(response => {
+				console.log(response.formData);
+			});
+			
+		},
 
 		// 댓글 작성
 		storeFreeComment(context, data) {
