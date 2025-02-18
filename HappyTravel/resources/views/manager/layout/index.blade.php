@@ -113,7 +113,7 @@
 				<h3>유저 관리</h3>
 				<p class="table-description">최신 가입 유저 5명 까지</p>
 			</div>
-			<a href="#" class="detail-link">해당 상세 페이지로 →</a>
+			<a href="{{ route('user.users') }}" class="detail-link">해당 상세 페이지로 →</a>
 		</div>
 		<div class="table-responsive">
 			{{-- Bootstrap의 table-striped는 테이블 행들 번갈아가면서 다른 배경색 넣어주는거임 --}}
@@ -157,7 +157,7 @@
 				<h3>포스트</h3>
 				<p class="table-description">최신 댓글 갱신 기준 5개 까지</p>
 			</div>
-			<a href="#" class="detail-link">해당 상세 페이지로 →</a>
+			<a href="{{ route('post.posts') }}" class="detail-link">해당 상세 페이지로 →</a>
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
@@ -193,7 +193,7 @@
 				<h3>문의사항</h3>
 				<p class="table-description">최신 작성 순 5개</p>
 			</div>
-			<a href="#" class="detail-link">해당 상세 페이지로 →</a>
+			<a href="{{ route('inquiries') }}" class="detail-link">해당 상세 페이지로 →</a>
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
@@ -201,24 +201,17 @@
 					<tr>
 						<th>ID</th>
 						<th>제목</th>
-						<th>내용</th>
 						<th>문의 작성일자</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="clickable-row" data-href="/manager/inquiries/1">
-						<td>1</td>
-						<td>로그인 문의</td>
-						<td>로그인이 되지 않습니다. 비밀번호 재설정은 어떻게 하나요?</td>
-						<td>2024-02-01</td>
+					@foreach($inquiries as $inquiry)
+					<tr class="clickable-row" data-href="/manager/inquiries/{{ $inquiry->inquiry_id }}">
+						<td>{{ $inquiry->inquiry_id }}</td>
+						<td>{{ $inquiry->inquiry_title }}</td>
+						<td>{{ $inquiry->created_at }}</td>
 					</tr>
-					<tr class="clickable-row" data-href="/manager/inquiries/2">
-						<td>2</td>
-						<td>결제 오류</td>
-						<td>결제 진행 중 오류가 발생했습니다. 확인 부탁드립니다.</td>
-						<td>2024-02-01</td>
-					</tr>
-					<!-- 추가 더미 데이터 -->
+					@endforeach
 				</tbody>
 			</table>
 		</div>
@@ -231,7 +224,7 @@
 				<h3>댓글 신고</h3>
 				<p class="table-description">최신 작성 순 5개</p>
 			</div>
-			<a href="#" class="detail-link">해당 상세 페이지로 →</a>
+			<a href="{{ route('reports.comments') }}" class="detail-link">해당 상세 페이지로 →</a>
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">

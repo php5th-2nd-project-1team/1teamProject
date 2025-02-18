@@ -87,7 +87,7 @@ Route::prefix('/manager')->group(function(){
 		Route::post('/notices/destroy/{id}', [ManagerController::class, 'noticeDestroy'])->name('notice.destroy'); // 공지사항 삭제
 
 		// 관리자 관련 ================================================================
-		Route::get('/managers', [ManagerController::class, 'managerIndex'])->name('manager.index'); // 관리자 목록
+		Route::get('/managers', [ManagerController::class, 'managerIndex'])->name('manager.managers'); // 관리자 목록
 		Route::get('/managers/create', [ManagerController::class, 'managerCreate'])->name('manager.create'); // 관리자 작성
 		Route::post('/managers', [ManagerController::class, 'managerStore'])->name('manager.store'); // 관리자 작성
 

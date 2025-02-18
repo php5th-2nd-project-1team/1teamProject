@@ -119,7 +119,7 @@ class ManagerController extends Controller
 					->limit(5)
 					->get();
 
-		// TODO 문의 준비되면 추가
+		$inquiries = Inquiry::whereNull('inquiry_response')->orderBy('created_at', 'desc')->orderBy('inquiry_id', 'desc')->limit(5)->get();
 
 		$reports = Report::where('report_status', '=', '01')->orderBy('created_at', 'desc')->limit(5)->get();
 
@@ -129,7 +129,9 @@ class ManagerController extends Controller
 			,'posts' => $posts
 			,'reports' => $reports
 			,'reportCategory' => $this->reportCategory
-			,'reportPlace' => $this->reportPlace]
+			,'reportPlace' => $this->reportPlace
+			,'inquiries' => $inquiries
+			]
 		);
 	}
 
