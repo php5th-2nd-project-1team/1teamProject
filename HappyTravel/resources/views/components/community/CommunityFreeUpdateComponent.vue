@@ -1,49 +1,42 @@
 <template>
     <div class="cont">
-      <h1>자유게시판 글쓰기</h1>        
-  
+      <h1>자유게시판 수정</h1>  
+      <!-- <hr>      -->
+      <!-- {{ editData }} -->
+      <!-- <hr> -->
       <div class="FreeStoreContainer">
-        <div class="select-wrap">
-          <select v-model="selectBoard" class="select-box">
-            <option value="0">자유게시판</option>
-            <option value="1">자랑게시판</option>
-            <option value="2">문의게시판</option>
-          </select>
+        <div>
+          <input v-model="editData.community_title" type="text">
+          <!-- 스마트에디터가 적용될 textarea -->
+          <textarea id="editor" name="editor" v-html="editData.community_content"></textarea>
+          <div class="button-wrap">
+              <button @click="submitContent">수정하기</button>
+            <button @click="cancelPost">취소</button>
+          </div>
         </div>
-        
-      <div>
-        <input v-model="boardTitle" type="text">
-        <!-- 스마트에디터가 적용될 textarea -->
-        <textarea id="editor" name="editor"></textarea>
-        <div class="button-wrap">
-            <button @click="submitContent">수정하기</button>
-          <button @click="cancelPost">취소</button>
-        </div>
-      </div>
       
       </div>
     </div>
   </template>
   
   <script setup>
-  import { ref, onMounted, reactive, defineProps, computed } from 'vue';
+  import { ref, onMounted, reactive, computed } from 'vue';
   import { useStore } from "vuex";
   import router from '../../../js/router.js';
+  import { useRoute} from 'vue-router';
   
-  const selectBoard = ref('0');
-  const boardTitle = ref('');
-
+  
   const oEditors = ref([]);  // 스마트에디터 객체를 저장할 변수
 
   const store = useStore();
+  const route = useRoute();
 
-  const userInfo = computed(() => store.state.auth.userInfo.user_id);
+  const freeDetail = computed(() => store.state.boards.freeDetail);
   
-  const EditorValue = reactive({
-      title: boardTitle,
-      content: "",
-      userId: userInfo,
-      communityType: selectBoard
+  const editData = reactive({
+    community_title: freeDetail.value.community_title,
+    community_content: freeDetail.value.community_content,
+    community_id : freeDetail.value.community_id,
   });
   
   // 컴포넌트가 마운트되면 스마트에디터 초기화
@@ -60,13 +53,13 @@
         oEditors.getById['editor'].exec('UPDATE_CONTENTS_FIELD', []);
         
         // content 값을 reactive 객체에 업데이트
-        EditorValue.content =  oEditors.getById['editor'].getIR();;
+        editData.community_content =  oEditors.getById['editor'].getIR();;
 
         // Vuex에 저장
-        store.dispatch('boards/freeBoardUpdate' , EditorValue);
+        store.dispatch('boards/freeBoardUpdate' , editData);
         // console.log(props.dispatch);
-    };
-  
+        router.replace(`/community/free/${route.params.id}`);        
+      };
   // 취소
   const cancelPost = () => {
     router.back();

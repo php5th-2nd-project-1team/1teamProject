@@ -58,12 +58,12 @@ class UserToken {
     public function chkToken(string|null $token) {
         // 토큰 존재 유무 체크
         // 토큰이 없는 경우, 유효시간이 지난 토큰, 위조된 토큰 등 경우가 많다.
-        if(empty($token)) {
-            return '토큰이 없음';
-        }
+        // if(empty($token)) {
+        //     return '토큰이 없음';
+        // }
 
         // 토큰 위조 검사
-        list($header, $payload, $signature) = $this->explodeToken($token);
+        // list($header, $payload, $signature) = $this->explodeToken($token);
 
         Log::debug('***************************** chkToken start *****************************');
         // 토큰 존재 유무 체크

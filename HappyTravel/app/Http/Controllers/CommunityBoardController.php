@@ -95,22 +95,21 @@ class CommunityBoardController extends Controller
     } 
 
     // 게시글 수정
-    public function CommunityFreeUpdate(Request $request) {
-        $communityFree = CommunityBoard::find($request->community_id);
+    public function CommunityFreeUpdate(Request $request, $id) {
+        $communityFree = CommunityBoard::find($id);
 
 
         if (!$communityFree) {
             return response()->json([
                 'success' => false,
                 'msg' => '게시글을 찾을 수 없습니다.'
-            ], 404);
+            ], 400);
         }
     
-        // $updateData =$request->only('community_title','community_content');
-        $communityFree->community_title =$request->community_title;
-        $communityFree->community_content =$request->community_content;
+        $communityFree->community_title = $request->community_title;
+        $communityFree->community_content = $request->community_content;
 
-        $result = $communityFree->save();
+        $communityFree->save();
 
         $responseData =[
             'success'=>true,

@@ -74,6 +74,10 @@ export default {
 		deleteComment(state, key) {
 			state.freeCommentList.splice(key, 1);
 		},
+		// 댓글 초기화
+		resetCommentsList(state){
+			state.freeCommentList=[];
+		},
 		// 댓글 개수 감소
 		subFreeCommentCnt(state) {
 			state.freeCommentCnt -= 1;
@@ -97,6 +101,9 @@ export default {
 		// 자랑 게시판 다음페이지 추가
 		setConcatShowoffList(state, data) {
 			state.showoffList = state.showoffList.concat(data);
+		},
+		setCommunityFreeUpdate(state, data) {
+			state.CommunityFreeUpdate = data;
 		},
 	},
 	actions: {
@@ -127,7 +134,7 @@ export default {
 		// 게시글 상세 조회
 		freeBoardDetail(context, id) {
 			context.commit('setLoadingFlg', true);
-
+			context.commit('resetCommentsList');
 			const url = '/api/community/free/' + id;
 
 			axios.get(url)
@@ -142,14 +149,15 @@ export default {
 				});
 		},
 
-		// 게시글 작성
+		// 자유 게시글 작성
 		freeBoardStore(context, data) {
 			context.commit('setLoadingFlg', true);
 
 			const url = '/api/community/free/store';
 			const config = {
 				headers: {
-					'Content-Type': 'multipart/form-data'
+					'Content-Type': 'multipart/form-data',
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
 				}
 			};
 
@@ -170,26 +178,25 @@ export default {
 					console.error(error);
 				});
 		},
-		// 게시글 수정
-		freeBoardUpdate(context, communityFree) {
-			const url ='/api/community/free/update/' +id;
+		//  자유 게시글 수정
+		freeBoardUpdate(context, data) {
+			context.commit('setLoadingFlg', true);
+			const url ='/api/community/free/' + data.community_id;
 
 			const config = {
 				headers: {
-					'Content-Type': 'multipart/form-data'
+					'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
 				}
 			};
-
-			const formData = new FormData();
-			formData.append('community_title',communityFree.community_title);
-			formData.append('community_content',communityFree.community_content);
 			
-			
-			axios.post(url,formData, config)
+			axios.put(url, data, config)
 			.then(response => {
-				console.log(response.formData);
+				context.commit('setCommunityFreeUpdate',response.data.communityFree.data);
+				context.commit('setLoadingFlg', false);
+			})
+			.catch(error => {
+				console.error(error);
 			});
-			
 		},
 
 		// 댓글 작성
