@@ -9,10 +9,11 @@
             <p :class="{ 'selected': activeCategory === 'product' }" @click="activeCategory = 'product'">상품</p>
         </div>
         <div class="content-all" v-if="activeCategory === 'post'">
+            <h2 class="content-no-data" v-if="!wishlistPost || wishlistPost.length === 0">찜한 포스트가 없습니다.</h2>
             <div class="content-card" v-for="(item, key) in wishlistPost" :key="key">
                 <div class="img-container">
                     <img class="img-like" src="/developImg/like_yes.png" alt="">
-                    <img class="content-img" @click="redirectPost(item.category_theme_num, item.post_id)" :src="item.post_img" alt="">
+                    <img class="content-img" @click="redirectPost(item.category_theme_num, item.post_id)" :src="item.post_img" onerror="src='/developImg/no_img.jpg'">
                 </div>
                 <h3 class="content-title">{{ item.post_title }}</h3>
                 <p class="content-local">{{ item.post_local_name }}</p>
@@ -20,10 +21,11 @@
         </div>
         
         <div class="content-all" v-if="activeCategory === 'product'">
+            <h2 class="content-no-data" v-if="!wishlistProduct || wishlistProduct.length === 0">찜한 상품이 없습니다.</h2>
             <div class="content-card" v-for="(item, key) in wishlistProduct" :key="key">
                 <div class="img-container">
                     <img class="img-like" src="/developImg/like_yes.png" alt="">
-                    <img class="content-img" @click="redirectProduct(item.class_id)" :src="item.class_title_img" alt="">
+                    <img class="content-img" @click="redirectProduct(item.class_id)" :src="item.class_title_img" onerror="src='/developImg/no_img.jpg'">
                 </div>
                 <h3 class="content-title">{{ item.class_title }}</h3>
                 <p class="content-local">{{ Number(item.class_price).toLocaleString('ko-KR') }}원</p>
@@ -66,7 +68,8 @@ onMounted(() => {
 
 // 카테고리 기본 포스트로 설정
 const activeCategory = ref('post');
-// console.log(activeCategory.value);
+console.log(wishlistPost);
+console.log(wishlistProduct);
 
 // 해당 디테일로 이동
 const redirectPost = (category_theme_num, post_id) => {
@@ -80,7 +83,7 @@ const redirectProduct = (class_id) => {
 
 // 페이지네이션
     const links = computed(()=> store.state.user.myPageWishlistPost);
-    console.log(store.state.user.myPageWishlistPost);
+    // console.log(store.state.user.myPageWishlistPost);
 
     const backBtn = "&laquo; Previous";
     const nextBtn = "Next &raquo;";
@@ -242,7 +245,9 @@ label {
     margin-top: 20px;
 }
 
-
+.content-no-data {
+    color: #2986FF;
+}
 
 .content-title {
     text-align: center;

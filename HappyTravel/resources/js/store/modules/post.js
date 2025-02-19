@@ -413,7 +413,7 @@ export default {
 			.catch(error => {
 				if(error.response.status === 500) {
 					alert('유효하지 않은 URL입니다.');
-					router.replace('/posts');
+					router.replace('/index');
 				}
 				console.error(error);
 			}).finally(() => {

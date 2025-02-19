@@ -52,9 +52,9 @@
 				 :touchRatio="1"
 				 class="mySwiper"
 			 >
-				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg1"></swiper-slide>
-				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg2"></swiper-slide>
-				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg3"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg1" onerror="src='/developImg/no_img.jpg'"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg2" onerror="src='/developImg/no_img.jpg'"></swiper-slide>
+				<swiper-slide><img class="postdetail-img" :src="PostDetail.post_subimg3" onerror="src='/developImg/no_img.jpg'"></swiper-slide>
 				 <div class="swiper-button-next"></div>
 				 <div class="swiper-button-prev"></div>
 				 <div class="swiper-pagination"></div>

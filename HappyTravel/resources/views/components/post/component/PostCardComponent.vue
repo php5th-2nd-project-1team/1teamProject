@@ -1,6 +1,6 @@
 <template>
 	<div class="post-content-card" @click="redirectDetail">
-		<img class="post-content-card-img" :src="props.cardData.post_img" alt="">
+		<img class="post-content-card-img" :src="props.cardData.post_img" onerror="src='/developImg/no_img.jpg'">
 		<h3>{{ props.cardData.post_title }}</h3>
 		<p>{{ props.cardData?.post_local_name }}</p>
 		<div class="post-content-card-info">

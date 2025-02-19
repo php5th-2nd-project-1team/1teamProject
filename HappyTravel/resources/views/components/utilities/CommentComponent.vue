@@ -1,7 +1,7 @@
 <template>
+	<h2 class="comment-no-data" v-if="!PostComment || PostComment.length === 0">새로운 댓글을 작성 해 주세요.</h2>
     <div v-for="(item, key) in PostComment" :key="item" class="comment-box">
         <img class="comment-img" :src="item.user.profile">
-        <!-- <img class="comment-img" src="/profile/GJfqlZza8AAd1_K.jfif"> -->
         <div class="comment-txt">
             <p>{{ item.post_comment }}</p>
 			<div class="etc-btn">
@@ -115,5 +115,11 @@ const closeReportModal = () => {
 	background-color: transparent;
 	cursor: pointer;
 	margin: 0 5px;
+ }
+
+ .comment-no-data {
+	margin-top: 50px;
+	font-size: 30px;
+    color: #2986FF;
  }
 </style>
