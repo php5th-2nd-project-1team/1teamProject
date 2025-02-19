@@ -22,7 +22,7 @@
 							<p class="index-card-content-local-name">{{ item.post_local_name}}</p>
 						</div>
 						<div class="index-card-btnArea">
-							<button></button>
+							<!-- <button></button> -->
 						</div>
 					</div>
 				</div>
@@ -71,6 +71,7 @@ const redirectDetail = (category_theme_num, post_id) => {
 	}
 	.index-card-content-local-name {
 		font-size: 15px;
+		margin-bottom: 40px;
 	}
 	.selected {
 		font-size: 1.3rem;
