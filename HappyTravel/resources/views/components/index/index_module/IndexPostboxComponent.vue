@@ -14,7 +14,7 @@
 		<div class="index-cardzone">
 			<div class="index-card" v-for="(item, key) in $store.state.post.indexPost" :key="item">
 				<div @click="redirectDetail(item.category_theme_num, item.post_id)">
-					<div class="index-card-img" :src="item.post_img"></div>
+					<div class="index-card-img" :src="item.post_img" onerror="src='/developImg/no_img.jpg'"></div>
 					<div class="index-card-hoverShowing">
 						<div class="index-card-content">
 							<p class="index-card-content-title">{{ item.post_title }}</p>

@@ -28,7 +28,7 @@
 		<div class="index-cardzone">
 			<div class="index-shop-card" v-for="(item, key) in $store.state.shop.indexShop" :key="key">
 				<div class="index-shop-card-img">
-					<img :src="item.class_title_img" @click="redirectDetail(item.class_id)">
+					<img :src="item.class_title_img" @click="redirectDetail(item.class_id)" onerror="src='/developImg/no_img.jpg'">
 					<!-- <div class="index-card-img" :src="item.class_title_img"></div> -->
 					 <div class="badges">
 						 <p class="badges-sale">sale</p>

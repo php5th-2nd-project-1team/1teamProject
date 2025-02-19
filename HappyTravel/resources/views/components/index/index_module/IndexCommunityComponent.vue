@@ -11,7 +11,7 @@
 		<div class="index-cardzone">
 			<div class="index-card" v-for="(item, key) in $store.state.boards.indexCommunity" :key="key">
 				<div class="community-card-content" @click="redirectDetail(item.community_id)">
-					<img class="community-card-img" :src="item.community_photo_url">
+					<img class="community-card-img" :src="item.community_photo_url" onerror="src='/developImg/no_img.jpg'">
 				</div>
 
 			</div>

@@ -89,7 +89,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	background-color: #EFEFEF;
+	/* background-color: #EFEFEF; */
 	border-radius: 50px;
 	width: 90%;
 	height: 90%;
