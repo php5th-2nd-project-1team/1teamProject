@@ -4,7 +4,7 @@
         </div>
 	    <footer>
         <div class="footer-container">
-            <div class="footer-content">
+            <div class="footer-content footer-info">
                 <h3>Contact Us</h3>
                 <p>이메일 : PettagonTeam1@gmail.com</p>
                 <p>전화번호 : 053-0000-0000</p>
@@ -14,8 +14,8 @@
                 <h3>Quick List</h3>
                 <ul class="footer-list">
                     <li @click="pushAbout">펫브리즈 소개</li>
-                    <li @click="pushPosts">펫브리즈 고</li>
-                    <!-- <li>상품</li> -->
+                    <li @click="pushPosts('01')">펫브리즈 고</li>
+                    <li @click="pushShops">상품</li>
                     <li @click="pushNoticeList">커뮤니티</li>
                 </ul>
             </div>
@@ -44,8 +44,13 @@ const pushAbout = function(){
 }
 
 // posts 페이지 이동 시
-const pushPosts = function(){
-	router.push('/posts');
+const pushPosts = function(post_num){
+	router.push(`/posts/${post_num}`);
+}
+
+// shops 페이지 이동 시
+const pushShops = function() {
+    router.push('/shops');
 }
 
 // 헤더 커뮤니티 이동 처리
@@ -55,6 +60,10 @@ const pushNoticeList = () => {
 	router.push('/community/notice'); // 이동
 }
 </script>
-<style>
-	
+<style scoped>
+	.footer-info {
+        display: flex;
+        flex-direction: column;
+        margin: 0 30px;
+    }
 </style>
