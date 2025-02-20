@@ -3,19 +3,19 @@
   </div>
   <KakaoMap 
     v-else 
-    v-once
     :key="mapKey"
-    :lat="initialLat" 
-    :lng="initialLon" 
+    :lat="PostDetail.post_lat" 
+    :lng="PostDetail.post_lon" 
     :draggable="true" 
     :scrollwheel="true" 
     @onLoadKakaoMap="onLoadKakaoMap"
   >
     <KakaoMapMarker 
-      :lat="initialLat" 
-      :lng="initialLon" 
+      :lat="PostDetail.post_lat" 
+      :lng="PostDetail.post_lon" 
     />
   </KakaoMap>
+  <button @click="test">test</button>
 </template>
 
 <script setup>
@@ -27,22 +27,16 @@ const map = ref();
 const store = useStore();
 const mapKey = ref(0);
 
-// 초기 좌표값을 저장
-const initialLat = ref(null);
-const initialLon = ref(null);
-
 const PostDetail = computed(() => store.state.post.postDetail);
 const isLoading = computed(() => store.state.post.isLoading);
-
-onMounted(() => {
-  // 컴포넌트 마운트 시 한 번만 좌표값 설정
-  initialLat.value = PostDetail.value.post_lat;
-  initialLon.value = PostDetail.value.post_lon;
-});
 
 const onLoadKakaoMap = (mapRef) => {
   if (!map.value) {
     map.value = mapRef;
   }
+};
+
+const test = () => {
+  console.log(PostDetail.value);
 };
 </script>
