@@ -24,8 +24,10 @@
 			<div class="shopDetail-info-btn-container">
 				<div class="shopDetail-info-btn">
 					<button class="purchase-btn" @click="openModal()">구매하기</button>
-					<button class="zzim-img" @click="onClkLikeBtn">
-						<img :src="isClickedZzim" :class="likeBtnClassName" alt="" />
+					<!-- <button class="zzim-img" @click="onClkLikeBtn">
+						<img :src="isClickedZzim" :class="likeBtnClassName" alt="" /> -->
+						<button class="zzim-img" @click="isClickedZzim = !isClickedZzim">
+						<img :src="isClickedZzim ? '/developImg/like_yes.png' : '/developImg/like_no.png'" alt="찜하기" />
 					</button>
 				</div>
 			</div>

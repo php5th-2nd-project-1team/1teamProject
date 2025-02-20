@@ -24,7 +24,13 @@ class PostSeeder extends Seeder
         // API 호출, 헤더에 application/json 추가
         $response = Http::withHeaders([
             'Accept' => 'application/json', // JSON 형식으로 요청
-        ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=80&pageNo=1&category=%EC%97%AC%ED%96%89%EC%A7%80');
+        // ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=80&pageNo=1&category=%EC%97%AC%ED%96%89%EC%A7%80');
+        // ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=30&pageNo=1&category=%EC%8B%9D%EB%8B%B9');
+        // ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=20&pageNo=1&category=%EC%B9%B4%ED%8E%98');
+        ])->get('http://api.kcisa.kr/openapi/API_TOU_050/request?serviceKey=ed9c0929-f4f3-4eb1-94aa-93a48cc3c0b0&numOfRows=15&pageNo=1&category=%EB%8F%99%EB%AC%BC%EB%B3%91%EC%9B%90');
+
+
+
 
         // API로부터 받은 데이터를 배열로 변환
         $data = json_decode($response->body(), true);
@@ -98,7 +104,7 @@ class PostSeeder extends Seeder
             $post->post_lat = $post_lat;
             $post->post_lon = $post_lon;
             $post->category_local_num = $category_local_num;
-            $post->category_theme_num = '03';
+            $post->category_theme_num = '04';
             $post->created_at = now();
             $post->updated_at = now();
             $post->post_detail_num = $post_detail_num;

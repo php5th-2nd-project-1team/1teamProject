@@ -42,7 +42,7 @@ export default {
 				// const username = getCookie('reports013');
 				// console.log(username);
 				
-				axios.post(url, data, config)
+				axios.post(url,  config)
 				.then(response => {
 					console.log(response.data);
 					if(response.data.success == false) {
