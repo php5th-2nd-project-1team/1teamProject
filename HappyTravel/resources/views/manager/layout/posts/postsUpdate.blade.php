@@ -277,15 +277,15 @@
                 <div class="detail-row">
                     <div class="detail-label">주소</div>
                     <div class="detail-value">
-                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" value="{{ $post->post_detail_addr }}" required>
+                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" value="{{ $post->post_detail_addr }}" required readonly>
                         <div class="coordinates">
                             <div class="coordinate-group">
                                 <div class="coordinate-label">위도</div>
-                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" value="{{ $post->post_lat }}" required>
+                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" value="{{ $post->post_lat }}" required readonly>
                             </div>
                             <div class="coordinate-group">
                                 <div class="coordinate-label">경도</div>
-                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" value="{{ $post->post_lon }}" required>
+                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" value="{{ $post->post_lon }}" required readonly>
                             </div>
                         </div>
                     </div>

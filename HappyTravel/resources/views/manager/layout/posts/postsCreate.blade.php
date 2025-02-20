@@ -219,15 +219,15 @@
                 <div class="detail-row">
                     <div class="detail-label required">주소</div>
                     <div class="detail-value">
-                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" required disabled>
+                        <input type="text" class="form-control" id="address" name="post_detail_addr" placeholder="주소" required readonly>
                         <div class="coordinates">
                             <div class="coordinate-group">
                                 <div class="coordinate-label required">위도</div>
-                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" required disabled>
+                                <input type="text" class="form-control" id="latitude" name="post_lat" placeholder="위도" required readonly>
                             </div>
                             <div class="coordinate-group">
                                 <div class="coordinate-label required">경도</div>
-                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" required disabled>
+                                <input type="text" class="form-control" id="longitude" name="post_lon" placeholder="경도" required readonly>
                             </div>
                         </div>
                     </div>
