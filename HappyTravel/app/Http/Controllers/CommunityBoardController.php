@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use UserToken;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CommunityBoardController extends Controller
@@ -65,6 +66,16 @@ class CommunityBoardController extends Controller
             ->groupBy('community_id')
             ->first();
 
+        	// 조회수 쿠키없으면 쿠키에 저장
+		if(!isset($_COOKIE['community_views'.$request->id])){
+			DB::beginTransaction();
+			// 조회수 추가
+			$communityBoardDetail->community_view += 1;
+			$communityBoardDetail->save();
+			DB::commit();
+
+			setcookie('community_views'.$request->id , true, time() + 60 * 60 * 24);
+		}
         $responseData = [
             'success' => true,
             'msg' => '자유게시판 상세리스트 정보가 맞습니다.',
@@ -94,7 +105,7 @@ class CommunityBoardController extends Controller
         return response()->json($responseData, 200);
     } 
 
-    // 게시글 수정
+    // 자유 게시글 수정
     public function CommunityFreeUpdate(Request $request, $id) {
         $communityFree = CommunityBoard::find($id);
 
@@ -120,6 +131,23 @@ class CommunityBoardController extends Controller
         return response()->json($responseData,200);
     
     }
+    // 자유 게시글 삭제 
+    public function CommunityDeleteFreeBoard($id) { 
+        // Log::debug('request->token : '.$request->bearerToken());
+
+        DB::beginTransaction();
+            $deleteBoard = CommunityBoard::find($id);
+            $deleteBoard->delete();
+        DB::commit();
+
+        $responseData = [
+            'success' => true,
+            'msg' =>'자유 게시글 삭제'
+        ];
+
+        return response()->json($responseData , 200);
+
+    }   
     // 실제로 댓글 페이지네이션시 CommunityComment 만 쓰면 얘만 쓰는 함수를 따로 빼야함
     public function getComment(Request $request) {
         $CommunityComment = null;
@@ -171,12 +199,13 @@ class CommunityBoardController extends Controller
 				$comment->community_id = $id;
 				$comment->comment_content = $content;
 				$comment->save();
-				$responseData = [
-					'success' => true,
-					'msg' => '커뮤니티 댓글 작성 성공',
-					'storeFreeComment' => $comment->toArray()
-				];
 			DB::commit();
+                $resultComment = CommunityComment::with('users')->where('community_comment_id', '=', $comment->community_comment_id)->first();
+                $responseData = [
+                    'success' => true,
+                    'msg' => '커뮤니티 댓글 작성 성공',
+                    'storeFreeComment' => $resultComment->toArray()
+                ];
 		}catch(Exception $e) {
 			DB::rollBack();
 			$responseData = [

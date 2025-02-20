@@ -177,7 +177,7 @@ export default {
 				.catch(error => {
 					console.error(error);
 				});
-		},
+		}, 
 		//  자유 게시글 수정
 		freeBoardUpdate(context, data) {
 			context.commit('setLoadingFlg', true);
@@ -198,7 +198,32 @@ export default {
 				console.error(error);
 			});
 		},
-
+		// 자유 게시글 삭제
+		freeBoardDelete(context, id) {
+			context.dispatch('auth/chkTokenAndContinueProcess', ( )=>{
+				if (context.state.controllerFlg) {
+					context.commit('setControllerFlg', false);
+				}
+				const url = '/api/community/free/' + id;
+				const config = {
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+					}
+				};
+	
+				axios.delete(url, config) 
+				.then(response=> {
+					alert('게시글이 삭제 되었습니다.');
+				})
+				.catch(error => {
+					console.error(error);
+				})
+				.finally(() => {
+					context.commit('setControllerFlg', true);
+				});
+			}, { root: true });
+		} , 
+		
 		// 댓글 작성
 		storeFreeComment(context, data) {
 			context.dispatch('auth/chkTokenAndContinueProcess', () => {
@@ -227,7 +252,7 @@ export default {
 
 				axios.post(url, data, config)
 					.then(response => {
-						context.commit('setFreeCommentListUnshift', response.data.storeFreetComment);
+						context.commit('setFreeCommentListUnshift', response.data.storeFreeComment);
 						context.commit('addFreeCommentCnt');
 						console.log('서버 응답:', response);
 					})

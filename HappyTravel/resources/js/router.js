@@ -260,11 +260,12 @@ const routes=[
 			{	
 				path : '/community/free/update/:id',
 				component: CommunityFreeUpdateComponent,
-			},
+			},			
 			{
 				path:'/community/showoff',
 				component : CommunityShowoffComponent,
 			}
+			
 
 		]
 	},

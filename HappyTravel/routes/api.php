@@ -67,10 +67,13 @@ Route::middleware('my.auth')->group(function() {
     // 마이페이지 찜목록(상품)
     Route::get('/user/wishlist/product', [WishlistController::class, 'productWishlist'])->name('wishlist.product');
 
-    
+    // 자유 게시글 작성
     Route::post('/community/free/store', [CommunityBoardController::class, 'store'])->name('store.free');
+    // 자유 게시글 수정
     Route::put('/community/free/{id}', [CommunityBoardController::class , 'CommunityFreeUpdate'])->name('community.free.update');
-    
+    // 자유 게시글 삭제
+    Route::delete('/community/free/{id}', [CommunityBoardController::class, 'CommunityDeleteFreeBoard'])->name('community.free.delete');
+
     // 자유 댓글 작성(id가 community_id)
     Route::post('/community/free/store/{id}', [CommunityBoardController::class, 'storeFreeComment'])->name('store.freeComment');
     // 자유 댓글 삭제(id가 community_comment_id)

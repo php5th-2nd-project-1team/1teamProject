@@ -18,7 +18,10 @@
 		<br><br><br>
 		<div class="button-wrap">
 			<button @click="goBack" class="button-left">목록</button>
-			<button @click="goUpdatePage"class="button-right">수정</button>
+			<div class="btn-actions">
+				<button @click="goUpdatePage"class="button-right" v-if="userInfo.user_id === freeDetail.user_id">수정</button>
+				<button @click="deleteBoard"class="button-right" v-if="userInfo.user_id === freeDetail.user_id">삭제</button>
+			</div>	
 		</div>
 
 		<!-- 댓글 리스트 -->
@@ -47,7 +50,7 @@
 </template>
 
 <script setup>
-	import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
+	import { computed, onBeforeMount, onMounted, reactive, ref, watchEffect } from 'vue';
 	import { useRoute, useRouter } from 'vue-router';
 	import { useStore } from 'vuex';
 	// 댓글 컴포넌트
@@ -59,7 +62,8 @@
 
 	const FreeCommentCnt = computed(() => store.state.boards.freeCommentCnt);
 	const freeDetail = computed(() => store.state.boards.freeDetail);
-	
+	const currentUserId = ref(null);
+	const userInfo = computed(()=>store.state.auth.userInfo);
 
 	const goBack = () => {
 		router.go(-1); // 이전 페이지로 이동
@@ -70,6 +74,8 @@
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
+	
+
 
 	// 댓글 작성
 	// 댓글 데이터
@@ -106,10 +112,17 @@
 		}
 	};
 
+	
 	// 수정 페이지 이동 시 체크
 	const goUpdatePage = () => {
 		router.push(`/community/free/update/${route.params.id}`);
 	}
+	// 게시글 삭제
+	const deleteBoard = () => {
+		store.dispatch('boards/freeBoardDelete', route.params.id);
+		router.replace('/community/free/');
+		
+	} 
 
 	onMounted(() => {
 		updatePlaceholder();
@@ -152,6 +165,13 @@
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+	}
+	.btn-actions {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		width:50%;
+		gap: 10px;
 	}
 	
 	.button-left {
