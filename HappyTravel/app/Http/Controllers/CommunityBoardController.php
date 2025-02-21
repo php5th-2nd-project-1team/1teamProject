@@ -230,6 +230,14 @@ class CommunityBoardController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+    // 자랑게시판 게시물 조회 
+    public function showOffDetail(Request $request, $id) {
+        $token = $request->bearerToken();
+        $token = $token === 'null' ? null : $token;
+        $showoffComment = null;
+        $showoffdDetail = CommunityBoard::with('users')->find($id);
+        
+    }
 
     public function indexCommunity() {
         $indexCommunity = CommunityBoard::select('community_photos.community_photo_url', 'community_photos.community_id', 'community_boards.community_title', 'users.nickname')

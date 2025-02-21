@@ -119,6 +119,7 @@ Route::post('/community/notice', [NoticeController::class, 'store'])->name('stor
 Route::get('/community/free/{id}', [CommunityBoardController::class , 'show'])->name('show.free');
 Route::get('/community/free', [CommunityBoardController::class, 'index'])->name('index.free');
 Route::get('/community/showoff', [CommunityShowoffController::class, 'index'])->name('community.showoff.index');
+Route::get('/community/showoff/{id}', [CommunityShowoffController::class, 'showOffDetail'])->name('community.showoff.show');
 
 /**
  * 원상님 Route *

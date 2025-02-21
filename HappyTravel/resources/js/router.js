@@ -63,6 +63,7 @@ import InquiryComponent from '../views/components/inquiry/InquiryComponent.vue';
 import InquiryDetailComponent from '../views/components/inquiry/InquiryDetailComponent.vue';
 import InquiryCreateComponent from '../views/components/inquiry/InquiryCreateComponent.vue';
 import CommunityShowoffComponent from '../views/components/community/CommunityShowoffComponent.vue';
+import CommunityShowoffDetailComponent from '../views/components/community/CommunityShowoffDetailComponent.vue';
 const chkAuth = (to, from, next) => {
     const store = useStore();
     const authFlg = store.state.auth.authFlg; // 로그인 여부 플레그
@@ -264,8 +265,12 @@ const routes=[
 			{
 				path:'/community/showoff',
 				component : CommunityShowoffComponent,
+			},
+			{
+				path:'/community/showoff/:id',
+				name: 'ShowoffDetail',
+				component: CommunityShowoffDetailComponent,
 			}
-			
 
 		]
 	},

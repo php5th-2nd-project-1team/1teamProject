@@ -18,6 +18,7 @@ export default {
 		lastPageFlg: false,
 		indexCommunity: [],
 		showoffList: [],
+		showoffDetail : {},
 	}),
 	mutations: {
 		// 게시판 목록 설정
@@ -352,6 +353,7 @@ export default {
 					console.log(error);
 				});
 		}
+		// 자랑게시판 페이지네이션
 		,CommunityShowoffPagination(context, page) {
 			const url = '/api/community/showoff?page=' + page;
 
