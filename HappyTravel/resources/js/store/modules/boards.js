@@ -106,6 +106,13 @@ export default {
 		setCommunityFreeUpdate(state, data) {
 			state.CommunityFreeUpdate = data;
 		},
+
+		// -------------------------- meerkat Edit Start --------------------------
+		// Showoff 게시글 상세 정보 설정
+		setShowoffDetail(state, showoffDetail) {
+			state.showoffDetail = showoffDetail;
+		},
+		// -------------------------- meerkat Edit End --------------------------
 	},
 	actions: {
 		// 게시판 목록 조회
@@ -370,6 +377,27 @@ export default {
 				console.error(error);
 			});
 		}
+
+		// -------------------------- meerkat Edit Start --------------------------
+		// Showoff 게시글 상세 조회
+		,showCommunityShowoff(context, id) {
+			context.commit('setLoadingFlg', true);
+			context.commit('resetCommentsList');
+			const url = '/api/community/showoff/' + id;
+
+			axios.get(url)
+				.then(response => {
+					console.log(response.data.communityShowoff);
+					context.commit('setShowoffDetail', response.data.communityShowoff);
+					context.commit('setFreeCommentCnt', response.data.CommuntiyCommentCnt.cnt);
+					context.commit('setFreeCommentList', response.data.CommunityComment);
+					context.commit('setLoadingFlg', false);
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		}
+		// -------------------------- meerkat Edit End --------------------------
 	},
 	getters: {
 		getCommentNextPage(state) {

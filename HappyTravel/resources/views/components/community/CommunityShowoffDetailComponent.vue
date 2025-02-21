@@ -2,72 +2,105 @@
     <h1>자랑게시판</h1>
 
     <div class="showoff-content-contaier">
-            <p class="showoff-content-title">
-                제목
-            </p>
+            <p class="showoff-content-title">{{ $store.state.boards.showoffDetail?.community_title }}</p>
         <div class="showoff-content-info">
             <span>
-                <img class="user-profile"src="/developImg/kakao.png" alt="">
+                <img class="user-profile" :src="$store.state.boards.showoffDetail?.users?.profile" alt="">
             </span>
-            <span class="user-nickname">
-                푸헤헤
-            </span>
+            <span class="user-nickname">{{ $store.state.boards.showoffDetail?.users?.nickname }}</span>
         </div>
+
         <div class="showoff-content-slide-container">
-            <img src="/developImg/kakao.png" alt="">
+            <img v-if="$store.state.boards.showoffDetail?.community_photos" :src="$store.state.boards.showoffDetail?.community_photos[0]?.community_photo_url" alt="">
         </div>
-        <div class="btn-radius-wrap">
-            <button></button>
-            <button></button>
-            <button></button>
-        </div>
+
         <div class="showoff-content-footer">
-            <button class="showoff-likes-btn">
-                <img class="showoff-likes"src="/developImg/like_yes.png" alt="좋아요">
-            </button>
-            <div class="showoff-like-count-container">
-                <span class="like-count">
-                    6868 likes
-                </span>
-            </div>
             <div class="showoff-content-text">
-                <p class="showoff-contet">
-                    게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용
-                    게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용
-                    게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용
-                    게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용
-                    게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용게시글 내용
-                </p>
+                <p class="showoff-contet">{{ $store.state.boards.showoffDetail?.community_content }}</p>
             </div>
         </div>
     </div>  
-        <br><br><br><br><br>
-        <hr>
-        <br><br><br><br><br>
+    <br><br><br><br><br>
+    <hr>
+    <br><br><br><br><br>
     <div class="showoff-comment-container">
-        <!-- 댓글 리스트 -->
-            <div class="showoff-comment-title">
-                <h3>펫브리즈 톡 <span>댓글 갯수: 1</span></h3>
-            </div>
-    
-            <!-- 댓글 작성 부분 -->
-            <div class="showoff-comment-form-box">
-                <textarea 
-                    :placeholder="placeholder"				
-                    minlength="1"
-                    maxlength="200"
-                ></textarea>
-                <button 				
-                    class="btn-showoff-comment btn-bg-blue"
-                    type="button"
-                >등록</button>
-            </div>
+		<!-- 댓글 리스트 -->
+		<div class="showoff-comment-title">
+			<h3>펫브리즈 톡 <span>{{  $store.state.boards.freeCommentCnt }}</span></h3>
+		</div>
+
+		<!-- 댓글 작성 부분 -->
+		<div class="showoff-comment-form-box">
+			<textarea 
+				@click="checkToken"
+				v-model="commentData.comment_content"
+				:placeholder="placeholder"
+				name="comment"
+				minlength="1"
+				maxlength="200"
+			></textarea>
+			<button 
+				@click="storeComment"
+				class="btn-showoff-comment btn-bg-blue"
+				type="button"
+			>등록</button>
+		</div>
         <CommunityCommnet />
     </div>
     
 </template>
 <script setup>
-    import CommunityCommnet from './CommunityCommnet.vue';
+import { onBeforeMount, onMounted, reactive, ref } from 'vue';
+import CommunityCommnet from './CommunityCommnet.vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+
+const store = useStore();
+const route = useRoute();
+
+onBeforeMount(() => {
+    store.dispatch('boards/showCommunityShowoff', route.params.id);
+});
+
+// 댓글 작성
+// 댓글 데이터
+const commentData = reactive({
+    comment_content: '',
+    community_id: route.params.id
+});
+
+// 댓글 저장
+const storeComment = async() => {		
+    if (commentData.comment_content.trim() === '') {
+        alert('댓글을 작성 해 주세요.');
+        return;
+    }
+    await store.dispatch('boards/storeFreeComment', commentData);
+    commentData.comment_content = '';
+};
+
+// 댓글작성시 로그인 확인
+const checkToken = () => {
+    if (!localStorage.getItem('accessToken')) {
+        alert('로그인 후 댓글을 작성 해주세요.');
+        router.replace('/login');
+    }
+};
+
+// 댓글 placeholder 로그인, 비로그인시 코멘트
+const placeholder = ref('');
+const updatePlaceholder = () => {
+    if (!localStorage.getItem('accessToken')) {
+        placeholder.value = '로그인 후 댓글을 남겨주세요.';
+    } else {
+        placeholder.value = '반려동물과 함께한 추억을 작성 해 주세요.';
+    }
+};
+onMounted(() => {
+    updatePlaceholder();
+    window.addEventListener('storage', updatePlaceholder);
+})
+
 </script>
 <style scoped>
     h1 { 

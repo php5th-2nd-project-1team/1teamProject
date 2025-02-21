@@ -1,7 +1,7 @@
 <template>
     <div class="community-photos-card-container">
         <div class="community-photos-card" v-for="(item, key) in $store.state.boards.showoffList" :key="key">
-            <img class="community-photos-img" :src="item?.community_photos?.length > 0 ? item?.community_photos[0]?.community_photo_url : ''" onerror="src='/developImg/no_img.jpg'">
+            <img @click="$router.push(`/community/showoff/${item?.community_id}`)" class="community-photos-img" :src="item?.community_photos?.length > 0 ? item?.community_photos[0]?.community_photo_url : ''" onerror="src='/developImg/no_img.jpg'">
             <h3 class="community-photos-card-title">{{ item?.community_title }}</h3>
             <div class="community-photos-user-info">
                 <p><img class="community-photos-user-profile" :src="item?.users?.profile" onerror="src='/developImg/no_img.jpg'"></p>
