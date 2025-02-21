@@ -270,7 +270,8 @@ const routes=[
 				path:'/community/showoff/:id',
 				name: 'ShowoffDetail',
 				component: CommunityShowoffDetailComponent,
-			}
+			},		
+			
 
 		]
 	},

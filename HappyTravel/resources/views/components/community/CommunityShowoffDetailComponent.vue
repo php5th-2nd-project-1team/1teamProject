@@ -45,8 +45,8 @@
 				type="button"
 			>등록</button>
 		</div>
-        <CommunityCommnet />
     </div>
+    <CommunityCommnet />
     
 </template>
 <script setup>
@@ -181,18 +181,8 @@ onMounted(() => {
     }
 
     /* 좋아요 개수와 게시글 내용을 감싸는 영역 */
-    .showoff-like-count-container {
-        display: flex;
-        flex-direction: row;
-        margin-top: 10px;
-    }
-
-
-    .showoff-comment-container {
-        width: 80%;
-        margin: 0 auto;
-    }
-    .showoff-comment-title {
+    
+	.showoff-comment-title {
 		font-size: 30px;
 		margin-bottom: 20px;
 	}
@@ -226,4 +216,42 @@ onMounted(() => {
 		cursor: pointer;
 		justify-self: flex-end;
 	}
+
+    .showoff-comment-container {
+		padding: 0 362px;
+    }
+    /* .showoff-comment-title {
+		font-size: 30px;
+		margin-bottom: 20px;
+	}
+	
+	.showoff-comment-title span {
+		color: #2986FF;
+	}
+	
+	.showoff-comment-form-box {
+		width: 100%;
+		padding: 20px;
+		display: grid;
+		background-color: #CDECFF;
+	}
+	
+	.showoff-comment-form-box > textarea {
+		border: none;
+		resize: none;
+		width: 100%;
+		height: 10em;
+		font-size: 15px;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	
+	.btn-showoff-comment {
+		width: 100px;
+		padding: 10px;
+		font-size: 20px;
+		border: none;
+		cursor: pointer;
+		justify-self: flex-end;
+	} */
 </style>

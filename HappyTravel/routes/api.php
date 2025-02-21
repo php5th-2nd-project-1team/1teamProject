@@ -79,7 +79,9 @@ Route::middleware('my.auth')->group(function() {
     // 자유 댓글 삭제(id가 community_comment_id)
     Route::post('/community/free/destroy/{id}',[CommunityBoardController::class, 'deleteFreeComment'])->name('destroy.freeComment');
 
-
+    // 자랑 게시판 작성 
+    Route::post('/community/showoff/store', [CommunityShowoffController::class, 'CommunityShowoffstore'])->name('community.showoff.store');
+    
     // 문의게시글 작성
     Route::post('/inquiry', [InquiryController::class, 'createInquiry'])->name('inquiry.create');
     // 문의게시글 삭제

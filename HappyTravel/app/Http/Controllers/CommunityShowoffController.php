@@ -6,11 +6,12 @@ use App\Models\CommunityBoard;
 use App\Models\CommunityComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use UserToken;
 
 class CommunityShowoffController extends Controller
 {
     public function index() {
-        $communityShowoff = CommunityBoard::with(['communityPhotos', 'users'])->where('community_type' ,'=', '1')->paginate(4);
+        $communityShowoff = CommunityBoard::with(['communityPhotos', 'users'])->where('community_type' ,'=', '1')->orderBy('created_at', 'DESC')->paginate(4);
 
         $responseData = [
             'success' => true
@@ -54,4 +55,22 @@ class CommunityShowoffController extends Controller
         return response()->json($responseData, 200);
     }
     // ------------------ meerkat Edit End ------------------
+
+    // // 게시물 작성    
+    //   public function CommunityShowoffstore(Request $request) {
+    //       $insertData['user_id'] = UserToken::getInPayload($request->bearerToken(), 'idt');
+    //       $insertData['community_type'] = $request->community_type;
+    //       $insertData['community_title'] = $request->title;
+    //       $insertData['community_content'] = $request->content;
+          
+    //       $community = CommunityBoard::create($insertData);
+  
+    //       $responseData = [
+    //           'success' => true,
+    //           'showoffBoard' => $community->toArray(),
+    //           'msg' => '성공'
+    //       ];
+  
+    //       return response()->json($responseData, 200);
+    //   } 
 }

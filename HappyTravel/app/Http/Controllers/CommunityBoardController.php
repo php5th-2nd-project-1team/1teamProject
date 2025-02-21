@@ -16,6 +16,7 @@ class CommunityBoardController extends Controller
     // 게시글 목록 조회
     public function index() { 
         $query = CommunityBoard::with('users')
+            ->where('community_type', '0')
             ->whereNull('deleted_at') 
             ->orderBy('created_at', 'desc');
 
@@ -89,12 +90,20 @@ class CommunityBoardController extends Controller
 	
     // 게시물 작성    
     public function store(Request $request) {
-        $insertData = $request->only('user_id');
-        $insertData['community_type'] = $request->community_type;
-        $insertData['community_title'] = $request->title;
-        $insertData['community_content'] = $request->content;
+        Log::debug('request', $request->all());
+        // $insertData['user_id'] = UserToken::getInPayload($request->bearerToken(), 'idt');
+        // $insertData['community_type'] = $request->community_type;
+        // $insertData['community_title'] = $request->title;
+        // $insertData['community_content'] = $request->content;
         
-        $community = CommunityBoard::create($insertData);
+        // $community = CommunityBoard::create($insertData);
+
+        $community = new CommunityBoard();
+        $community->user_id = UserToken::getInPayload($request->bearerToken(), 'idt');
+        $community->community_type = $request->community_type;
+        $community->community_title = $request->title;
+        $community->community_content = $request->content;
+        $community->save();
 
         $responseData = [
             'success' => true,
@@ -230,15 +239,7 @@ class CommunityBoardController extends Controller
         ];
         return response()->json($responseData, 200);
     }
-    // 자랑게시판 게시물 조회 
-    public function showOffDetail(Request $request, $id) {
-        $token = $request->bearerToken();
-        $token = $token === 'null' ? null : $token;
-        $showoffComment = null;
-        $showoffdDetail = CommunityBoard::with('users')->find($id);
-        
-    }
-
+   
     public function indexCommunity() {
         $indexCommunity = CommunityBoard::select('community_photos.community_photo_url', 'community_photos.community_id', 'community_boards.community_title', 'users.nickname')
             ->join('community_photos', 'community_photos.community_id', '=', 'community_boards.community_id')

@@ -18,7 +18,6 @@ export default {
 		lastPageFlg: false,
 		indexCommunity: [],
 		showoffList: [],
-		showoffDetail : {},
 	}),
 	mutations: {
 		// 게시판 목록 설정
@@ -103,6 +102,7 @@ export default {
 		setConcatShowoffList(state, data) {
 			state.showoffList = state.showoffList.concat(data);
 		},
+		// 자유게시판 수정
 		setCommunityFreeUpdate(state, data) {
 			state.CommunityFreeUpdate = data;
 		},
@@ -113,6 +113,10 @@ export default {
 			state.showoffDetail = showoffDetail;
 		},
 		// -------------------------- meerkat Edit End --------------------------
+		// 자랑 게시글을 목록 최상단에 추가
+		setShowOffListUnshift(state, showoff) {
+			state.showoffList.unshift(showoff);
+		},
 	},
 	actions: {
 		// 게시판 목록 조회
@@ -173,7 +177,7 @@ export default {
 			formData.append('title', data.title);
 			formData.append('content', data.content);
 			formData.append('user_id', data.userId);
-			formData.append('community_type', data.communityType);
+			formData.append('community_type', data.community_type);
 
 			axios.post(url, formData, config)
 				.then(response => {
@@ -377,6 +381,35 @@ export default {
 				console.error(error);
 			});
 		}
+		// // 자랑게시판 게시글 작성
+		// showoffBoardStore(context, data) {
+		// 	context.commit('setLoadingFlg', true);
+
+		// 	const url = '/api/community/showoff/store';
+		// 	const config = {
+		// 		headers: {
+		// 			'Content-Type': 'multipart/form-data',
+		// 			'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+		// 		}
+		// 	};
+
+		// 	const formData = new FormData();
+		// 	formData.append('title', data.title);
+		// 	formData.append('content', data.content);
+		// 	formData.append('community_id', data.userId);
+		// 	formData.append('community_type', data.communityType);
+
+		// 	axios.post(url, formData, config)
+		// 		.then(response => {
+		// 			context.commit('setShowOffListUnshift', response.data.showoffBoard.data);
+		// 			context.commit('setLoadingFlg', false);
+		// 			alert('글 작성을 완료했습니다.');
+		// 			router.push('/community/showoff');
+		// 		})
+		// 		.catch(error => {
+		// 			console.error(error);
+		// 		});
+		// }
 
 		// -------------------------- meerkat Edit Start --------------------------
 		// Showoff 게시글 상세 조회

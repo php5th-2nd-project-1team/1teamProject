@@ -1,4 +1,13 @@
 <template>
+    <div class="free-container">
+        <div class="board-wrtn">
+            <!-- <button  @click="router.push('/free/store')"><img class="free-pencil"src="/developImg/pencil.png"><span>글쓰기</span></button> -->
+            <button  @click="handleWriteButtonClick">
+                <img class="free-pencil"src="/developImg/pencil.png">
+                <span>글쓰기</span>
+            </button>
+        </div>
+    </div>
     <div class="community-photos-card-container">
         <div class="community-photos-card" v-for="(item, key) in $store.state.boards.showoffList" :key="key">
             <img @click="$router.push(`/community/showoff/${item?.community_id}`)" class="community-photos-img" :src="item?.community_photos?.length > 0 ? item?.community_photos[0]?.community_photo_url : ''" onerror="src='/developImg/no_img.jpg'">
@@ -20,9 +29,11 @@
 </template>
 <script setup>
 import { onBeforeMount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const router = useRouter();
 
 const page = ref(1);
 
@@ -34,6 +45,18 @@ onBeforeMount(() => {
 function nextPage() {
     store.dispatch('boards/CommunityShowoffPagination', page.value);
     page.value++;
+}
+
+// 글쓰기 버튼 함수핸들러 
+const handleWriteButtonClick = () => { 
+    const userInfo = localStorage.getItem('userInfo');
+
+    if (userInfo) {
+        router.push('/community/store');
+    } else {
+        alert('로그인이 필요합니다');
+        router.push('/login');
+    }
 }
 </script>
 
@@ -105,5 +128,46 @@ function nextPage() {
     width: 200px;
     margin-top: 50px;
     
+} 
+
+/* 게시글 작성 */
+
+.free-container {
+    width: 80%;
+    margin: 20px 0;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: grid; /* 전체 컨테이너에 그리드 적용 */
+    grid-template-columns: 1.5fr 2.5fr 2fr 1fr 1fr; /* 각 항목의 너비 설정 */
+}
+.board-wrtn {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+    grid-column-start: 5;
 }  
+.board-wrtn button {
+    background-color: #2986FF;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    width: 80%;
+}
+.board-wrtn button span {
+    /* width: 30px;
+    height: 30px; */
+    /* margin-right: 5px; */
+    padding-top: 5px;
+}
+.free-pencil  {
+    width: 20px;
+    height: 18px;
+    margin-right: 10px;
+}
 </style>

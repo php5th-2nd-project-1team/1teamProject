@@ -1,10 +1,10 @@
 <template>
     <div class="cont">
-      <h1>자유게시판 글쓰기</h1>        
+      <h1>글쓰기</h1>        
   
       <div class="FreeStoreContainer">
         <div class="select-wrap">
-          <select v-model="selectBoard" class="select-box">
+          <select v-model="editorValue.community_type" class="select-box">
             <option value="0">자유게시판</option>
             <option value="1">자랑게시판</option>
             <option value="2">문의게시판</option>
@@ -12,7 +12,7 @@
         </div>
         
       <div>
-        <input v-model="EditorValue.title" type="text">
+        <input v-model="editorValue.title" type="text">
         <!-- 스마트에디터가 적용될 textarea -->
         <textarea id="editor" name="editor"></textarea>
         <div class="button-wrap">
@@ -30,20 +30,17 @@
   import { useStore } from "vuex";
   import router from '../../../js/router.js';
   
-  const selectBoard = ref('0');
-  const boardTitle = ref('');
-
   const oEditors = ref([]);  // 스마트에디터 객체를 저장할 변수
 
   const store = useStore();
 
   const userInfo = computed(() => store.state.auth.userInfo.user_id);
   
-  const EditorValue = reactive({
-      title: boardTitle,
+  const editorValue = reactive({
+      title: '',
       content: "",
       userId: userInfo,
-      communityType: selectBoard
+      community_type: '0'
   });
   
   // 컴포넌트가 마운트되면 스마트에디터 초기화
@@ -63,10 +60,10 @@
         const editorContent = document.getElementById('editor').value;
 
         // content 값을 reactive 객체에 업데이트
-        EditorValue.content = editorContent;
-
+        editorValue.content = editorContent;
+      console.log(editorValue);
         // Vuex에 저장
-        store.dispatch('boards/freeBoardStore' , EditorValue);
+        store.dispatch('boards/freeBoardStore' , editorValue);
         // console.log(props.dispatch);
     };
   
