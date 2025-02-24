@@ -15,7 +15,7 @@
       :lng="PostDetail.post_lon" 
     />
   </KakaoMap>
-  <button @click="test">test</button>
+  <!-- <button @click="test">test</button> -->
 </template>
 
 <script setup>

@@ -42,12 +42,12 @@ export default {
 				// const username = getCookie('reports013');
 				// console.log(username);
 				
-				axios.post(url,  config)
+				axios.post(url, data, config)
 				.then(response => {
 					console.log(response.data);
-					if(response.data.success == false) {
-						throw new Error("신고 예외 발생시킴");
-					}
+					// if(response.data.success == false) {
+					// 	throw new Error("신고 예외 발생시킴");
+					// }
 					alert('신고접수가 완료되었습니다.');
 				})
 				.catch(error => {

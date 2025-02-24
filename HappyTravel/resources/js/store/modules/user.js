@@ -67,6 +67,7 @@ export default {
                 const url = '/api/mypage/auth/update'
                 const config = {
                     headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                         'Content-Type': 'multipart/form-data'
                     }
                 };
@@ -128,9 +129,13 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                // console.log(userInfo);
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
+                }
 
-                axios.post(url, data)
+                axios.post(url, data, config)
                 .then(response => {
                     router.replace('/user/mypage/update');
                 })
@@ -147,9 +152,13 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
-                // console.log(userInfo);
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
+                }
 
-                axios.post(url, data)
+                axios.post(url, data, config)
                 .then(response => {
                     router.replace('/user/mypage/password/update');
                 })
@@ -169,8 +178,13 @@ export default {
 
                 const data = JSON.stringify(userInfo);
 
+                const config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    }
+                }
 
-                axios.post(url, data)
+                axios.post(url, data, config)
                 .then(response => {
                     context.commit('setModalFlg', true);
                 })
@@ -192,7 +206,7 @@ export default {
                     }
                 }
 
-                axios.post(url, config)
+                axios.post(url, null, config)
                 .then(response => {
                     // Auth 플레그 했던 거 지우기
                     context.commit('auth/setAuthFlg', false, {root: true});
@@ -218,7 +232,8 @@ export default {
 
                 const config = {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                     }
                 };
 
