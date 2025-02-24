@@ -1,5 +1,5 @@
 <template>
-    <h1>자랑게시판</h1>
+    <h1>자랑게시판</h1> 
 
     <div class="showoff-content-contaier">
             <p class="showoff-content-title">{{ $store.state.boards.showoffDetail?.community_title }}</p>
@@ -16,13 +16,17 @@
 
         <div class="showoff-content-footer">
             <div class="showoff-content-text">
-                <p class="showoff-contet">{{ $store.state.boards.showoffDetail?.community_content }}</p>
+                <div v-html="showoffDetail?.community_content"></div>
+                <!-- <p class="showoff-contet">{{ $store.state.boards.showoffDetail?.community_content }}</p> -->
             </div>
         </div>
     </div>  
     <br><br><br><br><br>
     <hr>
     <br><br><br><br><br>
+    <div class="button-wrap">
+        <button @click="goBack" class="button-left">목록</button>
+    </div>
     <div class="showoff-comment-container">
 		<!-- 댓글 리스트 -->
 		<div class="showoff-comment-title">
@@ -50,18 +54,30 @@
     
 </template>
 <script setup>
-import { onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import CommunityCommnet from './CommunityCommnet.vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
+
+const showoffDetail = computed(() => store.state.boards.showoffDetail);
 
 onBeforeMount(() => {
     store.dispatch('boards/showCommunityShowoff', route.params.id);
 });
 
+const goBack = () => {
+		router.go(-1); // 이전 페이지로 이동
+		scrollToTop(); // 최상단으로 스크롤
+	};
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+    
 // 댓글 작성
 // 댓글 데이터
 const commentData = reactive({
@@ -108,13 +124,13 @@ onMounted(() => {
         margin-top: 20px;
     }
     hr {
-        width: 80%;
-        margin: 0 auto;
+        width: 60%;
+        margin: 0 362px;
     }
     /* 자랑게시판 전체 컨테이너 */
     .showoff-content-contaier  {
         width: 80%;
-        margin: 0 auto;
+        margin: 0 362px;
         margin-top: 50px;
     }
     /* 자랑게시판 컨텐츠 제목 */
@@ -124,9 +140,9 @@ onMounted(() => {
     }
     /* 자랑게시판 컨텐츠 정보 */
     .showoff-content-info {
-    display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    gap: 15px; /* 이미지와 닉네임 간격 추가 */
+        display: flex;
+        align-items: center; /* 세로 중앙 정렬 */
+        gap: 15px; /* 이미지와 닉네임 간격 추가 */
     }   
     /* 자랑게시판 유저 프로필 */
     .user-profile {
@@ -141,11 +157,41 @@ onMounted(() => {
         display: flex;
         align-items: center; /* 세로 중앙 정렬 */
     }
-    /* 자랑게시판 컨텐츠 슬라이드 컨테이너 */
+
+    .button-wrap {
+		display: flex;
+		justify-content: flex-start;
+        width: 80%;
+		margin: 0 362px;
+        margin-bottom: 50px;
+
+	}
+	.btn-actions {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		width:68%;
+		gap: 10px;
+	}
+	
+	.button-left {
+		background-color: #2986FF;
+		color: #fff;
+		font-size: 1rem;
+		width: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 4px;
+		cursor: pointer;
+		border: none;
+	}
+	
+
+    /* 자랑게시판 컨텐츠 슬라이드 컨테이너
     .showoff-content-slide-container {
         width:100%;
-        height: 100%;
-        background-color: green;
+        height: 100%;     
         text-align: center;
     } 
     .btn-radius-wrap  {
@@ -158,16 +204,16 @@ onMounted(() => {
     .btn-radius-wrap >button {
         border-radius: 50%;
         width: 20px; /* 버튼 크기 */
-        height: 20px;
+        /* height: 20px;
         border:none;        
         cursor: pointer;
-    }
+    } */ 
 
     
     
     /* 자랑게시판 컨텐츠 footer */ 
     .showoff-content-footer {      
-    margin: 0 auto;
+        margin: 0 auto;
     }
     .showoff-likes-btn {
         border: none;
